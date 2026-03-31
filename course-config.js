@@ -25,8 +25,8 @@ const COURSE = {
 
   // ── Hero Stats ──
   stats: [
-    { num: "6",    label: "Chapters" },
-    { num: "20",   label: "Topics" },
+    { num: "7",    label: "Chapters" },
+    { num: "23",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -48,6 +48,7 @@ const COURSE = {
 
   // ── Chapter Colors ──
   chapterColors: [
+    { main: "#6366f1", light: "#e0e7ff", gradient: ["#4f46e5", "#6366f1"] },  // Ch 0 — Indigo
     { main: "#059669", light: "#d1fae5", gradient: ["#059669", "#10b981"] },  // Ch 1
     { main: "#2563eb", light: "#dbeafe", gradient: ["#2563eb", "#3b82f6"] },  // Ch 2
     { main: "#7c3aed", light: "#ede9fe", gradient: ["#7c3aed", "#8b5cf6"] },  // Ch 3
@@ -58,6 +59,40 @@ const COURSE = {
 
   // ── Chapter Definitions ──
   chapters: [
+    {
+      id: "ch0",
+      title: "Why Study Calculus II?",
+      shortTitle: "The Big Picture",
+      description: "Where Calculus II fits in your engineering journey — the math roadmap, connections to physics and engineering, and why this course matters.",
+      tagline: "See the big picture first",
+      status: "available",
+      topics: [
+        {
+          id: "ch0-big-picture",
+          title: "0.1 — The Engineering Math Roadmap",
+          icon: "M",
+          description: "A visual map of every math course you'll take and how Calc II connects them all.",
+          mathPreview: "\\text{Calc I} \\to \\text{Calc II} \\to \\text{Calc III, DE, Linear Algebra}",
+          file: "why-study.html",
+        },
+        {
+          id: "ch0-applications",
+          title: "0.2 — Real-World Applications",
+          icon: "A",
+          description: "How integration, series, and convergence appear in physics, engineering, and data science.",
+          mathPreview: "W = \\int_a^b F(x)\\,dx",
+          file: "why-study.html#applications",
+        },
+        {
+          id: "ch0-connections",
+          title: "0.3 — Connections to Engineering",
+          icon: "E",
+          description: "How each chapter of Calc II feeds into your future courses and engineering career.",
+          mathPreview: "\\text{Signals} \\leftrightarrow \\text{Fourier Series}",
+          file: "why-study.html#connections",
+        },
+      ],
+    },
     {
       id: "ch1",
       title: "Integration Techniques",

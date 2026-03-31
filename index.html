@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Chapter cards
   var gridHTML = '';
   C.chapters.forEach(function(ch, i) {
-    var num = String(i + 1).padStart(2, '0');
+    var num = String(i).padStart(2, '0');
     var isSoon = ch.status === 'coming-soon';
     var href = isSoon ? '#' : '#' + ch.id;
     gridHTML += '<a class="chapter-card' + (isSoon ? ' coming-soon' : '') + '" href="' + href + '">';
@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (ch.status === 'coming-soon') return;
     var color = C.chapterColors[i] || C.chapterColors[0];
     detailsHTML += '<div class="chapter-detail" id="' + ch.id + '">';
-    detailsHTML += '<h2>Chapter ' + (i + 1) + ' — ' + ch.title + '</h2>';
+    detailsHTML += '<h2>Chapter ' + i + ' — ' + ch.title + '</h2>';
     detailsHTML += '<p>' + ch.description + '</p>';
     detailsHTML += '<div class="topic-grid">';
     ch.topics.forEach(function(t) {
@@ -380,34 +380,52 @@ function buildMindMap() {
     return 38 + ch.topics.length * 20 + 32;
   });
 
-  // 3-column, 2-row grid below center node
-  // Left column: Ch1, Ch2   |   Middle column: Ch5, Ch6   |   Right column: Ch3, Ch4
-  // This groups related chapters visually
+  // Layout: Ch0 directly below center, then 3-column x 2-row grid for Ch1-Ch6
   var colX = [40, (svgW - boxW) / 2, svgW - boxW - 40];
-  var row1Y = 160;
-  var colAssign = [
-    {col: 0, row: 0}, // Ch1 — top-left
-    {col: 0, row: 1}, // Ch2 — bottom-left
-    {col: 2, row: 1}, // Ch3 — bottom-right
-    {col: 2, row: 0}, // Ch4 — top-right
-    {col: 1, row: 0}, // Ch5 — top-center
-    {col: 1, row: 1}  // Ch6 — bottom-center
-  ];
+  var row0Y = 140; // Ch0 row (just below center)
+  var row1Y = row0Y + 120; // Main grid starts after Ch0
+  var colAssign;
+  if (numCh === 7) {
+    colAssign = [
+      {col: 1, row: -1}, // Ch0 — center, just below "Calculus II"
+      {col: 0, row: 0},  // Ch1 — top-left
+      {col: 0, row: 1},  // Ch2 — bottom-left
+      {col: 2, row: 1},  // Ch3 — bottom-right
+      {col: 2, row: 0},  // Ch4 — top-right
+      {col: 1, row: 0},  // Ch5 — top-center
+      {col: 1, row: 1}   // Ch6 — bottom-center
+    ];
+  } else {
+    colAssign = [
+      {col: 0, row: 0}, {col: 0, row: 1}, {col: 2, row: 1},
+      {col: 2, row: 0}, {col: 1, row: 0}, {col: 1, row: 1}
+    ];
+  }
 
   // Calculate row heights (max box height in each row + gap)
   var rowMaxH = [0, 0];
+  var ch0Height = 0;
   colAssign.forEach(function(ca, i) {
-    if (i < numCh && boxHeights[i] > rowMaxH[ca.row]) {
+    if (i >= numCh) return;
+    if (ca.row === -1) {
+      ch0Height = boxHeights[i];
+    } else if (boxHeights[i] > rowMaxH[ca.row]) {
       rowMaxH[ca.row] = boxHeights[i];
     }
   });
   var rowGap = 30;
-  var rowY = [row1Y, row1Y + rowMaxH[0] + rowGap];
+  var gridStartY = (ch0Height > 0) ? row0Y + ch0Height + rowGap : row1Y;
+  var rowY = [gridStartY, gridStartY + rowMaxH[0] + rowGap];
 
   // Build positions array
   var positions = [];
   for (var i = 0; i < numCh && i < colAssign.length; i++) {
-    positions.push({ x: colX[colAssign[i].col], y: rowY[colAssign[i].row] });
+    var ca = colAssign[i];
+    if (ca.row === -1) {
+      positions.push({ x: colX[ca.col], y: row0Y });
+    } else {
+      positions.push({ x: colX[ca.col], y: rowY[ca.row] });
+    }
   }
 
   // Total SVG height — enough room for row 2 boxes + applications bar + padding
@@ -492,7 +510,7 @@ function buildMindMap() {
     boxes += '<rect x="' + pos.x + '" y="' + pos.y + '" rx="12" ry="12" width="' + boxW + '" height="' + h + '" fill="#fff" stroke="' + col.main + '" stroke-width="2" filter="url(#shadow-sm)"/>';
     // Header bar
     boxes += '<path d="M' + pos.x + ',' + (pos.y + 12) + ' a12,12 0 0 1 12,-12 H' + (pos.x + boxW - 12) + ' a12,12 0 0 1 12,12 V' + (pos.y + 32) + ' H' + pos.x + ' Z" fill="url(#grad-ch' + i + ')"/>';
-    boxes += '<text x="' + (pos.x + boxW/2) + '" y="' + (pos.y + 22) + '" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Chapter ' + (i + 1) + ' · ' + ch.shortTitle + '</text>';
+    boxes += '<text x="' + (pos.x + boxW/2) + '" y="' + (pos.y + 22) + '" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Chapter ' + i + ' · ' + ch.shortTitle + '</text>';
     // Topics
     ch.topics.forEach(function(t, j) {
       boxes += '<text x="' + (pos.x + 20) + '" y="' + (pos.y + 50 + j * 20) + '" font-size="11.5" fill="#374151">\u25B8 ' + t.title.replace(/^\d+\.\d+\s*—\s*/, '') + '</text>';

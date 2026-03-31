@@ -149,25 +149,209 @@
   <h2>The Big Picture</h2>
 
   <p>
-    You've completed Calculus I, where you learned to find rates of change (derivatives) and to compute areas under curves (integrals). You might think: "We're done—I can compute any integral I want!" But here's the truth: most integrals you'll encounter in the real world can't be solved with the basic techniques from Calc 1.
+    As an engineering student, you'll take roughly 8-10 math courses during your degree. Each one builds on the last, and together they form the mathematical language you'll use throughout your career. Calculus II sits right in the middle of this journey — it's where the tools from Calculus I become powerful enough to handle real engineering problems, and where you build the foundations for everything that comes after.
   </p>
 
   <p>
-    Calculus II teaches you advanced strategies to tackle these harder integrals. It also introduces infinite series—a revolutionary idea: any smooth function can be represented as an infinite polynomial. This means we can approximate $\sin(x)$, $e^x$, and the normal distribution as power series, enabling computers to calculate them instantly. Integration techniques solve problems Calculus I couldn't touch. Series let us represent complex functions as infinite polynomials. Together, these concepts are the backbone of modern science and engineering.
+    The map below shows your complete math journey as an engineering student. Calculus II is highlighted — notice how it connects backward to what you already know and forward to courses and engineering applications you'll encounter soon.
   </p>
 
+  <!-- Interactive Engineering Math Roadmap -->
+  <div style="background:#f8fafc; border-radius:14px; border:1px solid var(--border); padding:1.5rem; margin:2rem 0; overflow-x:auto;">
+    <svg id="eng-math-map" viewBox="0 0 1000 720" style="width:100%; max-width:1000px; margin:0 auto; display:block; font-family:'Segoe UI',system-ui,sans-serif;">
+      <defs>
+        <filter id="ds"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.08"/></filter>
+        <filter id="glow-gold"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.4"/></filter>
+        <linearGradient id="g-calc2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+        <linearGradient id="g-prereq" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#10b981"/></linearGradient>
+        <linearGradient id="g-next" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient>
+        <linearGradient id="g-adv" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#ef4444"/></linearGradient>
+        <linearGradient id="g-eng" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0891b2"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+      </defs>
+
+      <!-- Row labels -->
+      <text x="20" y="52" font-size="11" fill="#94a3b8" font-weight="700" text-transform="uppercase" letter-spacing="0.1em">FOUNDATIONS</text>
+      <text x="20" y="202" font-size="11" fill="#94a3b8" font-weight="700" letter-spacing="0.1em">YOU ARE HERE</text>
+      <text x="20" y="332" font-size="11" fill="#94a3b8" font-weight="700" letter-spacing="0.1em">NEXT SEMESTER</text>
+      <text x="20" y="462" font-size="11" fill="#94a3b8" font-weight="700" letter-spacing="0.1em">ADVANCED MATH</text>
+      <text x="20" y="592" font-size="11" fill="#94a3b8" font-weight="700" letter-spacing="0.1em">ENGINEERING</text>
+
+      <!-- ═══ ROW 1: Foundations ═══ -->
+      <!-- Precalculus -->
+      <g filter="url(#ds)">
+        <rect x="130" y="30" rx="10" ry="10" width="170" height="50" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+        <text x="215" y="52" text-anchor="middle" font-size="11" fill="#059669" font-weight="700">Precalculus</text>
+        <text x="215" y="68" text-anchor="middle" font-size="9.5" fill="#64748b">Algebra, Trig, Functions</text>
+      </g>
+      <!-- Calculus I -->
+      <g filter="url(#ds)">
+        <rect x="370" y="30" rx="10" ry="10" width="170" height="50" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+        <text x="455" y="52" text-anchor="middle" font-size="11" fill="#059669" font-weight="700">Calculus I</text>
+        <text x="455" y="68" text-anchor="middle" font-size="9.5" fill="#64748b">Limits, Derivatives, Basic $\int$</text>
+      </g>
+      <!-- Physics I -->
+      <g filter="url(#ds)">
+        <rect x="610" y="30" rx="10" ry="10" width="170" height="50" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+        <text x="695" y="52" text-anchor="middle" font-size="11" fill="#059669" font-weight="700">Physics I</text>
+        <text x="695" y="68" text-anchor="middle" font-size="9.5" fill="#64748b">Mechanics, Kinematics</text>
+      </g>
+
+      <!-- ═══ Arrows: Foundations → Calc II ═══ -->
+      <path d="M300,55 L370,55" stroke="#059669" stroke-width="1.5" fill="none" marker-end="url(#arr-green)"/>
+      <path d="M455,80 L455,170" stroke="#059669" stroke-width="2" fill="none" stroke-dasharray="6,3"/>
+      <path d="M215,80 Q215,130 400,175" stroke="#059669" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
+
+      <!-- ═══ ROW 2: CALCULUS II (highlighted) ═══ -->
+      <g filter="url(#glow-gold)">
+        <rect x="330" y="170" rx="14" ry="14" width="250" height="70" fill="url(#g-calc2)" stroke="#f59e0b" stroke-width="3"/>
+        <text x="455" y="198" text-anchor="middle" font-size="16" fill="#fff" font-weight="800">CALCULUS II</text>
+        <text x="455" y="218" text-anchor="middle" font-size="10.5" fill="rgba(255,255,255,0.85)">Integration, Series, Parametric &amp; Polar</text>
+        <text x="455" y="232" text-anchor="middle" font-size="9" fill="#fbbf24" font-weight="600">MATH 102 — This Course</text>
+      </g>
+      <!-- Prob & Stats (parallel) -->
+      <g filter="url(#ds)">
+        <rect x="670" y="180" rx="10" ry="10" width="170" height="50" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="755" y="202" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="700">Probability &amp; Statistics</text>
+        <text x="755" y="218" text-anchor="middle" font-size="9.5" fill="#64748b">Distributions, Inference</text>
+      </g>
+      <!-- Calc II feeds Prob -->
+      <path d="M580,205 L670,205" stroke="#2563eb" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+      <text x="625" y="198" text-anchor="middle" font-size="8.5" fill="#94a3b8" font-style="italic">series &amp; integrals</text>
+
+      <!-- ═══ ROW 3: Next Semester ═══ -->
+      <!-- Calc III -->
+      <g filter="url(#ds)">
+        <rect x="130" y="310" rx="10" ry="10" width="190" height="55" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="225" y="332" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">Calculus III</text>
+        <text x="225" y="348" text-anchor="middle" font-size="9.5" fill="#64748b">Multivariable, Vector Calc</text>
+        <text x="225" y="360" text-anchor="middle" font-size="8" fill="#d97706">Gradients, Curl, Divergence</text>
+      </g>
+      <!-- Linear Algebra -->
+      <g filter="url(#ds)">
+        <rect x="390" y="310" rx="10" ry="10" width="190" height="55" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="485" y="332" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">Linear Algebra</text>
+        <text x="485" y="348" text-anchor="middle" font-size="9.5" fill="#64748b">Matrices, Eigenvalues</text>
+        <text x="485" y="360" text-anchor="middle" font-size="8" fill="#d97706">Vector Spaces, Transforms</text>
+      </g>
+      <!-- Differential Equations -->
+      <g filter="url(#ds)">
+        <rect x="650" y="310" rx="10" ry="10" width="190" height="55" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="745" y="332" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">Differential Equations</text>
+        <text x="745" y="348" text-anchor="middle" font-size="9.5" fill="#64748b">ODEs, Laplace Transform</text>
+        <text x="745" y="360" text-anchor="middle" font-size="8" fill="#d97706">Modeling Dynamic Systems</text>
+      </g>
+
+      <!-- Arrows: Calc II → Next courses -->
+      <path d="M400,240 Q300,280 225,310" stroke="#d97706" stroke-width="2" fill="none"/>
+      <path d="M455,240 L485,310" stroke="#d97706" stroke-width="2" fill="none"/>
+      <path d="M520,240 Q640,280 745,310" stroke="#d97706" stroke-width="2" fill="none"/>
+      <!-- Labels on arrows -->
+      <text x="290" y="275" text-anchor="middle" font-size="8" fill="#94a3b8" font-style="italic">parametric &amp; polar</text>
+      <text x="485" y="285" text-anchor="middle" font-size="8" fill="#94a3b8" font-style="italic">series &amp; convergence</text>
+      <text x="650" y="275" text-anchor="middle" font-size="8" fill="#94a3b8" font-style="italic">integration techniques</text>
+
+      <!-- ═══ ROW 4: Advanced Math ═══ -->
+      <!-- Complex Analysis -->
+      <g filter="url(#ds)">
+        <rect x="130" y="440" rx="10" ry="10" width="175" height="50" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="218" y="462" text-anchor="middle" font-size="10.5" fill="#dc2626" font-weight="700">Complex Analysis</text>
+        <text x="218" y="478" text-anchor="middle" font-size="9" fill="#64748b">Contour Integrals, Residues</text>
+      </g>
+      <!-- PDEs -->
+      <g filter="url(#ds)">
+        <rect x="370" y="440" rx="10" ry="10" width="175" height="50" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="458" y="462" text-anchor="middle" font-size="10.5" fill="#dc2626" font-weight="700">Partial Diff. Equations</text>
+        <text x="458" y="478" text-anchor="middle" font-size="9" fill="#64748b">Heat, Wave, Laplace Eq.</text>
+      </g>
+      <!-- Numerical Methods -->
+      <g filter="url(#ds)">
+        <rect x="610" y="440" rx="10" ry="10" width="175" height="50" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="698" y="462" text-anchor="middle" font-size="10.5" fill="#dc2626" font-weight="700">Numerical Methods</text>
+        <text x="698" y="478" text-anchor="middle" font-size="9" fill="#64748b">Approximation, Simulation</text>
+      </g>
+
+      <!-- Arrows: Next → Advanced -->
+      <path d="M225,365 L218,440" stroke="#dc2626" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+      <path d="M485,365 L458,440" stroke="#dc2626" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+      <path d="M745,365 L698,440" stroke="#dc2626" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+
+      <!-- ═══ ROW 5: Engineering Applications ═══ -->
+      <g filter="url(#ds)">
+        <rect x="80" y="560" rx="12" ry="12" width="155" height="55" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="158" y="582" text-anchor="middle" font-size="10" fill="#0891b2" font-weight="700">Circuit Analysis</text>
+        <text x="158" y="598" text-anchor="middle" font-size="8.5" fill="#64748b">AC/DC, Impedance</text>
+        <text x="158" y="610" text-anchor="middle" font-size="8" fill="#0891b2">Electrical Eng.</text>
+      </g>
+      <g filter="url(#ds)">
+        <rect x="260" y="560" rx="12" ry="12" width="155" height="55" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="338" y="582" text-anchor="middle" font-size="10" fill="#0891b2" font-weight="700">Signal Processing</text>
+        <text x="338" y="598" text-anchor="middle" font-size="8.5" fill="#64748b">Fourier, Filters</text>
+        <text x="338" y="610" text-anchor="middle" font-size="8" fill="#0891b2">ECE / Telecom</text>
+      </g>
+      <g filter="url(#ds)">
+        <rect x="440" y="560" rx="12" ry="12" width="155" height="55" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="518" y="582" text-anchor="middle" font-size="10" fill="#0891b2" font-weight="700">Structural Analysis</text>
+        <text x="518" y="598" text-anchor="middle" font-size="8.5" fill="#64748b">Stress, Strain, Beams</text>
+        <text x="518" y="610" text-anchor="middle" font-size="8" fill="#0891b2">Civil / Mechanical</text>
+      </g>
+      <g filter="url(#ds)">
+        <rect x="620" y="560" rx="12" ry="12" width="155" height="55" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="698" y="582" text-anchor="middle" font-size="10" fill="#0891b2" font-weight="700">Control Systems</text>
+        <text x="698" y="598" text-anchor="middle" font-size="8.5" fill="#64748b">Transfer Functions</text>
+        <text x="698" y="610" text-anchor="middle" font-size="8" fill="#0891b2">Automation / Robotics</text>
+      </g>
+      <g filter="url(#ds)">
+        <rect x="800" y="560" rx="12" ry="12" width="155" height="55" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="878" y="582" text-anchor="middle" font-size="10" fill="#0891b2" font-weight="700">Thermodynamics</text>
+        <text x="878" y="598" text-anchor="middle" font-size="8.5" fill="#64748b">Heat Transfer, Entropy</text>
+        <text x="878" y="610" text-anchor="middle" font-size="8" fill="#0891b2">Mech / Chemical Eng.</text>
+      </g>
+
+      <!-- Arrows: Advanced → Engineering -->
+      <path d="M218,490 Q158,530 158,560" stroke="#0891b2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+      <path d="M218,490 Q338,530 338,560" stroke="#0891b2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+      <path d="M458,490 Q518,530 518,560" stroke="#0891b2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+      <path d="M698,490 Q698,530 698,560" stroke="#0891b2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+      <path d="M698,490 Q878,530 878,560" stroke="#0891b2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+
+      <!-- Physics II (side connector) -->
+      <g filter="url(#ds)">
+        <rect x="840" y="170" rx="10" ry="10" width="140" height="50" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+        <text x="910" y="192" text-anchor="middle" font-size="10.5" fill="#059669" font-weight="700">Physics II</text>
+        <text x="910" y="208" text-anchor="middle" font-size="9" fill="#64748b">E&amp;M, Waves, Optics</text>
+      </g>
+      <path d="M580,210 Q700,220 840,195" stroke="#059669" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+      <path d="M695,80 Q910,120 910,170" stroke="#059669" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+
+      <!-- Legend -->
+      <rect x="80" y="660" rx="10" ry="10" width="880" height="45" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <circle cx="120" cy="682" r="6" fill="#059669"/> <text x="132" y="686" font-size="10" fill="#64748b">Completed</text>
+      <rect x="210" y="676" width="30" height="12" rx="3" fill="url(#g-calc2)" stroke="#f59e0b" stroke-width="1.5"/> <text x="246" y="686" font-size="10" fill="#64748b">You Are Here</text>
+      <circle cx="360" cy="682" r="6" fill="#d97706"/> <text x="372" y="686" font-size="10" fill="#64748b">Next Courses</text>
+      <circle cx="480" cy="682" r="6" fill="#dc2626"/> <text x="492" y="686" font-size="10" fill="#64748b">Advanced Math</text>
+      <circle cx="610" cy="682" r="6" fill="#0891b2"/> <text x="622" y="686" font-size="10" fill="#64748b">Engineering Applications</text>
+      <line x1="770" y1="682" x2="800" y2="682" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3"/> <text x="808" y="686" font-size="10" fill="#64748b">Feeds into</text>
+    </svg>
+  </div>
+
+  <div class="warning-box">
+    <div class="box-label">Where Calculus II Appears in Engineering</div>
+    <p>
+      <strong>Electrical Engineering:</strong> Fourier series from Ch 4-5 are the basis of signal processing; improper integrals from Ch 3 define the Laplace transform used in circuit analysis.
+      <strong>Mechanical Engineering:</strong> Volumes of revolution (Ch 2) compute moments of inertia; series solutions (Ch 5) solve vibration problems.
+      <strong>Civil Engineering:</strong> Arc length and surface area (Ch 2) appear in cable design; integration techniques (Ch 1) solve load distribution problems.
+      <strong>Computer Engineering:</strong> Taylor series (Ch 5) power every calculator and GPU; convergence tests (Ch 4) underpin algorithm analysis.
+    </p>
+  </div>
+
   <p>
-    Whether you're designing aircraft wings, analyzing electrical circuits, modeling population growth, or training machine learning algorithms, you'll rely on the techniques in this course. Calculus II is where the real power of mathematics becomes tangible.
+    You've completed Calculus I, where you learned derivatives and basic integrals. But most integrals in the real world can't be solved with those basic techniques. Calculus II gives you the advanced strategies — integration by parts, trig substitution, partial fractions — plus a revolutionary idea: any smooth function can be represented as an infinite polynomial (a power series). This means computers can calculate $\sin(x)$, $e^x$, and the normal distribution by summing 10-20 terms of a series with trillions-of-digits accuracy.
   </p>
 
   <div class="quote-box">
     "The essence of mathematics is not to make simple things complicated, but to make complicated things simple."
     <div class="attribution">— S. Gudder</div>
   </div>
-
-  <p>
-    In this course, you will master advanced integration techniques, understand when infinite processes produce finite results, and see how these ideas connect to geometry, physics, and data science. These skills will serve you across virtually every technical field.
-  </p>
 </section>
 
 <!-- Core Concepts -->
@@ -197,7 +381,7 @@
 </section>
 
 <!-- Real-World Applications -->
-<section>
+<section id="applications">
   <h2>Real-World Applications</h2>
 
   <p>The techniques you'll learn have direct applications across science and engineering:</p>
@@ -382,38 +566,39 @@
   </div>
 </section>
 
-<!-- Comparison: This Course vs. Others -->
-<section>
-  <h2>How This Course Fits In</h2>
+<!-- How Calc II Connects to Your Engineering Courses -->
+<section id="connections">
+  <h2>How Calculus II Powers Your Future Courses</h2>
 
   <p>
-    Calculus II is the natural continuation of Calculus I, and it opens the door to advanced mathematics and science. Understanding your place in the curriculum helps you appreciate what you're building toward.
+    Every engineering math course you take after this one will use Calculus II ideas directly. Here's exactly how each chapter of this course feeds into what comes next:
   </p>
 
-  <div class="compare-grid">
-    <div class="compare-card">
-      <h4 style="color: #059669;">← Prerequisites</h4>
-      <div class="eq">Calculus I: Limits, Derivatives, Basic Integration</div>
-      <p class="desc">You master the fundamentals and basic techniques.</p>
-    </div>
-    <div class="compare-card">
-      <h4 style="color: #2563eb;">This Course →</h4>
-      <div class="eq">Calculus II: Advanced Integration & Series</div>
-      <p class="desc">You are here. Expanding your toolkit.</p>
-    </div>
-  </div>
+  <h3>Calculus III (Multivariable Calculus)</h3>
+  <p>
+    Parametric curves and polar coordinates (Ch 6) generalize to 3D curves and surfaces. Arc length formulas (Ch 2) extend to space curves. Line and surface integrals use the integration techniques from Ch 1. You literally cannot do vector calculus without Calc II.
+  </p>
 
-  <div class="compare-grid">
-    <div class="compare-card">
-      <h4 style="color: #7c3aed;">This Course →</h4>
-      <div class="eq">Calculus II: Advanced Integration & Series</div>
-      <p class="desc">Master integration techniques and series foundations.</p>
-    </div>
-    <div class="compare-card">
-      <h4 style="color: #d97706;">Next Courses →</h4>
-      <div class="eq">Multivariable Calc, Differential Equations, Linear Algebra</div>
-      <p class="desc">These advanced courses build directly on Calc II.</p>
-    </div>
+  <h3>Differential Equations</h3>
+  <p>
+    Integration techniques (Ch 1) are used to solve every separable and first-order ODE. Power series (Ch 5) are used to solve ODEs that have no closed-form solution — including Bessel's equation (vibrations), Legendre's equation (electrostatics), and the Airy equation (optics). The Laplace transform is defined as an improper integral (Ch 3).
+  </p>
+
+  <h3>Linear Algebra</h3>
+  <p>
+    While linear algebra focuses on matrices and vectors, infinite-dimensional vector spaces (function spaces) rely on series convergence (Ch 4). Inner products of functions involve integration (Ch 1). Fourier series — built on the series concepts from Ch 4-5 — are the bridge between linear algebra and signal processing.
+  </p>
+
+  <h3>Physics II (Electricity &amp; Magnetism)</h3>
+  <p>
+    Electric fields from continuous charge distributions require integration techniques (Ch 1). Gauss's law involves surface integrals. Electromagnetic waves are described by series solutions. The energy stored in a capacitor is computed via improper integrals. Almost every formula in E&amp;M is an integral.
+  </p>
+
+  <div class="tip-box">
+    <div class="box-label">The Bottom Line</div>
+    <p>
+      Calculus II is not just another math course to check off. It's the course that transforms you from someone who can do basic calculus into someone who has the mathematical power to tackle real engineering problems. The students who master this material find that Diff Eq, Calc III, and their engineering courses feel significantly more manageable.
+    </p>
   </div>
 </section>
 
