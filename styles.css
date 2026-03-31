@@ -130,6 +130,12 @@ nav .brand {
 }
 
 /* --- Layout --- */
+main:not(.container) {
+  max-width: 960px;
+  margin: 80px auto 2rem;
+  padding: 0 1.5rem;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
