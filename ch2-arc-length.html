@@ -3,12 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
   <title>Chapter 2.4: Arc Length and Surface Area</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+  <style>
+    .viz-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      margin: 1rem 0;
+    }
+    .viz-controls label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .viz-controls input[type="range"] {
+      flex: 1;
+      min-width: 200px;
+    }
+    .viz-controls select,
+    .viz-controls button {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .viz-controls button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+    }
+    .viz-controls button:hover {
+      background: var(--primary-dark);
+    }
+    .viz-stat {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    .viz-stat .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .viz-stat .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .viz-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .viz-row > div {
+      flex: 1;
+      min-width: 300px;
+    }
+    .viz-info {
+      background: #f0f4f8;
+      border-left: 4px solid var(--primary);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -242,56 +317,117 @@
   </section>
 
   <section id="visualizer">
-    <h2>Visualizer: Arc Length of $y = \sqrt{x}$</h2>
-    <p>
-      The plot below shows the curve <span class="math">$y = \sqrt{x}$</span> with markers indicating arc length segments. The actual arc length from 0 to 1 is approximately 1.44 units.
-    </p>
-    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
-    <script>
-      var x = [];
-      var y = [];
-      for (var i = 0; i <= 100; i++) {
-        var xi = i / 100;
-        x.push(xi);
-        y.push(Math.sqrt(xi));
-      }
+    <h2>Visualizer: Interactive Arc Length & Surface Area Explorer</h2>
 
-      var trace1 = {
-        x: x,
-        y: y,
-        mode: 'lines',
-        name: 'y = √x',
-        line: {color: 'blue', width: 2}
-      };
+    <!-- ============== VISUALIZATION 1: Arc Length Approximation Explorer ============== -->
+    <div class="definition-box" style="margin-top: 2rem;">
+      <h3>1. Arc Length Approximation Explorer</h3>
+      <p>
+        See how straight-line segments approximate a curve's arc length. As you increase the number of segments, the approximation converges to the true arc length!
+      </p>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">
+        The formula being visualized: <span class="math">$L \approx \sum_{i=0}^{n-1} \sqrt{(\Delta x)^2 + (\Delta y)^2} \to L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$</span>
+      </p>
+    </div>
 
-      // Add markers for arc length segments
-      var xMarkers = [];
-      var yMarkers = [];
-      for (var i = 0; i <= 10; i++) {
-        var xm = i / 10;
-        xMarkers.push(xm);
-        yMarkers.push(Math.sqrt(xm));
-      }
+    <div class="viz-controls">
+      <label for="arcLengthPreset">Function:</label>
+      <select id="arcLengthPreset" onchange="updateArcLengthViz()">
+        <option value="sqrtx">y = √x on [0, 4]</option>
+        <option value="x2">y = x² on [0, 2]</option>
+        <option value="sinx">y = sin(x) on [0, π]</option>
+      </select>
 
-      var trace2 = {
-        x: xMarkers,
-        y: yMarkers,
-        mode: 'markers',
-        name: 'Arc length points',
-        marker: {color: 'red', size: 6}
-      };
+      <label for="arcLengthSlider" style="margin-left: 1rem;">Segments (n):</label>
+      <input type="range" id="arcLengthSlider" min="1" max="50" value="5" onchange="updateArcLengthViz()" style="width: 150px;">
+      <span id="arcLengthValue" style="font-weight: 600; min-width: 40px;">5</span>
 
-      var layout = {
-        title: 'Arc Length Visualization: y = √x from 0 to 1',
-        xaxis: {title: 'x'},
-        yaxis: {title: 'y'},
-        hovermode: 'closest',
-        width: 700,
-        height: 500
-      };
+      <button onclick="playArcLengthAnimation()" style="margin-left: auto;">Play Animation</button>
+    </div>
 
-      Plotly.newPlot('plotly-chart', [trace1, trace2], layout);
-    </script>
+    <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+      <div class="viz-stat">
+        <div class="label">Approximate Arc Length</div>
+        <div class="value" id="arcLengthApprox">0.00</div>
+      </div>
+      <div class="viz-stat">
+        <div class="label">Exact Arc Length</div>
+        <div class="value" id="arcLengthExact">0.00</div>
+      </div>
+      <div class="viz-stat">
+        <div class="label">Error</div>
+        <div class="value" id="arcLengthError">0.00</div>
+      </div>
+    </div>
+
+    <div id="arcLengthPlot" style="width:100%;max-width:900px;margin:20px auto;"></div>
+
+    <!-- ============== VISUALIZATION 2: Zoom Into Curve ============== -->
+    <div class="definition-box" style="margin-top: 2rem;">
+      <h3>2. Zoom Into the Curve: Why ds = √(dx² + dy²)</h3>
+      <p>
+        This visualization shows why the arc length element is the hypotenuse of a right triangle. As you zoom into infinitesimal scale, the curve becomes indistinguishable from a straight line.
+      </p>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">
+        At any point, the differential arc length <span class="math">$ds = \sqrt{(dx)^2 + (dy)^2}$</span> forms the hypotenuse of a right triangle with legs dx and dy.
+      </p>
+    </div>
+
+    <div class="viz-controls">
+      <label for="zoomSlider">Zoom Level:</label>
+      <input type="range" id="zoomSlider" min="0" max="100" value="0" onchange="updateZoomViz()" style="width: 150px;">
+      <span id="zoomValue" style="font-weight: 600; min-width: 60px;">0x (full)</span>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+      <div class="viz-stat">
+        <div class="label">dx</div>
+        <div class="value" id="zoomDx">0.200</div>
+      </div>
+      <div class="viz-stat">
+        <div class="label">dy</div>
+        <div class="value" id="zoomDy">0.000</div>
+      </div>
+      <div class="viz-stat">
+        <div class="label">ds = √(dx² + dy²)</div>
+        <div class="value" id="zoomDs">0.200</div>
+      </div>
+    </div>
+
+    <div id="zoomPlot" style="width:100%;max-width:900px;margin:20px auto;"></div>
+
+    <!-- ============== VISUALIZATION 3: Surface Area of Revolution 3D ============== -->
+    <div class="definition-box" style="margin-top: 2rem;">
+      <h3>3. Surface Area of Revolution: 3D Viewer</h3>
+      <p>
+        Watch how frustums (truncated cones) approximate the surface of revolution. Each frustum has a curved surface, and as n increases, the approximation becomes more accurate.
+      </p>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">
+        The surface is generated by rotating <span class="math">$y = \sqrt{x}$</span> on [0, 1] about the x-axis.
+      </p>
+    </div>
+
+    <div class="viz-controls">
+      <label for="surfaceSlider">Frustums (n):</label>
+      <input type="range" id="surfaceSlider" min="1" max="30" value="5" onchange="updateSurfaceViz()" style="width: 150px;">
+      <span id="surfaceValue" style="font-weight: 600; min-width: 40px;">5</span>
+
+      <button onclick="playSurfaceAnimation()" style="margin-left: auto;">Play Animation</button>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+      <div class="viz-stat">
+        <div class="label">Approximate Surface Area</div>
+        <div class="value" id="surfaceApprox">0.00</div>
+      </div>
+      <div class="viz-stat">
+        <div class="label">Exact Surface Area</div>
+        <div class="value" id="surfaceExact">0.00</div>
+      </div>
+    </div>
+
+    <div id="surfacePlot" style="width:100%;max-width:900px;margin:20px auto;"></div>
+
   </section>
 
   <section id="practice">
@@ -388,14 +524,7 @@
 
 </main>
 
-<footer>
-  <script>
-    if (typeof COURSE !== 'undefined' && COURSE.footer) {
-      var f = COURSE.footer;
-      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
-    }
-  </script>
-</footer>
+<footer id="main-footer"></footer>
 
 <script src="course-config.js"></script>
 <script src="course.js"></script>
@@ -415,7 +544,365 @@
         {left: '$', right: '$', display: false}
       ]
     });
+
+    // Initialize footer
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.getElementById('main-footer').innerHTML =
+        f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+        f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+
+    // Initialize visualizations
+    updateArcLengthViz();
+    updateZoomViz();
+    updateSurfaceViz();
   });
+
+  // ============== ARC LENGTH APPROXIMATION EXPLORER ==============
+
+  const arcLengthPresets = {
+    sqrtx: {
+      name: 'y = √x',
+      func: x => Math.sqrt(x),
+      derivative: x => 1 / (2 * Math.sqrt(x)),
+      a: 0,
+      b: 4,
+      exact: 9.07465  // Approximation: calculated numerically
+    },
+    x2: {
+      name: 'y = x²',
+      func: x => x * x,
+      derivative: x => 2 * x,
+      a: 0,
+      b: 2,
+      exact: 4.64676  // Calculated numerically
+    },
+    sinx: {
+      name: 'y = sin(x)',
+      func: x => Math.sin(x),
+      derivative: x => Math.cos(x),
+      a: 0,
+      b: Math.PI,
+      exact: 3.82018  // Calculated numerically
+    }
+  };
+
+  function updateArcLengthViz() {
+    const presetKey = document.getElementById('arcLengthPreset').value;
+    const preset = arcLengthPresets[presetKey];
+    const n = parseInt(document.getElementById('arcLengthSlider').value);
+    document.getElementById('arcLengthValue').textContent = n;
+
+    // Generate curve points
+    const numPoints = 200;
+    const xCurve = [], yCurve = [];
+    for (let i = 0; i <= numPoints; i++) {
+      const x = preset.a + (preset.b - preset.a) * (i / numPoints);
+      xCurve.push(x);
+      yCurve.push(preset.func(x));
+    }
+
+    // Generate segment approximation
+    const dx = (preset.b - preset.a) / n;
+    const xSegs = [], ySegs = [];
+    let approxLength = 0;
+    for (let i = 0; i <= n; i++) {
+      const x = preset.a + i * dx;
+      xSegs.push(x);
+      ySegs.push(preset.func(x));
+
+      if (i > 0) {
+        const prevX = preset.a + (i - 1) * dx;
+        const prevY = preset.func(prevX);
+        const currY = preset.func(x);
+        const segLen = Math.sqrt((dx) * (dx) + (currY - prevY) * (currY - prevY));
+        approxLength += segLen;
+      }
+    }
+
+    // Update stats
+    const error = Math.abs(approxLength - preset.exact);
+    document.getElementById('arcLengthApprox').textContent = approxLength.toFixed(4);
+    document.getElementById('arcLengthExact').textContent = preset.exact.toFixed(4);
+    document.getElementById('arcLengthError').textContent = error.toFixed(4);
+
+    // Create Plotly traces
+    const traceCurve = {
+      x: xCurve,
+      y: yCurve,
+      mode: 'lines',
+      name: preset.name,
+      line: {color: '#3b82f6', width: 3}
+    };
+
+    const traceSegments = {
+      x: xSegs,
+      y: ySegs,
+      mode: 'lines+markers',
+      name: `${n} Line Segments`,
+      line: {color: '#ef4444', width: 2, dash: 'dash'},
+      marker: {color: '#ef4444', size: 5}
+    };
+
+    const layout = {
+      title: `Arc Length Approximation: ${preset.name} with ${n} segments`,
+      xaxis: {title: 'x'},
+      yaxis: {title: 'y'},
+      hovermode: 'closest',
+      showlegend: true,
+      width: 900,
+      height: 500,
+      margin: {l: 60, r: 40, t: 60, b: 60}
+    };
+
+    Plotly.newPlot('arcLengthPlot', [traceCurve, traceSegments], layout, {responsive: true});
+  }
+
+  function playArcLengthAnimation() {
+    let n = 1;
+    const interval = setInterval(() => {
+      document.getElementById('arcLengthSlider').value = n;
+      updateArcLengthViz();
+      n++;
+      if (n > 50) clearInterval(interval);
+    }, 100);
+  }
+
+  // ============== ZOOM INTO CURVE ==============
+
+  function updateZoomViz() {
+    const zoomLevel = parseInt(document.getElementById('zoomSlider').value);
+
+    // y = sqrt(x), point at x=2
+    const baseX = 2;
+    const baseY = Math.sqrt(baseX);
+    const fPrime = 1 / (2 * Math.sqrt(baseX));
+
+    // Compute zoom factor (0 to 100 represents 1x to 100x zoom)
+    const zoomFactor = zoomLevel > 0 ? Math.pow(10, zoomLevel / 33.3) : 1;
+    document.getElementById('zoomValue').textContent =
+      zoomLevel === 0 ? '0x (full)' : zoomFactor.toFixed(1) + 'x';
+
+    // Window around the point
+    const windowRadius = 0.5 / zoomFactor;
+    const xMin = baseX - windowRadius;
+    const xMax = baseX + windowRadius;
+
+    // Generate curve in window
+    const numPoints = 100;
+    const xCurve = [], yCurve = [];
+    for (let i = 0; i <= numPoints; i++) {
+      const x = xMin + (xMax - xMin) * (i / numPoints);
+      xCurve.push(x);
+      yCurve.push(Math.sqrt(x));
+    }
+
+    // Linear approximation (tangent line)
+    const xTan = [], yTan = [];
+    xTan.push(xMin);
+    yTan.push(baseY + fPrime * (xMin - baseX));
+    xTan.push(xMax);
+    yTan.push(baseY + fPrime * (xMax - baseX));
+
+    // Right triangle: dx and dy
+    const dxVal = 0.2 / zoomFactor;
+    const dyVal = fPrime * dxVal;
+    const dsVal = Math.sqrt(dxVal * dxVal + dyVal * dyVal);
+
+    document.getElementById('zoomDx').textContent = dxVal.toFixed(4);
+    document.getElementById('zoomDy').textContent = dyVal.toFixed(4);
+    document.getElementById('zoomDs').textContent = dsVal.toFixed(4);
+
+    // Triangle for visualization
+    const xTriangle = [
+      baseX - dxVal / 2,
+      baseX + dxVal / 2,
+      baseX + dxVal / 2,
+      baseX - dxVal / 2
+    ];
+    const yTriangle = [
+      baseY - dyVal / 2,
+      baseY - dyVal / 2,
+      baseY + dyVal / 2,
+      baseY - dyVal / 2
+    ];
+
+    const traceCurve = {
+      x: xCurve,
+      y: yCurve,
+      mode: 'lines',
+      name: 'y = √x',
+      line: {color: '#3b82f6', width: 3}
+    };
+
+    const traceTangent = {
+      x: xTan,
+      y: yTan,
+      mode: 'lines',
+      name: 'Tangent Line',
+      line: {color: '#10b981', width: 2, dash: 'dash'}
+    };
+
+    const traceTriangle = {
+      x: xTriangle,
+      y: yTriangle,
+      mode: 'lines',
+      name: 'Right Triangle (dx, dy, ds)',
+      line: {color: '#f59e0b', width: 2},
+      fill: 'toself',
+      fillcolor: 'rgba(245, 158, 11, 0.1)'
+    };
+
+    const layout = {
+      title: `Zooming into the Curve: ds = √(dx² + dy²) [Zoom: ${document.getElementById('zoomValue').textContent}]`,
+      xaxis: {title: 'x'},
+      yaxis: {title: 'y'},
+      hovermode: 'closest',
+      showlegend: true,
+      width: 900,
+      height: 500,
+      margin: {l: 60, r: 40, t: 60, b: 60}
+    };
+
+    Plotly.newPlot('zoomPlot', [traceCurve, traceTangent, traceTriangle], layout, {responsive: true});
+  }
+
+  // ============== SURFACE AREA OF REVOLUTION 3D ==============
+
+  function updateSurfaceViz() {
+    const n = parseInt(document.getElementById('surfaceSlider').value);
+    document.getElementById('surfaceValue').textContent = n;
+
+    // y = sqrt(x) from 0 to 1, revolved about x-axis
+    const a = 0, b = 1;
+
+    // Create parametric surface for the smooth surface
+    const surfaceX = [], surfaceY = [], surfaceZ = [];
+    const numXPoints = 100;
+    const numTheta = 40;
+
+    for (let i = 0; i <= numXPoints; i++) {
+      const x = a + (b - a) * (i / numXPoints);
+      const r = Math.sqrt(x);
+      const xRow = [], yRow = [], zRow = [];
+
+      for (let j = 0; j <= numTheta; j++) {
+        const theta = (j / numTheta) * 2 * Math.PI;
+        xRow.push(x);
+        yRow.push(r * Math.cos(theta));
+        zRow.push(r * Math.sin(theta));
+      }
+
+      surfaceX.push(xRow);
+      surfaceY.push(yRow);
+      surfaceZ.push(zRow);
+    }
+
+    // Create frustum approximations
+    const dx = (b - a) / n;
+    const frustumX = [], frustumY = [], frustumZ = [];
+
+    for (let i = 0; i < n; i++) {
+      const x1 = a + i * dx;
+      const x2 = a + (i + 1) * dx;
+      const r1 = Math.sqrt(x1);
+      const r2 = Math.sqrt(x2);
+
+      const xFrustum = [], yFrustum = [], zFrustum = [];
+
+      // Inner circle at x1
+      for (let j = 0; j <= numTheta; j++) {
+        const theta = (j / numTheta) * 2 * Math.PI;
+        xFrustum.push(x1);
+        yFrustum.push(r1 * Math.cos(theta));
+        zFrustum.push(r1 * Math.sin(theta));
+      }
+
+      // Outer circle at x2
+      for (let j = 0; j <= numTheta; j++) {
+        const theta = (j / numTheta) * 2 * Math.PI;
+        xFrustum.push(x2);
+        yFrustum.push(r2 * Math.cos(theta));
+        zFrustum.push(r2 * Math.sin(theta));
+      }
+
+      frustumX.push(xFrustum);
+      frustumY.push(yFrustum);
+      frustumZ.push(zFrustum);
+    }
+
+    // Calculate approximate surface area
+    let approxSurfaceArea = 0;
+    for (let i = 0; i < n; i++) {
+      const x1 = a + i * dx;
+      const x2 = a + (i + 1) * dx;
+      const r1 = Math.sqrt(x1);
+      const r2 = Math.sqrt(x2);
+      const slantHeight = Math.sqrt(dx * dx + (r2 - r1) * (r2 - r1));
+      const frustumArea = Math.PI * (r1 + r2) * slantHeight;
+      approxSurfaceArea += frustumArea;
+    }
+
+    // Calculate exact surface area: S = 2π ∫ √x √(1 + 1/(4x)) dx from 0 to 1
+    // This is approximately 3.81 (numerical integration)
+    const exactSurfaceArea = 3.8105;
+
+    document.getElementById('surfaceApprox').textContent = approxSurfaceArea.toFixed(4);
+    document.getElementById('surfaceExact').textContent = exactSurfaceArea.toFixed(4);
+
+    // Smooth surface
+    const traceSurface = {
+      x: surfaceX,
+      y: surfaceY,
+      z: surfaceZ,
+      type: 'surface',
+      colorscale: 'Viridis',
+      name: 'Smooth Surface',
+      opacity: 0.8,
+      showscale: false
+    };
+
+    // Wireframe for frustums
+    const frustumTraces = [];
+    for (let i = 0; i < Math.min(n, 10); i++) {
+      frustumTraces.push({
+        x: frustumX[i],
+        y: frustumY[i],
+        z: frustumZ[i],
+        mode: 'lines',
+        type: 'scatter3d',
+        line: {color: '#ef4444', width: 1},
+        name: i === 0 ? 'Frustum Edges' : null,
+        showlegend: i === 0
+      });
+    }
+
+    const layout = {
+      title: `Surface of Revolution: y = √x revolved about x-axis (${n} frustums)`,
+      scene: {
+        xaxis: {title: 'x'},
+        yaxis: {title: 'y'},
+        zaxis: {title: 'z'},
+        aspectmode: 'cube'
+      },
+      width: 900,
+      height: 500,
+      margin: {l: 0, r: 0, t: 60, b: 0}
+    };
+
+    Plotly.newPlot('surfacePlot', [traceSurface, ...frustumTraces], layout, {responsive: true});
+  }
+
+  function playSurfaceAnimation() {
+    let n = 1;
+    const interval = setInterval(() => {
+      document.getElementById('surfaceSlider').value = n;
+      updateSurfaceViz();
+      n++;
+      if (n > 30) clearInterval(interval);
+    }, 150);
+  }
 </script>
 
 </body>

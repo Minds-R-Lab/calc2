@@ -3,12 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
   <title>Chapter 2.1: Area Between Curves</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+  <style>
+    .viz-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      margin: 1rem 0;
+    }
+
+    .viz-controls label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .viz-controls input[type="range"] {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .viz-controls select,
+    .viz-controls button {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .viz-controls button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+    }
+
+    .viz-controls button:hover {
+      background: var(--primary-dark);
+    }
+
+    .viz-stat {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+
+    .viz-stat .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .viz-stat .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .viz-container {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .viz-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .toggle-button.active {
+      background: var(--primary-dark) !important;
+    }
+
+    .viz-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -226,49 +318,76 @@
   </section>
 
   <section id="visualizer">
-    <h2>Visualizer: Area Between Two Curves</h2>
-    <p>
-      The plot below shows the area between <span class="math">$y = x^2$</span> and <span class="math">$y = x$</span> shaded in blue.
-    </p>
-    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
-    <script>
-      var x = [];
-      for (var i = 0; i <= 100; i++) {
-        x.push(i / 100);
-      }
+    <h2>Interactive Visualizer: Area Between Two Curves</h2>
 
-      var y1 = x.map(function(xi) { return xi; });
-      var y2 = x.map(function(xi) { return xi * xi; });
+    <div class="viz-container">
+      <h3>Riemann Sum Explorer: Watch Rectangles Converge to the Exact Area</h3>
+      <p class="viz-subtitle">
+        Adjust the slider to see how the sum of rectangles approximates the exact area between curves. The error decreases as you add more rectangles.
+      </p>
 
-      var trace1 = {
-        x: x,
-        y: y1,
-        mode: 'lines',
-        name: 'y = x',
-        line: {color: 'blue', width: 2}
-      };
+      <div class="viz-controls">
+        <label for="preset-select">Function Pair:</label>
+        <select id="preset-select" onchange="changePreset()">
+          <option value="linear-quad">y = x vs y = x²</option>
+          <option value="sin-cos">y = sin(x) vs y = cos(x) [0, π/2]</option>
+          <option value="custom">y = 2x vs y = x² - 3</option>
+        </select>
+      </div>
 
-      var trace2 = {
-        x: x,
-        y: y2,
-        mode: 'lines',
-        name: 'y = x²',
-        line: {color: 'red', width: 2},
-        fill: 'tonexty',
-        fillcolor: 'rgba(0, 0, 255, 0.3)'
-      };
+      <div class="viz-controls">
+        <label for="n-slider">Number of Rectangles:</label>
+        <input type="range" id="n-slider" min="1" max="100" value="5" onchange="updateRiemannSum()">
+        <span id="n-display" style="font-weight:600; min-width:40px;">5</span>
+        <button onclick="animateSlider()">▶ Animate</button>
+      </div>
 
-      var layout = {
-        title: 'Area Between y = x and y = x²',
-        xaxis: {title: 'x'},
-        yaxis: {title: 'y'},
-        hovermode: 'closest',
-        width: 700,
-        height: 500
-      };
+      <div id="riemann-chart" style="width:100%;max-width:800px;margin:20px auto;"></div>
 
-      Plotly.newPlot('plotly-chart', [trace2, trace1], layout);
-    </script>
+      <div class="viz-controls" style="background:#fff; justify-content:center; gap:1.5rem;">
+        <div class="viz-stat">
+          <span class="label">Approximate Area</span>
+          <span class="value" id="approx-area">0.000</span>
+        </div>
+        <div class="viz-stat">
+          <span class="label">Exact Area</span>
+          <span class="value" id="exact-area">0.167</span>
+        </div>
+        <div class="viz-stat">
+          <span class="label">Error</span>
+          <span class="value" id="error-value">0.167</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="viz-container">
+      <h3>Vertical vs Horizontal Integration</h3>
+      <p class="viz-subtitle">
+        Explore the region <span class="math">$x = y^2$</span> and <span class="math">$x = 4$</span>. Toggle between integrating with respect to dx (vertical rectangles) and dy (horizontal rectangles).
+      </p>
+
+      <div class="viz-controls">
+        <label>Integration Direction:</label>
+        <button id="dx-button" class="toggle-button active" onclick="toggleIntegrationDir('dx')">dx (Vertical)</button>
+        <button id="dy-button" class="toggle-button" onclick="toggleIntegrationDir('dy')">dy (Horizontal)</button>
+      </div>
+
+      <div class="viz-controls">
+        <label for="n-slider-2">Number of Slices:</label>
+        <input type="range" id="n-slider-2" min="1" max="50" value="8" onchange="updateIntegrationViz()">
+        <span id="n-display-2" style="font-weight:600; min-width:40px;">8</span>
+      </div>
+
+      <div id="integration-chart" style="width:100%;max-width:800px;margin:20px auto;"></div>
+
+      <div class="viz-controls" style="background:#fff; justify-content:center; gap:1.5rem;">
+        <div class="viz-stat">
+          <span class="label">Area (Integration)</span>
+          <span class="value" id="integration-area">10.667</span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <section id="practice">
@@ -345,19 +464,284 @@
 
 </main>
 
-<footer>
-  <script>
-    if (typeof COURSE !== 'undefined' && COURSE.footer) {
-      var f = COURSE.footer;
-      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
-    }
-  </script>
-</footer>
+<footer id="main-footer"></footer>
 
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 
 <script>
+  // Global state for visualizations
+  let currentPreset = 'linear-quad';
+  let currentIntegrationDir = 'dx';
+  let isAnimating = false;
+
+  // Preset definitions
+  const presets = {
+    'linear-quad': {
+      f1: (x) => x,
+      f2: (x) => x * x,
+      f1Name: 'y = x',
+      f2Name: 'y = x²',
+      a: 0,
+      b: 1,
+      exactArea: 1/6,
+      description: 'Area between y = x and y = x²'
+    },
+    'sin-cos': {
+      f1: (x) => Math.cos(x),
+      f2: (x) => Math.sin(x),
+      f1Name: 'y = cos(x)',
+      f2Name: 'y = sin(x)',
+      a: 0,
+      b: Math.PI / 2,
+      exactArea: 2 * (Math.sqrt(2) - 1),
+      description: 'Area between y = sin(x) and y = cos(x) on [0, π/2]'
+    },
+    'custom': {
+      f1: (x) => 2 * x,
+      f2: (x) => x * x - 3,
+      f1Name: 'y = 2x',
+      f2Name: 'y = x² - 3',
+      a: -1,
+      b: 3,
+      exactArea: 32/3,
+      description: 'Area between y = 2x and y = x² - 3'
+    }
+  };
+
+  function changePreset() {
+    currentPreset = document.getElementById('preset-select').value;
+    document.getElementById('n-slider').value = 5;
+    document.getElementById('n-display').textContent = '5';
+    updateRiemannSum();
+  }
+
+  function updateRiemannSum() {
+    const preset = presets[currentPreset];
+    const n = parseInt(document.getElementById('n-slider').value);
+    document.getElementById('n-display').textContent = n;
+
+    const a = preset.a;
+    const b = preset.b;
+    const f1 = preset.f1;
+    const f2 = preset.f2;
+    const exactArea = preset.exactArea;
+
+    // Generate curve data
+    const numPoints = 200;
+    const xData = [];
+    for (let i = 0; i <= numPoints; i++) {
+      xData.push(a + (b - a) * i / numPoints);
+    }
+
+    const y1Data = xData.map(f1);
+    const y2Data = xData.map(f2);
+
+    // Generate rectangles for Riemann sum
+    const dx = (b - a) / n;
+    let approxArea = 0;
+    const shapes = [];
+
+    for (let i = 0; i < n; i++) {
+      const xi = a + i * dx;
+      const xi_next = xi + dx;
+      const xMid = (xi + xi_next) / 2;
+
+      const y1Mid = f1(xMid);
+      const y2Mid = f2(xMid);
+      const height = Math.abs(y1Mid - y2Mid);
+      approxArea += height * dx;
+
+      // Determine which curve is on top
+      const yTop = Math.max(y1Mid, y2Mid);
+      const yBot = Math.min(y1Mid, y2Mid);
+
+      // Draw rectangle
+      shapes.push({
+        type: 'rect',
+        xref: 'x',
+        yref: 'y',
+        x0: xi,
+        x1: xi_next,
+        y0: yBot,
+        y1: yTop,
+        fillcolor: 'rgba(0, 100, 200, 0.3)',
+        line: { color: 'rgba(0, 100, 200, 0.5)', width: 1 }
+      });
+    }
+
+    // Create traces
+    const trace1 = {
+      x: xData,
+      y: y1Data,
+      mode: 'lines',
+      name: preset.f1Name,
+      line: { color: '#2563eb', width: 3 }
+    };
+
+    const trace2 = {
+      x: xData,
+      y: y2Data,
+      mode: 'lines',
+      name: preset.f2Name,
+      line: { color: '#dc2626', width: 3 }
+    };
+
+    const layout = {
+      title: preset.description,
+      xaxis: { title: 'x', zeroline: true },
+      yaxis: { title: 'y', zeroline: true },
+      hovermode: 'closest',
+      width: 800,
+      height: 500,
+      shapes: shapes,
+      showlegend: true
+    };
+
+    Plotly.newPlot('riemann-chart', [trace1, trace2], layout, { responsive: true });
+
+    // Update statistics
+    document.getElementById('approx-area').textContent = approxArea.toFixed(3);
+    document.getElementById('exact-area').textContent = exactArea.toFixed(3);
+    document.getElementById('error-value').textContent = Math.abs(approxArea - exactArea).toFixed(3);
+  }
+
+  function animateSlider() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const slider = document.getElementById('n-slider');
+    const maxVal = parseInt(slider.max);
+    let currentVal = 1;
+
+    const interval = setInterval(() => {
+      slider.value = currentVal;
+      document.getElementById('n-display').textContent = currentVal;
+      updateRiemannSum();
+
+      currentVal++;
+      if (currentVal > 50) {
+        clearInterval(interval);
+        isAnimating = false;
+      }
+    }, 50);
+  }
+
+  function toggleIntegrationDir(dir) {
+    currentIntegrationDir = dir;
+    document.getElementById('dx-button').classList.toggle('active');
+    document.getElementById('dy-button').classList.toggle('active');
+    updateIntegrationViz();
+  }
+
+  function updateIntegrationViz() {
+    const n = parseInt(document.getElementById('n-slider-2').value);
+    document.getElementById('n-display-2').textContent = n;
+
+    // Region: x = y², x = 4, y in [-2, 2]
+    const yMin = -2, yMax = 2;
+    const xMin = 0, xMax = 4.5;
+
+    // Generate curve data
+    const numPoints = 200;
+    const yParabola = [];
+    const xParabola = [];
+    for (let i = 0; i <= numPoints; i++) {
+      const y = yMin + (yMax - yMin) * i / numPoints;
+      yParabola.push(y);
+      xParabola.push(y * y);
+    }
+
+    const trace1 = {
+      x: xParabola,
+      y: yParabola,
+      mode: 'lines',
+      name: 'x = y²',
+      line: { color: '#7c3aed', width: 3 }
+    };
+
+    const trace2 = {
+      x: [4, 4],
+      y: [yMin, yMax],
+      mode: 'lines',
+      name: 'x = 4',
+      line: { color: '#059669', width: 3 }
+    };
+
+    const shapes = [];
+    let totalArea = 0;
+
+    if (currentIntegrationDir === 'dx') {
+      // Vertical rectangles: integrate dy for each x
+      const dx = 4 / n;
+      for (let i = 0; i < n; i++) {
+        const xi = i * dx;
+        const xi_next = (i + 1) * dx;
+
+        // Height is from y where x = y², which is y = ±√x
+        const yPos = Math.sqrt(xi_next);
+        const height = 2 * yPos;
+        totalArea += height * dx;
+
+        shapes.push({
+          type: 'rect',
+          xref: 'x',
+          yref: 'y',
+          x0: xi,
+          x1: xi_next,
+          y0: -yPos,
+          y1: yPos,
+          fillcolor: 'rgba(0, 150, 136, 0.25)',
+          line: { color: 'rgba(0, 150, 136, 0.5)', width: 1 }
+        });
+      }
+    } else {
+      // Horizontal rectangles: integrate dx for each y
+      const dy = (yMax - yMin) / n;
+      for (let i = 0; i < n; i++) {
+        const yi = yMin + i * dy;
+        const yi_next = yi + dy;
+        const yMid = (yi + yi_next) / 2;
+
+        const xLeft = yMid * yMid;
+        const xRight = 4;
+        const width = xRight - xLeft;
+        totalArea += width * dy;
+
+        shapes.push({
+          type: 'rect',
+          xref: 'x',
+          yref: 'y',
+          x0: xLeft,
+          x1: xRight,
+          y0: yi,
+          y1: yi_next,
+          fillcolor: 'rgba(244, 63, 94, 0.25)',
+          line: { color: 'rgba(244, 63, 94, 0.5)', width: 1 }
+        });
+      }
+    }
+
+    const layout = {
+      title: currentIntegrationDir === 'dx' ?
+        'Vertical Integration (dx): x = y² and x = 4' :
+        'Horizontal Integration (dy): x = y² and x = 4',
+      xaxis: { title: 'x', range: [xMin, xMax], zeroline: true },
+      yaxis: { title: 'y', range: [yMin - 0.5, yMax + 0.5], zeroline: true },
+      hovermode: 'closest',
+      width: 800,
+      height: 500,
+      shapes: shapes,
+      showlegend: true
+    };
+
+    Plotly.newPlot('integration-chart', [trace1, trace2], layout, { responsive: true });
+
+    // Update area
+    const exactIntegrationArea = 32/3;
+    document.getElementById('integration-area').textContent = totalArea.toFixed(3);
+  }
+
   function toggleCollapsible(element) {
     const content = element.nextElementSibling;
     content.style.display = content.style.display === 'block' ? 'none' : 'block';
@@ -366,12 +750,31 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    renderMathInElement(document.body, {
-      delimiters: [
-        {left: '$$', right: '$$', display: true},
-        {left: '$', right: '$', display: false}
-      ]
-    });
+    // Render KaTeX
+    if (typeof renderMathInElement !== 'undefined') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });
+    }
+
+    // Initialize visualizations
+    updateRiemannSum();
+    updateIntegrationViz();
+
+    // Set footer
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.getElementById('main-footer').innerHTML =
+        f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+        f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+
+    // Hide collapsible contents initially
+    const collapsibles = document.querySelectorAll('.collapsible-content');
+    collapsibles.forEach(c => c.style.display = 'none');
   });
 </script>
 

@@ -3,12 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
   <title>Chapter 2.2: Disk and Washer Method</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+  <style>
+    .viz-controls {
+      display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+      background: #f8fafc; border-radius: 12px; padding: 1.25rem;
+      border: 1px solid var(--border); margin: 1rem 0;
+    }
+    .viz-controls label { font-weight: 600; font-size: 0.9rem; }
+    .viz-controls input[type="range"] { flex: 1; min-width: 200px; }
+    .viz-controls select, .viz-controls button {
+      padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);
+      font-size: 0.9rem; cursor: pointer;
+    }
+    .viz-controls button { background: var(--primary); color: #fff; border: none; font-weight: 600; }
+    .viz-controls button:hover { background: var(--primary-dark); }
+    .viz-stat {
+      display: inline-block; background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.5rem 1rem; margin: 0.25rem;
+      font-family: 'Courier New', monospace; font-size: 0.95rem;
+    }
+    .viz-stat .label { font-size: 0.75rem; color: var(--text-muted); display: block; }
+    .viz-stat .value { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .viz-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .viz-row > div { flex: 1; min-width: 300px; }
+  </style>
 </head>
 <body>
 
@@ -85,7 +109,7 @@
     </div>
 
     <div class="tip-box">
-      <strong>💡 Pro Tip</strong>
+      <strong>Tip</strong>
       <p>Remember: Area of a disk is $\pi R^2$, and area of a washer is $\pi(R^2 - r^2)$. The volume is obtained by integrating these areas along the axis of revolution.</p>
     </div>
 
@@ -117,7 +141,7 @@
     </div>
 
     <div class="warning-box">
-      <strong>⚠️ Common Mistake</strong>
+      <strong>Common Mistake</strong>
       <p>When the axis of revolution is not on the boundary of the region, you must account for the distance from the axis to the curve. The radius is the perpendicular distance, not the y-value itself.</p>
     </div>
 
@@ -204,52 +228,102 @@
   </section>
 
   <section id="visualizer">
-    <h2>Visualizer: Disk Method for $y = \sqrt{x}$</h2>
+    <h2>Interactive 3D Visualizations</h2>
+
     <p>
-      The plot below shows a 2D cross-section of the solid of revolution. Shaded region represents the disk cross-section at various x values.
+      Explore the solids of revolution in 3D. Use your mouse to rotate, zoom, and pan the 3D visualizations. Choose a preset example below to see how the disk and washer methods build up the volume.
     </p>
-    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
-    <script>
-      var x = [];
-      for (var i = 0; i <= 100; i++) {
-        x.push(4 * i / 100);
-      }
 
-      var y = x.map(function(xi) { return Math.sqrt(xi); });
+    <div class="viz-controls">
+      <label for="preset-select">Example:</label>
+      <select id="preset-select" onchange="changePreset()">
+        <option value="sqrt">y = √x about x-axis (Disk)</option>
+        <option value="washer">y = x vs y = x² about x-axis (Washer)</option>
+        <option value="parabola-y">y = x² about y-axis (Disk, Horizontal Slices)</option>
+      </select>
+    </div>
 
-      // Create a plot showing the curve y = sqrt(x)
-      var trace1 = {
-        x: x,
-        y: y,
-        mode: 'lines',
-        name: 'y = √x',
-        line: {color: 'blue', width: 2}
-      };
+    <!-- 3D Solid of Revolution Viewer -->
+    <div style="margin: 2rem 0;">
+      <h3>3D Solid of Revolution</h3>
+      <p>Click and drag to rotate. Scroll to zoom.</p>
+      <div id="solid-3d" style="width:100%;height:600px;border:1px solid var(--border);border-radius:8px;"></div>
+    </div>
 
-      // Add a shaded region to show disk radius
-      var x_fill = x.concat(x.slice().reverse());
-      var y_fill = y.map(function() { return 0; }).concat(y.slice().reverse());
+    <!-- Disk Stacking Animator -->
+    <div style="margin: 2rem 0; background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+      <h3>Disk Stacking Animator</h3>
+      <p>Slide to see how individual disks approximate the volume. As you add more disks, the approximation improves.</p>
 
-      var trace2 = {
-        x: x_fill,
-        y: y_fill,
-        fill: 'toself',
-        fillcolor: 'rgba(0, 0, 255, 0.2)',
-        line: {color: 'transparent'},
-        name: 'Disk radius'
-      };
+      <div class="viz-controls">
+        <label for="disk-slider">Number of Disks:</label>
+        <input type="range" id="disk-slider" min="1" max="30" value="5" onchange="updateDisks()">
+        <span id="disk-count" style="font-weight: bold; min-width: 30px;">5</span>
+      </div>
 
-      var layout = {
-        title: 'Disk Method: Revolving y = √x About x-axis',
-        xaxis: {title: 'x (axis of revolution)'},
-        yaxis: {title: 'Radius'},
-        hovermode: 'closest',
-        width: 700,
-        height: 500
-      };
+      <div class="viz-row">
+        <div>
+          <div id="disks-3d" style="width:100%;height:500px;border:1px solid var(--border);border-radius:8px;"></div>
+        </div>
+        <div>
+          <div style="background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+            <div class="viz-stat">
+              <span class="label">Approximate Volume</span>
+              <span class="value" id="approx-vol">0.00</span>
+            </div>
+            <div class="viz-stat">
+              <span class="label">Exact Volume</span>
+              <span class="value" id="exact-vol">0.00</span>
+            </div>
+            <div class="viz-stat">
+              <span class="label">Error</span>
+              <span class="value" id="error-vol">0.00</span>
+            </div>
+            <div class="viz-stat" style="margin-top: 1rem;">
+              <span class="label">Formula</span>
+              <span class="value" id="formula-display" style="font-size:0.9rem;">V = πr²Δx</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      Plotly.newPlot('plotly-chart', [trace2, trace1], layout);
-    </script>
+    <!-- Washer Cross-Section Viewer -->
+    <div style="margin: 2rem 0; background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);" id="washer-section">
+      <h3>Washer Cross-Section Viewer</h3>
+      <p>Slide to move the cutting plane along the x-axis. See the washer at each position with outer and inner radii.</p>
+
+      <div class="viz-controls">
+        <label for="washer-slider">Position (x):</label>
+        <input type="range" id="washer-slider" min="0" max="1" step="0.01" value="0.5" onchange="updateWasherCrossSection()">
+        <span id="washer-pos" style="font-weight: bold; min-width: 50px;">0.50</span>
+      </div>
+
+      <div class="viz-row">
+        <div>
+          <div id="washer-3d" style="width:100%;height:400px;border:1px solid var(--border);border-radius:8px;"></div>
+        </div>
+        <div>
+          <div id="washer-cross" style="width:100%;height:400px;border:1px solid var(--border);border-radius:8px;"></div>
+        </div>
+      </div>
+
+      <div style="background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 1rem;">
+        <div class="viz-stat">
+          <span class="label">Outer Radius R(x)</span>
+          <span class="value" id="outer-radius">0.00</span>
+        </div>
+        <div class="viz-stat">
+          <span class="label">Inner Radius r(x)</span>
+          <span class="value" id="inner-radius">0.00</span>
+        </div>
+        <div class="viz-stat">
+          <span class="label">Washer Area π(R² - r²)</span>
+          <span class="value" id="washer-area">0.00</span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <section id="practice">
@@ -319,19 +393,49 @@
 
 </main>
 
-<footer>
-  <script>
-    if (typeof COURSE !== 'undefined' && COURSE.footer) {
-      var f = COURSE.footer;
-      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
-    }
-  </script>
-</footer>
+<footer id="main-footer"></footer>
 
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 
 <script>
+  // ========== GLOBAL STATE ==========
+  let currentPreset = 'sqrt';
+  let currentNumDisks = 5;
+
+  // ========== PRESET DEFINITIONS ==========
+  const presets = {
+    sqrt: {
+      name: 'y = √x',
+      a: 0, b: 4,
+      f: (x) => Math.sqrt(x),
+      exactVolume: 8 * Math.PI,
+      axis: 'x-axis',
+      type: 'disk',
+      description: 'Revolving y = √x about the x-axis'
+    },
+    washer: {
+      name: 'Washer: y = x vs y = x²',
+      a: 0, b: 1,
+      f_outer: (x) => x,
+      f_inner: (x) => x * x,
+      exactVolume: (2 * Math.PI) / 15,
+      axis: 'x-axis',
+      type: 'washer',
+      description: 'Revolving region between y = x and y = x² about the x-axis'
+    },
+    parabola_y: {
+      name: 'y = x² about y-axis',
+      a: 0, b: 4,
+      f: (y) => Math.sqrt(y),
+      exactVolume: 8 * Math.PI,
+      axis: 'y-axis',
+      type: 'disk',
+      description: 'Revolving y = x² about the y-axis (horizontal slices)'
+    }
+  };
+
+  // ========== UTILITY FUNCTIONS ==========
   function toggleCollapsible(element) {
     const content = element.nextElementSibling;
     content.style.display = content.style.display === 'block' ? 'none' : 'block';
@@ -339,13 +443,342 @@
     icon.textContent = content.style.display === 'block' ? '▲' : '▼';
   }
 
+  function changePreset() {
+    const select = document.getElementById('preset-select');
+    currentPreset = select.value === 'parabola-y' ? 'parabola_y' : select.value;
+    updateVisualizations();
+  }
+
+  // ========== 3D SOLID OF REVOLUTION ==========
+  function generate3DSurface() {
+    const preset = presets[currentPreset];
+    const n = 100; // Points along the axis
+    const m = 60;  // Points around the revolution
+
+    let xs = [], ys = [], zs = [];
+
+    const aVal = preset.a;
+    const bVal = preset.b;
+
+    for (let i = 0; i < n; i++) {
+      let row_x = [], row_y = [], row_z = [];
+      const t = aVal + (bVal - aVal) * (i / (n - 1));
+
+      let radius;
+      if (preset.type === 'disk') {
+        if (currentPreset === 'parabola_y') {
+          // For y-axis revolution: radius depends on y position
+          radius = preset.f(t);
+        } else {
+          radius = preset.f(t);
+        }
+      }
+
+      for (let j = 0; j < m; j++) {
+        const theta = (2 * Math.PI * j) / (m - 1);
+
+        if (currentPreset === 'parabola_y') {
+          // Y-axis rotation: revolve around y-axis
+          row_x.push(radius * Math.cos(theta));
+          row_y.push(t);
+          row_z.push(radius * Math.sin(theta));
+        } else {
+          // X-axis rotation
+          row_x.push(t);
+          row_y.push(radius * Math.cos(theta));
+          row_z.push(radius * Math.sin(theta));
+        }
+      }
+
+      xs.push(row_x);
+      ys.push(row_y);
+      zs.push(row_z);
+    }
+
+    const trace = {
+      x: xs, y: ys, z: zs,
+      type: 'surface',
+      colorscale: 'Viridis',
+      name: 'Solid'
+    };
+
+    const layout = {
+      title: `3D Solid of Revolution: ${preset.description}`,
+      scene: {
+        xaxis: { title: 'X' },
+        yaxis: { title: 'Y' },
+        zaxis: { title: 'Z' },
+        aspectmode: 'auto'
+      },
+      margin: { l: 0, r: 0, t: 40, b: 0 }
+    };
+
+    Plotly.newPlot('solid-3d', [trace], layout, { responsive: true });
+  }
+
+  // ========== DISK STACKING ANIMATOR ==========
+  function updateDisks() {
+    currentNumDisks = parseInt(document.getElementById('disk-slider').value);
+    document.getElementById('disk-count').textContent = currentNumDisks;
+
+    const preset = presets[currentPreset];
+    const n = currentNumDisks;
+    const aVal = preset.a;
+    const bVal = preset.b;
+    const dx = (bVal - aVal) / n;
+
+    let traces = [];
+    let approxVol = 0;
+
+    // Generate individual disk cylinders
+    for (let i = 0; i < n; i++) {
+      const x_i = aVal + i * dx;
+      const x_next = aVal + (i + 1) * dx;
+      const x_mid = (x_i + x_next) / 2;
+
+      let radius;
+      if (preset.type === 'disk') {
+        radius = preset.f(x_mid);
+      }
+
+      const diskVolume = Math.PI * radius * radius * dx;
+      approxVol += diskVolume;
+
+      // Create a cylinder (disk) as a 3D surface
+      const nTheta = 40;
+      const nHeight = 2;
+
+      let xs = [], ys = [], zs = [];
+      for (let h = 0; h < nHeight; h++) {
+        let row_x = [], row_y = [], row_z = [];
+        const x_pos = x_i + h * dx;
+        for (let j = 0; j < nTheta; j++) {
+          const theta = (2 * Math.PI * j) / (nTheta - 1);
+          row_x.push(x_pos);
+          row_y.push(radius * Math.cos(theta));
+          row_z.push(radius * Math.sin(theta));
+        }
+        xs.push(row_x);
+        ys.push(row_y);
+        zs.push(row_z);
+      }
+
+      const trace = {
+        x: xs, y: ys, z: zs,
+        type: 'surface',
+        colorscale: [[0, `hsl(${i * 360 / n}, 70%, 60%)`], [1, `hsl(${i * 360 / n}, 70%, 40%)`)],
+        showscale: false,
+        name: `Disk ${i + 1}`
+      };
+      traces.push(trace);
+    }
+
+    const layout = {
+      title: `Disk Stacking: ${n} Disks Approximating the Volume`,
+      scene: {
+        xaxis: { title: preset.axis === 'x-axis' ? 'Axis of Revolution (x)' : 'X' },
+        yaxis: { title: 'Y' },
+        zaxis: { title: 'Z' },
+        aspectmode: 'auto'
+      },
+      margin: { l: 0, r: 0, t: 40, b: 0 }
+    };
+
+    Plotly.newPlot('disks-3d', traces, layout, { responsive: true });
+
+    // Update statistics
+    const exactVol = preset.exactVolume;
+    const error = Math.abs(exactVol - approxVol);
+    document.getElementById('approx-vol').textContent = approxVol.toFixed(4);
+    document.getElementById('exact-vol').textContent = exactVol.toFixed(4);
+    document.getElementById('error-vol').textContent = error.toFixed(4);
+    document.getElementById('formula-display').textContent = `V ≈ Σ πr²Δx`;
+  }
+
+  // ========== WASHER CROSS-SECTION VIEWER ==========
+  function updateWasherCrossSection() {
+    if (currentPreset !== 'washer') {
+      return;
+    }
+
+    const preset = presets[currentPreset];
+    const x_val = parseFloat(document.getElementById('washer-slider').value);
+    document.getElementById('washer-pos').textContent = x_val.toFixed(2);
+
+    const R = preset.f_outer(x_val);
+    const r = preset.f_inner(x_val);
+    const washerArea = Math.PI * (R * R - r * r);
+
+    // Update statistics
+    document.getElementById('outer-radius').textContent = R.toFixed(4);
+    document.getElementById('inner-radius').textContent = r.toFixed(4);
+    document.getElementById('washer-area').textContent = washerArea.toFixed(4);
+
+    // 3D visualization: show the cutting plane at x_val
+    const preset_washer = presets.washer;
+    const n = 100;
+    const m = 60;
+
+    let xs = [], ys = [], zs = [];
+    for (let i = 0; i < 2; i++) {
+      let row_x = [], row_y = [], row_z = [];
+      const t = x_val + i * 0.01; // Thin slice
+      const R_t = preset_washer.f_outer(t);
+      const r_t = preset_washer.f_inner(t);
+
+      for (let j = 0; j < m; j++) {
+        const theta = (2 * Math.PI * j) / (m - 1);
+
+        // Outer surface
+        row_x.push(t);
+        row_y.push(R_t * Math.cos(theta));
+        row_z.push(R_t * Math.sin(theta));
+      }
+      xs.push(row_x);
+      ys.push(row_y);
+      zs.push(row_z);
+    }
+
+    const trace_outer = {
+      x: xs, y: ys, z: zs,
+      type: 'surface',
+      colorscale: 'Blues',
+      name: 'Washer'
+    };
+
+    // Inner surface
+    let xs_inner = [], ys_inner = [], zs_inner = [];
+    for (let i = 0; i < 2; i++) {
+      let row_x = [], row_y = [], row_z = [];
+      const t = x_val + i * 0.01;
+      const r_t = preset_washer.f_inner(t);
+
+      for (let j = 0; j < m; j++) {
+        const theta = (2 * Math.PI * j) / (m - 1);
+        row_x.push(t);
+        row_y.push(r_t * Math.cos(theta));
+        row_z.push(r_t * Math.sin(theta));
+      }
+      xs_inner.push(row_x);
+      ys_inner.push(row_y);
+      zs_inner.push(row_z);
+    }
+
+    const trace_inner = {
+      x: xs_inner, y: ys_inner, z: zs_inner,
+      type: 'surface',
+      colorscale: 'Reds',
+      name: 'Inner hole'
+    };
+
+    const layout_3d = {
+      title: `Washer at x = ${x_val.toFixed(2)}`,
+      scene: {
+        xaxis: { title: 'X' },
+        yaxis: { title: 'Y' },
+        zaxis: { title: 'Z' }
+      },
+      margin: { l: 0, r: 0, t: 40, b: 0 }
+    };
+
+    Plotly.newPlot('washer-3d', [trace_outer, trace_inner], layout_3d, { responsive: true });
+
+    // 2D cross-section plot
+    const nPoints = 100;
+    let cross_x = [], cross_y = [];
+    for (let i = 0; i <= nPoints; i++) {
+      const angle = (2 * Math.PI * i) / nPoints;
+      const radius_outer = R * Math.cos(angle);
+      if (i <= nPoints / 2) {
+        cross_x.push(radius_outer);
+        cross_y.push(R * Math.sin(angle));
+      } else {
+        cross_x.push(-R * Math.cos(angle - Math.PI));
+        cross_y.push(-R * Math.sin(angle - Math.PI));
+      }
+    }
+
+    // Inner circle
+    let inner_x = [], inner_y = [];
+    for (let i = 0; i <= nPoints; i++) {
+      const angle = (2 * Math.PI * i) / nPoints;
+      inner_x.push(r * Math.cos(angle));
+      inner_y.push(r * Math.sin(angle));
+    }
+
+    const trace_cross_outer = {
+      x: cross_x, y: cross_y,
+      fill: 'toself',
+      fillcolor: 'rgba(100, 150, 255, 0.3)',
+      line: { color: 'rgb(100, 150, 255)', width: 2 },
+      name: 'Outer circle'
+    };
+
+    const trace_cross_inner = {
+      x: inner_x, y: inner_y,
+      fill: 'toself',
+      fillcolor: 'rgba(255, 255, 255, 1)',
+      line: { color: 'rgb(255, 100, 100)', width: 2 },
+      name: 'Inner hole'
+    };
+
+    const layout_cross = {
+      title: `Cross-Section at x = ${x_val.toFixed(2)}: Washer`,
+      xaxis: { title: 'Y', scaleanchor: 'y', scaleratio: 1 },
+      yaxis: { title: 'Z', scaleanchor: 'x', scaleratio: 1 },
+      hovermode: 'closest',
+      margin: { l: 50, r: 50, t: 60, b: 50 }
+    };
+
+    Plotly.newPlot('washer-cross', [trace_cross_outer, trace_cross_inner], layout_cross, { responsive: true });
+  }
+
+  // ========== VISIBILITY CONTROL ==========
+  function updateVisualizations() {
+    // Show/hide washer section based on preset
+    const washerSection = document.getElementById('washer-section');
+    if (currentPreset === 'washer') {
+      washerSection.style.display = 'block';
+      updateWasherCrossSection();
+    } else {
+      washerSection.style.display = 'none';
+    }
+
+    // Generate main 3D solid
+    generate3DSurface();
+
+    // Update disk animator
+    updateDisks();
+  }
+
+  // ========== INITIALIZATION ==========
   document.addEventListener('DOMContentLoaded', function() {
-    renderMathInElement(document.body, {
-      delimiters: [
-        {left: '$$', right: '$$', display: true},
-        {left: '$', right: '$', display: false}
-      ]
-    });
+    // Render math
+    if (typeof renderMathInElement !== 'undefined') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ]
+      });
+    }
+
+    // Render footer
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.getElementById('main-footer').innerHTML =
+        f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+        f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+
+    // Initialize visualizations
+    updateVisualizations();
+
+    // Initial washer slider setup
+    document.getElementById('washer-slider').min = 0;
+    document.getElementById('washer-slider').max = 1;
+    document.getElementById('washer-slider').step = 0.01;
+    document.getElementById('washer-slider').value = 0.5;
   });
 </script>
 

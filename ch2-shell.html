@@ -3,12 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
   <title>Chapter 2.3: Shell Method</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+  <style>
+    .viz-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      margin: 1rem 0;
+    }
+    .viz-controls label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .viz-controls input[type="range"] {
+      flex: 1;
+      min-width: 200px;
+    }
+    .viz-controls select, .viz-controls button {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .viz-controls button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+    }
+    .viz-controls button:hover {
+      background: var(--primary-dark);
+    }
+    .viz-stat {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    .viz-stat .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .viz-stat .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .viz-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .viz-row > div {
+      flex: 1;
+      min-width: 300px;
+    }
+    .unwrap-container {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .unwrap-item {
+      text-align: center;
+    }
+    .unwrap-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    .unwrap-diagram {
+      background: #f8fafc;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    #unwrap-3d { width: 400px; height: 400px; }
+    #unwrap-flat { width: 400px; height: 300px; }
+  </style>
 </head>
 <body>
 
@@ -211,67 +301,115 @@
   </section>
 
   <section id="visualizer">
-    <h2>Visualizer: Shell Method for $y = x^2$ Revolved About y-axis</h2>
+    <h2>Visualizer: Interactive Shell Method Explorations</h2>
+
+    <!-- VISUALIZATION 1: 3D Shell Builder -->
+    <h3>1. 3D Shell Builder: Building Shells One at a Time</h3>
     <p>
-      The plot below shows a thin vertical shell at various positions. The circumference of each shell is <span class="math">$2\pi x$</span>, its height is <span class="math">$x^2$</span>, and we integrate from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span>.
+      This visualization shows how cylindrical shells are stacked to approximate the solid of revolution. Use the slider to add shells one by one from left to right. Watch how the approximation converges to the true solid as you add more shells. The shaded solid in the background is the theoretical solid of revolution for $y = x^2$ from $x = 0$ to $x = 2$ about the y-axis.
     </p>
-    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
-    <script>
-      var x = [];
-      for (var i = 0; i <= 100; i++) {
-        x.push(2 * i / 100);
-      }
 
-      var y = x.map(function(xi) { return xi * xi; });
+    <div class="viz-controls">
+      <label for="shell-slider">Number of Shells (n):</label>
+      <input type="range" id="shell-slider" min="1" max="25" value="5">
+      <span id="shell-count" style="font-weight: 600; min-width: 30px;">5</span>
+      <span class="viz-stat">
+        <span class="label">Approximate Volume</span>
+        <span class="value" id="approx-volume">0.00</span>
+      </span>
+      <span class="viz-stat">
+        <span class="label">Exact Volume</span>
+        <span class="value">8π ≈ 25.13</span>
+      </span>
+      <span class="viz-stat">
+        <span class="label">Error</span>
+        <span class="value" id="error-volume">0.00</span>
+      </span>
+    </div>
 
-      // Curve y = x^2
-      var trace1 = {
-        x: x,
-        y: y,
-        mode: 'lines',
-        name: 'y = x²',
-        line: {color: 'blue', width: 2}
-      };
+    <div id="shell-3d" style="width:100%; height:600px; border: 1px solid var(--border); border-radius: 8px;"></div>
 
-      // Shaded area to represent shell
-      var x_fill = x.concat(x.slice().reverse());
-      var y_fill = y.map(function() { return 0; }).concat(y.slice().reverse());
+    <!-- VISUALIZATION 2: Shell Unwrap -->
+    <h3>2. The Shell Unwrap: Understanding $2\pi r h \, dr$</h3>
+    <p>
+      This is the KEY insight of the shell method! A thin cylindrical shell at radius $r$ with height $h$ and thickness $\Delta r$ has volume $2\pi r h \, \Delta r$. When you "cut and unroll" the cylindrical shell, it becomes a thin rectangular slab with:
+    </p>
+    <ul>
+      <li><strong>Width:</strong> $2\pi r$ (the circumference of the circle at radius $r$)</li>
+      <li><strong>Height:</strong> $h$ (the height of the shell)</li>
+      <li><strong>Thickness:</strong> $\Delta r$ (the radial thickness)</li>
+    </ul>
+    <p>
+      The 3D shell on the left and the unwrapped rectangle on the right have exactly the same volume. This visualization shows how a 3D shell becomes a flat rectangular solid.
+    </p>
 
-      var trace2 = {
-        x: x_fill,
-        y: y_fill,
-        fill: 'toself',
-        fillcolor: 'rgba(255, 0, 0, 0.2)',
-        line: {color: 'transparent'},
-        name: 'Shell height'
-      };
+    <div class="unwrap-container">
+      <div class="unwrap-item">
+        <div class="unwrap-label">3D Cylindrical Shell (r = 1.2)</div>
+        <div class="unwrap-diagram">
+          <div id="unwrap-3d" style="border: 1px solid #ddd; border-radius: 4px;"></div>
+        </div>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+          A cylindrical shell at radius $r = 1.2$, height $h = 1.44$, thickness $\Delta r = 0.1$
+        </p>
+      </div>
+      <div class="unwrap-item">
+        <div class="unwrap-label">Unwrapped Rectangle (Flat View)</div>
+        <div class="unwrap-diagram">
+          <div id="unwrap-flat" style="border: 1px solid #ddd; border-radius: 4px;"></div>
+        </div>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+          Width = $2\pi r \approx 7.54$, Height = $h = 1.44$, Thickness = $\Delta r = 0.1$
+        </p>
+      </div>
+    </div>
 
-      // Add some vertical lines to represent shells
-      var shellTraces = [];
-      for (var i = 0; i <= 10; i++) {
-        var xShell = 2 * i / 10;
-        var yMax = xShell * xShell;
-        shellTraces.push({
-          x: [xShell, xShell],
-          y: [0, yMax],
-          mode: 'lines',
-          line: {color: 'rgba(100, 100, 100, 0.5)', width: 1},
-          showlegend: false,
-          hoverinfo: 'skip'
-        });
-      }
+    <!-- VISUALIZATION 3: Shell vs Disk Comparison -->
+    <h3>3. Shell Method vs Disk Method: Same Solid, Different Slices</h3>
+    <p>
+      Both the shell method and the disk method give the same volume for the same solid of revolution. The difference is how we slice it:
+    </p>
+    <ul>
+      <li><strong>Shell method (left):</strong> Slice vertically (perpendicular to the x-axis) to create cylindrical shells</li>
+      <li><strong>Disk method (right):</strong> Slice horizontally (perpendicular to the y-axis) to create circular disks</li>
+    </ul>
+    <p>
+      Use the slider below to see both methods converge to the same volume as you increase the number of shells/disks.
+    </p>
 
-      var layout = {
-        title: 'Shell Method: Revolving y = x² About y-axis',
-        xaxis: {title: 'x (distance from y-axis)'},
-        yaxis: {title: 'y (height of shell)'},
-        hovermode: 'closest',
-        width: 700,
-        height: 500
-      };
+    <div class="viz-controls">
+      <label for="comparison-slider">Number of Slices (n):</label>
+      <input type="range" id="comparison-slider" min="1" max="25" value="5">
+      <span id="comparison-count" style="font-weight: 600; min-width: 30px;">5</span>
+      <span class="viz-stat">
+        <span class="label">Exact Volume</span>
+        <span class="value">8π ≈ 25.13</span>
+      </span>
+    </div>
 
-      Plotly.newPlot('plotly-chart', [trace2, trace1].concat(shellTraces), layout);
-    </script>
+    <div class="viz-row">
+      <div>
+        <h4 style="text-align: center; color: var(--primary);">Shell Method</h4>
+        <div id="comparison-shells" style="width: 100%; height: 500px; border: 1px solid var(--border); border-radius: 8px;"></div>
+        <div style="text-align: center; margin-top: 0.5rem;">
+          <span class="viz-stat">
+            <span class="label">Approximate Volume</span>
+            <span class="value" id="comparison-shell-vol">0.00</span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <h4 style="text-align: center; color: var(--primary);">Disk Method</h4>
+        <div id="comparison-disks" style="width: 100%; height: 500px; border: 1px solid var(--border); border-radius: 8px;"></div>
+        <div style="text-align: center; margin-top: 0.5rem;">
+          <span class="viz-stat">
+            <span class="label">Approximate Volume</span>
+            <span class="value" id="comparison-disk-vol">0.00</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <section id="practice">
@@ -353,19 +491,21 @@
 
 </main>
 
-<footer>
-  <script>
-    if (typeof COURSE !== 'undefined' && COURSE.footer) {
-      var f = COURSE.footer;
-      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
-    }
-  </script>
-</footer>
+<footer id="main-footer"></footer>
 
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 
 <script>
+  // Footer setup
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // Collapsible toggle function
   function toggleCollapsible(element) {
     const content = element.nextElementSibling;
     content.style.display = content.style.display === 'block' ? 'none' : 'block';
@@ -373,6 +513,7 @@
     icon.textContent = content.style.display === 'block' ? '▲' : '▼';
   }
 
+  // Math rendering
   document.addEventListener('DOMContentLoaded', function() {
     renderMathInElement(document.body, {
       delimiters: [
@@ -381,6 +522,494 @@
       ]
     });
   });
+
+  // ============================================================
+  // VISUALIZATION 1: 3D Shell Builder
+  // ============================================================
+
+  function createShellTrace(x_center, dx, height, n, color) {
+    // Create a cylindrical shell as a 3D surface
+    // Inner radius: x_center, Outer radius: x_center + dx
+    // Height: 0 to height
+
+    const innerRadius = x_center;
+    const outerRadius = x_center + dx;
+    const nTheta = 30;
+    const nHeight = 10;
+
+    const theta = [];
+    const x = [];
+    const y = [];
+    const z = [];
+
+    for (let i = 0; i <= nHeight; i++) {
+      const h = (i / nHeight) * height;
+      for (let j = 0; j <= nTheta; j++) {
+        const t = (j / nTheta) * 2 * Math.PI;
+
+        // Create inner surface at radius innerRadius
+        x.push(innerRadius * Math.cos(t));
+        y.push(innerRadius * Math.sin(t));
+        z.push(h);
+      }
+    }
+
+    // Create outer surface at radius outerRadius
+    for (let i = 0; i <= nHeight; i++) {
+      const h = (i / nHeight) * height;
+      for (let j = 0; j <= nTheta; j++) {
+        const t = (j / nTheta) * 2 * Math.PI;
+        x.push(outerRadius * Math.cos(t));
+        y.push(outerRadius * Math.sin(t));
+        z.push(h);
+      }
+    }
+
+    // Create surfaces connecting inner to outer (top and bottom rings)
+    for (let j = 0; j <= nTheta; j++) {
+      const t = (j / nTheta) * 2 * Math.PI;
+      // Bottom ring
+      x.push(innerRadius * Math.cos(t));
+      y.push(innerRadius * Math.sin(t));
+      z.push(0);
+      x.push(outerRadius * Math.cos(t));
+      y.push(outerRadius * Math.sin(t));
+      z.push(0);
+      // Top ring
+      x.push(innerRadius * Math.cos(t));
+      y.push(innerRadius * Math.sin(t));
+      z.push(height);
+      x.push(outerRadius * Math.cos(t));
+      y.push(outerRadius * Math.sin(t));
+      z.push(height);
+    }
+
+    return {
+      type: 'scatter3d',
+      mode: 'markers',
+      x: x,
+      y: y,
+      z: z,
+      marker: {
+        size: 2,
+        color: color,
+        opacity: 0.6
+      },
+      name: 'Shell at x=' + x_center.toFixed(2),
+      hoverinfo: 'text',
+      text: 'Shell at x=' + x_center.toFixed(2)
+    };
+  }
+
+  function createSolidOfRevolutionSurface() {
+    // Create the surface of revolution for y = x^2
+    const u = [];
+    const x_surf = [];
+    const y_surf = [];
+    const z_surf = [];
+
+    for (let i = 0; i <= 20; i++) {
+      const x = 2 * i / 20;
+      const height = x * x;
+      for (let j = 0; j <= 30; j++) {
+        const theta = (j / 30) * 2 * Math.PI;
+        x_surf.push(x * Math.cos(theta));
+        y_surf.push(x * Math.sin(theta));
+        z_surf.push(height);
+      }
+    }
+
+    return {
+      type: 'scatter3d',
+      mode: 'markers',
+      x: x_surf,
+      y: y_surf,
+      z: z_surf,
+      marker: {
+        size: 1,
+        color: 'rgba(100, 100, 255, 0.1)',
+        opacity: 0.15
+      },
+      name: 'Solid Surface',
+      hoverinfo: 'skip',
+      showlegend: false
+    };
+  }
+
+  const shellSlider = document.getElementById('shell-slider');
+  const shellCount = document.getElementById('shell-count');
+  const approxVolume = document.getElementById('approx-volume');
+  const errorVolume = document.getElementById('error-volume');
+
+  function updateShellVisualization() {
+    const n = parseInt(shellSlider.value);
+    shellCount.textContent = n;
+
+    const a = 0;
+    const b = 2;
+    const dx = (b - a) / n;
+
+    const traces = [createSolidOfRevolutionSurface()];
+
+    let totalVolume = 0;
+    const colors = [
+      'rgb(255, 99, 71)',
+      'rgb(255, 165, 0)',
+      'rgb(255, 215, 0)',
+      'rgb(144, 238, 144)',
+      'rgb(0, 191, 255)',
+      'rgb(135, 206, 235)',
+      'rgb(123, 104, 238)',
+      'rgb(186, 85, 211)',
+      'rgb(219, 112, 147)',
+      'rgb(240, 128, 128)',
+      'rgb(255, 140, 0)',
+      'rgb(34, 139, 34)',
+      'rgb(0, 100, 205)',
+      'rgb(75, 0, 130)',
+      'rgb(220, 20, 60)',
+      'rgb(0, 206, 209)',
+      'rgb(64, 224, 208)',
+      'rgb(147, 112, 219)',
+      'rgb(255, 20, 147)',
+      'rgb(100, 149, 237)',
+      'rgb(50, 205, 50)',
+      'rgb(220, 20, 60)',
+      'rgb(0, 191, 255)',
+      'rgb(178, 34, 34)',
+      'rgb(30, 144, 255)'
+    ];
+
+    for (let i = 0; i < n; i++) {
+      const x_i = a + (i + 0.5) * dx;
+      const h_i = x_i * x_i; // y = x^2
+      const shellVol = 2 * Math.PI * x_i * h_i * dx;
+      totalVolume += shellVol;
+
+      const color = colors[i % colors.length];
+      traces.push(createShellTrace(x_i - dx/2, dx, h_i, n, color));
+    }
+
+    const exactVolume = 8 * Math.PI;
+    const error = Math.abs(exactVolume - totalVolume);
+
+    approxVolume.textContent = totalVolume.toFixed(2);
+    errorVolume.textContent = error.toFixed(2);
+
+    const layout = {
+      title: 'Interactive 3D Shell Builder: y = x² revolved about y-axis',
+      scene: {
+        xaxis: { title: 'x (distance)' },
+        yaxis: { title: 'y (distance)' },
+        zaxis: { title: 'height' },
+        camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
+      },
+      hovermode: 'closest',
+      width: window.innerWidth - 50,
+      height: 600
+    };
+
+    Plotly.newPlot('shell-3d', traces, layout, { responsive: true });
+  }
+
+  shellSlider.addEventListener('input', updateShellVisualization);
+  updateShellVisualization();
+
+  // ============================================================
+  // VISUALIZATION 2: Shell Unwrap
+  // ============================================================
+
+  function createUnwrap3D() {
+    const r = 1.2;
+    const h = r * r; // height based on y = x^2
+    const dr = 0.1;
+
+    const nTheta = 20;
+    const nHeight = 15;
+
+    const x = [];
+    const y = [];
+    const z = [];
+
+    // Create cylindrical shell surface
+    for (let i = 0; i <= nHeight; i++) {
+      const height_z = (i / nHeight) * h;
+      for (let j = 0; j <= nTheta; j++) {
+        const theta = (j / nTheta) * 2 * Math.PI;
+        x.push(r * Math.cos(theta));
+        y.push(r * Math.sin(theta));
+        z.push(height_z);
+      }
+    }
+
+    // Outer surface
+    for (let i = 0; i <= nHeight; i++) {
+      const height_z = (i / nHeight) * h;
+      for (let j = 0; j <= nTheta; j++) {
+        const theta = (j / nTheta) * 2 * Math.PI;
+        x.push((r + dr) * Math.cos(theta));
+        y.push((r + dr) * Math.sin(theta));
+        z.push(height_z);
+      }
+    }
+
+    const trace = {
+      type: 'scatter3d',
+      mode: 'markers',
+      x: x,
+      y: y,
+      z: z,
+      marker: {
+        size: 3,
+        color: 'rgb(0, 102, 204)',
+        opacity: 0.8
+      },
+      name: 'Shell',
+      hoverinfo: 'skip'
+    };
+
+    const layout = {
+      title: '3D Cylindrical Shell at r = 1.2',
+      scene: {
+        xaxis: { title: 'x', range: [-2, 2] },
+        yaxis: { title: 'y', range: [-2, 2] },
+        zaxis: { title: 'height', range: [0, 2] },
+        camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } }
+      },
+      margin: { l: 0, r: 0, t: 30, b: 0 },
+      width: 400,
+      height: 400
+    };
+
+    Plotly.newPlot('unwrap-3d', [trace], layout, { responsive: false });
+  }
+
+  function createUnwrapFlat() {
+    const r = 1.2;
+    const h = r * r;
+    const dr = 0.1;
+    const circumference = 2 * Math.PI * r;
+
+    // Draw the unwrapped rectangle
+    const x = [0, circumference, circumference, 0, 0];
+    const y = [0, 0, h, h, 0];
+
+    const trace = {
+      x: x,
+      y: y,
+      mode: 'lines+markers',
+      line: { color: 'rgb(0, 102, 204)', width: 3 },
+      marker: { size: 8, color: 'rgb(0, 102, 204)' },
+      fill: 'toself',
+      fillcolor: 'rgba(0, 102, 204, 0.2)',
+      name: 'Unwrapped Shell',
+      hoverinfo: 'text',
+      text: ['Corner', 'Width = 2πr', 'Height h, Width 2πr', 'Height h', 'Corner']
+    };
+
+    const layout = {
+      title: 'Unwrapped Rectangle: Width = 2πr, Height = h',
+      xaxis: {
+        title: 'Width = 2πr ≈ ' + circumference.toFixed(2),
+        range: [0, 8]
+      },
+      yaxis: {
+        title: 'Height = h ≈ ' + h.toFixed(2),
+        range: [0, 2]
+      },
+      margin: { l: 60, r: 30, t: 40, b: 60 },
+      width: 400,
+      height: 300,
+      hovermode: 'closest'
+    };
+
+    // Add annotation for thickness
+    layout.annotations = [
+      {
+        x: circumference + 0.3,
+        y: h / 2,
+        text: 'Δr = ' + dr.toFixed(2),
+        showarrow: true,
+        arrowhead: 2,
+        arrowsize: 1,
+        arrowwidth: 2,
+        arrowcolor: 'red',
+        ax: 40,
+        ay: 0,
+        bgcolor: 'rgba(255,255,255,0.8)',
+        bordercolor: 'red',
+        borderwidth: 1
+      }
+    ];
+
+    Plotly.newPlot('unwrap-flat', [trace], layout, { responsive: false });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    createUnwrap3D();
+    createUnwrapFlat();
+  });
+
+  // ============================================================
+  // VISUALIZATION 3: Shell vs Disk Comparison
+  // ============================================================
+
+  const comparisonSlider = document.getElementById('comparison-slider');
+  const comparisonCount = document.getElementById('comparison-count');
+  const comparisonShellVol = document.getElementById('comparison-shell-vol');
+  const comparisonDiskVol = document.getElementById('comparison-disk-vol');
+
+  function updateComparisonVisualization() {
+    const n = parseInt(comparisonSlider.value);
+    comparisonCount.textContent = n;
+
+    // Shell method visualization
+    updateShellComparison(n);
+    updateDiskComparison(n);
+  }
+
+  function updateShellComparison(n) {
+    const a = 0;
+    const b = 2;
+    const dx = (b - a) / n;
+
+    const traces = [];
+    let totalVolume = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x_i = a + (i + 0.5) * dx;
+      const h_i = x_i * x_i;
+      const shellVol = 2 * Math.PI * x_i * h_i * dx;
+      totalVolume += shellVol;
+
+      const hue = (i / n) * 240; // HSL color from blue to red
+      const color = 'hsl(' + hue + ', 70%, 50%)';
+
+      // Create shell surface points
+      const innerRadius = x_i - dx / 2;
+      const outerRadius = x_i + dx / 2;
+      const nTheta = 15;
+      const nHeight = 8;
+
+      const x_pts = [];
+      const y_pts = [];
+      const z_pts = [];
+
+      for (let j = 0; j <= nHeight; j++) {
+        const height = (j / nHeight) * h_i;
+        for (let k = 0; k <= nTheta; k++) {
+          const theta = (k / nTheta) * 2 * Math.PI;
+          x_pts.push((innerRadius + (outerRadius - innerRadius) * (k / nTheta)) * Math.cos(theta));
+          y_pts.push((innerRadius + (outerRadius - innerRadius) * (k / nTheta)) * Math.sin(theta));
+          z_pts.push(height);
+        }
+      }
+
+      traces.push({
+        type: 'scatter3d',
+        mode: 'markers',
+        x: x_pts,
+        y: y_pts,
+        z: z_pts,
+        marker: { size: 2, color: color, opacity: 0.7 },
+        name: 'Shell ' + (i + 1),
+        hoverinfo: 'skip',
+        showlegend: false
+      });
+    }
+
+    const exactVolume = 8 * Math.PI;
+    comparisonShellVol.textContent = totalVolume.toFixed(2);
+
+    const layout = {
+      title: 'Shell Method (n = ' + n + ')',
+      scene: {
+        xaxis: { title: 'x' },
+        yaxis: { title: 'y' },
+        zaxis: { title: 'z' },
+        camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
+      },
+      hovermode: 'closest',
+      margin: { l: 0, r: 0, t: 40, b: 0 }
+    };
+
+    Plotly.newPlot('comparison-shells', traces, layout, { responsive: true });
+  }
+
+  function updateDiskComparison(n) {
+    // Disk method: integrate with respect to y
+    // For y = x^2, we have x = sqrt(y), so the radius at height y is sqrt(y)
+    // The y ranges from 0 to 4 (since y = 2^2 = 4)
+
+    const c = 0;
+    const d = 4;
+    const dy = (d - c) / n;
+
+    const traces = [];
+    let totalVolume = 0;
+
+    for (let i = 0; i < n; i++) {
+      const y_i = c + (i + 0.5) * dy;
+      const radius = Math.sqrt(y_i);
+      const diskVol = Math.PI * radius * radius * dy;
+      totalVolume += diskVol;
+
+      const hue = (i / n) * 240;
+      const color = 'hsl(' + hue + ', 70%, 50%)';
+
+      // Create disk surface points
+      const nTheta = 15;
+      const thickness = 0.05;
+
+      const x_pts = [];
+      const y_pts = [];
+      const z_pts = [];
+
+      for (let j = 0; j <= nTheta; j++) {
+        const theta = (j / nTheta) * 2 * Math.PI;
+        // Front of disk
+        x_pts.push(radius * Math.cos(theta));
+        y_pts.push(radius * Math.sin(theta));
+        z_pts.push(y_i);
+        // Back of disk
+        x_pts.push(radius * Math.cos(theta));
+        y_pts.push(radius * Math.sin(theta));
+        z_pts.push(y_i + thickness);
+      }
+
+      traces.push({
+        type: 'scatter3d',
+        mode: 'markers',
+        x: x_pts,
+        y: y_pts,
+        z: z_pts,
+        marker: { size: 2, color: color, opacity: 0.7 },
+        name: 'Disk ' + (i + 1),
+        hoverinfo: 'skip',
+        showlegend: false
+      });
+    }
+
+    comparisonDiskVol.textContent = totalVolume.toFixed(2);
+
+    const layout = {
+      title: 'Disk Method (n = ' + n + ')',
+      scene: {
+        xaxis: { title: 'x' },
+        yaxis: { title: 'y' },
+        zaxis: { title: 'height (y)' },
+        camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
+      },
+      hovermode: 'closest',
+      margin: { l: 0, r: 0, t: 40, b: 0 }
+    };
+
+    Plotly.newPlot('comparison-disks', traces, layout, { responsive: true });
+  }
+
+  comparisonSlider.addEventListener('input', updateComparisonVisualization);
+  updateComparisonVisualization();
+
 </script>
 
 </body>
