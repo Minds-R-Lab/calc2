@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>4.6 Which Test? — Convergence Decision Guide | Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="course-config.js"></script>
+  <script src="course.js"></script>
+  <style>
+    /* ── Flowchart SVG ── */
+    .flowchart-wrap {
+      background: #fff; border-radius: 14px; border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 1.5rem; margin: 2rem 0;
+      overflow-x: auto;
+    }
+    #flowchart text { font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    /* ── Interactive Wizard ── */
+    .wizard-card {
+      background: linear-gradient(135deg,#fffbeb,#fef3c7);
+      border: 2px solid #d97706;
+      border-radius: 16px; padding: 2.5rem; margin: 2rem 0;
+      text-align: center; position: relative; min-height: 280px;
+    }
+    .wizard-question {
+      font-size: 1.25rem; font-weight: 700; color: var(--text);
+      margin-bottom: 1.5rem; line-height: 1.5;
+    }
+    .wizard-options {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .wizard-btn {
+      padding: 0.8rem 1.6rem; border: 2px solid var(--border);
+      border-radius: 10px; background: #fff; cursor: pointer;
+      font-size: 0.95rem; font-weight: 600; transition: all 0.2s;
+      color: var(--text); min-width: 140px;
+    }
+    .wizard-btn:hover {
+      border-color: #d97706; background: #fffbeb;
+      transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217,119,6,0.15);
+    }
+    .wizard-result {
+      background: #fff; border-radius: 12px; padding: 2rem;
+      border: 2px solid var(--success); text-align: left;
+      margin-top: 1rem;
+    }
+    .wizard-result h3 {
+      color: var(--success); font-size: 1.3rem; margin-bottom: 0.75rem;
+    }
+    .wizard-result .technique-link {
+      display: inline-block; margin-top: 1rem; padding: 0.6rem 1.5rem;
+      background: #d97706; color: #fff; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+    }
+    .wizard-result .technique-link:hover { background: #b45309; }
+    .wizard-back {
+      display: inline-block; margin-top: 1rem; padding: 0.5rem 1.2rem;
+      background: transparent; border: 1.5px solid var(--text-muted);
+      color: var(--text-muted); border-radius: 8px; cursor: pointer;
+      font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+    }
+    .wizard-back:hover { border-color: var(--text); color: var(--text); }
+    .wizard-breadcrumb {
+      font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;
+    }
+
+    /* ── Quick-Reference Table ── */
+    .ref-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.92rem; }
+    .ref-table th {
+      background: #d97706; color: #fff; padding: 0.75rem 1rem;
+      text-align: left; font-weight: 600;
+    }
+    .ref-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .ref-table tr:nth-child(even) { background: #fffbeb; }
+    .ref-table tr:hover { background: #fef3c7; }
+    .ref-table .tag {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .tag-divtest { background: #fee2e2; color: #991b1b; }
+    .tag-geo { background: #dbeafe; color: #1e40af; }
+    .tag-tele { background: #e0e7ff; color: #3730a3; }
+    .tag-pseries { background: #d1fae5; color: #065f46; }
+    .tag-integral { background: #fce7f3; color: #9d174d; }
+    .tag-comparison { background: #fef3c7; color: #92400e; }
+    .tag-lct { background: #fed7aa; color: #9a3412; }
+    .tag-alternating { background: #ede9fe; color: #5b21b6; }
+    .tag-ratio { background: #ccfbf1; color: #115e59; }
+    .tag-root { background: #cffafe; color: #155e75; }
+
+    @media (max-width: 768px) {
+      .wizard-options { flex-direction: column; }
+      .wizard-btn { min-width: auto; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><a href="index.html">Calc 2</a></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ch4-sequences.html">4.1 Sequences</a>
+      <a href="ch4-series.html">4.2 Series</a>
+      <a href="ch4-integral-comparison.html">4.3 Int/Comp</a>
+      <a href="ch4-alternating.html">4.4 Alternating</a>
+      <a href="ch4-ratio-root.html">4.5 Ratio/Root</a>
+      <a href="ch4-decision-guide.html" class="active">4.6 Which Test?</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="intro">
+      <h1>4.6 Which Convergence Test Should I Use?</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Recognize structural patterns in a series that point to specific convergence tests</li>
+          <li>Use a systematic decision process to select the most efficient test</li>
+          <li>Understand when multiple tests apply and how to choose between them</li>
+        </ul>
+      </div>
+
+      <p>The hardest part of Chapter 4 isn't learning the individual tests — it's staring at a series on an exam and knowing <em>which test to try</em>. This page gives you three tools: a visual flowchart, an interactive wizard, and a quick-reference table. Master this decision process and series problems become routine.</p>
+
+      <div class="tip-box">
+        <strong>Golden Rule: Always Start Here</strong>
+        <p><strong>Step 0</strong>: Check the Divergence Test first. If $\lim_{n\to\infty} a_n \neq 0$, the series diverges — done! If the limit IS zero, the Divergence Test is inconclusive and you must use another test.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 1: THE FLOWCHART ══════════ -->
+    <section id="flowchart">
+      <h2>The Decision Flowchart</h2>
+      <p>Start at the top. Follow the arrows based on what your series looks like. Each path leads to the recommended convergence test.</p>
+
+      <div class="flowchart-wrap">
+        <svg id="flowchart-svg" viewBox="0 0 920 1100" style="width:100%; max-width:920px; margin:0 auto; display:block;">
+          <defs>
+            <filter id="fs"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.08"/></filter>
+            <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+            </marker>
+          </defs>
+
+          <!-- START NODE -->
+          <rect x="290" y="15" rx="25" ry="25" width="340" height="50" fill="#d97706" filter="url(#fs)"/>
+          <text x="460" y="46" text-anchor="middle" font-size="16" fill="#fff" font-weight="800">Given $\sum a_n$ — Which Test?</text>
+
+          <!-- Arrow down -->
+          <line x1="460" y1="65" x2="460" y2="95" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <!-- Q0: Divergence Test -->
+          <rect x="285" y="95" rx="10" ry="10" width="350" height="50" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="117" text-anchor="middle" font-size="13" fill="#991b1b" font-weight="700">Does $\lim_{n\to\infty} a_n = 0$ ?</text>
+          <text x="460" y="135" text-anchor="middle" font-size="11" fill="#991b1b">ALWAYS check this first!</text>
+
+          <!-- NO → diverges -->
+          <line x1="635" y1="120" x2="730" y2="120" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="670" y="113" font-size="11" fill="#dc2626" font-weight="700">No</text>
+          <rect x="730" y="95" rx="10" ry="10" width="175" height="50" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="117" text-anchor="middle" font-size="12" fill="#991b1b" font-weight="700">DIVERGES</text>
+          <text x="818" y="133" text-anchor="middle" font-size="10" fill="#991b1b">by Divergence Test</text>
+
+          <!-- YES → continue -->
+          <line x1="460" y1="145" x2="460" y2="180" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="167" font-size="11" fill="#059669" font-weight="700">Yes</text>
+
+          <!-- Q1: Is it a recognizable type? -->
+          <rect x="260" y="180" rx="10" ry="10" width="400" height="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="202" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="700">Is it a geometric series $\sum ar^n$ or p-series $\sum 1/n^p$?</text>
+          <text x="460" y="220" text-anchor="middle" font-size="11" fill="#1e40af">or a telescoping series?</text>
+
+          <!-- YES → known type results -->
+          <line x1="660" y1="205" x2="730" y2="205" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="688" y="198" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="175" rx="10" ry="10" width="175" height="65" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="196" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="600">Geometric: conv. if $|r|&lt;1$</text>
+          <text x="818" y="212" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="600">P-series: conv. if $p&gt;1$</text>
+          <text x="818" y="228" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="600">Telescoping: partial sums</text>
+
+          <!-- NO → continue -->
+          <line x1="460" y1="230" x2="460" y2="268" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="253" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q2: Alternating? -->
+          <rect x="270" y="268" rx="10" ry="10" width="380" height="50" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="290" text-anchor="middle" font-size="13" fill="#5b21b6" font-weight="700">Does the series alternate in sign?</text>
+          <text x="460" y="308" text-anchor="middle" font-size="11" fill="#5b21b6">$\sum (-1)^n b_n$ where $b_n > 0$</text>
+
+          <!-- YES → Alternating Series Test -->
+          <line x1="650" y1="293" x2="730" y2="293" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="680" y="286" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="268" rx="10" ry="10" width="175" height="65" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="289" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="700">Alternating</text>
+          <text x="818" y="305" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="700">Series Test (4.4)</text>
+          <text x="818" y="323" text-anchor="middle" font-size="9.5" fill="#5b21b6">$b_n$ decreasing and $b_n\to 0$</text>
+
+          <!-- NO → continue -->
+          <line x1="460" y1="318" x2="460" y2="358" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="342" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q3: Contains n!, nⁿ, or rⁿ? -->
+          <rect x="255" y="358" rx="10" ry="10" width="410" height="55" fill="#ccfbf1" stroke="#0d9488" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="381" text-anchor="middle" font-size="13" fill="#115e59" font-weight="700">Contains $n!$, $n^n$, or $r^n$ (exponential)?</text>
+          <text x="460" y="401" text-anchor="middle" font-size="10.5" fill="#115e59">Factorials, exponentials, or powers of $n$ in the exponent</text>
+
+          <!-- YES → Ratio/Root -->
+          <line x1="665" y1="386" x2="730" y2="386" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="692" y="379" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="358" rx="10" ry="10" width="175" height="75" fill="#ccfbf1" stroke="#0d9488" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="380" text-anchor="middle" font-size="12" fill="#115e59" font-weight="700">Ratio Test (4.5)</text>
+          <text x="818" y="397" text-anchor="middle" font-size="10" fill="#115e59">best for $n!$ and $r^n$</text>
+          <text x="818" y="416" text-anchor="middle" font-size="12" fill="#115e59" font-weight="700">Root Test (4.5)</text>
+          <text x="818" y="430" text-anchor="middle" font-size="10" fill="#115e59">best for $(...)^n$ forms</text>
+
+          <!-- NO → continue -->
+          <line x1="460" y1="413" x2="460" y2="453" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="437" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q4: Similar to p-series or known series? -->
+          <rect x="245" y="453" rx="10" ry="10" width="430" height="55" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="476" text-anchor="middle" font-size="13" fill="#92400e" font-weight="700">Behaves like a $p$-series or simpler known series?</text>
+          <text x="460" y="496" text-anchor="middle" font-size="10.5" fill="#92400e">Rational function of $n$, or you can identify the dominant terms</text>
+
+          <!-- YES → Comparison tests -->
+          <line x1="675" y1="481" x2="730" y2="481" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="698" y="474" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="453" rx="10" ry="10" width="175" height="75" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="476" text-anchor="middle" font-size="11" fill="#92400e" font-weight="700">Limit Comparison</text>
+          <text x="818" y="492" text-anchor="middle" font-size="11" fill="#92400e" font-weight="700">Test (4.3)</text>
+          <text x="818" y="510" text-anchor="middle" font-size="10" fill="#92400e">or Direct Comparison</text>
+          <text x="818" y="524" text-anchor="middle" font-size="10" fill="#92400e">if inequality is easy</text>
+
+          <!-- NO → continue -->
+          <line x1="460" y1="508" x2="460" y2="548" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="532" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q5: Can you integrate f(x)? -->
+          <rect x="255" y="548" rx="10" ry="10" width="410" height="55" fill="#fce7f3" stroke="#db2777" stroke-width="2" filter="url(#fs)"/>
+          <text x="460" y="571" text-anchor="middle" font-size="13" fill="#9d174d" font-weight="700">Is $a_n = f(n)$ where $f(x)$ is easy to integrate?</text>
+          <text x="460" y="591" text-anchor="middle" font-size="10.5" fill="#9d174d">$f$ must be positive, continuous, decreasing for $x \ge N$</text>
+
+          <!-- YES → Integral Test -->
+          <line x1="665" y1="576" x2="730" y2="576" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="692" y="569" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="553" rx="10" ry="10" width="175" height="50" fill="#fce7f3" stroke="#db2777" stroke-width="2" filter="url(#fs)"/>
+          <text x="818" y="574" text-anchor="middle" font-size="12" fill="#9d174d" font-weight="700">Integral Test (4.3)</text>
+          <text x="818" y="592" text-anchor="middle" font-size="10" fill="#9d174d">$\sum a_n$ and $\int_1^\infty f(x)\,dx$ agree</text>
+
+          <!-- NO → combination -->
+          <line x1="460" y1="603" x2="460" y2="648" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="472" y="630" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- COMBINATION -->
+          <rect x="275" y="648" rx="14" ry="14" width="370" height="60" fill="#0f172a" filter="url(#fs)"/>
+          <text x="460" y="672" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Try a Combination of Strategies</text>
+          <text x="460" y="692" text-anchor="middle" font-size="10" fill="#94a3b8">Simplify $a_n$ first, then re-enter the flowchart</text>
+
+          <!-- Hints box -->
+          <rect x="15" y="360" rx="10" ry="10" width="225" height="200" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+          <text x="128" y="382" text-anchor="middle" font-size="11" fill="#065f46" font-weight="700">Quick Decision Shortcuts</text>
+          <text x="25" y="404" font-size="10" fill="#374151" font-weight="600">$n!$ in the terms?</text>
+          <text x="25" y="418" font-size="10" fill="#64748b">→ Ratio Test</text>
+          <text x="25" y="440" font-size="10" fill="#374151" font-weight="600">$(...)^n$ pattern?</text>
+          <text x="25" y="454" font-size="10" fill="#64748b">→ Root Test</text>
+          <text x="25" y="476" font-size="10" fill="#374151" font-weight="600">Rational function of $n$?</text>
+          <text x="25" y="490" font-size="10" fill="#64748b">→ Limit Comparison with $1/n^p$</text>
+          <text x="25" y="512" font-size="10" fill="#374151" font-weight="600">$(-1)^n$ factor?</text>
+          <text x="25" y="526" font-size="10" fill="#64748b">→ Alternating Series Test</text>
+          <text x="25" y="548" font-size="10" fill="#374151" font-weight="600">$\ln n$ in the terms?</text>
+          <text x="25" y="562" font-size="10" fill="#64748b">→ Integral Test (often)</text>
+
+          <!-- Examples branch -->
+          <line x1="460" y1="708" x2="460" y2="738" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <rect x="175" y="738" rx="10" ry="10" width="570" height="55" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="460" y="758" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">Common strategies to simplify first:</text>
+          <text x="460" y="778" text-anchor="middle" font-size="10" fill="#64748b">Factor dominant terms  |  Absolute value for conditional convergence  |  Algebra to reveal $p$-series form</text>
+        </svg>
+      </div>
+
+      <div class="warning-box">
+        <strong>Common Mistake</strong>
+        <p>Students often forget: the Divergence Test can only prove <em>divergence</em>. If $\lim a_n = 0$, you have NOT shown convergence — you've only passed the first checkpoint. You still need another test! For example, $\sum 1/n$ has $a_n \to 0$ but diverges.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 2: INTERACTIVE WIZARD ══════════ -->
+    <section id="wizard">
+      <h2>Interactive Test Finder</h2>
+      <p>Not sure which convergence test to use? Answer a few questions about your series and the wizard will guide you to the right test.</p>
+
+      <div class="wizard-card" id="wizard-card">
+        <!-- Wizard content inserted by JS -->
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 3: QUICK REFERENCE TABLE ══════════ -->
+    <section id="reference">
+      <h2>Quick-Reference Table</h2>
+      <p>Bookmark this table. When you see a pattern from the left column, reach for the test on the right.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>You See This Pattern</th>
+            <th>Example</th>
+            <th>Use This Test</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$\lim_{n\to\infty} a_n \neq 0$</td>
+            <td>$\sum \frac{n}{n+1}$ (limit is 1)</td>
+            <td><span class="tag tag-divtest">Divergence Test</span> → DIVERGES</td>
+          </tr>
+          <tr>
+            <td>$\sum ar^n$ or $\sum ar^{n-1}$</td>
+            <td>$\sum \left(\frac{2}{3}\right)^n$, $\sum 5\cdot(-0.4)^n$</td>
+            <td><span class="tag tag-geo">Geometric Series</span> conv. iff $|r|&lt;1$</td>
+          </tr>
+          <tr>
+            <td>$\sum \frac{1}{n^p}$</td>
+            <td>$\sum \frac{1}{n^2}$, $\sum \frac{1}{\sqrt{n}}$</td>
+            <td><span class="tag tag-pseries">P-Series</span> conv. iff $p&gt;1$</td>
+          </tr>
+          <tr>
+            <td>Partial sums telescope (cancel)</td>
+            <td>$\sum \frac{1}{n(n+1)}$, $\sum \left(\frac{1}{n}-\frac{1}{n+1}\right)$</td>
+            <td><span class="tag tag-tele">Telescoping</span> — write out partial sums</td>
+          </tr>
+          <tr>
+            <td>$(-1)^n$ or $(-1)^{n+1}$ factor</td>
+            <td>$\sum \frac{(-1)^n}{n}$, $\sum \frac{(-1)^{n+1}}{\sqrt{n}}$</td>
+            <td><span class="tag tag-alternating">Alternating Series Test</span></td>
+          </tr>
+          <tr>
+            <td>Contains $n!$ (factorial)</td>
+            <td>$\sum \frac{n!}{3^n}$, $\sum \frac{2^n}{n!}$</td>
+            <td><span class="tag tag-ratio">Ratio Test</span></td>
+          </tr>
+          <tr>
+            <td>Contains $r^n$ or $(...)^n$ (exponential)</td>
+            <td>$\sum \frac{3^n}{n^2}$, $\sum \left(\frac{n}{n+1}\right)^{n^2}$</td>
+            <td><span class="tag tag-ratio">Ratio</span> or <span class="tag tag-root">Root Test</span></td>
+          </tr>
+          <tr>
+            <td>Rational function of $n$ (polynomial/polynomial)</td>
+            <td>$\sum \frac{3n+1}{n^3-n}$, $\sum \frac{n^2}{5n^4+2}$</td>
+            <td><span class="tag tag-lct">Limit Comparison</span> with $\sum 1/n^p$</td>
+          </tr>
+          <tr>
+            <td>$a_n \le b_n$ and you know $\sum b_n$ converges</td>
+            <td>$\frac{1}{n^2+1} \le \frac{1}{n^2}$ (which converges)</td>
+            <td><span class="tag tag-comparison">Direct Comparison</span></td>
+          </tr>
+          <tr>
+            <td>Contains $\ln n$</td>
+            <td>$\sum \frac{1}{n\ln n}$, $\sum \frac{\ln n}{n^2}$</td>
+            <td><span class="tag tag-integral">Integral Test</span> (usually)</td>
+          </tr>
+          <tr>
+            <td>$f(n)$ where $\int f(x)\,dx$ is doable</td>
+            <td>$\sum \frac{1}{n^2+1}$, $\sum n e^{-n^2}$</td>
+            <td><span class="tag tag-integral">Integral Test</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <strong>Pro Tip: When Multiple Tests Work</strong>
+        <p>Many series can be handled by more than one test. For exam efficiency: (1) the Ratio Test is your best all-around tool for series with factorials or exponentials, (2) the Limit Comparison Test is fastest for rational functions of $n$, and (3) the Integral Test is your fallback when nothing else fits cleanly.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 4: PRACTICE ══════════ -->
+    <section id="practice">
+      <h2>Practice: Name That Test</h2>
+      <p>For each series below, identify the convergence test you'd use <em>before</em> revealing the answer.</p>
+
+      <div class="example-box">
+        <strong>1. $\displaystyle\sum_{n=1}^{\infty} \frac{n^2}{3^n}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-ratio">Ratio Test</span> — The $3^n$ (exponential) in the denominator is the clue. Compute $\lim \frac{a_{n+1}}{a_n} = \frac{(n+1)^2}{3n^2} \cdot 1 = \frac{1}{3} &lt; 1$. Converges.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>2. $\displaystyle\sum_{n=1}^{\infty} \frac{3n^2+1}{2n^4-n+7}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-lct">Limit Comparison Test</span> — Rational function of $n$. Dominant terms give $\frac{3n^2}{2n^4} = \frac{3}{2n^2}$. Compare with $\sum 1/n^2$ (converges, $p=2&gt;1$). The limit of the ratio is $3/2 &gt; 0$ and finite, so our series also converges.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>3. $\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^{3/4}}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-alternating">Alternating Series Test</span> — The $(-1)^{n+1}$ is the giveaway. Check: $b_n = 1/n^{3/4}$ is decreasing and $b_n \to 0$. Converges conditionally (since $\sum 1/n^{3/4}$ diverges because $p = 3/4 &lt; 1$).</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>4. $\displaystyle\sum_{n=2}^{\infty} \frac{1}{n\,\ln n}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-integral">Integral Test</span> — The $\ln n$ factor is the hint. $\int_2^{\infty} \frac{dx}{x\ln x} = \ln(\ln x)\Big|_2^{\infty} = \infty$. Diverges.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>5. $\displaystyle\sum_{n=0}^{\infty} \frac{n!}{5^n}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-ratio">Ratio Test</span> — Factorial! That's always Ratio Test territory. $\lim \frac{a_{n+1}}{a_n} = \lim \frac{(n+1)!}{5^{n+1}} \cdot \frac{5^n}{n!} = \lim \frac{n+1}{5} = \infty &gt; 1$. Diverges.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>6. $\displaystyle\sum_{n=1}^{\infty} \left(\frac{2n+1}{3n+4}\right)^n$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-root">Root Test</span> — The entire term is raised to the $n$th power — perfect for Root Test. $\lim \sqrt[n]{a_n} = \lim \frac{2n+1}{3n+4} = \frac{2}{3} &lt; 1$. Converges.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>7. $\displaystyle\sum_{n=1}^{\infty} \frac{1}{n(n+2)}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-tele">Telescoping</span> — Use partial fractions: $\frac{1}{n(n+2)} = \frac{1}{2}\left(\frac{1}{n} - \frac{1}{n+2}\right)$. Write out partial sums and watch terms cancel. Converges to $\frac{3}{4}$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>8. $\displaystyle\sum_{n=1}^{\infty} \frac{\cos(n\pi)}{n}$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-alternating">Alternating Series Test</span> — Recognize that $\cos(n\pi) = (-1)^n$. So this is $\sum \frac{(-1)^n}{n}$, the alternating harmonic series. $b_n = 1/n$ is decreasing and $\to 0$. Converges conditionally.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="main-footer"></footer>
+
+  <script>
+  /* ══════════ INTERACTIVE WIZARD ══════════ */
+  var wizardTree = {
+    id: 'start',
+    question: 'What does your series $\\sum a_n$ look like?',
+    options: [
+      {
+        label: 'Geometric form $\\sum ar^n$',
+        desc: 'Each term is a constant ratio times the previous',
+        next: {
+          id: 'geo-check',
+          question: 'What is the value of $|r|$ (the absolute value of the common ratio)?',
+          options: [
+            {
+              label: '$|r| < 1$',
+              next: {
+                id: 'result-geo-conv',
+                result: true,
+                technique: 'Geometric Series — CONVERGES',
+                explanation: 'A geometric series $\\sum_{n=0}^{\\infty} ar^n$ converges to $\\frac{a}{1-r}$ when $|r| < 1$.',
+                link: 'ch4-series.html',
+                examples: '$\\sum \\left(\\frac{1}{2}\\right)^n = 2$, $\\sum 3\\cdot\\left(-\\frac{1}{4}\\right)^n = \\frac{12}{5}$'
+              }
+            },
+            {
+              label: '$|r| \\ge 1$',
+              next: {
+                id: 'result-geo-div',
+                result: true,
+                technique: 'Geometric Series — DIVERGES',
+                explanation: 'A geometric series diverges when $|r| \\ge 1$. The terms don\'t approach zero.',
+                link: 'ch4-series.html',
+                examples: '$\\sum 2^n$ diverges, $\\sum (-1)^n$ diverges'
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'P-series form $\\sum 1/n^p$',
+        desc: 'Reciprocal of a power of n',
+        next: {
+          id: 'p-check',
+          question: 'What is the value of $p$?',
+          options: [
+            {
+              label: '$p > 1$',
+              next: {
+                id: 'result-p-conv',
+                result: true,
+                technique: 'P-Series — CONVERGES',
+                explanation: 'The p-series $\\sum 1/n^p$ converges when $p > 1$.',
+                link: 'ch4-integral-comparison.html',
+                examples: '$\\sum 1/n^2$ converges, $\\sum 1/n^3$ converges'
+              }
+            },
+            {
+              label: '$p \\le 1$',
+              next: {
+                id: 'result-p-div',
+                result: true,
+                technique: 'P-Series — DIVERGES',
+                explanation: 'The p-series $\\sum 1/n^p$ diverges when $p \\le 1$. The harmonic series $\\sum 1/n$ ($p=1$) is the classic example.',
+                link: 'ch4-integral-comparison.html',
+                examples: '$\\sum 1/n$ diverges, $\\sum 1/\\sqrt{n}$ diverges ($p=1/2$)'
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Alternating signs $(-1)^n$',
+        desc: 'Terms switch between + and −',
+        next: {
+          id: 'alt-check',
+          question: 'Write $a_n = (-1)^n b_n$ where $b_n > 0$. Is $b_n$ eventually decreasing AND $b_n \\to 0$?',
+          options: [
+            {
+              label: 'Yes, both conditions hold',
+              next: {
+                id: 'result-alt-conv',
+                result: true,
+                technique: 'Alternating Series Test — CONVERGES',
+                explanation: 'If $b_n$ is eventually decreasing and $\\lim b_n = 0$, then $\\sum (-1)^n b_n$ converges. To determine if convergence is absolute or conditional, test $\\sum b_n$ separately.',
+                link: 'ch4-alternating.html',
+                examples: '$\\sum \\frac{(-1)^n}{n}$ converges (conditionally), $\\sum \\frac{(-1)^n}{n^2}$ converges (absolutely)'
+              }
+            },
+            {
+              label: '$b_n \\not\\to 0$',
+              next: {
+                id: 'result-alt-div',
+                result: true,
+                technique: 'Divergence Test — DIVERGES',
+                explanation: 'If $b_n \\not\\to 0$, then $a_n \\not\\to 0$ either, so the series diverges by the Divergence Test.',
+                link: 'ch4-series.html',
+                examples: '$\\sum (-1)^n \\frac{n}{n+1}$ diverges (terms $\\to \\pm 1$, not 0)'
+              }
+            },
+            {
+              label: '$b_n \\to 0$ but not decreasing / not sure',
+              next: {
+                id: 'alt-fallback',
+                question: 'Try testing $\\sum |a_n| = \\sum b_n$ for absolute convergence. Does $\\sum b_n$ converge by any test?',
+                options: [
+                  {
+                    label: 'Yes, $\\sum b_n$ converges',
+                    next: {
+                      id: 'result-abs-conv',
+                      result: true,
+                      technique: 'Absolute Convergence',
+                      explanation: 'If $\\sum |a_n|$ converges, then $\\sum a_n$ converges absolutely. Absolute convergence implies convergence.',
+                      link: 'ch4-alternating.html',
+                      examples: '$\\sum \\frac{(-1)^n}{n^2}$ — the absolute series $\\sum 1/n^2$ converges, so it converges absolutely'
+                    }
+                  },
+                  {
+                    label: 'No / not sure',
+                    next: {
+                      id: 'result-try-other',
+                      result: true,
+                      technique: 'Try Ratio Test or Root Test',
+                      explanation: 'For series where the Alternating Series Test doesn\'t directly apply, try the Ratio or Root Test, which automatically test for absolute convergence.',
+                      link: 'ch4-ratio-root.html',
+                      examples: '$\\sum \\frac{(-1)^n n!}{10^n}$ — Ratio Test gives $L = \\infty$, diverges'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Contains $n!$ or $r^n$',
+        desc: 'Factorials or exponentials',
+        next: {
+          id: 'fact-exp',
+          question: 'What type of "fast growth/decay" is present?',
+          options: [
+            {
+              label: 'Factorial ($n!$)',
+              next: {
+                id: 'result-ratio-fact',
+                result: true,
+                technique: 'Ratio Test (4.5)',
+                explanation: 'Factorials are the Ratio Test\'s specialty. When you compute $\\frac{a_{n+1}}{a_n}$, the $(n+1)!/n! = n+1$ simplification makes everything clean.',
+                link: 'ch4-ratio-root.html',
+                examples: '$\\sum \\frac{n!}{5^n}$, $\\sum \\frac{2^n}{n!}$, $\\sum \\frac{(2n)!}{(n!)^2 4^n}$'
+              }
+            },
+            {
+              label: 'Exponential like $c^n$',
+              next: {
+                id: 'result-ratio-exp',
+                result: true,
+                technique: 'Ratio Test or Root Test (4.5)',
+                explanation: 'For $c^n$ terms, both tests work well. Ratio Test: $c^{n+1}/c^n = c$. Root Test: $\\sqrt[n]{c^n} = c$. Choose whichever simplifies faster.',
+                link: 'ch4-ratio-root.html',
+                examples: '$\\sum \\frac{3^n}{n^2}$, $\\sum \\frac{n}{2^n}$, $\\sum \\frac{5^n}{n!}$'
+              }
+            },
+            {
+              label: 'Entire term raised to $n$: $(f(n))^n$',
+              next: {
+                id: 'result-root',
+                result: true,
+                technique: 'Root Test (4.5)',
+                explanation: 'When the whole $a_n$ is something raised to the $n$th power, the Root Test is perfect: $\\sqrt[n]{a_n} = \\sqrt[n]{(f(n))^n} = f(n)$, which strips away the $n$th power immediately.',
+                link: 'ch4-ratio-root.html',
+                examples: '$\\sum \\left(\\frac{n}{2n+1}\\right)^n$, $\\sum \\left(\\frac{\\ln n}{n}\\right)^n$'
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Rational function of $n$',
+        desc: 'Polynomial over polynomial',
+        next: {
+          id: 'rational',
+          question: 'Can you identify the dominant terms (highest powers of $n$)?',
+          options: [
+            {
+              label: 'Yes — it behaves like $C/n^p$',
+              next: {
+                id: 'result-lct',
+                result: true,
+                technique: 'Limit Comparison Test with $\\sum 1/n^p$ (4.3)',
+                explanation: 'For rational functions, identify the dominant power: $\\frac{\\text{leading terms in numerator}}{\\text{leading terms in denominator}} \\approx C/n^p$. Then compare with $\\sum 1/n^p$. The limit comparison will give a finite positive number, so both series behave the same.',
+                link: 'ch4-integral-comparison.html',
+                examples: '$\\sum \\frac{3n+1}{n^3-5}$ → compare with $\\sum 1/n^2$; $\\sum \\frac{n^2}{n^4+1}$ → compare with $\\sum 1/n^2$'
+              }
+            },
+            {
+              label: 'Not sure / it\'s complicated',
+              next: {
+                id: 'rational-fallback',
+                question: 'Can you set up a clear inequality $a_n \\le b_n$ or $a_n \\ge b_n$ with a known series?',
+                options: [
+                  {
+                    label: 'Yes, I can bound it',
+                    next: {
+                      id: 'result-dct',
+                      result: true,
+                      technique: 'Direct Comparison Test (4.3)',
+                      explanation: 'If $0 \\le a_n \\le b_n$ and $\\sum b_n$ converges, then $\\sum a_n$ converges. If $a_n \\ge c_n \\ge 0$ and $\\sum c_n$ diverges, then $\\sum a_n$ diverges.',
+                      link: 'ch4-integral-comparison.html',
+                      examples: '$\\frac{1}{n^2+n} \\le \\frac{1}{n^2}$ (converges); $\\frac{1}{\\sqrt{n}-1} \\ge \\frac{1}{\\sqrt{n}}$ for large $n$ (diverges)'
+                    }
+                  },
+                  {
+                    label: 'No, try something else',
+                    next: {
+                      id: 'result-integral-fallback',
+                      result: true,
+                      technique: 'Integral Test (4.3)',
+                      explanation: 'If $a_n = f(n)$ where $f$ is positive, continuous, and decreasing, then $\\sum a_n$ converges iff $\\int_1^{\\infty} f(x)\\,dx$ converges. This is your catch-all when comparison tests are awkward.',
+                      link: 'ch4-integral-comparison.html',
+                      examples: '$\\sum \\frac{\\ln n}{n^2}$, $\\sum \\frac{1}{n(\\ln n)^2}$'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Something else / not sure',
+        desc: 'None of the above patterns fit',
+        next: {
+          id: 'other',
+          question: 'Let\'s narrow it down. Can you easily compute $\\int_1^{\\infty} f(x)\\,dx$ where $a_n = f(n)$?',
+          options: [
+            {
+              label: 'Yes, the integral is doable',
+              next: {
+                id: 'result-integral',
+                result: true,
+                technique: 'Integral Test (4.3)',
+                explanation: 'If $f$ is positive, continuous, and eventually decreasing, then $\\sum f(n)$ and $\\int_1^{\\infty} f(x)\\,dx$ either both converge or both diverge.',
+                link: 'ch4-integral-comparison.html',
+                examples: '$\\sum \\frac{1}{n(\\ln n)}$, $\\sum ne^{-n^2}$, $\\sum \\frac{\\arctan n}{n^2}$'
+              }
+            },
+            {
+              label: 'No / not sure',
+              next: {
+                id: 'result-ratio-general',
+                result: true,
+                technique: 'Try the Ratio Test (4.5)',
+                explanation: 'When in doubt, the Ratio Test is a good all-purpose tool. Compute $L = \\lim \\left|\\frac{a_{n+1}}{a_n}\\right|$. If $L < 1$: converges. If $L > 1$: diverges. If $L = 1$: inconclusive (try another test).',
+                link: 'ch4-ratio-root.html',
+                examples: 'Works on a wide variety of series. Only fails when $L=1$.'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  };
+
+  var wizardHistory = [];
+
+  function renderWizard(node) {
+    var card = document.getElementById('wizard-card');
+    var html = '';
+
+    // Breadcrumb
+    if (wizardHistory.length > 0) {
+      html += '<div class="wizard-breadcrumb">';
+      wizardHistory.forEach(function(h, i) {
+        html += (i > 0 ? ' → ' : '') + h;
+      });
+      html += '</div>';
+    }
+
+    if (node.result) {
+      html += '<div class="wizard-result">';
+      html += '<h3>→ ' + node.technique + '</h3>';
+      html += '<p>' + node.explanation + '</p>';
+      html += '<p style="margin-top:0.75rem;color:var(--text-muted);font-size:0.9rem;"><strong>Try these:</strong> ' + node.examples + '</p>';
+      html += '<a class="technique-link" href="' + node.link + '">Go to Lesson →</a>';
+      html += '</div>';
+      html += '<br><button class="wizard-back" onclick="resetWizard()">Start Over</button>';
+    } else {
+      html += '<div class="wizard-question">' + node.question + '</div>';
+      html += '<div class="wizard-options">';
+      node.options.forEach(function(opt, i) {
+        html += '<button class="wizard-btn" onclick="wizardChoose(' + JSON.stringify(node.id) + ',' + i + ')">';
+        html += opt.label;
+        if (opt.desc) html += '<br><span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">' + opt.desc + '</span>';
+        html += '</button>';
+      });
+      html += '</div>';
+      if (wizardHistory.length > 0) {
+        html += '<button class="wizard-back" onclick="wizardBack()">← Back</button>';
+      }
+    }
+
+    card.innerHTML = html;
+    initKaTeX(card);
+  }
+
+  function findNode(tree, id) {
+    if (tree.id === id) return tree;
+    if (tree.options) {
+      for (var i = 0; i < tree.options.length; i++) {
+        if (tree.options[i].next) {
+          var found = findNode(tree.options[i].next, id);
+          if (found) return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  var currentNode = wizardTree;
+  var nodeStack = [wizardTree];
+
+  function wizardChoose(nodeId, optIndex) {
+    var node = findNode(wizardTree, nodeId);
+    if (!node) return;
+    var opt = node.options[optIndex];
+    wizardHistory.push(opt.label.replace(/<[^>]*>/g, '').replace(/\$[^$]*\$/g, '...').substring(0, 40));
+    currentNode = opt.next;
+    nodeStack.push(currentNode);
+    renderWizard(currentNode);
+  }
+
+  function wizardBack() {
+    if (nodeStack.length > 1) {
+      nodeStack.pop();
+      wizardHistory.pop();
+      currentNode = nodeStack[nodeStack.length - 1];
+      renderWizard(currentNode);
+    }
+  }
+
+  function resetWizard() {
+    wizardHistory = [];
+    nodeStack = [wizardTree];
+    currentNode = wizardTree;
+    renderWizard(currentNode);
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    renderWizard(wizardTree);
+    initKaTeX();
+
+    // Footer
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.getElementById('main-footer').innerHTML =
+        f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+        f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  });
+  </script>
+</body>
+</html>

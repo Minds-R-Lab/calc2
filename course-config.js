@@ -26,7 +26,7 @@ const COURSE = {
   // ── Hero Stats ──
   stats: [
     { num: "7",    label: "Chapters" },
-    { num: "24",   label: "Topics" },
+    { num: "25",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -267,6 +267,14 @@ const COURSE = {
           mathPreview: "\\lim_{n \\to \\infty} \\left|\\frac{a_{n+1}}{a_n}\\right| = L",
           file: "ch4-ratio-root.html",
         },
+        {
+          id: "ch4-decision-guide",
+          title: "4.6 — Which Test? Decision Guide",
+          icon: "?",
+          description: "An interactive flowchart and wizard to help you choose the right convergence test for any series.",
+          mathPreview: "\\sum a_n \\;\\to\\; \\text{which test?}",
+          file: "ch4-decision-guide.html",
+        },
       ],
     },
     {
@@ -353,7 +361,7 @@ const COURSE = {
     { ch: "ch1", badge: "Ch 1", color: "#059669", title: "Integration Techniques", topics: "By Parts, Trig Integrals, Trig Sub, Partial Fractions, Decision Guide" },
     { ch: "ch2", badge: "Ch 2", color: "#2563eb", title: "Applications of Integration", topics: "Area, Disk/Washer, Shell, Arc Length" },
     { ch: "ch3", badge: "Ch 3", color: "#7c3aed", title: "Improper Integrals", topics: "Type I, Type II, Comparison Tests" },
-    { ch: "ch4", badge: "Ch 4", color: "#d97706", title: "Sequences and Series", topics: "Sequences, Series, Convergence Tests" },
+    { ch: "ch4", badge: "Ch 4", color: "#d97706", title: "Sequences and Series", topics: "Sequences, Series, Convergence Tests, Decision Guide" },
     { ch: "ch5", badge: "Ch 5", color: "#dc2626", title: "Power Series", topics: "Power Series, Taylor/Maclaurin, Applications" },
     { ch: "ch6", badge: "Ch 6", color: "#0891b2", title: "Parametric & Polar", topics: "Parametric Curves, Polar Coords, Polar Calculus" },
   ],
