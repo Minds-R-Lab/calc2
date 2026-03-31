@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <title>3.2 Type II Improper Integrals — Discontinuities | Calculus II</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">Calc 2</a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="ch3-type1.html">3.1 Type I</a>
+            <a href="ch3-type2.html" class="active">3.2 Type II</a>
+            <a href="ch3-comparison.html">3.3 Comparison</a>
+            <span style="color:var(--border);margin:0 0.25rem;">|</span>
+            <a href="#intro">Intro</a>
+            <a href="#theory">Theory</a>
+            <a href="#method">Method</a>
+            <a href="#examples">Examples</a>
+            <a href="#visualizer">Visualizer</a>
+            <a href="#practice">Practice</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="intro" class="section">
+            <h1>3.2 Type II Improper Integrals — Discontinuities</h1>
+            <p>
+                While Type I improper integrals arise from unbounded intervals, <strong>Type II improper integrals</strong> arise
+                when the integrand has a discontinuity (typically a vertical asymptote) at one or both endpoints of the integration interval.
+                These integrals are evaluated similarly to Type I—using limits—but the limit takes us toward the point of discontinuity
+                rather than toward infinity.
+            </p>
+            <p>
+                We must be careful to identify where the discontinuity occurs and set up the limit appropriately, potentially splitting
+                the integral if the discontinuity is in the interior of the interval.
+            </p>
+        </section>
+
+        <section id="theory" class="section">
+            <h2>Definition and Theory</h2>
+
+            <h3>Type II Improper Integral: Discontinuity at Left Endpoint</h3>
+            <p>
+                If $f$ is continuous on $(a, b]$ but has a discontinuity at $x=a$ (e.g., a vertical asymptote), we define:
+            </p>
+            <div class="math-block">
+                $$\int_a^b f(x)\,dx = \lim_{t \to a^+} \int_t^b f(x)\,dx$$
+            </div>
+            <p>
+                The integral <strong>converges</strong> if the limit exists and is finite; otherwise it <strong>diverges</strong>.
+            </p>
+
+            <h3>Discontinuity at Right Endpoint</h3>
+            <p>
+                If $f$ is continuous on $[a, b)$ but has a discontinuity at $x=b$:
+            </p>
+            <div class="math-block">
+                $$\int_a^b f(x)\,dx = \lim_{t \to b^-} \int_a^t f(x)\,dx$$
+            </div>
+
+            <h3>Discontinuity at an Interior Point</h3>
+            <p>
+                If $f$ has a discontinuity at a point $c$ where $a < c < b$, we must split the integral:
+            </p>
+            <div class="math-block">
+                $$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$$
+            </div>
+            <p>
+                Both parts must converge for the whole integral to converge. Formally:
+            </p>
+            <div class="math-block">
+                $$\int_a^b f(x)\,dx = \lim_{s \to c^-} \int_a^s f(x)\,dx + \lim_{t \to c^+} \int_t^b f(x)\,dx$$
+            </div>
+
+            <h3>Common Patterns for Type II Integrals</h3>
+            <p>
+                Type II integrals often involve functions like $\frac{1}{(x-c)^p}$ or similar. A useful rule of thumb:
+            </p>
+            <div class="math-block">
+                $$\int_a^b \frac{1}{(x-c)^p}\,dx \quad \text{converges if and only if} \quad p < 1$$
+            </div>
+            <p>
+                (This is the opposite condition from the Type I $p$-test!)
+            </p>
+        </section>
+
+        <section id="method" class="section">
+            <h2>Method for Solving</h2>
+
+            <ol>
+                <li>
+                    <strong>Identify the discontinuity:</strong> Find where in $[a,b]$ the function is undefined or has a vertical asymptote.
+                    Check the endpoints and any interior points.
+                </li>
+                <li>
+                    <strong>Set up the limit:</strong> Replace the problematic endpoint with a variable that approaches it from the safe side.
+                    If the discontinuity is at $x=a$, write
+                    $$\int_a^b f(x)\,dx = \lim_{t \to a^+} \int_t^b f(x)\,dx$$
+                    If at an interior point $c$, split the integral at $c$.
+                </li>
+                <li>
+                    <strong>Compute the antiderivative:</strong> Find $F(x)$ such that $F'(x) = f(x)$.
+                </li>
+                <li>
+                    <strong>Evaluate the finite integral:</strong> Use the Fundamental Theorem:
+                    $$\int_t^b f(x)\,dx = F(b) - F(t)$$
+                </li>
+                <li>
+                    <strong>Take the limit:</strong> Compute
+                    $$\lim_{t \to a^+} [F(b) - F(t)]$$
+                </li>
+                <li>
+                    <strong>Determine convergence:</strong> If the limit is finite, the integral converges. If it's infinite or undefined, it diverges.
+                </li>
+            </ol>
+
+            <h3>Key Insights</h3>
+            <ul>
+                <li>The power in the denominator matters: smaller powers lead to convergence for Type II.</li>
+                <li>Always split at interior discontinuities—never "skip over" them.</li>
+                <li>The sign of the function near the discontinuity determines whether the integral might converge.</li>
+                <li>A bounded function with a removable discontinuity (like $\sin x / x$ near $x=0$) still has a proper integral.</li>
+            </ul>
+        </section>
+
+        <section id="examples" class="section">
+            <h2>Worked Examples</h2>
+
+            <article class="example">
+                <h3>Example 1: $\displaystyle \int_0^1 \frac{1}{\sqrt{x}}\,dx$ (Converges)</h3>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>
+                        <strong>Identify discontinuity:</strong> At $x=0$, we have $\frac{1}{\sqrt{x}} \to \infty$.
+                    </li>
+                    <li>
+                        <strong>Set up the limit:</strong>
+                        $$\int_0^1 x^{-1/2}\,dx = \lim_{t \to 0^+} \int_t^1 x^{-1/2}\,dx$$
+                    </li>
+                    <li>
+                        <strong>Find antiderivative:</strong> $F(x) = \frac{x^{1/2}}{1/2} = 2\sqrt{x}$
+                    </li>
+                    <li>
+                        <strong>Evaluate:</strong>
+                        $$\int_t^1 x^{-1/2}\,dx = [2\sqrt{x}]_t^1 = 2\sqrt{1} - 2\sqrt{t} = 2 - 2\sqrt{t}$$
+                    </li>
+                    <li>
+                        <strong>Take limit:</strong>
+                        $$\lim_{t \to 0^+} (2 - 2\sqrt{t}) = 2 - 0 = 2$$
+                    </li>
+                </ol>
+                <p>
+                    <strong>Conclusion:</strong> The integral <strong>converges to 2</strong>. Note that $p = 1/2 < 1$, consistent with the Type II rule.
+                </p>
+            </article>
+
+            <article class="example">
+                <h3>Example 2: $\displaystyle \int_0^1 \frac{1}{x}\,dx$ (Diverges)</h3>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>
+                        <strong>Identify discontinuity:</strong> At $x=0$, we have $\frac{1}{x} \to -\infty$ as $x \to 0^-$ and $\to +\infty$ as $x \to 0^+$.
+                    </li>
+                    <li>
+                        <strong>Set up the limit:</strong>
+                        $$\int_0^1 \frac{1}{x}\,dx = \lim_{t \to 0^+} \int_t^1 \frac{1}{x}\,dx$$
+                    </li>
+                    <li>
+                        <strong>Find antiderivative:</strong> $F(x) = \ln|x| = \ln x$ (for $x > 0$)
+                    </li>
+                    <li>
+                        <strong>Evaluate:</strong>
+                        $$\int_t^1 \frac{1}{x}\,dx = [\ln x]_t^1 = \ln 1 - \ln t = -\ln t$$
+                    </li>
+                    <li>
+                        <strong>Take limit:</strong>
+                        $$\lim_{t \to 0^+} (-\ln t) = \infty$$
+                    </li>
+                </ol>
+                <p>
+                    <strong>Conclusion:</strong> The integral <strong>diverges to infinity</strong>. With $p=1$ (not $< 1$), the Type II rule predicts divergence. $\checkmark$
+                </p>
+            </article>
+
+            <article class="example">
+                <h3>Example 3: $\displaystyle \int_0^3 \frac{1}{(x-1)^{2/3}}\,dx$ (Split at Interior Discontinuity)</h3>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>
+                        <strong>Identify discontinuity:</strong> At $x=1$, the denominator $(x-1)^{2/3}$ equals zero, creating a vertical asymptote.
+                    </li>
+                    <li>
+                        <strong>Split the integral:</strong>
+                        $$\int_0^3 \frac{1}{(x-1)^{2/3}}\,dx = \int_0^1 \frac{1}{(x-1)^{2/3}}\,dx + \int_1^3 \frac{1}{(x-1)^{2/3}}\,dx$$
+                    </li>
+                    <li>
+                        <strong>First integral:</strong>
+                        $$\int_0^1 (x-1)^{-2/3}\,dx = \lim_{s \to 1^-} \int_0^s (x-1)^{-2/3}\,dx$$
+                        The antiderivative is $F(x) = \frac{(x-1)^{1/3}}{1/3} = 3(x-1)^{1/3}$. Thus:
+                        $$\lim_{s \to 1^-} [3(x-1)^{1/3}]_0^s = \lim_{s \to 1^-} [3(s-1)^{1/3} - 3(-1)^{1/3}]$$
+                        Since $(s-1)^{1/3} \to 0$ as $s \to 1^-$ and $(-1)^{1/3} = -1$:
+                        $$= 0 - 3(-1) = 3$$
+                    </li>
+                    <li>
+                        <strong>Second integral:</strong>
+                        $$\int_1^3 (x-1)^{-2/3}\,dx = \lim_{t \to 1^+} \int_t^3 (x-1)^{-2/3}\,dx$$
+                        $$= \lim_{t \to 1^+} [3(x-1)^{1/3}]_t^3 = \lim_{t \to 1^+} [3(2)^{1/3} - 3(t-1)^{1/3}]$$
+                        As $t \to 1^+$, $(t-1)^{1/3} \to 0$:
+                        $$= 3 \cdot 2^{1/3}$$
+                    </li>
+                </ol>
+                <p>
+                    <strong>Conclusion:</strong> Both pieces converge (since $p = 2/3 < 1$), so the total is:
+                    $$\int_0^3 \frac{1}{(x-1)^{2/3}}\,dx = 3 + 3 \cdot 2^{1/3} = 3(1 + 2^{1/3})$$
+                </p>
+            </article>
+        </section>
+
+        <section id="visualizer" class="section">
+            <h2>Interactive Visualizer</h2>
+            <p>
+                The graph below shows the function $f(x) = \frac{1}{\sqrt{x}}$ with a vertical asymptote at $x=0$.
+                The shaded region represents the area from $x=0.1$ to $x=1$. As the left endpoint approaches 0,
+                the total area converges to 2.
+            </p>
+            <div id="plotly-chart" style="width:100%;height:500px;"></div>
+            <script>
+                var x = [];
+                for (var i = 0.05; i <= 2; i += 0.05) {
+                    x.push(i);
+                }
+                var y = x.map(function(val) { return 1 / Math.sqrt(val); });
+
+                // Shaded region from 0.1 to 1
+                var x_shade = [];
+                for (var i = 0.1; i <= 1; i += 0.05) {
+                    x_shade.push(i);
+                }
+                var y_shade = x_shade.map(function(val) { return 1 / Math.sqrt(val); });
+
+                var trace1 = {
+                    x: x,
+                    y: y,
+                    mode: 'lines',
+                    name: 'f(x) = 1/√x',
+                    line: { color: 'rgb(214, 39, 40)', width: 2 }
+                };
+
+                var trace2 = {
+                    x: x_shade,
+                    y: y_shade,
+                    fill: 'tozeroy',
+                    name: 'Shaded area (0.1 to 1)',
+                    line: { color: 'rgba(214, 39, 40, 0)' },
+                    fillcolor: 'rgba(214, 39, 40, 0.3)'
+                };
+
+                var data = [trace1, trace2];
+
+                var layout = {
+                    title: 'Type II Improper Integral: f(x) = 1/√x from x=0 to 1',
+                    xaxis: { title: 'x' },
+                    yaxis: { title: 'f(x)' },
+                    hovermode: 'closest',
+                    template: 'plotly_white'
+                };
+
+                Plotly.newPlot('plotly-chart', data, layout);
+            </script>
+        </section>
+
+        <section id="practice" class="section">
+            <h2>Practice Problems</h2>
+
+            <div class="practice-problems">
+                <article class="problem">
+                    <h3>Problem 1</h3>
+                    <p>
+                        Evaluate or show that the improper integral diverges:
+                        $$\int_0^1 \frac{1}{x^{2/3}}\,dx$$
+                    </p>
+                    <details>
+                        <summary>Solution</summary>
+                        <div>
+                            <p>
+                                The discontinuity is at $x=0$ where $\frac{1}{x^{2/3}} \to \infty$.
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\int_0^1 x^{-2/3}\,dx = \lim_{t \to 0^+} \int_t^1 x^{-2/3}\,dx$$
+                            </div>
+                            <p>
+                                The antiderivative is $F(x) = \frac{x^{1/3}}{1/3} = 3x^{1/3}$. Thus:
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\lim_{t \to 0^+} [3x^{1/3}]_t^1 = \lim_{t \to 0^+} (3 - 3t^{1/3}) = 3$$
+                            </div>
+                            <p>
+                                Since $p = 2/3 < 1$, the integral <strong>converges to 3</strong>.
+                            </p>
+                        </div>
+                    </details>
+                </article>
+
+                <article class="problem">
+                    <h3>Problem 2</h3>
+                    <p>
+                        Determine convergence or divergence:
+                        $$\int_0^{\pi/2} \tan(x)\,dx$$
+                    </p>
+                    <details>
+                        <summary>Solution</summary>
+                        <div>
+                            <p>
+                                At $x = \pi/2$, $\tan(x) \to \infty$ (vertical asymptote).
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\int_0^{\pi/2} \tan(x)\,dx = \lim_{t \to (\pi/2)^-} \int_0^t \tan(x)\,dx$$
+                            </div>
+                            <p>
+                                The antiderivative is $F(x) = -\ln|\cos(x)|$. Thus:
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\lim_{t \to (\pi/2)^-} [-\ln|\cos(x)|]_0^t = \lim_{t \to (\pi/2)^-} [-\ln(\cos t) + \ln(\cos 0)]$$
+                                $$= \lim_{t \to (\pi/2)^-} [-\ln(\cos t) + \ln(1)] = -\ln(0^+) = \infty$$
+                            </div>
+                            <p>
+                                The integral <strong>diverges to infinity</strong>.
+                            </p>
+                        </div>
+                    </details>
+                </article>
+
+                <article class="problem">
+                    <h3>Problem 3</h3>
+                    <p>
+                        Evaluate:
+                        $$\int_0^4 \frac{1}{(4-x)^{1/2}}\,dx$$
+                    </p>
+                    <details>
+                        <summary>Solution</summary>
+                        <div>
+                            <p>
+                                The discontinuity is at $x=4$ (right endpoint) where the function has a vertical asymptote.
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\int_0^4 (4-x)^{-1/2}\,dx = \lim_{t \to 4^-} \int_0^t (4-x)^{-1/2}\,dx$$
+                            </div>
+                            <p>
+                                Using substitution $u = 4-x$, $du = -dx$, we get $F(x) = -2(4-x)^{1/2} = -2\sqrt{4-x}$. Thus:
+                            </p>
+                            <div style="margin:1rem 0;">
+                                $$\lim_{t \to 4^-} [-2\sqrt{4-x}]_0^t = \lim_{t \to 4^-} [-2\sqrt{4-t} + 2\sqrt{4}]$$
+                                $$= 0 + 2(2) = 4$$
+                            </div>
+                            <p>
+                                The integral <strong>converges to 4</strong>.
+                            </p>
+                        </div>
+                    </details>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <script>
+            if (typeof COURSE !== 'undefined' && COURSE.footer) {
+                var f = COURSE.footer;
+                document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+            }
+        </script>
+    </footer>
+
+    <script src="course-config.js"></script>
+    <script src="course.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var mathElements = document.querySelectorAll('.math-block, .example, .problem, p, li, h3, h4');
+            mathElements.forEach(function(el) {
+                if (el.textContent.includes('$')) {
+                    renderMathInElement(el, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ]
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

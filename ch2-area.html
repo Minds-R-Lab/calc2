@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 2.1: Area Between Curves</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch2-area.html" class="active">2.1 Area</a>
+    <a href="ch2-disk-washer.html">2.2 Disk/Washer</a>
+    <a href="ch2-shell.html">2.3 Shell</a>
+    <a href="ch2-arc-length.html">2.4 Arc Length</a>
+    <span style="color:var(--border);margin:0 0.25rem;">|</span>
+    <a href="#intro">Intro</a>
+    <a href="#theory">Theory</a>
+    <a href="#method">Method</a>
+    <a href="#examples">Examples</a>
+    <a href="#visualizer">Visualizer</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 2.1: Area Between Curves</h1>
+
+  <section id="intro">
+    <h2>Introduction</h2>
+    <p>
+      In this chapter, we extend the concept of the definite integral from finding the area under a single curve to finding the area between two curves. This is a fundamental application of integration and will lead us to volumes of solids of revolution in subsequent chapters.
+    </p>
+    <p>
+      The key insight is that the area between two curves is the integral of the difference of their functions over the interval of integration.
+    </p>
+  </section>
+
+  <section id="theory">
+    <h2>Theory</h2>
+    <p><strong>Main Formula:</strong></p>
+    <p class="math-display">
+      $$A = \int_a^b |f(x) - g(x)| \, dx$$
+    </p>
+    <p>
+      When <span class="math">$f(x) \geq g(x)$</span> on <span class="math">$[a, b]$</span>, the absolute value can be removed:
+    </p>
+    <p class="math-display">
+      $$A = \int_a^b [f(x) - g(x)] \, dx$$
+    </p>
+    <p>
+      <strong>Key Principle:</strong> Top minus bottom (for vertical integration) or right minus left (for horizontal integration).
+    </p>
+    <p>
+      <strong>Steps to solve:</strong>
+    </p>
+    <ol>
+      <li>Find intersection points by solving <span class="math">$f(x) = g(x)$</span></li>
+      <li>Determine which function is on top in each interval</li>
+      <li>Set up the integral(s) with the appropriate bounds and integrand</li>
+      <li>Evaluate the antiderivative</li>
+    </ol>
+  </section>
+
+  <section id="method">
+    <h2>Method: Finding Intersection Points and Setting Up Integrals</h2>
+    <p>
+      To find where two curves intersect, set them equal: <span class="math">$f(x) = g(x)$</span> and solve for <span class="math">$x$</span>.
+    </p>
+    <p>
+      Once you have the intersection points, you must determine which curve is above the other in each interval. This is typically done by:
+    </p>
+    <ul>
+      <li>Evaluating both functions at a test point in each interval</li>
+      <li>Comparing which value is larger</li>
+    </ul>
+    <p>
+      If the curves intersect multiple times, you may need to split the integral into multiple parts.
+    </p>
+    <p>
+      <strong>Horizontal Integration:</strong> If it's easier to express <span class="math">$x$</span> as a function of <span class="math">$y$</span>, you can integrate with respect to <span class="math">$y$</span>:
+    </p>
+    <p class="math-display">
+      $$A = \int_c^d [f(y) - g(y)] \, dy$$
+    </p>
+    <p>
+      where <span class="math">$f(y) \geq g(y)$</span> (right minus left).
+    </p>
+  </section>
+
+  <section id="examples">
+    <h2>Examples</h2>
+
+    <div class="example">
+      <h3>Example 1: Area Between $y = x^2$ and $y = x$</h3>
+      <p>
+        Find the area between the curves <span class="math">$y = x^2$</span> and <span class="math">$y = x$</span>.
+      </p>
+      <p><strong>Step 1: Find intersection points</strong></p>
+      <p class="math-display">
+        $$x^2 = x$$
+        $$x^2 - x = 0$$
+        $$x(x - 1) = 0$$
+        $$x = 0 \text{ or } x = 1$$
+      </p>
+      <p><strong>Step 2: Determine which function is on top</strong></p>
+      <p>
+        At <span class="math">$x = 0.5$</span>: <span class="math">$y = 0.5$</span> (linear) and <span class="math">$y = 0.25$</span> (quadratic). So <span class="math">$y = x$</span> is above <span class="math">$y = x^2$</span>.
+      </p>
+      <p><strong>Step 3: Set up and evaluate the integral</strong></p>
+      <p class="math-display">
+        $$A = \int_0^1 (x - x^2) \, dx$$
+        $$= \left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1$$
+        $$= \frac{1}{2} - \frac{1}{3} - 0$$
+        $$= \frac{3 - 2}{6} = \frac{1}{6}$$
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Example 2: Area Between $y = \sin x$ and $y = \cos x$ on $[0, \pi/2]$</h3>
+      <p>
+        Find the area enclosed between <span class="math">$y = \sin x$</span> and <span class="math">$y = \cos x$</span> on the interval <span class="math">$[0, \pi/2]$</span>.
+      </p>
+      <p><strong>Step 1: Find intersection points in $[0, \pi/2]$</strong></p>
+      <p class="math-display">
+        $$\sin x = \cos x$$
+        $$\tan x = 1$$
+        $$x = \frac{\pi}{4}$$
+      </p>
+      <p><strong>Step 2: Determine which function is on top</strong></p>
+      <p>
+        On <span class="math">$[0, \pi/4]$</span>: <span class="math">$\cos x \geq \sin x$</span> (e.g., at <span class="math">$x=0$</span>, <span class="math">$\cos 0 = 1 > 0 = \sin 0$</span>)
+        <br>
+        On <span class="math">$[\pi/4, \pi/2]$</span>: <span class="math">$\sin x \geq \cos x$</span> (e.g., at <span class="math">$x = \pi/2$</span>, <span class="math">$\sin(\pi/2) = 1 > 0 = \cos(\pi/2)$</span>)
+      </p>
+      <p><strong>Step 3: Set up and evaluate the integral</strong></p>
+      <p class="math-display">
+        $$A = \int_0^{\pi/4} (\cos x - \sin x) \, dx + \int_{\pi/4}^{\pi/2} (\sin x - \cos x) \, dx$$
+        $$= \left[\sin x + \cos x\right]_0^{\pi/4} + \left[-\cos x - \sin x\right]_{\pi/4}^{\pi/2}$$
+        $$= \left(\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}\right) - (0 + 1) + \left(0 - 1\right) - \left(-\frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2}\right)$$
+        $$= \sqrt{2} - 1 - 1 + \sqrt{2}$$
+        $$= 2\sqrt{2} - 2 = 2(\sqrt{2} - 1)$$
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Example 3: Area Enclosed by $x = y^2$ and $x = 4$</h3>
+      <p>
+        Find the area enclosed by the parabola <span class="math">$x = y^2$</span> and the vertical line <span class="math">$x = 4$</span>.
+      </p>
+      <p><strong>Step 1: Find intersection points</strong></p>
+      <p class="math-display">
+        $$y^2 = 4 \implies y = \pm 2$$
+      </p>
+      <p><strong>Step 2: Integrate with respect to $y$ (horizontal integration)</strong></p>
+      <p>
+        For <span class="math">$y \in [-2, 2]$</span>, the right curve is <span class="math">$x = 4$</span> and the left curve is <span class="math">$x = y^2$</span>.
+      </p>
+      <p class="math-display">
+        $$A = \int_{-2}^{2} (4 - y^2) \, dy$$
+        $$= \left[4y - \frac{y^3}{3}\right]_{-2}^{2}$$
+        $$= \left(8 - \frac{8}{3}\right) - \left(-8 + \frac{8}{3}\right)$$
+        $$= 8 - \frac{8}{3} + 8 - \frac{8}{3}$$
+        $$= 16 - \frac{16}{3} = \frac{48 - 16}{3} = \frac{32}{3}$$
+      </p>
+    </div>
+
+  </section>
+
+  <section id="visualizer">
+    <h2>Visualizer: Area Between Two Curves</h2>
+    <p>
+      The plot below shows the area between <span class="math">$y = x^2$</span> and <span class="math">$y = x$</span> shaded in blue.
+    </p>
+    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
+    <script>
+      var x = [];
+      for (var i = 0; i <= 100; i++) {
+        x.push(i / 100);
+      }
+
+      var y1 = x.map(function(xi) { return xi; });
+      var y2 = x.map(function(xi) { return xi * xi; });
+
+      var trace1 = {
+        x: x,
+        y: y1,
+        mode: 'lines',
+        name: 'y = x',
+        line: {color: 'blue', width: 2}
+      };
+
+      var trace2 = {
+        x: x,
+        y: y2,
+        mode: 'lines',
+        name: 'y = x²',
+        line: {color: 'red', width: 2},
+        fill: 'tonexty',
+        fillcolor: 'rgba(0, 0, 255, 0.3)'
+      };
+
+      var layout = {
+        title: 'Area Between y = x and y = x²',
+        xaxis: {title: 'x'},
+        yaxis: {title: 'y'},
+        hovermode: 'closest',
+        width: 700,
+        height: 500
+      };
+
+      Plotly.newPlot('plotly-chart', [trace2, trace1], layout);
+    </script>
+  </section>
+
+  <section id="practice">
+    <h2>Practice Problems</h2>
+    <div class="practice-problem">
+      <h3>Problem 1</h3>
+      <p>
+        Find the area between the curves <span class="math">$y = 2x$</span> and <span class="math">$y = x^2 - 3$</span> between their intersection points.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          First, find intersections: <span class="math">$2x = x^2 - 3 \implies x^2 - 2x - 3 = 0 \implies (x-3)(x+1) = 0$</span>, so <span class="math">$x = -1$</span> or <span class="math">$x = 3$</span>.
+        </p>
+        <p>
+          At <span class="math">$x = 0$</span>: <span class="math">$y = 0$</span> (line) vs <span class="math">$y = -3$</span> (parabola), so the line is above.
+        </p>
+        <p class="math-display">
+          $$A = \int_{-1}^{3} (2x - (x^2 - 3)) \, dx = \int_{-1}^{3} (-x^2 + 2x + 3) \, dx$$
+          $$= \left[-\frac{x^3}{3} + x^2 + 3x\right]_{-1}^{3}$$
+          $$= \left(-9 + 9 + 9\right) - \left(\frac{1}{3} + 1 - 3\right) = 9 - \frac{1}{3} + 2 = \frac{32}{3}$$
+        </p>
+      </details>
+    </div>
+
+    <div class="practice-problem">
+      <h3>Problem 2</h3>
+      <p>
+        Find the area of the region bounded by <span class="math">$y = e^x$</span>, <span class="math">$y = 0$</span>, <span class="math">$x = 0$</span>, and <span class="math">$x = 1$</span>.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          This is simply the area under the curve <span class="math">$y = e^x$</span> from 0 to 1.
+        </p>
+        <p class="math-display">
+          $$A = \int_0^1 e^x \, dx = \left[e^x\right]_0^1 = e - 1$$
+        </p>
+      </details>
+    </div>
+
+    <div class="practice-problem">
+      <h3>Problem 3</h3>
+      <p>
+        Find the area enclosed by <span class="math">$x = y^2 - 2$</span> and <span class="math">$x = y$</span>.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          Find intersections: <span class="math">$y = y^2 - 2 \implies y^2 - y - 2 = 0 \implies (y-2)(y+1) = 0$</span>, so <span class="math">$y = -1$</span> or <span class="math">$y = 2$</span>.
+        </p>
+        <p>
+          At <span class="math">$y = 0$</span>: <span class="math">$x = 0$</span> (line) vs <span class="math">$x = -2$</span> (parabola), so the line is to the right.
+        </p>
+        <p class="math-display">
+          $$A = \int_{-1}^{2} (y - (y^2 - 2)) \, dy = \int_{-1}^{2} (-y^2 + y + 2) \, dy$$
+          $$= \left[-\frac{y^3}{3} + \frac{y^2}{2} + 2y\right]_{-1}^{2}$$
+          $$= \left(-\frac{8}{3} + 2 + 4\right) - \left(\frac{1}{3} + \frac{1}{2} - 2\right) = \frac{10}{3} + \frac{1}{2} + \frac{1}{3} + 2 = 9$$
+        </p>
+      </details>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  document.querySelectorAll('.math').forEach(function(el) {
+  });
+  document.querySelectorAll('.math-display').forEach(function(el) {
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 5.1: Power Series - Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch5-power-series.html" class="active">5.1 Power Series</a>
+    <a href="ch5-taylor.html">5.2 Taylor</a>
+    <a href="ch5-applications.html">5.3 Applications</a>
+    <span style="color:var(--border);margin:0 0.25rem;">|</span>
+    <a href="#intro">Intro</a>
+    <a href="#theory">Theory</a>
+    <a href="#method">Method</a>
+    <a href="#examples">Examples</a>
+    <a href="#visualizer">Visualizer</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="intro">
+  <h1>Chapter 5.1: Power Series</h1>
+  <p>
+    A <strong>power series</strong> is a function series of the form
+    $$\sum_{n=0}^{\infty} c_n(x-a)^n = c_0 + c_1(x-a) + c_2(x-a)^2 + c_3(x-a)^3 + \cdots$$
+    where $c_n$ are constant coefficients and $a$ is the center of expansion.
+  </p>
+  <p>
+    Power series are fundamental in calculus because they allow us to represent functions as infinite polynomials.
+    Unlike other series, the convergence of a power series depends on the value of $x$. Understanding where a power
+    series converges—its <em>radius</em> and <em>interval</em> of convergence—is essential.
+  </p>
+</section>
+
+<section id="theory">
+  <h2>Theory</h2>
+
+  <h3>Radius and Interval of Convergence</h3>
+  <p>
+    Every power series $\sum_{n=0}^{\infty} c_n(x-a)^n$ has a <strong>radius of convergence</strong> $R \geq 0$ such that:
+    <ul>
+      <li>The series <strong>converges absolutely</strong> for all $x$ with $|x-a| < R$</li>
+      <li>The series <strong>diverges</strong> for all $x$ with $|x-a| > R$</li>
+      <li>At the endpoints $x = a \pm R$, the series may converge or diverge (must check)</li>
+    </ul>
+  </p>
+  <p>
+    The <strong>interval of convergence</strong> is the set of all $x$ values for which the series converges.
+    It always has the form $[a-R, a+R]$, $(a-R, a+R)$, $[a-R, a+R)$, or $(a-R, a+R]$,
+    depending on whether the endpoints converge.
+  </p>
+
+  <h3>Finding the Radius of Convergence: Ratio Test</h3>
+  <p>
+    The most common method uses the <strong>ratio test</strong>:
+    $$\lim_{n \to \infty} \left| \frac{c_{n+1}}{c_n} \right| = L$$
+  </p>
+  <p>
+    Then the radius of convergence is:
+    $$R = \frac{1}{L}$$
+    (with conventions: if $L = 0$, then $R = \infty$; if $L = \infty$, then $R = 0$).
+  </p>
+
+  <h3>Checking Endpoints</h3>
+  <p>
+    After finding $R$, substitute $x = a + R$ and $x = a - R$ into the series
+    and test for convergence using standard convergence tests (alternating series test, p-test, etc.).
+  </p>
+</section>
+
+<section id="method">
+  <h2>Method: Finding Radius and Interval of Convergence</h2>
+
+  <ol>
+    <li><strong>Apply the Ratio Test:</strong>
+      Calculate $\lim_{n \to \infty} \left|\frac{c_{n+1}(x-a)^{n+1}}{c_n(x-a)^n}\right|$
+      Simplify to get $|x-a| \cdot L$, where $L = \lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right|$.
+    </li>
+    <li><strong>Set up inequality:</strong>
+      For convergence, we need $|x-a| \cdot L < 1$, which gives $|x-a| < \frac{1}{L}$.
+      Thus $R = \frac{1}{L}$.
+    </li>
+    <li><strong>Check endpoint $x = a + R$:</strong>
+      Substitute and test the resulting series.
+    </li>
+    <li><strong>Check endpoint $x = a - R$:</strong>
+      Substitute and test the resulting series.
+    </li>
+    <li><strong>Write the interval of convergence:</strong>
+      Include endpoints if they converge; exclude if they diverge.
+    </li>
+  </ol>
+</section>
+
+<section id="examples">
+  <h2>Examples</h2>
+
+  <h3>Example 1: $\sum_{n=1}^{\infty} \frac{x^n}{n}$</h3>
+  <p><strong>Find the radius and interval of convergence.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    Here $a = 0$, $c_n = \frac{1}{n}$.
+  </p>
+  <p>
+    Apply the ratio test:
+    $$\lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right| = \lim_{n \to \infty} \frac{1/(n+1)}{1/n} = \lim_{n \to \infty} \frac{n}{n+1} = 1$$
+  </p>
+  <p>
+    Therefore $R = \frac{1}{1} = 1$, and we check $x = \pm 1$.
+  </p>
+  <p>
+    <strong>At $x = 1$:</strong> $\sum_{n=1}^{\infty} \frac{1}{n}$ is the harmonic series, which <em>diverges</em>.
+  </p>
+  <p>
+    <strong>At $x = -1$:</strong> $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ is the alternating harmonic series, which <em>converges</em>.
+  </p>
+  <p>
+    <strong>Interval of convergence:</strong> $[-1, 1)$
+  </p>
+
+  <h3>Example 2: $\sum_{n=0}^{\infty} n! \, x^n$</h3>
+  <p><strong>Find the radius and interval of convergence.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    Here $c_n = n!$.
+  </p>
+  <p>
+    Apply the ratio test:
+    $$\lim_{n \to \infty} \left|\frac{(n+1)!}{n!}\right| = \lim_{n \to \infty} (n+1) = \infty$$
+  </p>
+  <p>
+    Therefore $R = \frac{1}{\infty} = 0$. The series converges <strong>only at $x = 0$</strong>.
+  </p>
+
+  <h3>Example 3: $\sum_{n=0}^{\infty} \frac{x^n}{n!}$</h3>
+  <p><strong>Find the radius and interval of convergence.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    Here $c_n = \frac{1}{n!}$.
+  </p>
+  <p>
+    Apply the ratio test:
+    $$\lim_{n \to \infty} \left|\frac{1/(n+1)!}{1/n!}\right| = \lim_{n \to \infty} \frac{n!}{(n+1)!} = \lim_{n \to \infty} \frac{1}{n+1} = 0$$
+  </p>
+  <p>
+    Therefore $R = \frac{1}{0} = \infty$. The series converges for <strong>all $x \in \mathbb{R}$</strong>.
+  </p>
+  <p>
+    <strong>Interval of convergence:</strong> $(-\infty, \infty)$
+  </p>
+</section>
+
+<section id="visualizer">
+  <h2>Visualizer: Partial Sums of Geometric Series</h2>
+  <p>
+    Below we plot the partial sums $S_N(x) = \sum_{n=0}^{N} x^n$ for different values of $N$.
+    This is a geometric series with $a = 0$ and $c_n = 1$, converging to $\frac{1}{1-x}$ for $|x| < 1$.
+  </p>
+  <div id="plotPartialSums" style="width:100%; height:500px;"></div>
+  <p style="font-size:0.9em; color:#666; margin-top:1rem;">
+    Notice how the partial sums approximate $\frac{1}{1-x}$ better as $N$ increases,
+    but only for $|x| < 1$ (inside the radius of convergence).
+  </p>
+</section>
+
+<section id="practice">
+  <h2>Practice Problems</h2>
+
+  <div class="problem">
+    <h3>Problem 1</h3>
+    <p>
+      Find the radius and interval of convergence for $\sum_{n=1}^{\infty} \frac{(x-2)^n}{n \cdot 2^n}$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Here $a = 2$ and $c_n = \frac{1}{n \cdot 2^n}$.
+      </p>
+      <p>
+        Apply the ratio test:
+        $$\lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right| = \lim_{n \to \infty} \frac{n \cdot 2^n}{(n+1) \cdot 2^{n+1}} = \lim_{n \to \infty} \frac{n}{2(n+1)} = \frac{1}{2}$$
+      </p>
+      <p>
+        Therefore $R = \frac{1}{1/2} = 2$.
+      </p>
+      <p>
+        Check $x = 2 + 2 = 4$: $\sum_{n=1}^{\infty} \frac{2^n}{n \cdot 2^n} = \sum_{n=1}^{\infty} \frac{1}{n}$ diverges.
+      </p>
+      <p>
+        Check $x = 2 - 2 = 0$: $\sum_{n=1}^{\infty} \frac{(-2)^n}{n \cdot 2^n} = \sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ converges.
+      </p>
+      <p>
+        <strong>Interval of convergence:</strong> $[0, 4)$
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 2</h3>
+    <p>
+      Find the radius of convergence for $\sum_{n=0}^{\infty} \frac{n^2 x^n}{5^n}$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Here $c_n = \frac{n^2}{5^n}$.
+      </p>
+      <p>
+        Apply the ratio test:
+        $$\lim_{n \to \infty} \left|\frac{(n+1)^2 / 5^{n+1}}{n^2 / 5^n}\right| = \lim_{n \to \infty} \frac{(n+1)^2}{5n^2} = \frac{1}{5} \lim_{n \to \infty} \left(\frac{n+1}{n}\right)^2 = \frac{1}{5}$$
+      </p>
+      <p>
+        Therefore $R = \frac{1}{1/5} = 5$.
+      </p>
+      <p>
+        <strong>Radius of convergence:</strong> $R = 5$
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 3</h3>
+    <p>
+      Determine the interval of convergence for $\sum_{n=1}^{\infty} \frac{(-1)^n x^n}{n^2}$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Here $c_n = \frac{(-1)^n}{n^2}$.
+      </p>
+      <p>
+        Apply the ratio test (ignoring the $(-1)^n$ factor):
+        $$\lim_{n \to \infty} \left|\frac{1/(n+1)^2}{1/n^2}\right| = \lim_{n \to \infty} \frac{n^2}{(n+1)^2} = 1$$
+      </p>
+      <p>
+        Therefore $R = 1$.
+      </p>
+      <p>
+        Check $x = 1$: $\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}$ converges absolutely (p-series with $p = 2 > 1$).
+      </p>
+      <p>
+        Check $x = -1$: $\sum_{n=1}^{\infty} \frac{(-1)^n(-1)^n}{n^2} = \sum_{n=1}^{\infty} \frac{1}{n^2}$ converges absolutely.
+      </p>
+      <p>
+        <strong>Interval of convergence:</strong> $[-1, 1]$
+      </p>
+    </details>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+<script>
+});
+
+// Plot partial sums of geometric series: sum_{n=0}^{N} x^n
+function plotPartialSums() {
+  var x = [];
+  for (var i = -0.95; i <= 0.95; i += 0.05) {
+    x.push(i);
+  }
+
+  var N_values = [5, 10, 20, 50];
+  var traces = [];
+
+  N_values.forEach(function(N) {
+    var y = x.map(function(xi) {
+      var sum = 0;
+      for (var n = 0; n <= N; n++) {
+        sum += Math.pow(xi, n);
+      }
+      return sum;
+    });
+
+    traces.push({
+      x: x,
+      y: y,
+      name: 'N = ' + N,
+      type: 'scatter',
+      mode: 'lines'
+    });
+  });
+
+  // Add exact function: 1/(1-x)
+  var x_exact = [];
+  for (var i = -0.95; i <= 0.95; i += 0.05) {
+    x_exact.push(i);
+  }
+  var y_exact = x_exact.map(function(xi) {
+    return 1 / (1 - xi);
+  });
+
+  traces.push({
+    x: x_exact,
+    y: y_exact,
+    name: '1/(1-x)',
+    type: 'scatter',
+    mode: 'lines',
+    line: { width: 3, dash: 'dash' }
+  });
+
+  var layout = {
+    title: 'Partial Sums of Geometric Series: S_N(x) = Σ x^n',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'S_N(x)', range: [-5, 20] },
+    hovermode: 'closest'
+  };
+
+  Plotly.newPlot('plotPartialSums', traces, layout, { responsive: true });
+}
+
+plotPartialSums();
+</script>
+
+</body>
+</html>

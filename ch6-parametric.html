@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 6.1: Parametric Curves - Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch6-parametric.html" class="active">6.1 Parametric</a>
+    <a href="ch6-polar.html">6.2 Polar</a>
+    <a href="ch6-polar-calculus.html">6.3 Polar Calc</a>
+    <span style="color:var(--border);margin:0 0.25rem;">|</span>
+    <a href="#intro">Intro</a>
+    <a href="#theory">Theory</a>
+    <a href="#method">Method</a>
+    <a href="#examples">Examples</a>
+    <a href="#visualizer">Visualizer</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="intro">
+  <h1>Chapter 6.1: Parametric Curves</h1>
+  <p>
+    A <strong>parametric curve</strong> is a curve in the plane defined by two functions of a parameter $t$:
+    $$x = f(t), \quad y = g(t), \quad t \in [\alpha, \beta]$$
+  </p>
+  <p>
+    Instead of expressing $y$ as a function of $x$, we express both $x$ and $y$ as functions of an independent parameter.
+    This allows us to represent curves that fail the vertical line test and to naturally describe motion and time-dependent phenomena.
+  </p>
+</section>
+
+<section id="theory">
+  <h2>Theory</h2>
+
+  <h3>Derivatives of Parametric Curves</h3>
+  <p>
+    When $x$ and $y$ are given parametrically, we can find the slope of the tangent line using:
+    $$\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{g'(t)}{f'(t)}$$
+    provided $\frac{dx}{dt} \neq 0$.
+  </p>
+  <p>
+    The second derivative is:
+    $$\frac{d^2y}{dx^2} = \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{d}{dt}\left(\frac{dy}{dx}\right) / \frac{dx}{dt}$$
+  </p>
+
+  <h3>Arc Length of Parametric Curves</h3>
+  <p>
+    The arc length of a parametric curve from $t = \alpha$ to $t = \beta$ is:
+    $$L = \int_{\alpha}^{\beta} \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\,dt$$
+  </p>
+  <p>
+    This formula is analogous to the arc length formula for Cartesian curves,
+    but adapted to parametric form.
+  </p>
+
+  <h3>Tangent Lines</h3>
+  <p>
+    The equation of the tangent line to a parametric curve at $(x(t_0), y(t_0))$ is:
+    $$y - y(t_0) = \frac{dy/dt|_{t_0}}{dx/dt|_{t_0}} (x - x(t_0))$$
+    provided $\frac{dx}{dt}\big|_{t_0} \neq 0$.
+  </p>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+
+  <h3>For Finding $\frac{dy}{dx}$:</h3>
+  <ol>
+    <li>Compute $\frac{dx}{dt}$ and $\frac{dy}{dt}$ separately.</li>
+    <li>Divide: $\frac{dy}{dx} = \frac{dy/dt}{dx/dt}$</li>
+  </ol>
+
+  <h3>For Finding Arc Length:</h3>
+  <ol>
+    <li>Compute $\frac{dx}{dt}$ and $\frac{dy}{dt}$.</li>
+    <li>Form the integrand: $\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}$</li>
+    <li>Evaluate $\int_{\alpha}^{\beta} \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\,dt$</li>
+  </ol>
+
+  <h3>For Finding Tangent Lines:</h3>
+  <ol>
+    <li>Find the point $(x(t_0), y(t_0))$.</li>
+    <li>Compute the slope $\frac{dy}{dx} = \frac{dy/dt}{dx/dt}$ at $t = t_0$.</li>
+    <li>Use point-slope form: $y - y(t_0) = m(x - x(t_0))$</li>
+  </ol>
+</section>
+
+<section id="examples">
+  <h2>Examples</h2>
+
+  <h3>Example 1: The Cycloid</h3>
+  <p><strong>Study the parametric curve $x = t - \sin t$, $y = 1 - \cos t$ for $t \in [0, 2\pi]$.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    This is a <strong>cycloid</strong>, the curve traced by a point on the rim of a circle of radius 1 rolling
+    along the x-axis.
+  </p>
+  <p>
+    Derivatives:
+    $$\frac{dx}{dt} = 1 - \cos t, \quad \frac{dy}{dt} = \sin t$$
+  </p>
+  <p>
+    The slope of the tangent line:
+    $$\frac{dy}{dx} = \frac{\sin t}{1 - \cos t}$$
+  </p>
+  <p>
+    The arc length from $t = 0$ to $t = 2\pi$:
+    $$L = \int_0^{2\pi} \sqrt{(1-\cos t)^2 + \sin^2 t}\,dt$$
+  </p>
+  <p>
+    Simplifying the integrand:
+    $$(1-\cos t)^2 + \sin^2 t = 1 - 2\cos t + \cos^2 t + \sin^2 t = 2 - 2\cos t = 2(1 - \cos t)$$
+  </p>
+  <p>
+    So:
+    $$L = \int_0^{2\pi} \sqrt{2(1-\cos t)}\,dt$$
+  </p>
+  <p>
+    Using the identity $1 - \cos t = 2\sin^2(t/2)$:
+    $$L = \int_0^{2\pi} \sqrt{4\sin^2(t/2)}\,dt = \int_0^{2\pi} 2|\sin(t/2)|\,dt = 2\int_0^{2\pi} \sin(t/2)\,dt$$
+  </p>
+  <p>
+    (since $\sin(t/2) \geq 0$ for $t \in [0, 2\pi]$)
+  </p>
+  <p>
+    $$= 2 \left[-2\cos(t/2)\right]_0^{2\pi} = -4[\cos(\pi) - \cos(0)] = -4(-1 - 1) = 8$$
+  </p>
+
+  <h3>Example 2: Tangent to $x = t^2$, $y = t^3$ at $t = 1$</h3>
+  <p><strong>Find the equation of the tangent line at $t = 1$.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    Derivatives:
+    $$\frac{dx}{dt} = 2t, \quad \frac{dy}{dt} = 3t^2$$
+  </p>
+  <p>
+    At $t = 1$:
+    $$\frac{dx}{dt}\bigg|_{t=1} = 2, \quad \frac{dy}{dt}\bigg|_{t=1} = 3$$
+  </p>
+  <p>
+    Slope:
+    $$\frac{dy}{dx}\bigg|_{t=1} = \frac{3}{2}$$
+  </p>
+  <p>
+    Point on curve at $t = 1$:
+    $$x(1) = 1, \quad y(1) = 1$$
+  </p>
+  <p>
+    Tangent line equation:
+    $$y - 1 = \frac{3}{2}(x - 1)$$
+    $$y = \frac{3}{2}x - \frac{1}{2}$$
+  </p>
+
+  <h3>Example 3: Arc Length of the Unit Circle</h3>
+  <p><strong>Find the arc length of $x = \cos t$, $y = \sin t$ from $t = 0$ to $t = 2\pi$.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    Derivatives:
+    $$\frac{dx}{dt} = -\sin t, \quad \frac{dy}{dt} = \cos t$$
+  </p>
+  <p>
+    Arc length:
+    $$L = \int_0^{2\pi} \sqrt{\sin^2 t + \cos^2 t}\,dt = \int_0^{2\pi} 1\,dt = 2\pi$$
+  </p>
+  <p>
+    This confirms that the circumference of a unit circle is $2\pi$.
+  </p>
+</section>
+
+<section id="visualizer">
+  <h2>Visualizer: The Cycloid</h2>
+  <p>
+    Below we plot the cycloid defined by $x = t - \sin t$, $y = 1 - \cos t$ for $t \in [0, 4\pi]$.
+    This represents the path traced by a point on the rim of a circle of radius 1 as it rolls
+    along the x-axis for one and a half rotations.
+  </p>
+  <div id="plotCycloid" style="width:100%; height:500px;"></div>
+  <p style="font-size:0.9em; color:#666; margin-top:1rem;">
+    Notice the cusps (sharp points) where the curve touches the x-axis at $y = 0$.
+  </p>
+</section>
+
+<section id="practice">
+  <h2>Practice Problems</h2>
+
+  <div class="problem">
+    <h3>Problem 1</h3>
+    <p>
+      For the parametric curve $x = e^t \cos t$, $y = e^t \sin t$, find $\frac{dy}{dx}$ at $t = 0$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Using the product rule:
+        $$\frac{dx}{dt} = e^t \cos t - e^t \sin t = e^t(\cos t - \sin t)$$
+        $$\frac{dy}{dt} = e^t \sin t + e^t \cos t = e^t(\sin t + \cos t)$$
+      </p>
+      <p>
+        At $t = 0$:
+        $$\frac{dx}{dt}\bigg|_{t=0} = e^0(1 - 0) = 1$$
+        $$\frac{dy}{dt}\bigg|_{t=0} = e^0(0 + 1) = 1$$
+      </p>
+      <p>
+        Therefore:
+        $$\frac{dy}{dx}\bigg|_{t=0} = \frac{1}{1} = 1$$
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 2</h3>
+    <p>
+      Find the arc length of $x = \frac{t^2}{2}$, $y = \frac{t^3}{3}$ from $t = 0$ to $t = 2$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Derivatives:
+        $$\frac{dx}{dt} = t, \quad \frac{dy}{dt} = t^2$$
+      </p>
+      <p>
+        Arc length:
+        $$L = \int_0^2 \sqrt{t^2 + t^4}\,dt = \int_0^2 \sqrt{t^2(1 + t^2)}\,dt = \int_0^2 t\sqrt{1 + t^2}\,dt$$
+      </p>
+      <p>
+        Let $u = 1 + t^2$, so $du = 2t\,dt$:
+        $$L = \frac{1}{2}\int_1^5 \sqrt{u}\,du = \frac{1}{2} \cdot \frac{2}{3}u^{3/2}\bigg|_1^5 = \frac{1}{3}(5^{3/2} - 1)$$
+      </p>
+      <p>
+        $$= \frac{1}{3}(5\sqrt{5} - 1) \approx \frac{1}{3}(11.18 - 1) = \frac{10.18}{3} \approx 3.39$$
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 3</h3>
+    <p>
+      For $x = 3\cos t$, $y = 4\sin t$ (an ellipse), find the point(s) where the tangent line is horizontal.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        Derivatives:
+        $$\frac{dx}{dt} = -3\sin t, \quad \frac{dy}{dt} = 4\cos t$$
+      </p>
+      <p>
+        The tangent line is horizontal when $\frac{dy}{dx} = 0$, which occurs when $\frac{dy}{dt} = 0$ and $\frac{dx}{dt} \neq 0$.
+      </p>
+      <p>
+        $\frac{dy}{dt} = 0$ when $4\cos t = 0$, i.e., $\cos t = 0$.
+      </p>
+      <p>
+        This happens at $t = \frac{\pi}{2}$ and $t = \frac{3\pi}{2}$.
+      </p>
+      <p>
+        At $t = \frac{\pi}{2}$: $x = 0$, $y = 4$ $\to$ point $(0, 4)$
+      </p>
+      <p>
+        At $t = \frac{3\pi}{2}$: $x = 0$, $y = -4$ $\to$ point $(0, -4)$
+      </p>
+      <p>
+        <strong>Tangent lines are horizontal at $(0, 4)$ and $(0, -4)$.</strong>
+      </p>
+    </details>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+<script>
+// Plot the cycloid
+function plotCycloid() {
+  var t = [];
+  var x = [];
+  var y = [];
+
+  for (var ti = 0; ti <= 4 * Math.PI; ti += 0.05) {
+    t.push(ti);
+    x.push(ti - Math.sin(ti));
+    y.push(1 - Math.cos(ti));
+  }
+
+  var trace = {
+    x: x,
+    y: y,
+    type: 'scatter',
+    mode: 'lines',
+    line: { color: 'blue', width: 2 },
+    name: 'Cycloid'
+  };
+
+  var layout = {
+    title: 'Cycloid: x = t - sin(t), y = 1 - cos(t)',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'y' },
+    hovermode: 'closest',
+    aspectratio: { x: 1, y: 0.5 }
+  };
+
+  Plotly.newPlot('plotCycloid', [trace], layout, { responsive: true });
+}
+
+plotCycloid();
+</script>
+
+</body>
+</html>

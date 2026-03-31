@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Study Calculus II? | Calculus II</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --primary: #2563eb; --primary-light: #dbeafe; --primary-dark: #1e40af;
+    --accent: #7c3aed; --accent-light: #ede9fe;
+    --success: #059669; --success-light: #d1fae5;
+    --warning: #d97706; --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --text-muted: #64748b;
+    --border: #e2e8f0; --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 17px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); padding: 0 2rem;
+    display: flex; align-items: center; height: 60px; box-shadow: var(--shadow);
+  }
+  nav .logo a { font-weight: 700; font-size: 1.15rem; color: var(--primary); text-decoration: none; margin-right: 2rem; white-space: nowrap; }
+  nav .nav-links { display: flex; gap: 0.25rem; overflow-x: auto; }
+  nav .nav-links a {
+    text-decoration: none; color: var(--text-muted); padding: 0.4rem 0.85rem;
+    border-radius: 8px; font-size: 0.88rem; font-weight: 500; white-space: nowrap; transition: all 0.2s;
+  }
+  nav .nav-links a:hover, nav .nav-links a.active { background: var(--primary-light); color: var(--primary); }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 80px 1.5rem 3rem; }
+
+  /* Hero */
+  .page-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #7c3aed 100%);
+    color: #fff; border-radius: var(--radius); padding: 3rem 2.5rem; margin-bottom: 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0; opacity: 0.06;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='20' cy='20' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .page-hero h1 { font-size: 2.4rem; font-weight: 800; position: relative; margin-bottom: 0.5rem; }
+  .page-hero p { font-size: 1.1rem; opacity: 0.9; position: relative; max-width: 650px; }
+
+  section { background: var(--card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; border-bottom: 3px solid var(--primary); padding-bottom: 0.5rem; display: inline-block; }
+  h3 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--accent); }
+  p { margin-bottom: 1rem; }
+
+  .quote-box {
+    background: linear-gradient(135deg, #fefce8, #fef9c3); border-left: 5px solid var(--warning);
+    border-radius: var(--radius); padding: 1.5rem 1.5rem 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; position: relative;
+  }
+  .quote-box::before { content: '\201C'; font-size: 4rem; color: var(--warning); opacity: 0.3; position: absolute; top: -0.2rem; left: 0.5rem; font-family: Georgia, serif; }
+  .quote-box .attribution { font-style: normal; font-weight: 600; color: var(--warning); margin-top: 0.5rem; font-size: 0.95rem; }
+
+  .definition-box { background: var(--primary-light); border-left: 5px solid var(--primary); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .tip-box { background: #f0f9ff; border-left: 5px solid #0ea5e9; border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .warning-box { background: var(--warning-light); border-left: 5px solid var(--warning); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .box-label { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .definition-box .box-label { color: var(--primary); }
+  .tip-box .box-label { color: #0ea5e9; }
+
+  .math-display { background: #f1f5f9; border-radius: 8px; padding: 1.2rem; text-align: center; margin: 1rem 0; font-size: 1.1em; overflow-x: auto; }
+
+  /* Example cards */
+  .example-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+  @media (min-width: 768px) { .example-grid { grid-template-columns: repeat(2, 1fr); } }
+  .example-card {
+    background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .example-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .example-card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .example-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+  .example-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .example-card .equation { background: #f8fafc; border-radius: 8px; padding: 0.75rem; text-align: center; margin-top: 0.5rem; }
+  .example-card .takeaway { font-size: 0.9rem; color: var(--primary); font-weight: 600; margin-top: 0.75rem; }
+
+  .plot-container { width: 100%; min-height: 380px; border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2.5rem; margin: 1.5rem 0; }
+  .timeline::before { content: ''; position: absolute; left: 0.75rem; top: 0; bottom: 0; width: 3px; background: var(--primary-light); border-radius: 2px; }
+  .timeline-item { position: relative; margin-bottom: 1.5rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.15rem; top: 0.4rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--primary); border: 3px solid var(--primary-light);
+  }
+  .timeline-item .year { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+  .timeline-item .event { margin-top: 0.15rem; }
+
+  /* Comparison grid */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .compare-card {
+    background: #fff; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 1.25rem; text-align: center;
+  }
+  .compare-card h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .compare-card .eq { background: #f1f5f9; border-radius: 8px; padding: 0.75rem; margin: 0.5rem 0; }
+  .compare-card .desc { font-size: 0.9rem; color: var(--text-muted); }
+  @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+
+  @media (max-width: 640px) {
+    .page-hero h1 { font-size: 1.7rem; }
+    section { padding: 1.5rem; }
+  }
+</style>
+<script src="course.js"></script>
+<script src="course-config.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="why-study.html" class="active">Why Study?</a>
+    <a href="exam-generator.html">Exam Generator</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- Hero -->
+<div class="page-hero">
+  <h1>Why Study Calculus II?</h1>
+  <p>The mathematical toolkit that powers engineering, physics, and data science.</p>
+</div>
+
+<!-- Opening Motivation -->
+<section>
+  <h2>The Big Picture</h2>
+
+  <p>
+    You've completed Calculus I, where you learned to find rates of change (derivatives) and to compute areas under curves (integrals). You might think: "We're done—I can compute any integral I want!" But here's the truth: most integrals you'll encounter in the real world can't be solved with the basic techniques from Calc 1.
+  </p>
+
+  <p>
+    Calculus II teaches you advanced strategies to tackle these harder integrals. It also introduces infinite series—a revolutionary idea: any smooth function can be represented as an infinite polynomial. This means we can approximate $\sin(x)$, $e^x$, and the normal distribution as power series, enabling computers to calculate them instantly. Integration techniques solve problems Calculus I couldn't touch. Series let us represent complex functions as infinite polynomials. Together, these concepts are the backbone of modern science and engineering.
+  </p>
+
+  <p>
+    Whether you're designing aircraft wings, analyzing electrical circuits, modeling population growth, or training machine learning algorithms, you'll rely on the techniques in this course. Calculus II is where the real power of mathematics becomes tangible.
+  </p>
+
+  <div class="quote-box">
+    "The essence of mathematics is not to make simple things complicated, but to make complicated things simple."
+    <div class="attribution">— S. Gudder</div>
+  </div>
+
+  <p>
+    In this course, you will master advanced integration techniques, understand when infinite processes produce finite results, and see how these ideas connect to geometry, physics, and data science. These skills will serve you across virtually every technical field.
+  </p>
+</section>
+
+<!-- Core Concepts -->
+<section>
+  <h2>Core Concepts</h2>
+
+  <h3>Concept 1: Advanced Integration Techniques</h3>
+  <div class="definition-box">
+    <div class="box-label">Definition</div>
+    <p>
+      Integration by parts, trigonometric substitution, and partial fractions are systematic methods to antidifferentiate functions that resist basic techniques. Each technique transforms a difficult integral into one you can solve.
+    </p>
+  </div>
+  <p>
+    In Calculus I, you learned that $\int x \, dx = \frac{x^2}{2} + C$ and $\int \sin(x) \, dx = -\cos(x) + C$. But what about $\int x \sin(x) \, dx$ or $\int \frac{1}{x^2 - 1} \, dx$? Integration by parts lets you "undo" the product rule, allowing you to solve products of functions. Trigonometric substitution uses identities like $\sin^2\theta + \cos^2\theta = 1$ to simplify integrands with square roots. Partial fractions decomposes rational functions into pieces you can integrate term by term. These techniques expand what's solvable from a handful of functions to thousands.
+  </p>
+
+  <h3>Concept 2: Infinite Series — Representing Functions as Polynomials</h3>
+  <p>
+    A power series $\sum_{n=0}^{\infty} a_n (x - c)^n$ is an infinite polynomial. Remarkably, many functions can be written as power series: the sine function is $\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \ldots$. This means instead of computing transcendental functions exactly, computers can sum the first 10-20 terms of this series and get results accurate to trillions of decimal places. Taylor and Maclaurin series provide recipes to build these representations for any function. The Fourier series does something even more amazing: it represents periodic functions (like sound waves and electrical signals) as sums of sines and cosines—the foundation of signal processing and modern communications.
+  </p>
+
+  <h3>Concept 3: Convergence — When Infinite Processes Yield Finite Results</h3>
+  <p>
+    Not every infinite series converges to a number. The series $1 + 1 + 1 + \ldots$ diverges to infinity, while $1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots$ converges to 2. Understanding convergence is crucial: if a series doesn't converge, using it to approximate a function is meaningless. Tests like the ratio test, comparison test, and integral test let you determine whether a series converges before you compute its sum. Convergence also applies to improper integrals: does $\int_0^{\infty} e^{-x} \, dx$ produce a finite value? (Yes: it equals 1.) These ideas underpin probability theory, statistics, and numerical methods.
+  </p>
+</section>
+
+<!-- Real-World Applications -->
+<section>
+  <h2>Real-World Applications</h2>
+
+  <p>The techniques you'll learn have direct applications across science and engineering:</p>
+
+  <div class="example-grid">
+    <div class="example-card">
+      <div class="icon">⚙️</div>
+      <h4>Physics: Work, Center of Mass & Pressure</h4>
+      <p>Work done by a variable force is $W = \int F(x) \, dx$. Finding the center of mass of an irregular object requires integrals. Fluid pressure on a dam involves integrating force over depth. Calculus II techniques make these calculations tractable.</p>
+      <div class="equation">$$W = \int_a^b F(x) \, dx$$</div>
+      <div class="takeaway">✓ Integration strategies solve real physical problems</div>
+    </div>
+
+    <div class="example-card">
+      <div class="icon">📡</div>
+      <h4>Engineering: Signal Processing & Fourier Series</h4>
+      <p>Audio signals, radio waves, and electrical currents are periodic. Fourier series (built on power series foundations) decompose these signals into pure frequencies, enabling compression (MP3), filtering, and transmission. Modern wireless communication relies entirely on this mathematical framework.</p>
+      <div class="equation">$$f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n \cos(nx) + b_n \sin(nx))$$</div>
+      <div class="takeaway">✓ Series approximations power modern communications</div>
+    </div>
+
+    <div class="example-card">
+      <div class="icon">📊</div>
+      <h4>Statistics & Probability: Normal Distribution</h4>
+      <p>The normal distribution—ubiquitous in data science—is defined by the function $f(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$. Computing probabilities requires integrating this function. Convergence theory ensures improper integrals over $(-\infty, \infty)$ produce meaningful results.</p>
+      <div class="equation">$$P(a \leq X \leq b) = \int_a^b \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx$$</div>
+      <div class="takeaway">✓ Calculus II underpins statistical inference</div>
+    </div>
+
+    <div class="example-card">
+      <div class="icon">💻</div>
+      <h4>Computer Science: Approximation & Machine Learning</h4>
+      <p>Calculators compute $\sin(x)$ using Taylor series. Machine learning uses gradient descent (which relies on derivatives integrated over training data). Numerical integration approximates integrals too complex to solve analytically. Series approximations are everywhere in computational mathematics.</p>
+      <div class="equation">$$e^x \approx 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$$</div>
+      <div class="takeaway">✓ Series power computational algorithms</div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Visualization -->
+<section>
+  <h2>Visualization: Taylor Series Convergence for sin(x)</h2>
+  <p>Below, you see the sine function (black curve) approximated by its Taylor series with progressively more terms. As we add terms, the polynomial approximation (colored curves) hugs the sine wave more tightly. This is convergence in action—the infinite series approaches the true function as $n \to \infty$.</p>
+
+  <div class="plot-container" id="taylor-plot"></div>
+
+  <script>
+    // Generate sin(x) and Taylor series approximations
+    var x = [];
+    for (var i = -2*Math.PI; i <= 2*Math.PI; i += 0.05) {
+      x.push(i);
+    }
+
+    // True sine function
+    var trueY = x.map(function(t) { return Math.sin(t); });
+
+    // Taylor series approximations centered at 0
+    function taylorSin(x, n) {
+      var result = 0;
+      for (var k = 0; k <= n; k++) {
+        var sign = k % 2 === 0 ? 1 : -1;
+        result += sign * Math.pow(x, 2*k + 1) / this.factorial(2*k + 1);
+      }
+      return result;
+    }
+
+    var factorial = function(n) {
+      var result = 1;
+      for (var i = 2; i <= n; i++) result *= i;
+      return result;
+    };
+
+    var tay1 = x.map(function(t) { return t; });
+    var tay3 = x.map(function(t) { return t - Math.pow(t, 3)/6; });
+    var tay5 = x.map(function(t) { return t - Math.pow(t, 3)/6 + Math.pow(t, 5)/120; });
+    var tay7 = x.map(function(t) { return t - Math.pow(t, 3)/6 + Math.pow(t, 5)/120 - Math.pow(t, 7)/5040; });
+
+    var trace_true = {
+      x: x,
+      y: trueY,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'sin(x)',
+      line: { color: '#000', width: 3 }
+    };
+
+    var trace1 = {
+      x: x,
+      y: tay1,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'n=1 (linear)',
+      line: { color: '#ef4444', width: 2, dash: 'dash' }
+    };
+
+    var trace3 = {
+      x: x,
+      y: tay3,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'n=3 (cubic)',
+      line: { color: '#f97316', width: 2, dash: 'dash' }
+    };
+
+    var trace5 = {
+      x: x,
+      y: tay5,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'n=5 (5th degree)',
+      line: { color: '#3b82f6', width: 2, dash: 'dash' }
+    };
+
+    var trace7 = {
+      x: x,
+      y: tay7,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'n=7 (7th degree)',
+      line: { color: '#7c3aed', width: 2, dash: 'dash' }
+    };
+
+    var layout = {
+      title: 'Taylor Series Approximations of sin(x)',
+      xaxis: { title: 'x', zeroline: true },
+      yaxis: { title: 'y', zeroline: true },
+      plot_bgcolor: '#f8fafc',
+      paper_bgcolor: '#ffffff',
+      hovermode: 'closest',
+      legend: { x: 0.02, y: 0.98 }
+    };
+
+    Plotly.newPlot('taylor-plot', [trace_true, trace1, trace3, trace5, trace7], layout, { responsive: true });
+  </script>
+</section>
+
+<!-- Historical Context -->
+<section>
+  <h2>Historical Development</h2>
+
+  <p>
+    The development of Calculus II spanned centuries, with contributions from the world's greatest mathematicians. Understanding this history illuminates why these concepts matter so deeply.
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="year">1660s–1680s</div>
+      <div class="event">
+        <strong>Newton & Leibniz Invent Calculus</strong>
+        <p>Isaac Newton and Gottfried Leibniz independently develop the calculus (derivatives and basic integrals). Leibniz's notation ($\int$, $d$) is what we use today.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="year">1700s</div>
+      <div class="event">
+        <strong>Euler's Series Expansions</strong>
+        <p>Leonhard Euler develops formulas for representing functions as infinite series. His most famous: $e^{i\theta} = \cos\theta + i\sin\theta$, connecting exponentials and trigonometry through series.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="year">1800s</div>
+      <div class="event">
+        <strong>Fourier, Cauchy & Weierstrass Rigorize Series</strong>
+        <p>Joseph Fourier develops Fourier series. Augustin-Louis Cauchy and Karl Weierstrass provide rigorous definitions of convergence, ensuring that infinite series actually mean something mathematically.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="year">1900s–Present</div>
+      <div class="event">
+        <strong>Computational Mathematics & Modern Applications</strong>
+        <p>Computers enable numerical integration and series computations at scale. Calculus II techniques become the foundation of signal processing, machine learning, quantum mechanics, and data science.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    "Mathematics is not about numbers, equations, computations, or algorithms: it is about understanding."
+    <div class="attribution">— William Paul Thurston, Fields Medalist</div>
+  </div>
+</section>
+
+<!-- Comparison: This Course vs. Others -->
+<section>
+  <h2>How This Course Fits In</h2>
+
+  <p>
+    Calculus II is the natural continuation of Calculus I, and it opens the door to advanced mathematics and science. Understanding your place in the curriculum helps you appreciate what you're building toward.
+  </p>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4 style="color: #059669;">← Prerequisites</h4>
+      <div class="eq">Calculus I: Limits, Derivatives, Basic Integration</div>
+      <p class="desc">You master the fundamentals and basic techniques.</p>
+    </div>
+    <div class="compare-card">
+      <h4 style="color: #2563eb;">This Course →</h4>
+      <div class="eq">Calculus II: Advanced Integration & Series</div>
+      <p class="desc">You are here. Expanding your toolkit.</p>
+    </div>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4 style="color: #7c3aed;">This Course →</h4>
+      <div class="eq">Calculus II: Advanced Integration & Series</div>
+      <p class="desc">Master integration techniques and series foundations.</p>
+    </div>
+    <div class="compare-card">
+      <h4 style="color: #d97706;">Next Courses →</h4>
+      <div class="eq">Multivariable Calc, Differential Equations, Linear Algebra</div>
+      <p class="desc">These advanced courses build directly on Calc II.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Learning Outcomes -->
+<section>
+  <h2>What You'll Achieve</h2>
+
+  <p>By the end of this course, you will be able to:</p>
+
+  <div class="definition-box">
+    <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+      <li><strong>Master Integration Techniques:</strong> Apply integration by parts, trigonometric substitution, partial fractions, and other strategies to solve integrals beyond basic methods</li>
+      <li><strong>Understand Convergence:</strong> Determine whether sequences, series, and improper integrals converge or diverge using rigorous tests</li>
+      <li><strong>Represent Functions as Series:</strong> Construct Taylor, Maclaurin, and Fourier series; understand when and why they converge to functions</li>
+      <li><strong>Apply Calculus to Geometry:</strong> Calculate arc lengths, surface areas, and volumes of solids of revolution using integration</li>
+      <li><strong>Work with Parametric & Polar Curves:</strong> Analyze and integrate curves defined parametrically or in polar coordinates</li>
+      <li><strong>Connect Theory to Practice:</strong> Recognize where Calculus II concepts appear in physics, engineering, statistics, and computer science</li>
+    </ul>
+  </div>
+
+  <p>
+    These skills are highly valued by employers and are essential for success in engineering, physics, mathematics, finance, and data science. A strong foundation in Calculus II makes advanced mathematics far more accessible.
+  </p>
+</section>
+
+<!-- Encouragement -->
+<section>
+  <h2>Final Thoughts</h2>
+
+  <p>
+    Learning Calculus II requires genuine effort and persistence. The material is more challenging than Calculus I—integration problems can be tricky, series tests require careful logic, and concepts like convergence are abstract. But this difficulty is a feature, not a bug. The deeper you push through the material, the more profound your understanding becomes.
+  </p>
+
+  <div class="tip-box">
+    <div class="box-label">Remember</div>
+    <p>
+      Mathematics is not a spectator sport. You learn by actively working through problems, making mistakes, and learning from them. Don't just watch examples—solve problems yourself. When you hit a tough integral, try multiple approaches. When a series test seems mysterious, work through it step by step until it clicks. This struggle is where real understanding grows.
+    </p>
+  </div>
+
+  <p>
+    You're entering a course that has shaped the thinking of scientists and engineers for over 300 years. The techniques you'll learn are genuinely powerful. They'll give you the ability to solve problems that seemed impossible before. You'll see functions in a new light—not just as curves on a graph, but as infinite polynomials, as sums of simpler functions, as tools that unlock deep truths about the world.
+  </p>
+
+  <p>
+    We're excited to work with you on this journey. Let's get started!
+  </p>
+</section>
+
+</div>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <title>Chapter 4.1: Sequences - Calculus II</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">Calc 2</a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="ch4-sequences.html" class="active">4.1 Sequences</a>
+            <a href="ch4-series.html">4.2 Series</a>
+            <a href="ch4-integral-comparison.html">4.3 Int/Comp Test</a>
+            <a href="ch4-alternating.html">4.4 Alternating</a>
+            <a href="ch4-ratio-root.html">4.5 Ratio/Root</a>
+            <span style="color:var(--border);margin:0 0.25rem;">|</span>
+            <a href="#intro">Intro</a>
+            <a href="#theory">Theory</a>
+            <a href="#method">Method</a>
+            <a href="#examples">Examples</a>
+            <a href="#visualizer">Visualizer</a>
+            <a href="#practice">Practice</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Chapter 4.1: Sequences</h1>
+
+        <!-- Introduction Section -->
+        <section id="intro" class="chapter-section">
+            <h2>Introduction</h2>
+            <p>
+                A <strong>sequence</strong> is a list of numbers arranged in a definite order. Sequences form the foundation
+                for studying infinite series and are essential for understanding convergence and limits in calculus.
+            </p>
+            <p>
+                In this chapter, we explore:
+            </p>
+            <ul>
+                <li>Formal definition of sequences and their limits</li>
+                <li>Key theorems: Squeeze Theorem and Monotone Convergence Theorem</li>
+                <li>Bounded and monotonic sequences</li>
+                <li>Practical examples of important sequences</li>
+            </ul>
+        </section>
+
+        <!-- Theory Section -->
+        <section id="theory" class="chapter-section">
+            <h2>Theory</h2>
+
+            <h3>Definition of a Sequence</h3>
+            <p>
+                A <strong>sequence</strong> is a function \(a_n\) where \(n\) is a positive integer. We write it as
+                \(\{a_n\}_{n=1}^{\infty}\) or simply \(\{a_n\}\).
+            </p>
+            <p>
+                A sequence \(\{a_n\}\) <strong>converges to</strong> \(L\) if for every \(\varepsilon > 0\),
+                there exists \(N\) such that whenever \(n > N\), we have:
+            </p>
+            <p style="text-align: center; font-size: 1.1em;">
+                \(|a_n - L| < \varepsilon\)
+            </p>
+            <p>
+                We write \(\lim_{n \to \infty} a_n = L\) or \(a_n \to L\).
+            </p>
+
+            <h3>Squeeze Theorem</h3>
+            <p>
+                If \(\{a_n\}\), \(\{b_n\}\), and \(\{c_n\}\) are sequences such that
+                \(a_n \le b_n \le c_n\) for all \(n\) beyond some point, and if
+                \(\lim_{n \to \infty} a_n = L = \lim_{n \to \infty} c_n\),
+                then \(\lim_{n \to \infty} b_n = L\).
+            </p>
+
+            <h3>Monotone Convergence Theorem</h3>
+            <p>
+                A sequence that is <strong>monotone</strong> (always increasing or always decreasing) and
+                <strong>bounded</strong> must converge.
+            </p>
+            <ul>
+                <li><strong>Monotone increasing:</strong> \(a_n \le a_{n+1}\) for all \(n\)</li>
+                <li><strong>Monotone decreasing:</strong> \(a_n \ge a_{n+1}\) for all \(n\)</li>
+                <li><strong>Bounded above:</strong> \(a_n \le M\) for some \(M\)</li>
+                <li><strong>Bounded below:</strong> \(a_n \ge m\) for some \(m\)</li>
+            </ul>
+
+            <h3>Bounded and Monotonic Sequences</h3>
+            <p>
+                A sequence is:
+            </p>
+            <ul>
+                <li><strong>Bounded:</strong> if there exist numbers \(m\) and \(M\) such that \(m \le a_n \le M\) for all \(n\)</li>
+                <li><strong>Monotonically increasing:</strong> if \(a_n \le a_{n+1}\) for all \(n\)</li>
+                <li><strong>Monotonically decreasing:</strong> if \(a_n \ge a_{n+1}\) for all \(n\)</li>
+            </ul>
+            <p>
+                The key result: A monotone sequence converges if and only if it is bounded.
+            </p>
+        </section>
+
+        <!-- Method Section -->
+        <section id="method" class="chapter-section">
+            <h2>Method: Finding Limits of Sequences</h2>
+
+            <h3>General Approach</h3>
+            <ol>
+                <li><strong>Analyze the formula:</strong> Look for patterns and dominant terms</li>
+                <li><strong>Apply algebraic techniques:</strong> Factor, divide by largest power, rationalize</li>
+                <li><strong>Use known limits:</strong> e.g., \(\lim_{n \to \infty} n^{1/n} = 1\), \(\lim_{n \to \infty} (1 + 1/n)^n = e\)</li>
+                <li><strong>Apply theorems:</strong> Squeeze, Monotone Convergence, etc.</li>
+                <li><strong>Conclude:</strong> State the limit or show divergence</li>
+            </ol>
+
+            <h3>Key Limits to Remember</h3>
+            <ul>
+                <li>\(\lim_{n \to \infty} \frac{1}{n^p} = 0\) for any \(p > 0\)</li>
+                <li>\(\lim_{n \to \infty} c^{1/n} = 1\) for any \(c > 0\)</li>
+                <li>\(\lim_{n \to \infty} n^{1/n} = 1\)</li>
+                <li>\(\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e\)</li>
+                <li>\(\lim_{n \to \infty} r^n = 0\) if \(|r| < 1\)</li>
+            </ul>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="chapter-section">
+            <h2>Examples</h2>
+
+            <h3>Example 1: \(a_n = \frac{n}{n+1}\)</h3>
+            <p>
+                Find \(\lim_{n \to \infty} \frac{n}{n+1}\).
+            </p>
+            <p>
+                <strong>Solution:</strong> Divide numerator and denominator by \(n\):
+            </p>
+            <p style="text-align: center; font-size: 1.05em;">
+                \(\lim_{n \to \infty} \frac{n}{n+1} = \lim_{n \to \infty} \frac{1}{1 + \frac{1}{n}} = \frac{1}{1+0} = 1\)
+            </p>
+            <p>
+                As \(n\) increases, the sequence approaches 1.
+            </p>
+
+            <h3>Example 2: \(a_n = \frac{(-1)^n}{n}\)</h3>
+            <p>
+                Find \(\lim_{n \to \infty} \frac{(-1)^n}{n}\).
+            </p>
+            <p>
+                <strong>Solution:</strong> We have:
+            </p>
+            <ul>
+                <li>When \(n\) is odd: \(a_n = -\frac{1}{n}\)</li>
+                <li>When \(n\) is even: \(a_n = \frac{1}{n}\)</li>
+            </ul>
+            <p>
+                Both subsequences approach 0. By the Squeeze Theorem, \(-\frac{1}{n} \le \frac{(-1)^n}{n} \le \frac{1}{n}\) and since both
+                bounds approach 0, we have:
+            </p>
+            <p style="text-align: center; font-size: 1.05em;">
+                \(\lim_{n \to \infty} \frac{(-1)^n}{n} = 0\)
+            </p>
+
+            <h3>Example 3: \(a_n = \left(1 + \frac{1}{n}\right)^n\)</h3>
+            <p>
+                Find \(\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n\).
+            </p>
+            <p>
+                <strong>Solution:</strong> This is one of the most important limits in calculus. It is the definition of the number \(e\):
+            </p>
+            <p style="text-align: center; font-size: 1.1em;">
+                \(\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e \approx 2.71828\)
+            </p>
+            <p>
+                This fundamental constant appears throughout mathematics, physics, and engineering.
+            </p>
+        </section>
+
+        <!-- Visualizer Section -->
+        <section id="visualizer" class="chapter-section">
+            <h2>Interactive Visualizer</h2>
+            <p>The scatter plot below shows how sequence terms approach their limits:</p>
+            <div id="sequencePlot" style="width:100%;height:500px;"></div>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
+                Blue: \(a_n = \frac{n}{n+1}\) (limit = 1) | Red: \(a_n = \frac{(-1)^n}{n}\) (limit = 0) | Green: \(a_n = \left(1+\frac{1}{n}\right)^n\) (limit = e)
+            </p>
+        </section>
+
+        <!-- Practice Section -->
+        <section id="practice" class="chapter-section">
+            <h2>Practice Problems</h2>
+
+            <div class="practice-problem">
+                <h3>Problem 1</h3>
+                <p>
+                    Find \(\lim_{n \to \infty} \frac{3n^2 + 2n}{5n^2 - 1}\).
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        Divide numerator and denominator by \(n^2\):
+                    </p>
+                    <p style="text-align: center;">
+                        \(\lim_{n \to \infty} \frac{3n^2 + 2n}{5n^2 - 1} = \lim_{n \to \infty} \frac{3 + \frac{2}{n}}{5 - \frac{1}{n^2}} = \frac{3 + 0}{5 - 0} = \frac{3}{5}\)
+                    </p>
+                </details>
+            </div>
+
+            <div class="practice-problem">
+                <h3>Problem 2</h3>
+                <p>
+                    Determine whether the sequence \(a_n = \frac{\sin(n)}{n}\) converges, and if so, find the limit.
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        Since \(|\sin(n)| \le 1\) for all \(n\), we have:
+                    </p>
+                    <p style="text-align: center;">
+                        \(-\frac{1}{n} \le \frac{\sin(n)}{n} \le \frac{1}{n}\)
+                    </p>
+                    <p>
+                        By the Squeeze Theorem, since \(\lim_{n \to \infty} \frac{1}{n} = 0\) and \(\lim_{n \to \infty} -\frac{1}{n} = 0\), we have:
+                    </p>
+                    <p style="text-align: center;">
+                        \(\lim_{n \to \infty} \frac{\sin(n)}{n} = 0\)
+                    </p>
+                </details>
+            </div>
+
+            <div class="practice-problem">
+                <h3>Problem 3</h3>
+                <p>
+                    Is the sequence \(a_n = \frac{(-1)^{n+1} \cdot n}{n+1}\) monotonic? Is it bounded?
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        <strong>Monotonicity:</strong> The sequence is not monotonic because it alternates in sign:
+                    </p>
+                    <ul>
+                        <li>\(a_1 = \frac{1}{2}\)</li>
+                        <li>\(a_2 = -\frac{2}{3}\)</li>
+                        <li>\(a_3 = \frac{3}{4}\)</li>
+                    </ul>
+                    <p>
+                        <strong>Boundedness:</strong> Yes, it is bounded. For all \(n\):
+                    </p>
+                    <p style="text-align: center;">
+                        \(\left|\frac{(-1)^{n+1} \cdot n}{n+1}\right| = \frac{n}{n+1} < 1\)
+                    </p>
+                    <p>
+                        So \(-1 < a_n < 1\) for all \(n\).
+                    </p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <script>
+            if (typeof COURSE !== 'undefined' && COURSE.footer) {
+                var f = COURSE.footer;
+                document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+            }
+        </script>
+    </footer>
+
+    <script src="course-config.js"></script>
+    <script src="course.js"></script>
+    <script>
+        // Generate sequence data
+        var n = [];
+        var seq1 = [];
+        var seq2 = [];
+        var seq3 = [];
+
+        for (var i = 1; i <= 50; i++) {
+            n.push(i);
+            seq1.push(i / (i + 1));
+            seq2.push(Math.pow(-1, i) / i);
+            seq3.push(Math.pow(1 + 1/i, i));
+        }
+
+        // Create traces
+        var trace1 = {
+            x: n,
+            y: seq1,
+            mode: 'markers',
+            name: 'a_n = n/(n+1)',
+            marker: { color: 'rgb(31, 119, 180)', size: 6 }
+        };
+
+        var trace2 = {
+            x: n,
+            y: seq2,
+            mode: 'markers',
+            name: 'a_n = (-1)^n / n',
+            marker: { color: 'rgb(255, 127, 14)', size: 6 }
+        };
+
+        var trace3 = {
+            x: n,
+            y: seq3,
+            mode: 'markers',
+            name: 'a_n = (1 + 1/n)^n',
+            marker: { color: 'rgb(44, 160, 44)', size: 6 }
+        };
+
+        var layout = {
+            title: 'Convergence of Sequences',
+            xaxis: { title: 'n' },
+            yaxis: { title: 'a_n' },
+            hovermode: 'closest',
+            plot_bgcolor: 'rgb(245, 245, 245)',
+            paper_bgcolor: 'white'
+        };
+
+        Plotly.newPlot('sequencePlot', [trace1, trace2, trace3], layout, {responsive: true});
+    </script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Course Template</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script src="course-config.js"></script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  }
+
+  /* Top Navigation */
+  nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:1000;padding:0.6rem 1.5rem;display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;}
+  nav a{text-decoration:none;color:var(--text-muted);font-weight:500;transition:color 0.2s;}
+  nav a:hover{color:var(--primary);}
+  nav .brand{font-weight:800;color:var(--primary);font-size:1.05rem;letter-spacing:-0.02em;}
+  nav .active{color:var(--accent);font-weight:700;}
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 35%, #3b82f6 65%, #7c3aed 100%);
+    color: #fff; padding: 0; text-align: center;
+    position: relative; overflow: hidden; min-height: 520px;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 50%, rgba(59,130,246,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 350px at 80% 40%, rgba(124,58,237,0.15) 0%, transparent 70%);
+  }
+  .hero-inner {
+    position: relative; z-index: 2; max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    gap: 2rem; padding: 3rem 2rem 2.5rem; min-height: 520px;
+  }
+  .hero-left { text-align: left; }
+  .hero-right { display: flex; justify-content: center; align-items: center; }
+  .hero .badge {
+    display: inline-block; background: rgba(255,255,255,0.12); padding: 0.35rem 1.2rem;
+    border-radius: 20px; font-size: 0.9rem; margin-bottom: 1.25rem;
+    backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);
+  }
+  .hero h1 {
+    font-size: 3.2rem; font-weight: 800; margin-bottom: 0.3rem;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .hero h1 .course-word {
+    display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem;
+  }
+  .hero h1 .highlight {
+    background: linear-gradient(90deg, #60a5fa, #a78bfa, #f9a8d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-size: 1.15rem; opacity: 0.85; max-width: 500px; margin: 1rem 0 0; line-height: 1.6;
+  }
+
+  /* Instructor Card */
+  .hero-instructor {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: 1.5rem; padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.08); border-radius: 16px;
+    backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
+    max-width: 420px;
+  }
+  .hero-instructor img {
+    width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+    border: 2.5px solid rgba(255,255,255,0.4); flex-shrink: 0;
+  }
+  .hero-instructor .initials-fallback {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #3b82f6, #7c3aed);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; font-weight: 800; color: #fff;
+    border: 2.5px solid rgba(255,255,255,0.4);
+  }
+  .hero-instructor .info h3 { font-size: 1.05rem; font-weight: 700; }
+  .hero-instructor .info .role { font-size: 0.85rem; color: #93c5fd; font-weight: 500; }
+  .hero-instructor .info .dept { font-size: 0.8rem; opacity: 0.65; margin-top: 0.1rem; }
+  .hero-instructor .info .email { font-size: 0.8rem; margin-top: 0.25rem; }
+  .hero-instructor .info .email a { color: #93c5fd; text-decoration: none; }
+
+  /* Stats bar */
+  .hero-stats {
+    display: flex; gap: 0; margin-top: 2rem; max-width: 420px;
+    background: rgba(255,255,255,0.06); border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
+    backdrop-filter: blur(8px);
+  }
+  .hero-stat {
+    flex: 1; text-align: center; padding: 0.9rem 0.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .num { font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+  .hero-stat .label { font-size: 0.78rem; opacity: 0.65; margin-top: 0.15rem; }
+
+  /* Hero Visualization */
+  .hero-viz { width: 100%; max-width: 420px; aspect-ratio: 1; }
+
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+  /* Section headers */
+  .section-header { margin-bottom: 0.5rem; }
+  .section-header h2 { font-size: 1.6rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+  .section-header p { color: var(--text-muted); font-size: 1rem; margin-top: 0.25rem; }
+
+  /* Chapter grid */
+  .chapter-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .chapter-card {
+    background: var(--card); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: 2rem;
+    box-shadow: var(--shadow); transition: all 0.3s;
+    cursor: pointer; position: relative; overflow: hidden;
+    text-decoration: none; color: var(--text); display: block;
+  }
+  .chapter-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+  .chapter-card.coming-soon { opacity: 0.6; cursor: default; }
+  .chapter-card.coming-soon:hover { transform: none; box-shadow: var(--shadow); border-color: var(--border); }
+  .chapter-num {
+    font-size: 3rem; font-weight: 800; line-height: 1;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 0.75rem;
+  }
+  .chapter-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .chapter-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+  .chapter-card .topic-list { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .topic-tag { background: var(--primary-light); color: var(--primary-dark); padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .topic-tag.done { background: var(--success-light); color: var(--success); }
+  .status-badge { position: absolute; top: 1rem; right: 1rem; padding: 0.2rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .status-badge.available { background: var(--success-light); color: var(--success); }
+  .status-badge.soon { background: #f1f5f9; color: var(--text-muted); }
+
+  /* Chapter detail sections */
+  .chapter-detail {
+    background: var(--card); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: 2.5rem;
+    box-shadow: var(--shadow); margin-top: 3rem;
+  }
+  .chapter-detail h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--primary); }
+  .chapter-detail > p { color: var(--text-muted); margin-bottom: 1.5rem; }
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .topic-card {
+    display: flex; align-items: start; gap: 1rem;
+    padding: 1.25rem; border-radius: 10px; border: 1.5px solid var(--border);
+    text-decoration: none; color: var(--text); transition: all 0.25s; background: #fff;
+  }
+  .topic-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+  .topic-icon {
+    width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800; color: #fff;
+  }
+  .topic-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .topic-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+  .topic-card .math-preview { font-size: 0.9rem; color: var(--accent); margin-top: 0.3rem; }
+
+  /* Mind map node hover */
+  .mm-node { transition: transform 0.2s, filter 0.2s; }
+  .mm-node:hover { transform: scale(1.05); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; text-align: center; min-height: auto; padding: 2.5rem 1.5rem 2rem; }
+    .hero-left { text-align: center; }
+    .hero-right { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero .subtitle { margin: 1rem auto 0; }
+    .hero-instructor { margin: 1.5rem auto 0; }
+    .hero-stats { margin: 1.5rem auto 0; }
+    .chapter-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<script src="course.js"></script>
+</head>
+<body>
+
+<!-- Navigation (built dynamically) -->
+<nav id="main-nav"></nav>
+
+<!-- Hero Section -->
+<div class="hero" style="margin-top:42px;">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1 id="hero-title"></h1>
+      <p class="subtitle" id="hero-subtitle"></p>
+      <div class="hero-instructor" id="hero-instructor"></div>
+      <div class="hero-stats" id="hero-stats"></div>
+    </div>
+    <div class="hero-right">
+      <!-- Replace this SVG with a course-specific visualization -->
+      <svg class="hero-viz" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hg1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(99,102,241,0.25)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <circle cx="200" cy="200" r="180" fill="url(#hg1)"/>
+        <!-- Coordinate axes -->
+        <line x1="60" y1="340" x2="360" y2="340" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <line x1="60" y1="340" x2="60" y2="40" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <text x="365" y="345" font-size="12" fill="rgba(255,255,255,0.35)" font-style="italic">x</text>
+        <text x="50" y="38" font-size="12" fill="rgba(255,255,255,0.35)" font-style="italic">y</text>
+        <!-- Grid -->
+        <g stroke="rgba(255,255,255,0.04)" stroke-width="0.5">
+          <line x1="60" y1="190" x2="360" y2="190"/>
+          <line x1="60" y1="115" x2="360" y2="115"/>
+          <line x1="60" y1="265" x2="360" y2="265"/>
+          <line x1="135" y1="40" x2="135" y2="340"/>
+          <line x1="210" y1="40" x2="210" y2="340"/>
+          <line x1="285" y1="40" x2="285" y2="340"/>
+        </g>
+        <!-- Sample curves -->
+        <path d="M60,300 C120,280 180,200 240,160 S320,100 360,80" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.9">
+          <animate attributeName="stroke-dasharray" from="0,600" to="600,0" dur="2s" fill="freeze"/>
+        </path>
+        <path d="M60,190 C100,120 150,130 200,190 S250,250 300,190 L360,190" fill="none" stroke="#a78bfa" stroke-width="2.5" opacity="0.8">
+          <animate attributeName="stroke-dasharray" from="0,700" to="700,0" dur="2.5s" fill="freeze"/>
+        </path>
+        <!-- Decorative dots -->
+        <circle cx="60" cy="300" r="4" fill="#60a5fa" opacity="0.9">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="60" cy="190" r="4" fill="#a78bfa" opacity="0.9">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Course Roadmap (Mind Map) -->
+  <div class="section-header">
+    <h2>Course Roadmap</h2>
+    <p>How the chapters connect — click any chapter to jump to its topics</p>
+  </div>
+  <div id="roadmap-container" style="background:var(--card); border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); padding:2rem; margin-bottom:2rem; overflow-x:auto;">
+    <svg id="mindmap" viewBox="0 0 1100 700" style="width:100%; max-width:1100px; margin:0 auto; display:block; font-family:'Segoe UI',system-ui,sans-serif;">
+      <!-- Mind map will be built by buildMindMap() -->
+    </svg>
+  </div>
+
+  <!-- Chapter Cards Grid -->
+  <div class="section-header">
+    <h2>Course Chapters</h2>
+    <p>Click any available chapter to explore its topics</p>
+  </div>
+  <div class="chapter-grid" id="chapter-grid"></div>
+
+  <!-- Chapter Detail Sections (one per chapter) -->
+  <div id="chapter-details"></div>
+</div>
+
+<footer id="main-footer"></footer>
+
+<script>
+/* ── Build page from COURSE config ── */
+document.addEventListener('DOMContentLoaded', function() {
+  const C = COURSE;
+
+  // Page title
+  document.getElementById('page-title').textContent = C.code + ': ' + C.title + ' — ' + C.instructor.name;
+
+  // Navigation
+  var navHTML = '<a href="index.html" class="brand">' + C.brandName + '</a>';
+  C.navLinks.forEach(function(link) {
+    navHTML += '<a href="' + link.href + '"' + (link.active ? ' class="active"' : '') + '>' + link.label + '</a>';
+  });
+  document.getElementById('main-nav').innerHTML = navHTML;
+
+  // Hero title
+  var titleParts = C.title.split(C.heroHighlight);
+  document.getElementById('hero-title').innerHTML =
+    '<span class="course-word">' + C.code + '</span>' +
+    (titleParts[0] || '') + '<span class="highlight">' + C.heroHighlight + '</span>' + (titleParts[1] || '');
+  document.getElementById('hero-subtitle').textContent = C.subtitle;
+
+  // Instructor card
+  var inst = C.instructor;
+  document.getElementById('hero-instructor').innerHTML =
+    '<img src="' + inst.photo + '" alt="' + inst.name + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
+    '<div class="initials-fallback" style="display:none;">' + inst.initials + '</div>' +
+    '<div class="info">' +
+      '<h3>' + inst.name + '</h3>' +
+      '<div class="role">' + inst.role + '</div>' +
+      '<div class="dept">' + inst.department + '</div>' +
+      '<div class="email"><a href="mailto:' + inst.email + '">' + inst.email + '</a></div>' +
+    '</div>';
+
+  // Stats bar
+  var statsHTML = '';
+  C.stats.forEach(function(s) {
+    statsHTML += '<div class="hero-stat"><div class="num">' + s.num + '</div><div class="label">' + s.label + '</div></div>';
+  });
+  document.getElementById('hero-stats').innerHTML = statsHTML;
+
+  // Chapter cards
+  var gridHTML = '';
+  C.chapters.forEach(function(ch, i) {
+    var num = String(i + 1).padStart(2, '0');
+    var isSoon = ch.status === 'coming-soon';
+    var href = isSoon ? '#' : '#' + ch.id;
+    gridHTML += '<a class="chapter-card' + (isSoon ? ' coming-soon' : '') + '" href="' + href + '">';
+    gridHTML += '<span class="status-badge ' + (isSoon ? 'soon' : 'available') + '">' + (isSoon ? 'Coming Soon' : 'Available') + '</span>';
+    gridHTML += '<div class="chapter-num">' + num + '</div>';
+    gridHTML += '<h3>' + ch.title + '</h3>';
+    gridHTML += '<p>' + ch.description + '</p>';
+    gridHTML += '<div class="topic-list">';
+    ch.topics.forEach(function(t) {
+      gridHTML += '<span class="topic-tag' + (isSoon ? '' : ' done') + '">' + t.title.replace(/^\d+\.\d+\s*—\s*/, '') + '</span>';
+    });
+    gridHTML += '</div></a>';
+  });
+  document.getElementById('chapter-grid').innerHTML = gridHTML;
+
+  // Chapter detail sections
+  var detailsHTML = '';
+  C.chapters.forEach(function(ch, i) {
+    if (ch.status === 'coming-soon') return;
+    var color = C.chapterColors[i] || C.chapterColors[0];
+    detailsHTML += '<div class="chapter-detail" id="' + ch.id + '">';
+    detailsHTML += '<h2>Chapter ' + (i + 1) + ' — ' + ch.title + '</h2>';
+    detailsHTML += '<p>' + ch.description + '</p>';
+    detailsHTML += '<div class="topic-grid">';
+    ch.topics.forEach(function(t) {
+      detailsHTML += '<a class="topic-card" href="' + t.file + '">';
+      detailsHTML += '<div class="topic-icon" style="background: linear-gradient(135deg, ' + color.gradient[0] + ', ' + color.gradient[1] + ');">' + t.icon + '</div>';
+      detailsHTML += '<div><h4>' + t.title + '</h4>';
+      detailsHTML += '<p>' + t.description + '</p>';
+      if (t.mathPreview) {
+        detailsHTML += '<div class="math-preview">\\(' + t.mathPreview + '\\)</div>';
+      }
+      detailsHTML += '</div></a>';
+    });
+    detailsHTML += '</div></div>';
+  });
+  document.getElementById('chapter-details').innerHTML = detailsHTML;
+
+  // Footer
+  var f = C.footer;
+  document.getElementById('main-footer').innerHTML =
+    f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+    f.department + ', ' + f.institution + ' &copy; ' + f.year;
+
+  // Build mind map
+  buildMindMap();
+
+  // Re-render KaTeX for math previews
+  initKaTeX();
+});
+
+/* ── Build SVG Mind Map ── */
+function buildMindMap() {
+  var C = COURSE;
+  var svg = document.getElementById('mindmap');
+  var ns = 'http://www.w3.org/2000/svg';
+  var numCh = C.chapters.length;
+
+  // Define positions based on chapter count
+  // Center node
+  var cx = 550, cy = 200;
+  var centerW = 240, centerH = 90;
+
+  // Chapter positions (arranged around center)
+  var positions = [];
+  if (numCh <= 2) {
+    positions = [{x: 80, y: 140}, {x: 820, y: 140}];
+  } else if (numCh <= 4) {
+    positions = [{x: 80, y: 140}, {x: 80, y: 380}, {x: 820, y: 380}, {x: 820, y: 140}];
+  } else {
+    positions = [{x: 80, y: 140}, {x: 80, y: 380}, {x: 820, y: 380}, {x: 820, y: 140}, {x: 420, y: 500}];
+    if (numCh > 5) {
+      for (var extra = 5; extra < numCh; extra++) {
+        positions.push({x: 250 + (extra - 5) * 200, y: 600});
+      }
+    }
+  }
+
+  // Defs
+  var defs = '<defs>';
+  defs += '<filter id="shadow-sm"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.08"/></filter>';
+  defs += '<filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  defs += '<linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1e3a8a"/><stop offset="100%" style="stop-color:#7c3aed"/></linearGradient>';
+  C.chapters.forEach(function(ch, i) {
+    var col = C.chapterColors[i] || C.chapterColors[0];
+    defs += '<linearGradient id="grad-ch' + i + '" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:' + col.gradient[0] + '"/><stop offset="100%" style="stop-color:' + col.gradient[1] + '"/></linearGradient>';
+  });
+  defs += '</defs>';
+
+  // Central node
+  var central = '<g style="cursor:pointer;" onclick="window.location.href=\'why-study.html\'">';
+  central += '<rect x="' + (cx - centerW/2) + '" y="' + (cy - centerH/2) + '" rx="20" ry="20" width="' + centerW + '" height="' + centerH + '" fill="url(#grad-center)" filter="url(#glow)"/>';
+  central += '<text x="' + cx + '" y="' + (cy - 5) + '" text-anchor="middle" font-size="20" fill="#fff" font-weight="800">' + C.title.split(' ').slice(0, 2).join(' ') + '</text>';
+  central += '<text x="' + cx + '" y="' + (cy + 20) + '" text-anchor="middle" font-size="20" fill="#fff" font-weight="800">' + (C.title.split(' ').slice(2).join(' ') || '') + '</text>';
+  central += '</g>';
+
+  // Connection lines
+  var lines = '';
+  C.chapters.forEach(function(ch, i) {
+    if (i >= positions.length) return;
+    var pos = positions[i];
+    var col = C.chapterColors[i] || C.chapterColors[0];
+    var chCx = pos.x + 145, chCy = pos.y + 40;
+    lines += '<path d="M ' + cx + ',' + cy + ' L ' + chCx + ',' + chCy + '" stroke="' + col.main + '" stroke-width="2.5" fill="none" opacity="0.5"/>';
+  });
+
+  // Prerequisite connections
+  C.connections.forEach(function(conn) {
+    var fromIdx = C.chapters.findIndex(function(c) { return c.id === conn.from; });
+    var toIdx = C.chapters.findIndex(function(c) { return c.id === conn.to; });
+    if (fromIdx < 0 || toIdx < 0 || fromIdx >= positions.length || toIdx >= positions.length) return;
+    var fp = positions[fromIdx], tp = positions[toIdx];
+    var dash = conn.type === 'related' ? ' stroke-dasharray="6,3"' : '';
+    lines += '<path d="M ' + (fp.x + 145) + ',' + (fp.y + 140) + ' L ' + (tp.x + 145) + ',' + tp.y + '" stroke="' + (C.chapterColors[toIdx] || C.chapterColors[0]).main + '" stroke-width="2" fill="none" opacity="0.6"' + dash + '/>';
+    // Label
+    var lx = (fp.x + tp.x) / 2 + 145, ly = (fp.y + 140 + tp.y) / 2;
+    lines += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" font-size="11" fill="#64748b" font-weight="500">' + (conn.label || '') + '</text>';
+  });
+
+  // Chapter boxes
+  var boxes = '';
+  C.chapters.forEach(function(ch, i) {
+    if (i >= positions.length) return;
+    var pos = positions[i];
+    var col = C.chapterColors[i] || C.chapterColors[0];
+    var w = 290, h = 30 + ch.topics.length * 18 + 50;
+    boxes += '<g class="mm-node" style="cursor:pointer;" onclick="window.location.href=\'#' + ch.id + '\'">';
+    boxes += '<rect x="' + pos.x + '" y="' + pos.y + '" rx="14" ry="14" width="' + w + '" height="' + h + '" fill="#fff" stroke="' + col.main + '" stroke-width="2.5" filter="url(#shadow-sm)"/>';
+    // Header bar
+    boxes += '<path d="M' + pos.x + ',' + (pos.y + 14) + ' a14,14 0 0 1 14,-14 H' + (pos.x + w - 14) + ' a14,14 0 0 1 14,14 V' + (pos.y + 34) + ' H' + pos.x + ' Z" fill="url(#grad-ch' + i + ')"/>';
+    boxes += '<text x="' + (pos.x + w/2) + '" y="' + (pos.y + 22) + '" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Chapter ' + (i + 1) + ' · ' + ch.shortTitle + '</text>';
+    // Topics
+    ch.topics.forEach(function(t, j) {
+      boxes += '<text x="' + (pos.x + 25) + '" y="' + (pos.y + 55 + j * 18) + '" font-size="12" fill="#374151">  \u25B8 ' + t.title.replace(/^\d+\.\d+\s*—\s*/, '') + '</text>';
+    });
+    // Tagline
+    boxes += '<text x="' + (pos.x + w/2) + '" y="' + (pos.y + h - 15) + '" text-anchor="middle" font-size="12" fill="' + col.main + '" font-style="italic" font-weight="500">' + ch.tagline + '</text>';
+    boxes += '</g>';
+  });
+
+  // Applications bar
+  var appBar = '<rect x="150" y="620" rx="12" ry="12" width="800" height="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>';
+  appBar += '<text x="550" y="645" text-anchor="middle" font-size="13" fill="#64748b" font-weight="600">' + C.applications + '</text>';
+
+  svg.innerHTML = defs + lines + central + boxes + appBar;
+}
+</script>
+
+</body>
+</html>

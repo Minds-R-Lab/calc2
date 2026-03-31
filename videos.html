@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Lectures | Calculus II</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#7c3aed;--accent-light:#ede9fe;
+  --success:#059669;--success-light:#d1fae5;
+  --warning:#d97706;--warning-light:#fef3c7;
+  --bg:#f8fafc;--card:#ffffff;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;
+  --radius:14px;--shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg:0 10px 25px rgba(0,0,0,0.08);
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:1000;padding:0.6rem 1.5rem;display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;}
+nav a{text-decoration:none;color:var(--text-muted);font-weight:500;transition:color 0.2s;}
+nav a:hover{color:var(--primary);}
+nav .brand{font-weight:800;color:var(--primary);font-size:1.05rem;letter-spacing:-0.02em;}
+nav .active{color:var(--accent);font-weight:700;}
+
+/* Hero */
+.hero{
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 35%,#3b82f6 65%,#7c3aed 100%);
+  color:#fff;padding:3.5rem 2rem 3rem;text-align:center;margin-top:48px;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 20% 50%,rgba(59,130,246,0.15) 0%,transparent 70%),radial-gradient(ellipse 500px 350px at 80% 40%,rgba(124,58,237,0.15) 0%,transparent 70%);}
+.hero-inner{position:relative;z-index:2;max-width:800px;margin:0 auto;}
+.hero h1{font-size:2.6rem;font-weight:800;margin-bottom:0.5rem;letter-spacing:-0.02em;}
+.hero .subtitle{font-size:1.1rem;opacity:0.85;max-width:600px;margin:0 auto;}
+.hero .icon-row{font-size:2.5rem;margin-bottom:1rem;}
+
+/* Container */
+.container{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
+
+/* Section header */
+.section-header{text-align:center;margin-bottom:2rem;}
+.section-header h2{font-size:1.6rem;font-weight:800;color:var(--text);margin-bottom:0.3rem;}
+.section-header p{color:var(--text-muted);font-size:0.95rem;}
+
+/* Video card */
+.video-card{
+  background:var(--card);border-radius:var(--radius);border:1px solid var(--border);
+  box-shadow:var(--shadow);overflow:hidden;margin-bottom:2rem;
+  transition:box-shadow 0.3s,transform 0.3s;
+}
+.video-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+
+.video-wrapper{
+  position:relative;width:100%;background:#000;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;
+}
+.video-wrapper video{
+  width:100%;display:block;max-height:500px;object-fit:contain;background:#000;
+}
+
+.video-info{padding:1.5rem 2rem;}
+.video-info .video-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem;}
+.video-tag{
+  padding:0.2rem 0.7rem;border-radius:6px;font-size:0.75rem;font-weight:600;
+}
+.video-tag.intro{background:var(--accent-light);color:var(--accent);}
+.video-tag.chapter{background:var(--primary-light);color:var(--primary);}
+.video-tag.new{background:var(--success-light);color:var(--success);}
+
+.video-info h3{font-size:1.25rem;font-weight:700;margin-bottom:0.4rem;}
+.video-info .video-desc{color:var(--text-muted);font-size:0.95rem;line-height:1.6;margin-bottom:0.75rem;}
+.video-info .video-meta{display:flex;gap:1.5rem;font-size:0.82rem;color:var(--text-muted);}
+.video-info .video-meta span{display:flex;align-items:center;gap:0.3rem;}
+
+/* Coming soon grid */
+.coming-soon-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-top:1.5rem;
+}
+.coming-soon-card{
+  background:var(--card);border:2px dashed var(--border);border-radius:var(--radius);
+  padding:1.5rem;text-align:center;opacity:0.65;
+}
+.coming-soon-card .cs-icon{font-size:2rem;margin-bottom:0.5rem;}
+.coming-soon-card h4{font-size:1rem;margin-bottom:0.3rem;}
+.coming-soon-card p{font-size:0.82rem;color:var(--text-muted);}
+.coming-soon-badge{
+  display:inline-block;padding:0.15rem 0.6rem;border-radius:6px;font-size:0.7rem;
+  font-weight:700;background:var(--warning-light);color:var(--warning);margin-top:0.5rem;
+}
+
+/* Footer */
+footer{
+  text-align:center;padding:2rem;color:var(--text-muted);font-size:0.85rem;
+  border-top:1px solid var(--border);margin-top:2rem;
+}
+
+@media(max-width:600px){
+  .hero h1{font-size:1.8rem;}
+  .container{padding:1rem;}
+}
+</style>
+<script src="course.js"></script>
+<script src="course-config.js"></script>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="brand">Calc 2</a>
+  <a href="index.html">Home</a>
+  <a href="exam-generator.html">Exam Generator</a>
+  <a href="videos.html" class="active" style="color:var(--accent);font-weight:700;">Videos</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="icon-row">🎬</div>
+    <h1>Calculus II Video Lectures</h1>
+    <p class="subtitle">Visual explanations of integration techniques, series, and more.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-header">
+    <h2>Course Introduction</h2>
+    <p>Start here to understand the big picture and motivation for Calculus II</p>
+  </div>
+
+  <!-- Introductory Video -->
+  <div class="video-card">
+    <div class="video-wrapper">
+      <video controls preload="metadata" poster="" style="background:#1e293b;">
+        <source src="videos/intro.mp4" type="video/mp4">
+        Your browser does not support the video tag. Please use a modern browser.
+      </video>
+    </div>
+    <div class="video-info">
+      <div class="video-tags">
+        <span class="video-tag intro">Introduction</span>
+        <span class="video-tag new">Start Here</span>
+      </div>
+      <h3>Calculus II: Course Overview & Motivation</h3>
+      <p class="video-desc">
+        In this introductory video, we explore what Calculus II is and why it matters. You'll see how advanced integration techniques extend the power of Calculus I, discover how infinite series let us represent any function as a polynomial, and learn why convergence is the key concept that ties everything together. We'll also preview real-world applications in physics, engineering, and data science that you'll encounter throughout the course.
+      </p>
+      <div class="video-meta">
+        <span>📚 Course Overview</span>
+        <span>⏱️ Duration: 18 min</span>
+        <span>🎯 Recommended for all students</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Videos Section -->
+  <div class="section-header" style="margin-top:3rem;">
+    <h2>Chapter Videos</h2>
+    <p>Detailed video lectures covering specific topics and chapters</p>
+  </div>
+
+  <!-- Video 2: Chapter 1 -->
+  <div class="video-card">
+    <div class="video-wrapper">
+      <video controls preload="metadata" poster="" style="background:#1e293b;">
+        <source src="videos/chapter1.mp4" type="video/mp4">
+        Your browser does not support the video tag. Please use a modern browser.
+      </video>
+    </div>
+    <div class="video-info">
+      <div class="video-tags">
+        <span class="video-tag chapter">Chapter 1</span>
+      </div>
+      <h3>Integration by Parts: Master the Technique</h3>
+      <p class="video-desc">
+        Integration by parts is your first advanced technique—it undoes the product rule to help you integrate products of functions. In this video, you'll see the formula $\int u \, dv = uv - \int v \, du$ in action. We'll work through classic examples like $\int x e^x \, dx$ and $\int x \sin(x) \, dx$, showing how to choose $u$ and $dv$ strategically (using the ILATE rule). By the end, you'll tackle integrals that seemed impossible with basic methods.
+      </p>
+      <div class="video-meta">
+        <span>📗 Integration Techniques</span>
+        <span>⏱️ Duration: 22 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video 3: Chapter 2 -->
+  <div class="video-card">
+    <div class="video-wrapper">
+      <video controls preload="metadata" poster="" style="background:#1e293b;">
+        <source src="videos/chapter2.mp4" type="video/mp4">
+        Your browser does not support the video tag. Please use a modern browser.
+      </video>
+    </div>
+    <div class="video-info">
+      <div class="video-tags">
+        <span class="video-tag chapter">Chapter 2</span>
+      </div>
+      <h3>Volumes of Revolution: Disk, Washer, and Shell Methods</h3>
+      <p class="video-desc">
+        When you rotate a 2D region around an axis, you create a 3D solid. But how do you find its volume? In this video, we explore three powerful methods: the disk method (slicing perpendicular to the axis), the washer method (for solids with holes), and the shell method (slicing parallel to the axis). Each method uses integration in a different way. We'll solve problems like finding the volume of a cone, a torus, and more complex shapes. You'll see how the choice of method matters.
+      </p>
+      <div class="video-meta">
+        <span>📘 Applications of Integration</span>
+        <span>⏱️ Duration: 25 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon Section -->
+  <div class="section-header" style="margin-top:3rem;">
+    <h2>More Videos Coming Soon</h2>
+    <p>Additional video lectures will be released throughout the semester</p>
+  </div>
+
+  <div class="coming-soon-grid">
+    <div class="coming-soon-card">
+      <div class="cs-icon">🔍</div>
+      <h4>Improper Integrals Deep Dive</h4>
+      <p>Understanding integrals over infinite intervals and functions with singularities. When does $\int_0^{\infty} f(x) \, dx$ converge to a finite value?</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-icon">📊</div>
+      <h4>Sequences and Series Essentials</h4>
+      <p>From sequences to series: understanding limits, partial sums, and the difference between convergence of a sequence and convergence of a series.</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-icon">✨</div>
+      <h4>Taylor Series Workshop</h4>
+      <p>Learn to construct Taylor and Maclaurin series for any function. Master the connection between polynomials and transcendental functions like $e^x$, $\sin(x)$, and $\ln(x)$.</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-icon">🔄</div>
+      <h4>Parametric & Polar Curves</h4>
+      <p>Work with curves defined by parametric equations and polar coordinates. Calculate arc lengths and areas for these non-standard representations of functions.</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+
+</body>
+</html>

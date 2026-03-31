@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>1.4 Partial Fractions - Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+  <nav>
+    <div class="logo"><a href="index.html">Calc 2</a></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ch1-by-parts.html">1.1 By Parts</a>
+      <a href="ch1-trig-integrals.html">1.2 Trig Int.</a>
+      <a href="ch1-trig-sub.html">1.3 Trig Sub</a>
+      <a href="ch1-partial-fractions.html" class="active">1.4 Partial Frac.</a>
+      <span style="color:var(--border);margin:0 0.25rem;">|</span>
+      <a href="#intro">Intro</a>
+      <a href="#theory">Theory</a>
+      <a href="#method">Method</a>
+      <a href="#examples">Examples</a>
+      <a href="#visualizer">Visualizer</a>
+      <a href="#practice">Practice</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Introduction Section -->
+    <section id="intro">
+      <h1>1.4 Partial Fractions Decomposition</h1>
+      <p>Partial fraction decomposition is a technique for breaking down rational functions (ratios of polynomials) into simpler fractions that can be integrated term by term. This is particularly useful when the denominator factors into linear or irreducible quadratic factors.</p>
+      <p><strong>Key Idea:</strong> A complex rational function can be written as a sum of simpler fractions, each with a lower-degree denominator, making integration straightforward.</p>
+    </section>
+
+    <!-- Theory Section -->
+    <section id="theory">
+      <h2>Theory & Decomposition Rules</h2>
+
+      <h3>General Principle</h3>
+      <p>If $\frac{P(x)}{Q(x)}$ is a rational function where $P(x)$ and $Q(x)$ are polynomials, we can decompose it as:</p>
+      <div class="math-display">$$\frac{P(x)}{Q(x)} = \text{(polynomial)} + \text{(proper rational function)}$$</div>
+      <p>A <strong>proper rational function</strong> is one where the degree of the numerator is less than the degree of the denominator.</p>
+
+      <h3>Case 1: Distinct Linear Factors</h3>
+      <p>If the denominator factors as $Q(x) = (x - a_1)(x - a_2)\cdots(x - a_n)$ with distinct roots, then:</p>
+      <div class="math-display">$$\frac{P(x)}{Q(x)} = \frac{A_1}{x - a_1} + \frac{A_2}{x - a_2} + \cdots + \frac{A_n}{x - a_n}$$</div>
+      <p>where $A_1, A_2, \ldots, A_n$ are constants found by solving a system of equations.</p>
+
+      <h3>Case 2: Repeated Linear Factors</h3>
+      <p>If $(x - a)$ appears $k$ times in the denominator, then include terms:</p>
+      <div class="math-display">$$\frac{A_1}{x - a} + \frac{A_2}{(x - a)^2} + \cdots + \frac{A_k}{(x - a)^k}$$</div>
+
+      <h3>Case 3: Irreducible Quadratic Factors</h3>
+      <p>If $ax^2 + bx + c$ is an irreducible quadratic (no real roots) that appears $k$ times, include terms:</p>
+      <div class="math-display">$$\frac{A_1 x + B_1}{ax^2 + bx + c} + \frac{A_2 x + B_2}{(ax^2 + bx + c)^2} + \cdots + \frac{A_k x + B_k}{(ax^2 + bx + c)^k}$$</div>
+
+      <h3>Prerequisite: Long Division</h3>
+      <p>If the degree of the numerator is greater than or equal to the degree of the denominator, perform polynomial long division first:</p>
+      <div class="math-display">$$\frac{P(x)}{Q(x)} = D(x) + \frac{R(x)}{Q(x)}$$</div>
+      <p>where $D(x)$ is the quotient and $R(x)$ is the remainder with $\deg(R) < \deg(Q)$.</p>
+    </section>
+
+    <!-- Method Section -->
+    <section id="method">
+      <h2>Step-by-Step Method</h2>
+      <ol>
+        <li><strong>Check degrees:</strong> If degree of numerator $\geq$ degree of denominator, use long division first.</li>
+        <li><strong>Factor the denominator:</strong> Factor $Q(x)$ into distinct and repeated linear factors, and irreducible quadratic factors.</li>
+        <li><strong>Set up the decomposition:</strong> Write the partial fraction form based on the factorization (Cases 1–3 above).</li>
+        <li><strong>Find constants:</strong> Multiply both sides by the common denominator $Q(x)$ and use one of these methods:
+          <ul>
+            <li><strong>Substitution method:</strong> Substitute strategic values of $x$ (roots of factors) to isolate constants</li>
+            <li><strong>Coefficient matching:</strong> Expand the right side and equate coefficients of like powers of $x$</li>
+            <li><strong>Combination:</strong> Use substitution for some constants and coefficient matching for others</li>
+          </ul>
+        </li>
+        <li><strong>Integrate:</strong> Integrate each partial fraction term separately</li>
+        <li><strong>Combine:</strong> Add the results and include the constant of integration</li>
+      </ol>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples">
+      <h2>Worked Examples</h2>
+
+      <div class="example">
+        <h3>Example 1: $\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx$</h3>
+        <p>The denominator has distinct linear factors and the numerator has lower degree.</p>
+
+        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+        <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{A}{x - 1} + \frac{B}{x + 2}$$</div>
+
+        <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)(x + 2)$</p>
+        <div class="math-display">$$3x + 5 = A(x + 2) + B(x - 1)$$</div>
+
+        <p><strong>Step 3:</strong> Find $A$ and $B$ using substitution</p>
+        <p>Let $x = 1$:</p>
+        <div class="math-display">$$3(1) + 5 = A(1 + 2) + B(0) \Rightarrow 8 = 3A \Rightarrow A = \frac{8}{3}$$</div>
+        <p>Let $x = -2$:</p>
+        <div class="math-display">$$3(-2) + 5 = A(0) + B(-2 - 1) \Rightarrow -1 = -3B \Rightarrow B = \frac{1}{3}$$</div>
+
+        <p><strong>Step 4:</strong> Write the decomposition</p>
+        <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{8/3}{x - 1} + \frac{1/3}{x + 2}$$</div>
+
+        <p><strong>Step 5:</strong> Integrate</p>
+        <div class="math-display">$$\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx = \frac{8}{3}\int \frac{dx}{x - 1} + \frac{1}{3}\int \frac{dx}{x + 2}$$</div>
+        <div class="math-display">$$= \frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{\frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C}$ or $\displaystyle \ln\left|(x-1)^{8/3}(x+2)^{1/3}\right| + C$</p>
+      </div>
+
+      <div class="example">
+        <h3>Example 2: $\int \frac{2x}{(x - 1)^2} \, dx$</h3>
+        <p>The denominator has a repeated linear factor ($(x-1)^2$).</p>
+
+        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+        <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2}$$</div>
+
+        <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)^2$</p>
+        <div class="math-display">$$2x = A(x - 1) + B$$</div>
+
+        <p><strong>Step 3:</strong> Find $A$ and $B$</p>
+        <p>Let $x = 1$:</p>
+        <div class="math-display">$$2(1) = 0 + B \Rightarrow B = 2$$</div>
+        <p>Expand and match coefficients: $2x = Ax - A + B$</p>
+        <p>Coefficient of $x$: $2 = A$</p>
+
+        <p><strong>Step 4:</strong> Write the decomposition</p>
+        <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{2}{x - 1} + \frac{2}{(x - 1)^2}$$</div>
+
+        <p><strong>Step 5:</strong> Integrate</p>
+        <div class="math-display">$$\int \frac{2x}{(x - 1)^2} \, dx = 2\int \frac{dx}{x - 1} + 2\int \frac{dx}{(x - 1)^2}$$</div>
+        <div class="math-display">$$= 2\ln|x - 1| + 2 \cdot \frac{(x-1)^{-1}}{-1} + C$$</div>
+        <div class="math-display">$$= 2\ln|x - 1| - \frac{2}{x - 1} + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{2\ln|x - 1| - \frac{2}{x - 1} + C}$</p>
+      </div>
+
+      <div class="example">
+        <h3>Example 3: $\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx$</h3>
+        <p>The denominator has a linear factor $x$ and an irreducible quadratic factor $x^2 + 4$.</p>
+
+        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+        <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{A}{x} + \frac{Bx + C}{x^2 + 4}$$</div>
+
+        <p><strong>Step 2:</strong> Multiply both sides by $x(x^2 + 4)$</p>
+        <div class="math-display">$$x^2 + 1 = A(x^2 + 4) + (Bx + C)x$$</div>
+
+        <p><strong>Step 3:</strong> Find $A$, $B$, and $C$</p>
+        <p>Let $x = 0$:</p>
+        <div class="math-display">$$0 + 1 = A(4) + 0 \Rightarrow A = \frac{1}{4}$$</div>
+        <p>Expand: $x^2 + 1 = Ax^2 + 4A + Bx^2 + Cx = (A + B)x^2 + Cx + 4A$</p>
+        <p>Coefficient of $x^2$: $1 = A + B \Rightarrow B = 1 - \frac{1}{4} = \frac{3}{4}$</p>
+        <p>Coefficient of $x$: $0 = C$</p>
+
+        <p><strong>Step 4:</strong> Write the decomposition</p>
+        <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{1/4}{x} + \frac{(3/4)x}{x^2 + 4}$$</div>
+
+        <p><strong>Step 5:</strong> Integrate</p>
+        <div class="math-display">$$\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx = \frac{1}{4}\int \frac{dx}{x} + \frac{3}{4}\int \frac{x \, dx}{x^2 + 4}$$</div>
+        <p>For the second integral, let $u = x^2 + 4$, $du = 2x \, dx$:</p>
+        <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{4} \cdot \frac{1}{2}\ln|x^2 + 4| + C$$</div>
+        <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{\frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C}$ or $\displaystyle \ln\left|x^{1/4}(x^2+4)^{3/8}\right| + C$</p>
+      </div>
+    </section>
+
+    <!-- Visualizer Section -->
+    <section id="visualizer">
+      <h2>Interactive Visualizer</h2>
+      <p>Below is a plot comparing the original rational function $\frac{3x+5}{(x-1)(x+2)}$ with its partial fraction components.</p>
+      <div id="plotly-chart" style="width:100%;height:500px;"></div>
+      <script>
+        var x = [];
+        for (let i = -5; i <= 5; i += 0.05) {
+          // Avoid discontinuities at x = 1 and x = -2
+          if (Math.abs(i - 1) > 0.2 && Math.abs(i + 2) > 0.2) {
+            x.push(i);
+          }
+        }
+
+        // Original function
+        var y_original = x.map(val => {
+          var denom = (val - 1) * (val + 2);
+          if (Math.abs(denom) < 0.01) return null;
+          return (3*val + 5) / denom;
+        });
+
+        // Partial fraction component 1: 8/3 / (x-1)
+        var y_component1 = x.map(val => {
+          if (Math.abs(val - 1) < 0.01) return null;
+          return (8/3) / (val - 1);
+        });
+
+        // Partial fraction component 2: 1/3 / (x+2)
+        var y_component2 = x.map(val => {
+          if (Math.abs(val + 2) < 0.01) return null;
+          return (1/3) / (val + 2);
+        });
+
+        var trace1 = {
+          x: x,
+          y: y_original,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Original: $\\frac{3x+5}{(x-1)(x+2)}$',
+          line: { color: '#000', width: 3 }
+        };
+
+        var trace2 = {
+          x: x,
+          y: y_component1,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Component 1: $\\frac{8/3}{x-1}$',
+          line: { color: '#2563eb', width: 2, dash: 'dash' }
+        };
+
+        var trace3 = {
+          x: x,
+          y: y_component2,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Component 2: $\\frac{1/3}{x+2}$',
+          line: { color: '#dc2626', width: 2, dash: 'dash' }
+        };
+
+        var layout = {
+          title: 'Partial Fractions Decomposition Example',
+          xaxis: { title: 'x' },
+          yaxis: { title: 'y', range: [-10, 10] },
+          hovermode: 'closest',
+          shapes: [
+            {
+              type: 'line',
+              x0: 1, y0: -10, x1: 1, y1: 10,
+              line: { color: 'rgba(0,0,0,0.2)', width: 1, dash: 'dot' }
+            },
+            {
+              type: 'line',
+              x0: -2, y0: -10, x1: -2, y1: 10,
+              line: { color: 'rgba(0,0,0,0.2)', width: 1, dash: 'dot' }
+            }
+          ]
+        };
+
+        Plotly.newPlot('plotly-chart', [trace1, trace2, trace3], layout);
+      </script>
+    </section>
+
+    <!-- Practice Section -->
+    <section id="practice">
+      <h2>Practice Problems</h2>
+
+      <div class="practice-problem">
+        <h3>Problem 1: $\int \frac{5x - 2}{(x - 2)(x + 1)} \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>Set up decomposition:</strong> $\displaystyle \frac{5x-2}{(x-2)(x+1)} = \frac{A}{x-2} + \frac{B}{x+1}$</p>
+          <p><strong>Multiply by common denominator:</strong> $5x - 2 = A(x + 1) + B(x - 2)$</p>
+          <p><strong>Substitute $x = 2$:</strong> $5(2) - 2 = A(3) \Rightarrow 8 = 3A \Rightarrow A = \frac{8}{3}$</p>
+          <p><strong>Substitute $x = -1$:</strong> $5(-1) - 2 = B(-3) \Rightarrow -7 = -3B \Rightarrow B = \frac{7}{3}$</p>
+          <p><strong>Integrate:</strong> $\displaystyle \int \frac{5x-2}{(x-2)(x+1)} \, dx = \frac{8}{3}\ln|x-2| + \frac{7}{3}\ln|x+1| + C$</p>
+          <p><strong>Answer:</strong> $\displaystyle \frac{8}{3}\ln|x-2| + \frac{7}{3}\ln|x+1| + C$</p>
+        </details>
+      </div>
+
+      <div class="practice-problem">
+        <h3>Problem 2: $\int \frac{x + 3}{(x + 1)^2} \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>Set up decomposition:</strong> $\displaystyle \frac{x+3}{(x+1)^2} = \frac{A}{x+1} + \frac{B}{(x+1)^2}$</p>
+          <p><strong>Multiply by common denominator:</strong> $x + 3 = A(x + 1) + B$</p>
+          <p><strong>Substitute $x = -1$:</strong> $-1 + 3 = 0 + B \Rightarrow B = 2$</p>
+          <p><strong>Coefficient of $x$:</strong> From $x + 3 = Ax + A + B$, we get $1 = A$</p>
+          <p><strong>Integrate:</strong> $\displaystyle \int \frac{x+3}{(x+1)^2} \, dx = \int \frac{1}{x+1} \, dx + 2\int \frac{1}{(x+1)^2} \, dx$</p>
+          <p>$\displaystyle = \ln|x+1| + 2 \cdot \frac{(x+1)^{-1}}{-1} = \ln|x+1| - \frac{2}{x+1} + C$</p>
+          <p><strong>Answer:</strong> $\displaystyle \ln|x+1| - \frac{2}{x+1} + C$</p>
+        </details>
+      </div>
+
+      <div class="practice-problem">
+        <h3>Problem 3: $\int \frac{1}{x^3 - 1} \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>Factor:</strong> $x^3 - 1 = (x - 1)(x^2 + x + 1)$ where $x^2 + x + 1$ is irreducible (discriminant is negative)</p>
+          <p><strong>Set up decomposition:</strong> $\displaystyle \frac{1}{(x-1)(x^2+x+1)} = \frac{A}{x-1} + \frac{Bx+C}{x^2+x+1}$</p>
+          <p><strong>Multiply by common denominator:</strong> $1 = A(x^2+x+1) + (Bx+C)(x-1)$</p>
+          <p><strong>Substitute $x = 1$:</strong> $1 = A(3) \Rightarrow A = \frac{1}{3}$</p>
+          <p><strong>Expand and match coefficients:</strong></p>
+          <p>$1 = Ax^2 + Ax + A + Bx^2 - Bx + Cx - C$</p>
+          <p>$1 = (A+B)x^2 + (A-B+C)x + (A-C)$</p>
+          <p>Coefficient of $x^2$: $0 = \frac{1}{3} + B \Rightarrow B = -\frac{1}{3}$</p>
+          <p>Constant: $1 = \frac{1}{3} - C \Rightarrow C = -\frac{2}{3}$</p>
+          <p><strong>Integrate:</strong> The first part gives $\frac{1}{3}\ln|x-1|$. The quadratic part requires completing the square and arctangent substitution.</p>
+          <p><strong>Answer (simplified):</strong> $\displaystyle \frac{1}{3}\ln|x-1| - \frac{1}{6}\ln(x^2+x+1) - \frac{1}{\sqrt{3}}\arctan\left(\frac{2x+1}{\sqrt{3}}\right) + C$</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <script>
+      if (typeof COURSE !== 'undefined' && COURSE.footer) {
+        var f = COURSE.footer;
+        document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+      }
+    </script>
+  </footer>
+
+  <script src="course-config.js"></script>
+  <script src="course.js"></script>
+  <script>
+    // Render math after page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+    });
+  </script>
+</body>
+</html>

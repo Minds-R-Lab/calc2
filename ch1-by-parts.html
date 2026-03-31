@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>1.1 Integration by Parts - Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+  <nav>
+    <div class="logo"><a href="index.html">Calc 2</a></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ch1-by-parts.html" class="active">1.1 By Parts</a>
+      <a href="ch1-trig-integrals.html">1.2 Trig Int.</a>
+      <a href="ch1-trig-sub.html">1.3 Trig Sub</a>
+      <a href="ch1-partial-fractions.html">1.4 Partial Frac.</a>
+      <span style="color:var(--border);margin:0 0.25rem;">|</span>
+      <a href="#intro">Intro</a>
+      <a href="#theory">Theory</a>
+      <a href="#method">Method</a>
+      <a href="#examples">Examples</a>
+      <a href="#visualizer">Visualizer</a>
+      <a href="#practice">Practice</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Introduction Section -->
+    <section id="intro">
+      <h1>1.1 Integration by Parts</h1>
+      <p>Integration by parts is a powerful technique for finding antiderivatives of products of functions. It is derived from the product rule of differentiation and transforms difficult integrals into simpler ones.</p>
+      <p><strong>Key Formula:</strong></p>
+      <div class="math-display">$$\int u \, dv = uv - \int v \, du$$</div>
+      <p>This formula allows us to convert a complex product integral into a simpler form, often repeatedly, to evaluate integrals that would otherwise be impossible to solve directly.</p>
+    </section>
+
+    <!-- Theory Section -->
+    <section id="theory">
+      <h2>Theory & Derivation</h2>
+      <p>Integration by parts is derived from the product rule of differentiation. Recall that:</p>
+      <div class="math-display">$$\frac{d}{dx}[uv] = u'v + uv'$$</div>
+      <p>Integrating both sides:</p>
+      <div class="math-display">$$uv = \int (u'v + uv') \, dx = \int u'v \, dx + \int uv' \, dx$$</div>
+      <p>Rearranging:</p>
+      <div class="math-display">$$\int uv' \, dx = uv - \int u'v \, dx$$</div>
+      <p>Substituting $du = u' \, dx$ and $dv = v' \, dx$, we get the integration by parts formula:</p>
+      <div class="math-display">$$\int u \, dv = uv - \int v \, du$$</div>
+
+      <h3>Choosing $u$ and $dv$: The LIATE Rule</h3>
+      <p>When applying integration by parts, the choice of $u$ and $dv$ is crucial. Use the <strong>LIATE rule</strong> to decide which factor should be $u$:</p>
+      <ul>
+        <li><strong>L</strong> — Logarithmic functions (e.g., $\ln x$)</li>
+        <li><strong>I</strong> — Inverse trigonometric functions (e.g., $\arctan x$, $\arcsin x$)</li>
+        <li><strong>A</strong> — Algebraic functions (e.g., $x$, $x^2$)</li>
+        <li><strong>T</strong> — Trigonometric functions (e.g., $\sin x$, $\cos x$)</li>
+        <li><strong>E</strong> — Exponential functions (e.g., $e^x$)</li>
+      </ul>
+      <p>Choose $u$ to be the function that appears earliest in this list. The remaining factor is $dv$.</p>
+    </section>
+
+    <!-- Method Section -->
+    <section id="method">
+      <h2>Step-by-Step Method</h2>
+      <ol>
+        <li><strong>Choose $u$ and $dv$:</strong> Use the LIATE rule to select $u$ from the integrand. Let $dv$ be the remaining part.</li>
+        <li><strong>Compute $du$ and $v$:</strong> Differentiate $u$ to get $du$. Integrate $dv$ to get $v$ (without adding $C$).</li>
+        <li><strong>Apply the Formula:</strong> Substitute into $\int u \, dv = uv - \int v \, du$.</li>
+        <li><strong>Simplify:</strong> Evaluate $uv$ and simplify the new integral $\int v \, du$. This integral should be simpler than the original.</li>
+        <li><strong>Add the Constant of Integration:</strong> After fully evaluating, add $C$ to the final answer.</li>
+      </ol>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples">
+      <h2>Worked Examples</h2>
+
+      <div class="example">
+        <h3>Example 1: $\int x e^x \, dx$</h3>
+        <p><strong>Step 1:</strong> Choose $u$ and $dv$</p>
+        <p>By LIATE, algebraic functions come before exponential, so:</p>
+        <div class="math-display">$$u = x, \quad dv = e^x \, dx$$</div>
+
+        <p><strong>Step 2:</strong> Compute $du$ and $v$</p>
+        <div class="math-display">$$du = dx, \quad v = e^x$$</div>
+
+        <p><strong>Step 3:</strong> Apply the formula</p>
+        <div class="math-display">$$\int x e^x \, dx = x e^x - \int e^x \, dx$$</div>
+
+        <p><strong>Step 4:</strong> Evaluate the remaining integral</p>
+        <div class="math-display">$$\int x e^x \, dx = x e^x - e^x + C = e^x(x - 1) + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{xe^x - e^x + C}$ or $\boxed{e^x(x-1) + C}$</p>
+      </div>
+
+      <div class="example">
+        <h3>Example 2: $\int x^2 \sin x \, dx$</h3>
+        <p>This requires integration by parts <strong>twice</strong>.</p>
+
+        <p><strong>First Application:</strong></p>
+        <div class="math-display">$$u = x^2, \quad dv = \sin x \, dx$$</div>
+        <div class="math-display">$$du = 2x \, dx, \quad v = -\cos x$$</div>
+        <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x - \int -\cos x \cdot 2x \, dx$$</div>
+        <div class="math-display">$$= -x^2 \cos x + 2 \int x \cos x \, dx$$</div>
+
+        <p><strong>Second Application (on $\int x \cos x \, dx$):</strong></p>
+        <div class="math-display">$$u = x, \quad dv = \cos x \, dx$$</div>
+        <div class="math-display">$$du = dx, \quad v = \sin x$$</div>
+        <div class="math-display">$$\int x \cos x \, dx = x \sin x - \int \sin x \, dx = x \sin x + \cos x$$</div>
+
+        <p><strong>Combining Results:</strong></p>
+        <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x + 2(x \sin x + \cos x) + C$$</div>
+        <div class="math-display">$$= -x^2 \cos x + 2x \sin x + 2\cos x + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{-x^2 \cos x + 2x \sin x + 2\cos x + C}$</p>
+      </div>
+
+      <div class="example">
+        <h3>Example 3: $\int e^x \cos x \, dx$ (Cyclic Integration by Parts)</h3>
+        <p>This integral returns to itself, creating a system we can solve.</p>
+
+        <p><strong>First Application:</strong></p>
+        <div class="math-display">$$u = \cos x, \quad dv = e^x \, dx$$</div>
+        <div class="math-display">$$du = -\sin x \, dx, \quad v = e^x$$</div>
+        <div class="math-display">$$\int e^x \cos x \, dx = e^x \cos x - \int e^x (-\sin x) \, dx$$</div>
+        <div class="math-display">$$= e^x \cos x + \int e^x \sin x \, dx$$</div>
+
+        <p><strong>Second Application (on $\int e^x \sin x \, dx$):</strong></p>
+        <div class="math-display">$$u = \sin x, \quad dv = e^x \, dx$$</div>
+        <div class="math-display">$$du = \cos x \, dx, \quad v = e^x$$</div>
+        <div class="math-display">$$\int e^x \sin x \, dx = e^x \sin x - \int e^x \cos x \, dx$$</div>
+
+        <p><strong>Solving the System:</strong> Let $I = \int e^x \cos x \, dx$</p>
+        <div class="math-display">$$I = e^x \cos x + e^x \sin x - I$$</div>
+        <div class="math-display">$$2I = e^x(\cos x + \sin x)$$</div>
+        <div class="math-display">$$I = \frac{e^x(\cos x + \sin x)}{2} + C$$</div>
+
+        <p><strong>Answer:</strong> $\boxed{\frac{e^x(\cos x + \sin x)}{2} + C}$</p>
+      </div>
+    </section>
+
+    <!-- Visualizer Section -->
+    <section id="visualizer">
+      <h2>Interactive Visualizer</h2>
+      <p>Below is a plot of $f(x) = xe^x - e^x$, which is the antiderivative from Example 1.</p>
+      <div id="plotly-chart" style="width:100%;height:500px;"></div>
+      <script>
+        var x = [];
+        for (let i = -3; i <= 3; i += 0.05) {
+          x.push(i);
+        }
+        var y = x.map(val => val * Math.exp(val) - Math.exp(val));
+
+        var trace = {
+          x: x,
+          y: y,
+          type: 'scatter',
+          mode: 'lines',
+          name: '$f(x) = xe^x - e^x$',
+          line: { color: '#2563eb', width: 2 }
+        };
+
+        var layout = {
+          title: 'Antiderivative: $f(x) = xe^x - e^x$',
+          xaxis: { title: 'x' },
+          yaxis: { title: 'f(x)' },
+          hovermode: 'closest'
+        };
+
+        Plotly.newPlot('plotly-chart', [trace], layout);
+      </script>
+    </section>
+
+    <!-- Practice Section -->
+    <section id="practice">
+      <h2>Practice Problems</h2>
+
+      <div class="practice-problem">
+        <h3>Problem 1: $\int x \cos x \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>Choose:</strong> $u = x$, $dv = \cos x \, dx$</p>
+          <p><strong>Then:</strong> $du = dx$, $v = \sin x$</p>
+          <p><strong>Apply:</strong> $\int x \cos x \, dx = x \sin x - \int \sin x \, dx$</p>
+          <p><strong>Evaluate:</strong> $\int x \cos x \, dx = x \sin x + \cos x + C$</p>
+        </details>
+      </div>
+
+      <div class="practice-problem">
+        <h3>Problem 2: $\int x^2 e^{2x} \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>First Application:</strong> $u = x^2$, $dv = e^{2x} \, dx$</p>
+          <p><strong>Then:</strong> $du = 2x \, dx$, $v = \frac{1}{2}e^{2x}$</p>
+          <p><strong>Result:</strong> $\int x^2 e^{2x} \, dx = \frac{1}{2}x^2 e^{2x} - \int x e^{2x} \, dx$</p>
+
+          <p><strong>Second Application (on $\int x e^{2x} \, dx$):</strong></p>
+          <p>$u = x$, $dv = e^{2x} \, dx$</p>
+          <p>$du = dx$, $v = \frac{1}{2}e^{2x}$</p>
+          <p>$\int x e^{2x} \, dx = \frac{1}{2}x e^{2x} - \frac{1}{4}e^{2x}$</p>
+
+          <p><strong>Final Answer:</strong> $\displaystyle \int x^2 e^{2x} \, dx = \frac{1}{2}x^2 e^{2x} - \frac{1}{2}x e^{2x} + \frac{1}{4}e^{2x} + C$</p>
+          <p style="font-size: 0.9em;">Or factored: $\displaystyle = \frac{e^{2x}}{4}(2x^2 - 2x + 1) + C$</p>
+        </details>
+      </div>
+
+      <div class="practice-problem">
+        <h3>Problem 3: $\int \ln x \, dx$</h3>
+        <details>
+          <summary>Solution</summary>
+          <p><strong>Choose:</strong> $u = \ln x$, $dv = dx$</p>
+          <p><strong>Then:</strong> $du = \frac{1}{x} dx$, $v = x$</p>
+          <p><strong>Apply:</strong> $\int \ln x \, dx = x \ln x - \int x \cdot \frac{1}{x} \, dx$</p>
+          <p><strong>Evaluate:</strong> $\int \ln x \, dx = x \ln x - \int 1 \, dx = x \ln x - x + C$</p>
+          <p><strong>Final Answer:</strong> $\boxed{x \ln x - x + C}$ or $\boxed{x(\ln x - 1) + C}$</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <script>
+      if (typeof COURSE !== 'undefined' && COURSE.footer) {
+        var f = COURSE.footer;
+        document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+      }
+    </script>
+  </footer>
+
+  <script src="course-config.js"></script>
+  <script src="course.js"></script>
+  <script>
+    // Render math after page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+    });
+  </script>
+</body>
+</html>

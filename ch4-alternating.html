@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <title>Chapter 4.4: Alternating Series - Calculus II</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">Calc 2</a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="ch4-sequences.html">4.1 Sequences</a>
+            <a href="ch4-series.html">4.2 Series</a>
+            <a href="ch4-integral-comparison.html">4.3 Int/Comp Test</a>
+            <a href="ch4-alternating.html" class="active">4.4 Alternating</a>
+            <a href="ch4-ratio-root.html">4.5 Ratio/Root</a>
+            <span style="color:var(--border);margin:0 0.25rem;">|</span>
+            <a href="#intro">Intro</a>
+            <a href="#theory">Theory</a>
+            <a href="#method">Method</a>
+            <a href="#examples">Examples</a>
+            <a href="#visualizer">Visualizer</a>
+            <a href="#practice">Practice</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Chapter 4.4: Alternating Series</h1>
+
+        <!-- Introduction Section -->
+        <section id="intro" class="chapter-section">
+            <h2>Introduction</h2>
+            <p>
+                An <strong>alternating series</strong> is a series whose terms alternate in sign, such as
+                \(\sum_{n=1}^{\infty} (-1)^{n+1} a_n\) where \(a_n > 0\).
+            </p>
+            <p>
+                Unlike positive series that require stricter convergence conditions, alternating series can converge even when
+                the absolute values of terms do not sum to a finite value. This chapter explores:
+            </p>
+            <ul>
+                <li>The Alternating Series Test (Leibniz Test)</li>
+                <li>Error bounds for partial sums</li>
+                <li>Absolute vs. conditional convergence</li>
+            </ul>
+        </section>
+
+        <!-- Theory Section -->
+        <section id="theory" class="chapter-section">
+            <h2>Theory</h2>
+
+            <h3>The Alternating Series Test (Leibniz Test)</h3>
+            <p>
+                <strong>Theorem:</strong> Let \(\{b_n\}\) be a sequence of positive terms. If
+            </p>
+            <ol style="font-size: 1.05em; text-align: center;">
+                <li>\(b_{n+1} \le b_n\) for all \(n\) (the sequence is monotone decreasing)</li>
+                <li>\(\lim_{n \to \infty} b_n = 0\)</li>
+            </ol>
+            <p>
+                then the alternating series \(\sum_{n=1}^{\infty} (-1)^{n+1} b_n\) converges.
+            </p>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.95em;">
+                The conditions are very mild: the terms only need to decrease to zero, not decrease rapidly.
+            </p>
+
+            <h3>Error Estimation for Alternating Series</h3>
+            <p>
+                If \(\sum (-1)^{n+1} b_n\) converges to \(S\) and \(S_N\) is the \(N\)-th partial sum, then
+            </p>
+            <p style="text-align: center; font-size: 1.1em;">
+                \(|R_N| = |S - S_N| \le b_{N+1}\)
+            </p>
+            <p>
+                The error is bounded by the first omitted term!
+            </p>
+
+            <h3>Absolute vs. Conditional Convergence</h3>
+            <p>
+                A series \(\sum a_n\):
+            </p>
+            <ul>
+                <li><strong>Converges absolutely</strong> if \(\sum |a_n|\) converges</li>
+                <li><strong>Converges conditionally</strong> if \(\sum a_n\) converges but \(\sum |a_n|\) diverges</li>
+            </ul>
+            <p>
+                <strong>Key fact:</strong> Absolute convergence implies convergence. If \(\sum |a_n|\) converges, then \(\sum a_n\) converges.
+            </p>
+            <p>
+                However, conditional convergence can occur with alternating series!
+            </p>
+
+            <h3>The Rearrangement Theorem</h3>
+            <p>
+                An important consequence of absolute vs. conditional convergence:
+            </p>
+            <ul>
+                <li>If a series converges absolutely, any rearrangement of its terms converges to the same value</li>
+                <li>If a series converges conditionally, rearrangements can converge to different values or diverge!</li>
+            </ul>
+        </section>
+
+        <!-- Method Section -->
+        <section id="method" class="chapter-section">
+            <h2>Method: Analyzing Alternating Series</h2>
+
+            <h3>Step-by-Step Approach</h3>
+            <ol>
+                <li><strong>Identify the form:</strong> Is it \(\sum (-1)^n b_n\) or \(\sum (-1)^{n+1} b_n\)?</li>
+                <li><strong>Extract \(b_n\):</strong> Write the series as \(\sum (\text{sign}) \cdot b_n\) where \(b_n > 0\)</li>
+                <li><strong>Check monotonicity:</strong> Verify that \(b_n\) is decreasing (show \(b_{n+1} \le b_n\))</li>
+                <li><strong>Check limit:</strong> Verify that \(\lim_{n \to \infty} b_n = 0\)</li>
+                <li><strong>Apply test:</strong> Conclude the series converges (by Alternating Series Test)</li>
+                <li><strong>Check absolute convergence:</strong> Test if \(\sum |a_n| = \sum b_n\) converges</li>
+                <li><strong>Classify:</strong> Absolute or conditional?</li>
+            </ol>
+
+            <h3>Checking Monotonicity</h3>
+            <p>
+                To show \(b_{n+1} \le b_n\), use one of these methods:
+            </p>
+            <ul>
+                <li><strong>Derivative test:</strong> If \(f'(x) < 0\), then \(f\) is decreasing, so \(f(n+1) < f(n)\)</li>
+                <li><strong>Ratio test:</strong> Show \(\frac{b_{n+1}}{b_n} < 1\)</li>
+                <li><strong>Direct computation:</strong> Compute first few terms to verify the pattern</li>
+            </ul>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="chapter-section">
+            <h2>Examples</h2>
+
+            <h3>Example 1: \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}\) (Harmonic Series with Alternating Signs)</h3>
+            <p>
+                Determine if \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots\) converges.
+            </p>
+            <p>
+                <strong>Solution:</strong> We have \(b_n = \frac{1}{n}\).
+            </p>
+            <ul>
+                <li><strong>Decreasing:</strong> \(\frac{1}{n+1} < \frac{1}{n}\) ✓</li>
+                <li><strong>Limit:</strong> \(\lim_{n \to \infty} \frac{1}{n} = 0\) ✓</li>
+            </ul>
+            <p>
+                By the Alternating Series Test, the series <strong>converges</strong>.
+            </p>
+            <p>
+                For absolute convergence, we check \(\sum \left|\frac{(-1)^{n+1}}{n}\right| = \sum \frac{1}{n}\), which is the harmonic series and <strong>diverges</strong>.
+            </p>
+            <p style="text-align: center; font-weight: bold;">
+                Therefore, \(\sum \frac{(-1)^{n+1}}{n}\) converges <strong>conditionally</strong>.
+            </p>
+            <p style="text-align: center; color: var(--text-secondary);">
+                (Note: This sum equals \(\ln(2) \approx 0.693147...\))
+            </p>
+
+            <h3>Example 2: \(\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}\)</h3>
+            <p>
+                Determine if \(\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}\) converges, and classify the convergence.
+            </p>
+            <p>
+                <strong>Solution:</strong> We have \(b_n = \frac{1}{n^2}\).
+            </p>
+            <ul>
+                <li><strong>Decreasing:</strong> \(\frac{1}{(n+1)^2} < \frac{1}{n^2}\) ✓</li>
+                <li><strong>Limit:</strong> \(\lim_{n \to \infty} \frac{1}{n^2} = 0\) ✓</li>
+            </ul>
+            <p>
+                By the Alternating Series Test, the series converges.
+            </p>
+            <p>
+                For absolute convergence, \(\sum \frac{1}{n^2}\) is a p-series with \(p = 2 > 1\), so it <strong>converges</strong>.
+            </p>
+            <p style="text-align: center; font-weight: bold;">
+                Therefore, \(\sum \frac{(-1)^n}{n^2}\) converges <strong>absolutely</strong>.
+            </p>
+
+            <h3>Example 3: Error Estimation for \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}\)</h3>
+            <p>
+                Approximate \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}\) using the first 5 terms, and estimate the error.
+            </p>
+            <p>
+                <strong>Solution:</strong> The partial sum is:
+            </p>
+            <p style="text-align: center; font-size: 1.05em;">
+                \(S_5 = 1 - \frac{1}{2!} + \frac{1}{3!} - \frac{1}{4!} + \frac{1}{5!}\)
+            </p>
+            <p style="text-align: center; font-size: 1.05em;">
+                \(= 1 - 0.5 + 0.1667 - 0.0417 + 0.0083 = 0.6333\)
+            </p>
+            <p>
+                By the error bound:
+            </p>
+            <p style="text-align: center; font-size: 1.05em;">
+                \(|R_5| \le b_6 = \frac{1}{6!} = \frac{1}{720} \approx 0.00139\)
+            </p>
+            <p>
+                So the sum is \(0.6333 \pm 0.00139\), or between 0.632 and 0.635.
+            </p>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
+                (Note: This series sum is \(e^{-1} - 1 \approx 0.36788\). Our approximation is not great with just 5 terms,
+                but the error bound is guaranteed accurate!)
+            </p>
+        </section>
+
+        <!-- Visualizer Section -->
+        <section id="visualizer" class="chapter-section">
+            <h2>Interactive Visualizer</h2>
+            <p>
+                The chart below shows partial sums of the alternating series \(\sum \frac{(-1)^{n+1}}{n}\)
+                oscillating around and converging to \(\ln(2)\):
+            </p>
+            <div id="alternatingPlot" style="width:100%;height:500px;"></div>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
+                Blue oscillating line: partial sums | Red dashed line: limit \(\ln(2) \approx 0.693\)
+            </p>
+        </section>
+
+        <!-- Practice Section -->
+        <section id="practice" class="chapter-section">
+            <h2>Practice Problems</h2>
+
+            <div class="practice-problem">
+                <h3>Problem 1</h3>
+                <p>
+                    Use the Alternating Series Test to show that \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1} \sqrt{n}}{n+1}\) converges.
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        Let \(b_n = \frac{\sqrt{n}}{n+1}\).
+                    </p>
+                    <p>
+                        <strong>Decreasing:</strong> We can check that \(b_n = \frac{\sqrt{n}}{n+1}\) is eventually decreasing.
+                        For large \(n\), \(n+1 \approx n\), so \(b_n \approx \frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}\), which is decreasing.
+                        (Alternatively, take the derivative: \(f(x) = \frac{\sqrt{x}}{x+1}\) has \(f'(x) = \frac{1/(2\sqrt{x}) \cdot (x+1) - \sqrt{x}}{(x+1)^2} < 0\) for large \(x\).)
+                    </p>
+                    <p>
+                        <strong>Limit:</strong> \(\lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{1/\sqrt{n}}{1 + 1/n} = 0\) ✓
+                    </p>
+                    <p>
+                        Both conditions are satisfied, so by the Alternating Series Test, the series converges.
+                    </p>
+                </details>
+            </div>
+
+            <div class="practice-problem">
+                <h3>Problem 2</h3>
+                <p>
+                    Determine whether \(\sum_{n=1}^{\infty} \frac{(-1)^n}{2^n}\) converges absolutely, converges conditionally, or diverges.
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        First, test the series itself: \(b_n = \frac{1}{2^n}\) is decreasing and \(\lim b_n = 0\),
+                        so by the Alternating Series Test, the series <strong>converges</strong>.
+                    </p>
+                    <p>
+                        Now test for absolute convergence: \(\sum \left|\frac{(-1)^n}{2^n}\right| = \sum \frac{1}{2^n}\)
+                        is a geometric series with \(r = 1/2 < 1\), so it <strong>converges</strong>.
+                    </p>
+                    <p>
+                        Therefore, \(\sum \frac{(-1)^n}{2^n}\) converges <strong>absolutely</strong>.
+                    </p>
+                </details>
+            </div>
+
+            <div class="practice-problem">
+                <h3>Problem 3</h3>
+                <p>
+                    Approximate the sum \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^3}\) using the first 4 terms,
+                    and find an upper bound for the error.
+                </p>
+                <details>
+                    <summary>Solution</summary>
+                    <p>
+                        The partial sum is:
+                    </p>
+                    <p style="text-align: center;">
+                        \(S_4 = 1 - \frac{1}{8} + \frac{1}{27} - \frac{1}{64}\)
+                    </p>
+                    <p style="text-align: center;">
+                        \(= 1 - 0.125 + 0.0370 - 0.0156 = 0.8864\)
+                    </p>
+                    <p>
+                        The error bound is:
+                    </p>
+                    <p style="text-align: center;">
+                        \(|R_4| \le b_5 = \frac{1}{5^3} = \frac{1}{125} = 0.008\)
+                    </p>
+                    <p>
+                        So the sum is approximately \(0.8864 \pm 0.008\).
+                    </p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <script>
+            if (typeof COURSE !== 'undefined' && COURSE.footer) {
+                var f = COURSE.footer;
+                document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+            }
+        </script>
+    </footer>
+
+    <script src="course-config.js"></script>
+    <script src="course.js"></script>
+    <script>
+        // Generate partial sums for alternating harmonic series
+        var n = [];
+        var partialSums = [];
+        var ln2 = Math.log(2); // Natural log of 2 ≈ 0.693147
+        var sum = 0;
+
+        for (var i = 1; i <= 40; i++) {
+            n.push(i);
+            sum += Math.pow(-1, i + 1) / i;
+            partialSums.push(sum);
+        }
+
+        // Create trace for partial sums
+        var trace = {
+            x: n,
+            y: partialSums,
+            mode: 'lines+markers',
+            name: 'Partial Sums S_N',
+            line: { color: 'rgb(31, 119, 180)', width: 2 },
+            marker: { size: 5 }
+        };
+
+        // Create trace for limit line
+        var limitTrace = {
+            x: [0, 40],
+            y: [ln2, ln2],
+            mode: 'lines',
+            name: 'Limit = ln(2) ≈ 0.693',
+            line: { color: 'rgb(255, 0, 0)', width: 2, dash: 'dash' }
+        };
+
+        var layout = {
+            title: 'Alternating Series: ∑(-1)^(n+1)/n converges to ln(2)',
+            xaxis: { title: 'N (partial sum index)' },
+            yaxis: { title: 'S_N' },
+            hovermode: 'closest',
+            plot_bgcolor: 'rgb(245, 245, 245)',
+            paper_bgcolor: 'white'
+        };
+
+        Plotly.newPlot('alternatingPlot', [trace, limitTrace], layout, {responsive: true});
+    </script>
+</body>
+</html>

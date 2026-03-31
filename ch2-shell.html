@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 2.3: Shell Method</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch2-area.html">2.1 Area</a>
+    <a href="ch2-disk-washer.html">2.2 Disk/Washer</a>
+    <a href="ch2-shell.html" class="active">2.3 Shell</a>
+    <a href="ch2-arc-length.html">2.4 Arc Length</a>
+    <span style="color:var(--border);margin:0 0.25rem;">|</span>
+    <a href="#intro">Intro</a>
+    <a href="#theory">Theory</a>
+    <a href="#method">Method</a>
+    <a href="#examples">Examples</a>
+    <a href="#visualizer">Visualizer</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 2.3: Shell Method</h1>
+
+  <section id="intro">
+    <h2>Introduction</h2>
+    <p>
+      The shell method is an alternative to the disk/washer method for finding volumes of solids of revolution. Instead of slicing perpendicular to the axis of revolution, we slice parallel to it, creating cylindrical shells.
+    </p>
+    <p>
+      The shell method is particularly useful when the disk/washer method would require integrating with respect to a variable that is more complicated to express.
+    </p>
+  </section>
+
+  <section id="theory">
+    <h2>Theory</h2>
+
+    <h3>Shell Method Formula</h3>
+    <p>
+      When revolving a region around the y-axis, we can use vertical cylindrical shells:
+    </p>
+    <p class="math-display">
+      $$V = 2\pi \int_a^b x \cdot f(x) \, dx$$
+    </p>
+    <p>
+      where <span class="math">$f(x)$</span> is the height of the shell at position <span class="math">$x$</span>, and <span class="math">$x$</span> is the distance (radius) from the axis of revolution.
+    </p>
+
+    <h3>General Shell Method</h3>
+    <p>
+      For a region between two curves <span class="math">$y = f(x)$</span> and <span class="math">$y = g(x)$</span> with <span class="math">$f(x) \geq g(x)$</span>, revolved around the y-axis:
+    </p>
+    <p class="math-display">
+      $$V = 2\pi \int_a^b x \cdot [f(x) - g(x)] \, dx$$
+    </p>
+
+    <h3>Revolving Around Other Axes</h3>
+    <p>
+      When revolving around a vertical line <span class="math">$x = c$</span>, the radius of the shell is <span class="math">$|x - c|$</span>:
+    </p>
+    <p class="math-display">
+      $$V = 2\pi \int_a^b |x - c| \cdot f(x) \, dx$$
+    </p>
+    <p>
+      When revolving around a horizontal line, use horizontal shells and integrate with respect to <span class="math">$y$</span>.
+    </p>
+
+    <h3>Why Use Shells?</h3>
+    <p>
+      <strong>Shells are better than disks/washers when:</strong>
+    </p>
+    <ul>
+      <li>Inverting the function <span class="math">$y = f(x)$</span> to <span class="math">$x = f^{-1}(y)$</span> is difficult or impossible</li>
+      <li>The region is naturally described in terms of <span class="math">$x$</span> rather than <span class="math">$y$</span></li>
+      <li>Revolving around a vertical line (axis parallel to the y-axis)</li>
+    </ul>
+  </section>
+
+  <section id="method">
+    <h2>Method: Setting Up Shell Integrals</h2>
+    <p>
+      <strong>Steps for Shell Method:</strong>
+    </p>
+    <ol>
+      <li>Identify the axis of revolution</li>
+      <li>Determine the bounds of integration (in the direction perpendicular to the axis)</li>
+      <li>Find the radius of a thin shell at position <span class="math">$x$</span>: <span class="math">$p(x)$</span></li>
+      <li>Find the height of the shell: <span class="math">$h(x) = f(x) - g(x)$</span> (or just <span class="math">$f(x)$</span> if one boundary is the axis)</li>
+      <li>Set up the integral: <span class="math">$V = 2\pi \int_a^b p(x) h(x) \, dx$</span></li>
+      <li>Evaluate</li>
+    </ol>
+    <p>
+      <strong>Key Formula:</strong> Circumference <span class="math">$\times$</span> Height <span class="math">$\times$</span> Thickness <span class="math">$= 2\pi r h \, dr$</span>
+    </p>
+  </section>
+
+  <section id="examples">
+    <h2>Examples</h2>
+
+    <div class="example">
+      <h3>Example 1: Revolve $y = x^2$ From 0 to 2 About the y-axis</h3>
+      <p>
+        Find the volume when the region under <span class="math">$y = x^2$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span> is revolved about the y-axis.
+      </p>
+      <p><strong>Setup:</strong></p>
+      <p>
+        At position <span class="math">$x$</span>, the radius of the shell is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x^2$</span>.
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_0^2 x \cdot x^2 \, dx = 2\pi \int_0^2 x^3 \, dx$$
+      </p>
+      <p><strong>Evaluation:</strong></p>
+      <p class="math-display">
+        $$V = 2\pi \left[\frac{x^4}{4}\right]_0^2 = 2\pi \cdot \frac{16}{4} = 8\pi$$
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Example 2: Revolve Region Between $y = x$ and $y = x^2$ About the y-axis</h3>
+      <p>
+        Find the volume when the region between <span class="math">$y = x$</span> (above) and <span class="math">$y = x^2$</span> (below) from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> is revolved about the y-axis.
+      </p>
+      <p><strong>Setup:</strong></p>
+      <p>
+        At position <span class="math">$x$</span>, the radius is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x - x^2$</span>.
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_0^1 x(x - x^2) \, dx = 2\pi \int_0^1 (x^2 - x^3) \, dx$$
+      </p>
+      <p><strong>Evaluation:</strong></p>
+      <p class="math-display">
+        $$V = 2\pi \left[\frac{x^3}{3} - \frac{x^4}{4}\right]_0^1 = 2\pi \left(\frac{1}{3} - \frac{1}{4}\right) = 2\pi \cdot \frac{1}{12} = \frac{\pi}{6}$$
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Example 3: Revolve $y = x^2$ From 0 to 2 About $x = 3$</h3>
+      <p>
+        Find the volume when the region under <span class="math">$y = x^2$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span> is revolved about the vertical line <span class="math">$x = 3$</span>.
+      </p>
+      <p><strong>Setup:</strong></p>
+      <p>
+        At position <span class="math">$x$</span>, the distance from the line <span class="math">$x = 3$</span> is <span class="math">$p(x) = 3 - x$</span> (since <span class="math">$0 \leq x \leq 2 < 3$</span>). The height is <span class="math">$h(x) = x^2$</span>.
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_0^2 (3 - x) \cdot x^2 \, dx = 2\pi \int_0^2 (3x^2 - x^3) \, dx$$
+      </p>
+      <p><strong>Evaluation:</strong></p>
+      <p class="math-display">
+        $$V = 2\pi \left[x^3 - \frac{x^4}{4}\right]_0^2 = 2\pi \left(8 - 4\right) = 8\pi$$
+      </p>
+    </div>
+
+  </section>
+
+  <section id="visualizer">
+    <h2>Visualizer: Shell Method for $y = x^2$ Revolved About y-axis</h2>
+    <p>
+      The plot below shows a thin vertical shell at various positions. The circumference of each shell is <span class="math">$2\pi x$</span>, its height is <span class="math">$x^2$</span>, and we integrate from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span>.
+    </p>
+    <div id="plotly-chart" style="width:100%;max-width:700px;margin:20px auto;"></div>
+    <script>
+      var x = [];
+      for (var i = 0; i <= 100; i++) {
+        x.push(2 * i / 100);
+      }
+
+      var y = x.map(function(xi) { return xi * xi; });
+
+      // Curve y = x^2
+      var trace1 = {
+        x: x,
+        y: y,
+        mode: 'lines',
+        name: 'y = x²',
+        line: {color: 'blue', width: 2}
+      };
+
+      // Shaded area to represent shell
+      var x_fill = x.concat(x.slice().reverse());
+      var y_fill = y.map(function() { return 0; }).concat(y.slice().reverse());
+
+      var trace2 = {
+        x: x_fill,
+        y: y_fill,
+        fill: 'toself',
+        fillcolor: 'rgba(255, 0, 0, 0.2)',
+        line: {color: 'transparent'},
+        name: 'Shell height'
+      };
+
+      // Add some vertical lines to represent shells
+      var shellTraces = [];
+      for (var i = 0; i <= 10; i++) {
+        var xShell = 2 * i / 10;
+        var yMax = xShell * xShell;
+        shellTraces.push({
+          x: [xShell, xShell],
+          y: [0, yMax],
+          mode: 'lines',
+          line: {color: 'rgba(100, 100, 100, 0.5)', width: 1},
+          showlegend: false,
+          hoverinfo: 'skip'
+        });
+      }
+
+      var layout = {
+        title: 'Shell Method: Revolving y = x² About y-axis',
+        xaxis: {title: 'x (distance from y-axis)'},
+        yaxis: {title: 'y (height of shell)'},
+        hovermode: 'closest',
+        width: 700,
+        height: 500
+      };
+
+      Plotly.newPlot('plotly-chart', [trace2, trace1].concat(shellTraces), layout);
+    </script>
+  </section>
+
+  <section id="practice">
+    <h2>Practice Problems</h2>
+    <div class="practice-problem">
+      <h3>Problem 1</h3>
+      <p>
+        Find the volume of the solid obtained by revolving the region under <span class="math">$y = \sqrt{x}$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 4$</span> about the y-axis using the shell method.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          At position <span class="math">$x$</span>, radius is <span class="math">$x$</span> and height is <span class="math">$\sqrt{x}$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^4 x \cdot \sqrt{x} \, dx = 2\pi \int_0^4 x^{3/2} \, dx$$
+          $$= 2\pi \left[\frac{2}{5}x^{5/2}\right]_0^4 = 2\pi \cdot \frac{2}{5} \cdot 32 = \frac{128\pi}{5}$$
+        </p>
+      </details>
+    </div>
+
+    <div class="practice-problem">
+      <h3>Problem 2</h3>
+      <p>
+        Find the volume obtained by revolving the region bounded by <span class="math">$y = 2 - x$</span>, <span class="math">$y = 0$</span>, and <span class="math">$x = 0$</span> about the y-axis.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          The line <span class="math">$y = 2 - x$</span> goes from <span class="math">$(0,2)$</span> to <span class="math">$(2,0)$</span>.
+        </p>
+        <p>
+          At position <span class="math">$x$</span>, radius is <span class="math">$x$</span> and height is <span class="math">$2 - x$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^2 x(2 - x) \, dx = 2\pi \int_0^2 (2x - x^2) \, dx$$
+          $$= 2\pi \left[x^2 - \frac{x^3}{3}\right]_0^2 = 2\pi \left(4 - \frac{8}{3}\right) = \frac{8\pi}{3}$$
+        </p>
+      </details>
+    </div>
+
+    <div class="practice-problem">
+      <h3>Problem 3</h3>
+      <p>
+        Find the volume obtained by revolving the region under <span class="math">$y = e^x$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> about the y-axis.
+      </p>
+      <details>
+        <summary>Solution</summary>
+        <p>
+          At position <span class="math">$x$</span>, radius is <span class="math">$x$</span> and height is <span class="math">$e^x$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^1 x e^x \, dx$$
+        </p>
+        <p>
+          Using integration by parts: <span class="math">$u = x$</span>, <span class="math">$dv = e^x dx$</span>, so <span class="math">$du = dx$</span>, <span class="math">$v = e^x$</span>.
+        </p>
+        <p class="math-display">
+          $$\int x e^x \, dx = xe^x - \int e^x \, dx = xe^x - e^x = e^x(x - 1)$$
+        </p>
+        <p class="math-display">
+          $$V = 2\pi [e^x(x-1)]_0^1 = 2\pi [(e(1-1)) - (e^0(0-1))]$$
+          $$= 2\pi [0 - (-1)] = 2\pi$$
+        </p>
+      </details>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  document.querySelectorAll('.math').forEach(function(el) {
+  });
+  document.querySelectorAll('.math-display').forEach(function(el) {
+  });
+</script>
+
+</body>
+</html>

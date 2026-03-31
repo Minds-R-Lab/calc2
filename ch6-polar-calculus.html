@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 6.3: Calculus in Polar Coordinates - Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch6-parametric.html">6.1 Parametric</a>
+    <a href="ch6-polar.html">6.2 Polar</a>
+    <a href="ch6-polar-calculus.html" class="active">6.3 Polar Calc</a>
+    <span style="color:var(--border);margin:0 0.25rem;">|</span>
+    <a href="#intro">Intro</a>
+    <a href="#theory">Theory</a>
+    <a href="#method">Method</a>
+    <a href="#examples">Examples</a>
+    <a href="#visualizer">Visualizer</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="intro">
+  <h1>Chapter 6.3: Calculus in Polar Coordinates</h1>
+  <p>
+    Just as we can compute areas, arc lengths, and volumes for Cartesian and parametric curves,
+    we can do the same for curves given in polar form. The calculus is adapted to account for the
+    radial structure of polar coordinates, leading to elegant formulas for area and arc length.
+  </p>
+</section>
+
+<section id="theory">
+  <h2>Theory</h2>
+
+  <h3>Area in Polar Coordinates</h3>
+  <p>
+    For a region bounded by a polar curve $r = f(\theta)$ and the rays $\theta = \alpha$ and $\theta = \beta$,
+    the area is:
+    $$A = \frac{1}{2}\int_{\alpha}^{\beta} r^2\,d\theta$$
+  </p>
+  <p>
+    This formula comes from the fact that a thin wedge-shaped sector of angle $d\theta$ and radius $r$
+    has area $\frac{1}{2}r^2 d\theta$.
+  </p>
+
+  <h3>Area Between Two Polar Curves</h3>
+  <p>
+    If two curves $r = f(\theta)$ and $r = g(\theta)$ with $f(\theta) \geq g(\theta)$ enclose a region
+    from $\theta = \alpha$ to $\theta = \beta$, the area is:
+    $$A = \frac{1}{2}\int_{\alpha}^{\beta} \left[f(\theta)^2 - g(\theta)^2\right]\,d\theta$$
+  </p>
+  <p>
+    This is the area swept out by the outer curve minus the area swept out by the inner curve.
+  </p>
+
+  <h3>Arc Length in Polar Coordinates</h3>
+  <p>
+    For a curve $r = f(\theta)$ from $\theta = \alpha$ to $\theta = \beta$, the arc length is:
+    $$L = \int_{\alpha}^{\beta} \sqrt{r^2 + \left(\frac{dr}{d\theta}\right)^2}\,d\theta$$
+  </p>
+  <p>
+    This formula reflects that the position changes both radially (through $dr$) and angularly (through $r d\theta$).
+  </p>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+
+  <h3>For Finding Area Inside a Polar Curve:</h3>
+  <ol>
+    <li>Identify the bounds: if the curve is complete, use $\alpha = 0$ and $\beta = 2\pi$ (or appropriate limits).</li>
+    <li>Set up: $A = \frac{1}{2}\int_{\alpha}^{\beta} r^2\,d\theta$</li>
+    <li>Substitute $r = f(\theta)$ and evaluate the integral.</li>
+  </ol>
+
+  <h3>For Finding Area Between Two Polar Curves:</h3>
+  <ol>
+    <li>Identify where the curves intersect (set $f(\theta) = g(\theta)$).</li>
+    <li>Determine which curve is outer and which is inner in each region.</li>
+    <li>Set up: $A = \frac{1}{2}\int_{\alpha}^{\beta} \left[r_{\text{outer}}^2 - r_{\text{inner}}^2\right]\,d\theta$</li>
+    <li>Evaluate the integral.</li>
+  </ol>
+
+  <h3>For Finding Arc Length:</h3>
+  <ol>
+    <li>Compute $\frac{dr}{d\theta}$</li>
+    <li>Form the integrand: $\sqrt{r^2 + (dr/d\theta)^2}$</li>
+    <li>Evaluate $\int_{\alpha}^{\beta} \sqrt{r^2 + (dr/d\theta)^2}\,d\theta$</li>
+  </ol>
+</section>
+
+<section id="examples">
+  <h2>Examples</h2>
+
+  <h3>Example 1: Area Inside the Cardioid $r = 1 + \cos\theta$</h3>
+  <p><strong>Find the total area enclosed by the cardioid.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    The cardioid is traced once as $\theta$ goes from $0$ to $2\pi$.
+  </p>
+  <p>
+    $$A = \frac{1}{2}\int_0^{2\pi} (1 + \cos\theta)^2\,d\theta$$
+  </p>
+  <p>
+    Expand:
+    $$(1 + \cos\theta)^2 = 1 + 2\cos\theta + \cos^2\theta$$
+  </p>
+  <p>
+    Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
+    $$1 + 2\cos\theta + \frac{1 + \cos(2\theta)}{2} = \frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}$$
+  </p>
+  <p>
+    $$A = \frac{1}{2}\int_0^{2\pi} \left(\frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}\right)\,d\theta$$
+  </p>
+  <p>
+    $$= \frac{1}{2}\left[\frac{3\theta}{2} + 2\sin\theta + \frac{\sin(2\theta)}{4}\right]_0^{2\pi}$$
+  </p>
+  <p>
+    $$= \frac{1}{2}\left[\frac{3 \cdot 2\pi}{2} + 0 + 0\right] = \frac{1}{2} \cdot 3\pi = \frac{3\pi}{2}$$
+  </p>
+
+  <h3>Example 2: Area Inside $r = 3\cos\theta$ and Outside $r = 1 + \cos\theta$</h3>
+  <p><strong>Find the area of the region inside the first curve but outside the second.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    First, find intersection points by setting $3\cos\theta = 1 + \cos\theta$:
+    $$2\cos\theta = 1 \implies \cos\theta = \frac{1}{2} \implies \theta = \frac{\pi}{3}, \frac{5\pi}{3}$$
+  </p>
+  <p>
+    For $\theta \in [-\frac{\pi}{3}, \frac{\pi}{3}]$, we have $r = 3\cos\theta \geq r = 1 + \cos\theta$.
+  </p>
+  <p>
+    By symmetry about the x-axis:
+    $$A = 2 \cdot \frac{1}{2}\int_0^{\pi/3} [(3\cos\theta)^2 - (1 + \cos\theta)^2]\,d\theta$$
+  </p>
+  <p>
+    $$= \int_0^{\pi/3} [9\cos^2\theta - (1 + 2\cos\theta + \cos^2\theta)]\,d\theta$$
+  </p>
+  <p>
+    $$= \int_0^{\pi/3} [8\cos^2\theta - 2\cos\theta - 1]\,d\theta$$
+  </p>
+  <p>
+    Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
+    $$= \int_0^{\pi/3} [4(1 + \cos(2\theta)) - 2\cos\theta - 1]\,d\theta$$
+  </p>
+  <p>
+    $$= \int_0^{\pi/3} [3 + 4\cos(2\theta) - 2\cos\theta]\,d\theta$$
+  </p>
+  <p>
+    $$= \left[3\theta + 2\sin(2\theta) - 2\sin\theta\right]_0^{\pi/3}$$
+  </p>
+  <p>
+    $$= 3 \cdot \frac{\pi}{3} + 2\sin\frac{2\pi}{3} - 2\sin\frac{\pi}{3} - 0$$
+  </p>
+  <p>
+    $$= \pi + 2 \cdot \frac{\sqrt{3}}{2} - 2 \cdot \frac{\sqrt{3}}{2} = \pi$$
+  </p>
+
+  <h3>Example 3: Arc Length of the Spiral $r = e^{\theta}$ from $\theta = 0$ to $\theta = 2\pi$</h3>
+  <p><strong>Find the arc length of the logarithmic spiral.</strong></p>
+
+  <p><em>Solution:</em></p>
+  <p>
+    We have $r = e^{\theta}$ and $\frac{dr}{d\theta} = e^{\theta}$.
+  </p>
+  <p>
+    $$L = \int_0^{2\pi} \sqrt{(e^{\theta})^2 + (e^{\theta})^2}\,d\theta = \int_0^{2\pi} \sqrt{2e^{2\theta}}\,d\theta$$
+  </p>
+  <p>
+    $$= \sqrt{2}\int_0^{2\pi} e^{\theta}\,d\theta = \sqrt{2}\left[e^{\theta}\right]_0^{2\pi}$$
+  </p>
+  <p>
+    $$= \sqrt{2}(e^{2\pi} - 1)$$
+  </p>
+  <p>
+    Numerically, $e^{2\pi} \approx 535.5$, so $L \approx \sqrt{2}(535.5 - 1) \approx 756.3$.
+  </p>
+</section>
+
+<section id="visualizer">
+  <h2>Visualizer: Area Inside the Cardioid</h2>
+  <p>
+    Below we show the cardioid $r = 1 + \cos\theta$ with shading to represent the enclosed area.
+    The area calculation is illustrated by dividing the region into thin sectors.
+  </p>
+  <div id="plotCardioidArea" style="width:100%; height:500px;"></div>
+  <p style="font-size:0.9em; color:#666; margin-top:1rem;">
+    The total area inside the cardioid is $\frac{3\pi}{2}$.
+  </p>
+</section>
+
+<section id="practice">
+  <h2>Practice Problems</h2>
+
+  <div class="problem">
+    <h3>Problem 1</h3>
+    <p>
+      Find the area inside the circle $r = 2\sin\theta$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        The circle $r = 2\sin\theta$ is traced once as $\theta$ goes from $0$ to $\pi$.
+      </p>
+      <p>
+        $$A = \frac{1}{2}\int_0^{\pi} (2\sin\theta)^2\,d\theta = \frac{1}{2}\int_0^{\pi} 4\sin^2\theta\,d\theta$$
+      </p>
+      <p>
+        $$= 2\int_0^{\pi} \sin^2\theta\,d\theta = 2\int_0^{\pi} \frac{1 - \cos(2\theta)}{2}\,d\theta$$
+      </p>
+      <p>
+        $$= \int_0^{\pi} (1 - \cos(2\theta))\,d\theta = \left[\theta - \frac{\sin(2\theta)}{2}\right]_0^{\pi}$$
+      </p>
+      <p>
+        $$= \pi - 0 - 0 + 0 = \pi$$
+      </p>
+      <p>
+        <strong>Area = $\pi$</strong> (This matches a circle of radius 1, as $r = 2\sin\theta$ is equivalent to $(x - 0)^2 + (y - 1)^2 = 1$.)
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 2</h3>
+    <p>
+      Find the area inside one petal of the rose curve $r = \sin(3\theta)$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        The rose $r = \sin(3\theta)$ has 3 petals. One petal is traced as $\theta$ goes from $0$ to $\frac{\pi}{3}$
+        (where $r$ goes from 0 to 1 back to 0).
+      </p>
+      <p>
+        $$A = \frac{1}{2}\int_0^{\pi/3} \sin^2(3\theta)\,d\theta$$
+      </p>
+      <p>
+        Using $\sin^2(u) = \frac{1 - \cos(2u)}{2}$:
+        $$= \frac{1}{2}\int_0^{\pi/3} \frac{1 - \cos(6\theta)}{2}\,d\theta = \frac{1}{4}\int_0^{\pi/3} (1 - \cos(6\theta))\,d\theta$$
+      </p>
+      <p>
+        $$= \frac{1}{4}\left[\theta - \frac{\sin(6\theta)}{6}\right]_0^{\pi/3}$$
+      </p>
+      <p>
+        $$= \frac{1}{4}\left[\frac{\pi}{3} - \frac{\sin(2\pi)}{6} - 0 + 0\right] = \frac{1}{4} \cdot \frac{\pi}{3} = \frac{\pi}{12}$$
+      </p>
+      <p>
+        <strong>Area of one petal = $\frac{\pi}{12}$</strong>
+      </p>
+    </details>
+  </div>
+
+  <div class="problem">
+    <h3>Problem 3</h3>
+    <p>
+      Find the arc length of $r = \theta$ (Archimedean spiral) from $\theta = 0$ to $\theta = \pi$.
+    </p>
+    <details>
+      <summary>Solution</summary>
+      <p>
+        We have $r = \theta$ and $\frac{dr}{d\theta} = 1$.
+      </p>
+      <p>
+        $$L = \int_0^{\pi} \sqrt{\theta^2 + 1}\,d\theta$$
+      </p>
+      <p>
+        This integral requires the substitution $\theta = \sinh(u)$, or we can use the formula:
+        $$\int \sqrt{\theta^2 + 1}\,d\theta = \frac{\theta\sqrt{\theta^2 + 1}}{2} + \frac{1}{2}\sinh^{-1}(\theta) + C$$
+      </p>
+      <p>
+        Evaluating at the bounds:
+        $$L = \left[\frac{\theta\sqrt{\theta^2 + 1}}{2} + \frac{1}{2}\sinh^{-1}(\theta)\right]_0^{\pi}$$
+      </p>
+      <p>
+        $$= \frac{\pi\sqrt{\pi^2 + 1}}{2} + \frac{1}{2}\sinh^{-1}(\pi) - 0$$
+      </p>
+      <p>
+        Numerically: $\pi^2 + 1 \approx 10.87$, so $\sqrt{\pi^2 + 1} \approx 3.297$, and $\sinh^{-1}(\pi) \approx 1.86$.
+      </p>
+      <p>
+        $$L \approx \frac{3.14159 \cdot 3.297}{2} + \frac{1.86}{2} \approx 5.18 + 0.93 \approx 6.11$$
+      </p>
+    </details>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <script>
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.currentScript.parentElement.innerHTML = f.courseName + ' &mdash; ' + f.instructor + '<br>' + f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  </script>
+</footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+<script>
+// Plot cardioid with shaded area
+function plotCardioidArea() {
+  var theta = [];
+  var rVals = [];
+  var x = [];
+  var y = [];
+
+  // Generate the cardioid curve
+  for (var t = 0; t <= 2 * Math.PI; t += 0.05) {
+    theta.push(t);
+    var r = 1 + Math.cos(t);
+    rVals.push(r);
+    x.push(r * Math.cos(t));
+    y.push(r * Math.sin(t));
+  }
+
+  var trace = {
+    x: x,
+    y: y,
+    fill: 'toself',
+    fillcolor: 'rgba(0, 100, 200, 0.3)',
+    line: { color: 'blue', width: 2 },
+    name: 'Cardioid Area',
+    type: 'scatter',
+    mode: 'lines'
+  };
+
+  var layout = {
+    title: 'Cardioid: r = 1 + cos(θ) with Area = 3π/2',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'y' },
+    hovermode: 'closest',
+    aspectratio: { x: 1, y: 1 }
+  };
+
+  Plotly.newPlot('plotCardioidArea', [trace], layout, { responsive: true });
+}
+
+plotCardioidArea();
+</script>
+
+</body>
+</html>
