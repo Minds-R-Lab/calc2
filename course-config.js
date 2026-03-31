@@ -26,7 +26,7 @@ const COURSE = {
   // ── Hero Stats ──
   stats: [
     { num: "7",    label: "Chapters" },
-    { num: "23",   label: "Topics" },
+    { num: "24",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -132,6 +132,14 @@ const COURSE = {
           description: "Decomposing rational functions into simpler fractions for integration.",
           mathPreview: "\\frac{P(x)}{Q(x)} = \\frac{A}{x-a} + \\frac{B}{x-b}",
           file: "ch1-partial-fractions.html",
+        },
+        {
+          id: "ch1-decision-guide",
+          title: "1.5 — Which Technique? Decision Guide",
+          icon: "?",
+          description: "An interactive flowchart and wizard to help you choose the right integration technique for any problem.",
+          mathPreview: "\\int f(x)\\,dx \\;\\to\\; \\text{which method?}",
+          file: "ch1-decision-guide.html",
         },
       ],
     },
@@ -342,7 +350,7 @@ const COURSE = {
 
   // ── Exam Generator Chapters ──
   examChapters: [
-    { ch: "ch1", badge: "Ch 1", color: "#059669", title: "Integration Techniques", topics: "By Parts, Trig Integrals, Trig Sub, Partial Fractions" },
+    { ch: "ch1", badge: "Ch 1", color: "#059669", title: "Integration Techniques", topics: "By Parts, Trig Integrals, Trig Sub, Partial Fractions, Decision Guide" },
     { ch: "ch2", badge: "Ch 2", color: "#2563eb", title: "Applications of Integration", topics: "Area, Disk/Washer, Shell, Arc Length" },
     { ch: "ch3", badge: "Ch 3", color: "#7c3aed", title: "Improper Integrals", topics: "Type I, Type II, Comparison Tests" },
     { ch: "ch4", badge: "Ch 4", color: "#d97706", title: "Sequences and Series", topics: "Sequences, Series, Convergence Tests" },

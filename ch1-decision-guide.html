@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>1.5 Which Technique? — Decision Guide | Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="course-config.js"></script>
+  <script src="course.js"></script>
+  <style>
+    /* ── Flowchart SVG ── */
+    .flowchart-wrap {
+      background: #fff; border-radius: 14px; border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 1.5rem; margin: 2rem 0;
+      overflow-x: auto;
+    }
+    #flowchart text { font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    /* ── Interactive Wizard ── */
+    .wizard-card {
+      background: linear-gradient(135deg,#f8fafc,#eff6ff);
+      border: 2px solid var(--primary);
+      border-radius: 16px; padding: 2.5rem; margin: 2rem 0;
+      text-align: center; position: relative; min-height: 280px;
+    }
+    .wizard-question {
+      font-size: 1.25rem; font-weight: 700; color: var(--text);
+      margin-bottom: 1.5rem; line-height: 1.5;
+    }
+    .wizard-options {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .wizard-btn {
+      padding: 0.8rem 1.6rem; border: 2px solid var(--border);
+      border-radius: 10px; background: #fff; cursor: pointer;
+      font-size: 0.95rem; font-weight: 600; transition: all 0.2s;
+      color: var(--text); min-width: 140px;
+    }
+    .wizard-btn:hover {
+      border-color: var(--primary); background: var(--primary-light);
+      transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,0.15);
+    }
+    .wizard-result {
+      background: #fff; border-radius: 12px; padding: 2rem;
+      border: 2px solid var(--success); text-align: left;
+      margin-top: 1rem;
+    }
+    .wizard-result h3 {
+      color: var(--success); font-size: 1.3rem; margin-bottom: 0.75rem;
+    }
+    .wizard-result .technique-link {
+      display: inline-block; margin-top: 1rem; padding: 0.6rem 1.5rem;
+      background: var(--primary); color: #fff; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+    }
+    .wizard-result .technique-link:hover { background: var(--primary-dark); }
+    .wizard-back {
+      display: inline-block; margin-top: 1rem; padding: 0.5rem 1.2rem;
+      background: transparent; border: 1.5px solid var(--text-muted);
+      color: var(--text-muted); border-radius: 8px; cursor: pointer;
+      font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+    }
+    .wizard-back:hover { border-color: var(--text); color: var(--text); }
+    .wizard-breadcrumb {
+      font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;
+    }
+
+    /* ── Quick-Reference Table ── */
+    .ref-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.92rem; }
+    .ref-table th {
+      background: var(--primary); color: #fff; padding: 0.75rem 1rem;
+      text-align: left; font-weight: 600;
+    }
+    .ref-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .ref-table tr:nth-child(even) { background: #f8fafc; }
+    .ref-table tr:hover { background: var(--primary-light); }
+    .ref-table .tag {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .tag-parts { background: #dbeafe; color: #1e40af; }
+    .tag-trig { background: #d1fae5; color: #065f46; }
+    .tag-trigsub { background: #ede9fe; color: #5b21b6; }
+    .tag-partial { background: #fef3c7; color: #92400e; }
+    .tag-usub { background: #fee2e2; color: #991b1b; }
+
+    @media (max-width: 768px) {
+      .wizard-options { flex-direction: column; }
+      .wizard-btn { min-width: auto; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><a href="index.html">Calc 2</a></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ch1-by-parts.html">1.1 By Parts</a>
+      <a href="ch1-trig-integrals.html">1.2 Trig Int.</a>
+      <a href="ch1-trig-sub.html">1.3 Trig Sub</a>
+      <a href="ch1-partial-fractions.html">1.4 Partial Frac.</a>
+      <a href="ch1-decision-guide.html" class="active">1.5 Which Technique?</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="intro">
+      <h1>1.5 Which Technique Should I Use?</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Recognize visual patterns in integrands that point to specific techniques</li>
+          <li>Use a systematic decision process to select the right integration method</li>
+          <li>Understand when multiple techniques might work and how to choose the most efficient one</li>
+        </ul>
+      </div>
+
+      <p>One of the hardest parts of Chapter 1 isn't learning the individual techniques — it's knowing <em>which one to use</em> when you face a new integral. This page gives you two tools: a visual flowchart you can follow step by step, and an interactive wizard that asks you questions about your integrand and tells you what to try.</p>
+
+      <div class="tip-box">
+        <strong>Golden Rule</strong>
+        <p>Always try <strong>simplification and u-substitution first</strong>. They're the fastest methods. Only move to the advanced techniques (by parts, trig sub, partial fractions) when simpler approaches don't work.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 1: THE FLOWCHART ══════════ -->
+    <section id="flowchart">
+      <h2>The Decision Flowchart</h2>
+      <p>Start at the top and follow the arrows based on what your integrand looks like. Each path leads to the recommended technique.</p>
+
+      <div class="flowchart-wrap">
+        <svg id="flowchart-svg" viewBox="0 0 900 1020" style="width:100%; max-width:900px; margin:0 auto; display:block;">
+          <defs>
+            <filter id="fs"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.08"/></filter>
+            <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+            </marker>
+          </defs>
+
+          <!-- START NODE -->
+          <rect x="300" y="15" rx="25" ry="25" width="300" height="50" fill="#2563eb" filter="url(#fs)"/>
+          <text x="450" y="46" text-anchor="middle" font-size="16" fill="#fff" font-weight="800">Look at the Integrand</text>
+
+          <!-- Arrow down -->
+          <line x1="450" y1="65" x2="450" y2="90" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <!-- Q1: Can you simplify / u-sub? -->
+          <rect x="275" y="90" rx="10" ry="10" width="350" height="50" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="112" text-anchor="middle" font-size="13" fill="#92400e" font-weight="700">Can you simplify, expand, or do u-sub?</text>
+          <text x="450" y="130" text-anchor="middle" font-size="11" fill="#92400e">e.g. $\int 2x\cos(x^2)dx$, $\int (x+1)^2 dx$</text>
+
+          <!-- YES → u-sub result -->
+          <line x1="625" y1="115" x2="730" y2="115" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="670" y="108" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="90" rx="10" ry="10" width="155" height="50" fill="#d1fae5" stroke="#059669" stroke-width="2" filter="url(#fs)"/>
+          <text x="808" y="112" text-anchor="middle" font-size="12" fill="#065f46" font-weight="700">U-Substitution</text>
+          <text x="808" y="128" text-anchor="middle" font-size="10" fill="#065f46">or simplify first!</text>
+
+          <!-- NO → next question -->
+          <line x1="450" y1="140" x2="450" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="162" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q2: Is it a product of two different function types? -->
+          <rect x="250" y="175" rx="10" ry="10" width="400" height="55" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="198" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="700">Product of two different function types?</text>
+          <text x="450" y="218" text-anchor="middle" font-size="10.5" fill="#1e40af">e.g. $x\sin x$, $x^2 e^x$, $e^x\cos x$, $x\ln x$</text>
+
+          <!-- YES → Integration by Parts -->
+          <line x1="650" y1="202" x2="730" y2="202" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="680" y="195" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="177" rx="10" ry="10" width="155" height="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#fs)"/>
+          <text x="808" y="198" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="700">Integration</text>
+          <text x="808" y="214" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="700">by Parts (1.1)</text>
+
+          <!-- NO → next -->
+          <line x1="450" y1="230" x2="450" y2="268" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="253" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q3: Trig functions only? -->
+          <rect x="250" y="268" rx="10" ry="10" width="400" height="55" fill="#d1fae5" stroke="#059669" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="290" text-anchor="middle" font-size="13" fill="#065f46" font-weight="700">Powers/products of sin, cos, tan, sec only?</text>
+          <text x="450" y="310" text-anchor="middle" font-size="10.5" fill="#065f46">e.g. $\sin^3 x\cos^2 x$, $\tan^4 x\sec^2 x$</text>
+
+          <!-- YES → Trig Integrals -->
+          <line x1="650" y1="296" x2="730" y2="296" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="680" y="289" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="271" rx="10" ry="10" width="155" height="50" fill="#d1fae5" stroke="#059669" stroke-width="2" filter="url(#fs)"/>
+          <text x="808" y="292" text-anchor="middle" font-size="12" fill="#065f46" font-weight="700">Trig Integrals</text>
+          <text x="808" y="308" text-anchor="middle" font-size="12" fill="#065f46" font-weight="700">(1.2)</text>
+
+          <!-- NO → next -->
+          <line x1="450" y1="323" x2="450" y2="362" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="347" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q4: Contains √(a²-x²), √(a²+x²), √(x²-a²)? -->
+          <rect x="225" y="362" rx="10" ry="10" width="450" height="55" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="384" text-anchor="middle" font-size="13" fill="#5b21b6" font-weight="700">Contains $\sqrt{a^2-x^2}$, $\sqrt{a^2+x^2}$, or $\sqrt{x^2-a^2}$?</text>
+          <text x="450" y="404" text-anchor="middle" font-size="10.5" fill="#5b21b6">or quadratic expressions inside a square root</text>
+
+          <!-- YES → Trig Sub -->
+          <line x1="675" y1="390" x2="730" y2="390" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="698" y="383" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="730" y="365" rx="10" ry="10" width="155" height="50" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" filter="url(#fs)"/>
+          <text x="808" y="386" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="700">Trig Substitution</text>
+          <text x="808" y="402" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="700">(1.3)</text>
+
+          <!-- Sub-branches for trig sub -->
+          <line x1="808" y1="415" x2="808" y2="435" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <rect x="700" y="435" rx="8" ry="8" width="215" height="90" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
+          <text x="808" y="454" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="600">Which substitution?</text>
+          <text x="808" y="472" text-anchor="middle" font-size="9.5" fill="#374151">$\sqrt{a^2-x^2}$ → $x = a\sin\theta$</text>
+          <text x="808" y="488" text-anchor="middle" font-size="9.5" fill="#374151">$\sqrt{a^2+x^2}$ → $x = a\tan\theta$</text>
+          <text x="808" y="504" text-anchor="middle" font-size="9.5" fill="#374151">$\sqrt{x^2-a^2}$ → $x = a\sec\theta$</text>
+
+          <!-- NO → next -->
+          <line x1="450" y1="417" x2="450" y2="456" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="441" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q5: Rational function P(x)/Q(x)? -->
+          <rect x="250" y="456" rx="10" ry="10" width="400" height="55" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="478" text-anchor="middle" font-size="13" fill="#92400e" font-weight="700">Rational function $P(x)/Q(x)$?</text>
+          <text x="450" y="498" text-anchor="middle" font-size="10.5" fill="#92400e">Polynomial divided by polynomial (factorable denominator)</text>
+
+          <!-- YES → Partial Fractions -->
+          <line x1="650" y1="484" x2="700" y2="484" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="670" y="477" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="700" y="556" rx="10" ry="10" width="175" height="50" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#fs)"/>
+          <text x="788" y="577" text-anchor="middle" font-size="12" fill="#92400e" font-weight="700">Partial Fractions</text>
+          <text x="788" y="593" text-anchor="middle" font-size="12" fill="#92400e" font-weight="700">(1.4)</text>
+
+          <!-- Partial fractions sub-decision -->
+          <line x1="700" y1="484" x2="788" y2="484" stroke="#d97706" stroke-width="1.5"/>
+          <line x1="788" y1="484" x2="788" y2="556" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+          <!-- Q5 sub: Is degree(P) >= degree(Q)? -->
+          <rect x="700" y="460" rx="8" ry="8" width="185" height="35" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+          <text x="793" y="482" text-anchor="middle" font-size="9.5" fill="#92400e" font-weight="600">deg(P) ≥ deg(Q)? → Long divide first</text>
+
+          <!-- NO → next -->
+          <line x1="450" y1="511" x2="450" y2="550" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="535" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- Q6: inverse trig pattern? -->
+          <rect x="250" y="550" rx="10" ry="10" width="400" height="55" fill="#fce7f3" stroke="#db2777" stroke-width="2" filter="url(#fs)"/>
+          <text x="450" y="572" text-anchor="middle" font-size="13" fill="#9d174d" font-weight="700">Pattern like $\frac{1}{a^2+x^2}$ or $\frac{1}{\sqrt{a^2-x^2}}$?</text>
+          <text x="450" y="592" text-anchor="middle" font-size="10.5" fill="#9d174d">Standard forms leading to arctan, arcsin</text>
+
+          <!-- YES → direct formula -->
+          <line x1="250" y1="578" x2="160" y2="578" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="210" y="571" font-size="11" fill="#059669" font-weight="700">Yes</text>
+          <rect x="15" y="553" rx="10" ry="10" width="145" height="50" fill="#fce7f3" stroke="#db2777" stroke-width="2" filter="url(#fs)"/>
+          <text x="88" y="574" text-anchor="middle" font-size="11" fill="#9d174d" font-weight="700">Inverse Trig</text>
+          <text x="88" y="590" text-anchor="middle" font-size="11" fill="#9d174d" font-weight="700">Formulas</text>
+
+          <!-- NO → combination -->
+          <line x1="450" y1="605" x2="450" y2="645" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="462" y="630" font-size="11" fill="#dc2626" font-weight="700">No</text>
+
+          <!-- COMBINATION node -->
+          <rect x="275" y="645" rx="14" ry="14" width="350" height="60" fill="#0f172a" filter="url(#fs)"/>
+          <text x="450" y="670" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Try a Combination of Techniques</text>
+          <text x="450" y="690" text-anchor="middle" font-size="10" fill="#94a3b8">Simplify → u-sub → then apply one above</text>
+
+          <!-- Examples branch from combination -->
+          <line x1="450" y1="705" x2="450" y2="735" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <rect x="175" y="735" rx="10" ry="10" width="550" height="55" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="450" y="755" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">Common combinations:</text>
+          <text x="450" y="775" text-anchor="middle" font-size="10" fill="#64748b">Complete the square → trig sub  |  Long division → partial fractions  |  u-sub → by parts</text>
+
+          <!-- Helpful hints box -->
+          <rect x="15" y="650" rx="10" ry="10" width="220" height="115" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+          <text x="125" y="672" text-anchor="middle" font-size="11" fill="#065f46" font-weight="700">LIATE Rule (for by parts)</text>
+          <text x="125" y="692" text-anchor="middle" font-size="10" fill="#374151">Choose $u$ from this priority:</text>
+          <text x="30" y="710" font-size="10" fill="#374151" font-weight="600">L</text><text x="42" y="710" font-size="10" fill="#64748b">ogarithmic ($\ln x$)</text>
+          <text x="30" y="725" font-size="10" fill="#374151" font-weight="600">I</text><text x="38" y="725" font-size="10" fill="#64748b">nverse trig ($\arctan x$)</text>
+          <text x="30" y="740" font-size="10" fill="#374151" font-weight="600">A</text><text x="42" y="740" font-size="10" fill="#64748b">lgebraic ($x^2, x$)</text>
+          <text x="30" y="755" font-size="10" fill="#374151" font-weight="600">T</text><text x="40" y="755" font-size="10" fill="#64748b">rig ($\sin x, \cos x$)</text>
+          <text x="30" y="770" font-size="10" fill="#374151" font-weight="600">E</text><text x="42" y="770" font-size="10" fill="#64748b">xponential ($e^x$)</text>
+        </svg>
+      </div>
+
+      <div class="warning-box">
+        <strong>Common Mistake</strong>
+        <p>Students often jump to an advanced technique without first checking if basic algebra or u-substitution would work. For example, $\int \frac{2x}{x^2+1}dx$ doesn't need partial fractions — it's a simple u-sub with $u = x^2+1$!</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 2: INTERACTIVE WIZARD ══════════ -->
+    <section id="wizard">
+      <h2>Interactive Technique Finder</h2>
+      <p>Not sure which technique to use? Answer a few questions about your integral and the wizard will guide you to the right method.</p>
+
+      <div class="wizard-card" id="wizard-card">
+        <!-- Wizard content inserted by JS -->
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 3: QUICK REFERENCE TABLE ══════════ -->
+    <section id="reference">
+      <h2>Quick-Reference Table</h2>
+      <p>Bookmark this table. When you see a pattern from the left column, reach for the technique on the right.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>You See This Pattern</th>
+            <th>Example</th>
+            <th>Use This Technique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Product of polynomial and $e^x$, $\sin x$, $\cos x$, or $\ln x$</td>
+            <td>$\int x^2 e^x\,dx$, $\int x\ln x\,dx$</td>
+            <td><span class="tag tag-parts">Integration by Parts</span></td>
+          </tr>
+          <tr>
+            <td>$\int \ln x\,dx$ or $\int \arctan x\,dx$ (alone)</td>
+            <td>$\int \ln x\,dx$</td>
+            <td><span class="tag tag-parts">By Parts</span> with $dv = dx$</td>
+          </tr>
+          <tr>
+            <td>Powers of $\sin x$ and $\cos x$</td>
+            <td>$\int \sin^3 x\cos^2 x\,dx$</td>
+            <td><span class="tag tag-trig">Trig Integrals</span></td>
+          </tr>
+          <tr>
+            <td>Powers of $\tan x$ and $\sec x$</td>
+            <td>$\int \tan^4 x\sec^2 x\,dx$</td>
+            <td><span class="tag tag-trig">Trig Integrals</span></td>
+          </tr>
+          <tr>
+            <td>$\sqrt{a^2 - x^2}$ in the integrand</td>
+            <td>$\int \frac{dx}{\sqrt{4-x^2}}$</td>
+            <td><span class="tag tag-trigsub">Trig Sub</span> $x = a\sin\theta$</td>
+          </tr>
+          <tr>
+            <td>$\sqrt{a^2 + x^2}$ in the integrand</td>
+            <td>$\int \frac{dx}{\sqrt{x^2+9}}$</td>
+            <td><span class="tag tag-trigsub">Trig Sub</span> $x = a\tan\theta$</td>
+          </tr>
+          <tr>
+            <td>$\sqrt{x^2 - a^2}$ in the integrand</td>
+            <td>$\int \frac{dx}{x\sqrt{x^2-1}}$</td>
+            <td><span class="tag tag-trigsub">Trig Sub</span> $x = a\sec\theta$</td>
+          </tr>
+          <tr>
+            <td>$\frac{P(x)}{Q(x)}$ with factorable denominator</td>
+            <td>$\int \frac{3x+1}{(x-1)(x+2)}dx$</td>
+            <td><span class="tag tag-partial">Partial Fractions</span></td>
+          </tr>
+          <tr>
+            <td>$\frac{P(x)}{Q(x)}$ where $\deg P \ge \deg Q$</td>
+            <td>$\int \frac{x^3}{x^2+1}dx$</td>
+            <td>Long divide, then <span class="tag tag-partial">Partial Frac.</span> or <span class="tag tag-usub">u-sub</span></td>
+          </tr>
+          <tr>
+            <td>$\frac{1}{a^2+x^2}$ or $\frac{1}{\sqrt{a^2-x^2}}$</td>
+            <td>$\int \frac{dx}{1+x^2}$</td>
+            <td>Direct formula: $\arctan$ or $\arcsin$</td>
+          </tr>
+          <tr>
+            <td>$f(g(x))\cdot g'(x)$ pattern</td>
+            <td>$\int 2x\cos(x^2)dx$</td>
+            <td><span class="tag tag-usub">U-Substitution</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <strong>Pro Tip: The "Try and Fail" Strategy</strong>
+        <p>If you're stuck, just start trying a technique. If it makes the integral <em>simpler</em>, you're on the right track. If it makes it <em>more complicated</em>, stop and try a different approach. Experienced mathematicians do this all the time — don't be afraid to backtrack.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ SECTION 4: PRACTICE ══════════ -->
+    <section id="practice">
+      <h2>Practice: Name That Technique</h2>
+      <p>For each integral below, identify the technique you'd use <em>before</em> revealing the answer.</p>
+
+      <div class="example-box">
+        <strong>1. $\int x e^{3x}\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-parts">Integration by Parts</span> — Product of polynomial ($x$) and exponential ($e^{3x}$). Let $u = x$, $dv = e^{3x}dx$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>2. $\int \frac{5x+1}{x^2+x-6}\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-partial">Partial Fractions</span> — Rational function with factorable denominator: $x^2+x-6 = (x+3)(x-2)$. Decompose into $\frac{A}{x+3} + \frac{B}{x-2}$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>3. $\int \sin^4 x\cos^3 x\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-trig">Trig Integrals</span> — Powers of sin and cos. Since cos has an odd power, save one $\cos x$ for $du$, convert $\cos^2 x = 1 - \sin^2 x$, and substitute $u = \sin x$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>4. $\int \frac{x^2}{\sqrt{9-x^2}}\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-trigsub">Trig Substitution</span> — Contains $\sqrt{a^2 - x^2}$ with $a = 3$. Use $x = 3\sin\theta$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>5. $\int \frac{2x}{x^2+4}\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-usub">U-Substitution</span> — The numerator $2x$ is the derivative of the denominator $x^2+4$. Let $u = x^2+4$, $du = 2x\,dx$. Result: $\ln|x^2+4| + C$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>6. $\int e^x \sin x\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><span class="tag tag-parts">Integration by Parts (twice)</span> — Product of exponential and trig. Apply by parts twice, then the original integral reappears — solve the resulting equation for $I$.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <strong>7. $\int \frac{x^3+2}{x^2-1}\,dx$</strong>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Answer</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p><strong>Long division first</strong>, then <span class="tag tag-partial">Partial Fractions</span>. Since $\deg(\text{top}) > \deg(\text{bottom})$, divide: $\frac{x^3+2}{x^2-1} = x + \frac{x+2}{x^2-1}$. Then decompose the remainder using partial fractions.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="main-footer"></footer>
+
+  <script>
+  /* ══════════ INTERACTIVE WIZARD ══════════ */
+  var wizardTree = {
+    id: 'start',
+    question: 'What does your integrand look like?',
+    options: [
+      {
+        label: 'Product of two functions',
+        desc: 'e.g. x·sin(x), x²·eˣ, x·ln(x)',
+        next: {
+          id: 'product',
+          question: 'What types of functions are in the product?',
+          options: [
+            {
+              label: 'Polynomial × (eˣ, sin, cos, or ln)',
+              next: {
+                id: 'result-parts',
+                result: true,
+                technique: 'Integration by Parts (1.1)',
+                explanation: 'Use the LIATE rule to choose $u$. The polynomial (or $\\ln x$) is typically $u$, and $e^x$, $\\sin x$, or $\\cos x$ is $dv$.',
+                link: 'ch1-by-parts.html',
+                examples: '$\\int x\\sin x\\,dx$, $\\int x^2 e^x\\,dx$, $\\int x\\ln x\\,dx$'
+              }
+            },
+            {
+              label: 'eˣ × sin(x) or cos(x)',
+              next: {
+                id: 'result-parts-cyclic',
+                result: true,
+                technique: 'Integration by Parts — Cyclic (1.1)',
+                explanation: 'Apply integration by parts twice. The original integral will reappear. Set up an equation $I = \\ldots - I$ and solve for $I$.',
+                link: 'ch1-by-parts.html',
+                examples: '$\\int e^x \\sin x\\,dx$, $\\int e^{2x}\\cos(3x)\\,dx$'
+              }
+            },
+            {
+              label: 'Powers of trig functions only',
+              next: {
+                id: 'result-trig',
+                result: true,
+                technique: 'Trigonometric Integrals (1.2)',
+                explanation: 'Use trig identities to reduce powers. For $\\sin^m x\\cos^n x$: if one power is odd, save one factor and use $\\sin^2+\\cos^2=1$. If both are even, use half-angle formulas.',
+                link: 'ch1-trig-integrals.html',
+                examples: '$\\int \\sin^3 x\\cos^2 x\\,dx$, $\\int \\tan^4 x\\,dx$'
+              }
+            },
+            {
+              label: 'Something else / not sure',
+              next: {
+                id: 'product-other',
+                question: 'Does the product involve a square root with $a^2 - x^2$, $a^2 + x^2$, or $x^2 - a^2$?',
+                options: [
+                  {
+                    label: 'Yes, there is a square root like that',
+                    next: { id: 'go-trigsub', question: '', options: [], redirect: 'sqrt' }
+                  },
+                  {
+                    label: 'No square root',
+                    next: {
+                      id: 'result-parts-general',
+                      result: true,
+                      technique: 'Integration by Parts (1.1)',
+                      explanation: 'When in doubt with a product of different function types, try integration by parts. Choose $u$ as the function that simplifies when differentiated.',
+                      link: 'ch1-by-parts.html',
+                      examples: '$\\int \\arctan(x)\\,dx$ (use $u = \\arctan x$, $dv = dx$)'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Fraction P(x)/Q(x)',
+        desc: 'Polynomial over polynomial',
+        next: {
+          id: 'rational',
+          question: 'Is the degree of the numerator $\\ge$ the degree of the denominator?',
+          options: [
+            {
+              label: 'Yes (top degree ≥ bottom degree)',
+              next: {
+                id: 'result-longdiv',
+                result: true,
+                technique: 'Long Division first, then Partial Fractions (1.4)',
+                explanation: 'Perform polynomial long division to reduce the degree of the numerator. Then apply partial fractions to the remainder.',
+                link: 'ch1-partial-fractions.html',
+                examples: '$\\int \\frac{x^3+1}{x^2-4}\\,dx$'
+              }
+            },
+            {
+              label: 'No (top degree < bottom degree)',
+              next: {
+                id: 'rational-denom',
+                question: 'Can you factor the denominator?',
+                options: [
+                  {
+                    label: 'Yes, into linear/quadratic factors',
+                    next: {
+                      id: 'result-partial',
+                      result: true,
+                      technique: 'Partial Fractions (1.4)',
+                      explanation: 'Factor the denominator, then decompose: $\\frac{A}{\\text{linear}}$ for each linear factor, $\\frac{Ax+B}{\\text{quadratic}}$ for irreducible quadratics.',
+                      link: 'ch1-partial-fractions.html',
+                      examples: '$\\int \\frac{3x+1}{(x-1)(x+2)}\\,dx$'
+                    }
+                  },
+                  {
+                    label: 'Denominator is $a^2 + x^2$ or similar',
+                    next: {
+                      id: 'result-arctan',
+                      result: true,
+                      technique: 'Inverse Trig Formula (arctan)',
+                      explanation: 'Use the standard formula: $\\int \\frac{dx}{a^2+x^2} = \\frac{1}{a}\\arctan\\frac{x}{a} + C$. You may need to complete the square first.',
+                      link: 'ch1-trig-sub.html',
+                      examples: '$\\int \\frac{dx}{x^2+4}$, $\\int \\frac{dx}{x^2+2x+5}$'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Contains a square root',
+        desc: '√(a²-x²), √(x²+a²), etc.',
+        next: {
+          id: 'sqrt',
+          question: 'What form is under the square root?',
+          options: [
+            {
+              label: '$\\sqrt{a^2 - x^2}$',
+              next: {
+                id: 'result-trigsub-sin',
+                result: true,
+                technique: 'Trig Substitution: $x = a\\sin\\theta$ (1.3)',
+                explanation: 'Substitute $x = a\\sin\\theta$, so $dx = a\\cos\\theta\\,d\\theta$ and $\\sqrt{a^2 - x^2} = a\\cos\\theta$. The radical disappears!',
+                link: 'ch1-trig-sub.html',
+                examples: '$\\int \\frac{dx}{\\sqrt{4-x^2}}$, $\\int x^2\\sqrt{9-x^2}\\,dx$'
+              }
+            },
+            {
+              label: '$\\sqrt{a^2 + x^2}$',
+              next: {
+                id: 'result-trigsub-tan',
+                result: true,
+                technique: 'Trig Substitution: $x = a\\tan\\theta$ (1.3)',
+                explanation: 'Substitute $x = a\\tan\\theta$, so $dx = a\\sec^2\\theta\\,d\\theta$ and $\\sqrt{a^2 + x^2} = a\\sec\\theta$.',
+                link: 'ch1-trig-sub.html',
+                examples: '$\\int \\frac{dx}{\\sqrt{x^2+9}}$, $\\int \\sqrt{x^2+1}\\,dx$'
+              }
+            },
+            {
+              label: '$\\sqrt{x^2 - a^2}$',
+              next: {
+                id: 'result-trigsub-sec',
+                result: true,
+                technique: 'Trig Substitution: $x = a\\sec\\theta$ (1.3)',
+                explanation: 'Substitute $x = a\\sec\\theta$, so $dx = a\\sec\\theta\\tan\\theta\\,d\\theta$ and $\\sqrt{x^2 - a^2} = a\\tan\\theta$.',
+                link: 'ch1-trig-sub.html',
+                examples: '$\\int \\frac{dx}{x\\sqrt{x^2-1}}$'
+              }
+            },
+            {
+              label: '$\\sqrt{ax^2+bx+c}$ (need to complete the square)',
+              next: {
+                id: 'result-complete-sq',
+                result: true,
+                technique: 'Complete the Square, then Trig Sub (1.3)',
+                explanation: 'Rewrite $ax^2+bx+c$ by completing the square to get one of the three standard forms. Then apply the appropriate trig substitution.',
+                link: 'ch1-trig-sub.html',
+                examples: '$\\int \\frac{dx}{\\sqrt{x^2+6x+13}}$ → complete square: $\\sqrt{(x+3)^2+4}$ → use $u=x+3$, then trig sub'
+              }
+            }
+          ]
+        }
+      },
+      {
+        label: 'Only trig functions',
+        desc: 'sin, cos, tan, sec powers',
+        next: {
+          id: 'result-trig-direct',
+          result: true,
+          technique: 'Trigonometric Integrals (1.2)',
+          explanation: 'Use trig identities to simplify. Key strategies: (1) If one power of sin or cos is odd, strip one factor and convert using $\\sin^2+\\cos^2=1$. (2) If both powers are even, use half-angle identities. (3) For $\\tan^m x\\sec^n x$, use similar strategies with $\\sec^2 = 1 + \\tan^2$.',
+          link: 'ch1-trig-integrals.html',
+          examples: '$\\int \\sin^5 x\\,dx$, $\\int \\cos^2 x\\,dx$, $\\int \\sec^3 x\\,dx$'
+        }
+      },
+      {
+        label: 'Looks like it could be u-sub',
+        desc: 'f(g(x))·g\'(x) pattern',
+        next: {
+          id: 'result-usub',
+          result: true,
+          technique: 'U-Substitution',
+          explanation: 'Identify the "inner function" $g(x)$ and check if its derivative $g\'(x)$ (or a constant multiple) is present. Set $u = g(x)$.',
+          link: 'ch1-by-parts.html',
+          examples: '$\\int 2x\\cos(x^2)\\,dx$ → $u = x^2$; $\\int \\frac{e^x}{1+e^x}\\,dx$ → $u = 1+e^x$'
+        }
+      }
+    ]
+  };
+
+  var wizardHistory = [];
+
+  function renderWizard(node) {
+    var card = document.getElementById('wizard-card');
+    var html = '';
+
+    // Breadcrumb
+    if (wizardHistory.length > 0) {
+      html += '<div class="wizard-breadcrumb">';
+      wizardHistory.forEach(function(h, i) {
+        html += (i > 0 ? ' → ' : '') + h;
+      });
+      html += '</div>';
+    }
+
+    if (node.result) {
+      // Show result
+      html += '<div class="wizard-result">';
+      html += '<h3>→ ' + node.technique + '</h3>';
+      html += '<p>' + node.explanation + '</p>';
+      html += '<p style="margin-top:0.75rem;color:var(--text-muted);font-size:0.9rem;"><strong>Try these:</strong> ' + node.examples + '</p>';
+      html += '<a class="technique-link" href="' + node.link + '">Go to Lesson →</a>';
+      html += '</div>';
+      html += '<br><button class="wizard-back" onclick="resetWizard()">Start Over</button>';
+    } else if (node.redirect) {
+      // Redirect to another branch
+      var target = findNode(wizardTree, node.redirect);
+      if (target) { renderWizard(target); return; }
+    } else {
+      // Show question
+      html += '<div class="wizard-question">' + node.question + '</div>';
+      html += '<div class="wizard-options">';
+      node.options.forEach(function(opt, i) {
+        html += '<button class="wizard-btn" onclick="wizardChoose(' + JSON.stringify(node.id) + ',' + i + ')">';
+        html += opt.label;
+        if (opt.desc) html += '<br><span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">' + opt.desc + '</span>';
+        html += '</button>';
+      });
+      html += '</div>';
+      if (wizardHistory.length > 0) {
+        html += '<button class="wizard-back" onclick="wizardBack()">← Back</button>';
+      }
+    }
+
+    card.innerHTML = html;
+    initKaTeX(card);
+  }
+
+  function findNode(tree, id) {
+    if (tree.id === id) return tree;
+    if (tree.options) {
+      for (var i = 0; i < tree.options.length; i++) {
+        if (tree.options[i].next) {
+          var found = findNode(tree.options[i].next, id);
+          if (found) return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  var currentNode = wizardTree;
+  var nodeStack = [wizardTree];
+
+  function wizardChoose(nodeId, optIndex) {
+    var node = findNode(wizardTree, nodeId);
+    if (!node) return;
+    var opt = node.options[optIndex];
+    wizardHistory.push(opt.label.replace(/<[^>]*>/g, '').substring(0, 40));
+    currentNode = opt.next;
+    nodeStack.push(currentNode);
+
+    if (currentNode.redirect) {
+      var target = findNode(wizardTree, currentNode.redirect);
+      if (target) { currentNode = target; nodeStack.push(currentNode); }
+    }
+
+    renderWizard(currentNode);
+  }
+
+  function wizardBack() {
+    if (nodeStack.length > 1) {
+      nodeStack.pop();
+      wizardHistory.pop();
+      currentNode = nodeStack[nodeStack.length - 1];
+      renderWizard(currentNode);
+    }
+  }
+
+  function resetWizard() {
+    wizardHistory = [];
+    nodeStack = [wizardTree];
+    currentNode = wizardTree;
+    renderWizard(currentNode);
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    renderWizard(wizardTree);
+    initKaTeX();
+
+    // Footer
+    if (typeof COURSE !== 'undefined' && COURSE.footer) {
+      var f = COURSE.footer;
+      document.getElementById('main-footer').innerHTML =
+        f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+        f.department + ', ' + f.institution + ' &copy; ' + f.year;
+    }
+  });
+  </script>
+</body>
+</html>
