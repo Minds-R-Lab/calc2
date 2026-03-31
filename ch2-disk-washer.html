@@ -455,65 +455,75 @@
     const n = 100; // Points along the axis
     const m = 60;  // Points around the revolution
 
-    let xs = [], ys = [], zs = [];
-
     const aVal = preset.a;
     const bVal = preset.b;
+    let allTraces = [];
 
-    for (let i = 0; i < n; i++) {
-      let row_x = [], row_y = [], row_z = [];
-      const t = aVal + (bVal - aVal) * (i / (n - 1));
+    if (preset.type === 'washer') {
+      // For washer: generate outer and inner surfaces
+      ['outer', 'inner'].forEach(function(which) {
+        let xs = [], ys = [], zs = [];
+        for (let i = 0; i < n; i++) {
+          let row_x = [], row_y = [], row_z = [];
+          const t = aVal + (bVal - aVal) * (i / (n - 1));
+          const radius = which === 'outer' ? preset.f_outer(t) : preset.f_inner(t);
 
-      let radius;
-      if (preset.type === 'disk') {
-        if (currentPreset === 'parabola_y') {
-          // For y-axis revolution: radius depends on y position
-          radius = preset.f(t);
-        } else {
-          radius = preset.f(t);
+          for (let j = 0; j < m; j++) {
+            const theta = (2 * Math.PI * j) / (m - 1);
+            row_x.push(t);
+            row_y.push(radius * Math.cos(theta));
+            row_z.push(radius * Math.sin(theta));
+          }
+          xs.push(row_x); ys.push(row_y); zs.push(row_z);
         }
-      }
+        allTraces.push({
+          x: xs, y: ys, z: zs, type: 'surface',
+          colorscale: which === 'outer' ? 'Viridis' : 'Reds',
+          opacity: which === 'outer' ? 0.7 : 0.9,
+          showscale: false,
+          name: which === 'outer' ? 'Outer (y = x)' : 'Inner (y = x²)'
+        });
+      });
+    } else {
+      // Disk: single surface
+      let xs = [], ys = [], zs = [];
+      for (let i = 0; i < n; i++) {
+        let row_x = [], row_y = [], row_z = [];
+        const t = aVal + (bVal - aVal) * (i / (n - 1));
+        const radius = preset.f(t);
 
-      for (let j = 0; j < m; j++) {
-        const theta = (2 * Math.PI * j) / (m - 1);
-
-        if (currentPreset === 'parabola_y') {
-          // Y-axis rotation: revolve around y-axis
-          row_x.push(radius * Math.cos(theta));
-          row_y.push(t);
-          row_z.push(radius * Math.sin(theta));
-        } else {
-          // X-axis rotation
-          row_x.push(t);
-          row_y.push(radius * Math.cos(theta));
-          row_z.push(radius * Math.sin(theta));
+        for (let j = 0; j < m; j++) {
+          const theta = (2 * Math.PI * j) / (m - 1);
+          if (currentPreset === 'parabola_y') {
+            row_x.push(radius * Math.cos(theta));
+            row_y.push(t);
+            row_z.push(radius * Math.sin(theta));
+          } else {
+            row_x.push(t);
+            row_y.push(radius * Math.cos(theta));
+            row_z.push(radius * Math.sin(theta));
+          }
         }
+        xs.push(row_x); ys.push(row_y); zs.push(row_z);
       }
-
-      xs.push(row_x);
-      ys.push(row_y);
-      zs.push(row_z);
+      allTraces.push({
+        x: xs, y: ys, z: zs, type: 'surface',
+        colorscale: 'Viridis', name: 'Solid'
+      });
     }
-
-    const trace = {
-      x: xs, y: ys, z: zs,
-      type: 'surface',
-      colorscale: 'Viridis',
-      name: 'Solid'
-    };
 
     const layout = {
       title: `3D Solid of Revolution: ${preset.description}`,
       scene: {
-        xaxis: { title: 'X' },
-        yaxis: { title: 'Y' },
+        xaxis: { title: currentPreset === 'parabola_y' ? 'X' : 'Axis of Revolution (x)' },
+        yaxis: { title: currentPreset === 'parabola_y' ? 'Axis of Revolution (y)' : 'Y' },
         zaxis: { title: 'Z' },
         aspectmode: 'auto'
       },
       margin: { l: 0, r: 0, t: 40, b: 0 }
     };
 
-    Plotly.newPlot('solid-3d', [trace], layout, { responsive: true });
+    Plotly.newPlot('solid-3d', allTraces, layout, { responsive: true });
   }
 
   // ========== DISK STACKING ANIMATOR ==========
@@ -529,55 +539,84 @@
 
     let traces = [];
     let approxVol = 0;
+    const nTheta = 40;
 
-    // Generate individual disk cylinders
     for (let i = 0; i < n; i++) {
       const x_i = aVal + i * dx;
-      const x_next = aVal + (i + 1) * dx;
-      const x_mid = (x_i + x_next) / 2;
+      // Use left-endpoint so students see actual convergence
+      // (midpoint gives exact answer for linear integrands like [sqrt(x)]^2 = x)
+      const x_sample = x_i;
 
-      let radius;
-      if (preset.type === 'disk') {
-        radius = preset.f(x_mid);
+      let diskVolume, outerR, innerR;
+
+      if (preset.type === 'washer') {
+        outerR = preset.f_outer(x_sample);
+        innerR = preset.f_inner(x_sample);
+        diskVolume = Math.PI * (outerR * outerR - innerR * innerR) * dx;
+      } else {
+        outerR = preset.f(x_sample);
+        innerR = 0;
+        diskVolume = Math.PI * outerR * outerR * dx;
       }
 
-      const diskVolume = Math.PI * radius * radius * dx;
       approxVol += diskVolume;
 
-      // Create a cylinder (disk) as a 3D surface
-      const nTheta = 40;
-      const nHeight = 2;
+      // Determine if this is revolved about y-axis
+      const aboutY = (preset.axis === 'y-axis');
 
+      // Create outer cylinder surface
       let xs = [], ys = [], zs = [];
-      for (let h = 0; h < nHeight; h++) {
+      for (let h = 0; h < 2; h++) {
         let row_x = [], row_y = [], row_z = [];
-        const x_pos = x_i + h * dx;
+        const pos = x_i + h * dx;
         for (let j = 0; j < nTheta; j++) {
           const theta = (2 * Math.PI * j) / (nTheta - 1);
-          row_x.push(x_pos);
-          row_y.push(radius * Math.cos(theta));
-          row_z.push(radius * Math.sin(theta));
+          if (aboutY) {
+            row_x.push(outerR * Math.cos(theta));
+            row_y.push(pos);
+            row_z.push(outerR * Math.sin(theta));
+          } else {
+            row_x.push(pos);
+            row_y.push(outerR * Math.cos(theta));
+            row_z.push(outerR * Math.sin(theta));
+          }
         }
-        xs.push(row_x);
-        ys.push(row_y);
-        zs.push(row_z);
+        xs.push(row_x); ys.push(row_y); zs.push(row_z);
       }
 
-      const trace = {
-        x: xs, y: ys, z: zs,
-        type: 'surface',
+      traces.push({
+        x: xs, y: ys, z: zs, type: 'surface',
         colorscale: [[0, `hsl(${i * 360 / n}, 70%, 60%)`], [1, `hsl(${i * 360 / n}, 70%, 40%)`]],
-        showscale: false,
-        name: `Disk ${i + 1}`
-      };
-      traces.push(trace);
+        showscale: false, name: `Disk ${i + 1}`, opacity: 0.85
+      });
+
+      // For washers, add a semi-transparent inner cylinder to show the hole
+      if (preset.type === 'washer' && innerR > 0.001) {
+        let ixs = [], iys = [], izs = [];
+        for (let h = 0; h < 2; h++) {
+          let row_x = [], row_y = [], row_z = [];
+          const pos = x_i + h * dx;
+          for (let j = 0; j < nTheta; j++) {
+            const theta = (2 * Math.PI * j) / (nTheta - 1);
+            row_x.push(pos);
+            row_y.push(innerR * Math.cos(theta));
+            row_z.push(innerR * Math.sin(theta));
+          }
+          ixs.push(row_x); iys.push(row_y); izs.push(row_z);
+        }
+        traces.push({
+          x: ixs, y: iys, z: izs, type: 'surface',
+          colorscale: [[0, 'rgb(255,255,255)'], [1, 'rgb(220,220,220)']],
+          showscale: false, name: `Hole ${i + 1}`, opacity: 0.5
+        });
+      }
     }
 
     const layout = {
-      title: `Disk Stacking: ${n} Disks Approximating the Volume`,
+      title: `${preset.type === 'washer' ? 'Washer' : 'Disk'} Stacking: ${n} ${preset.type === 'washer' ? 'Washers' : 'Disks'}`,
       scene: {
-        xaxis: { title: preset.axis === 'x-axis' ? 'Axis of Revolution (x)' : 'X' },
-        yaxis: { title: 'Y' },
+        xaxis: { title: (preset.axis === 'y-axis') ? 'X' : 'Axis of Revolution (x)' },
+        yaxis: { title: (preset.axis === 'y-axis') ? 'Axis of Revolution (y)' : 'Y' },
         zaxis: { title: 'Z' },
         aspectmode: 'auto'
       },
@@ -592,7 +631,8 @@
     document.getElementById('approx-vol').textContent = approxVol.toFixed(4);
     document.getElementById('exact-vol').textContent = exactVol.toFixed(4);
     document.getElementById('error-vol').textContent = error.toFixed(4);
-    document.getElementById('formula-display').textContent = `V ≈ Σ πr²Δx`;
+    document.getElementById('formula-display').textContent =
+      preset.type === 'washer' ? 'V ≈ Σ π(R² - r²)Δx' : 'V ≈ Σ πr²Δx';
   }
 
   // ========== WASHER CROSS-SECTION VIEWER ==========
