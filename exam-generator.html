@@ -144,18 +144,44 @@
     background: #fff; cursor: pointer; transition: all 0.2s;
     font-weight: 500;
   }
-  .mc-option:hover {
+  .mc-option:hover:not(.disabled) {
     border-color: var(--primary); background: var(--primary-light);
   }
+  .mc-option.selected-correct {
+    border-color: var(--success); background: #d1fae5; font-weight: 700;
+  }
+  .mc-option.selected-wrong {
+    border-color: var(--danger, #ef4444); background: #fee2e2; font-weight: 700;
+  }
+  .mc-option.correct-highlight {
+    border-color: var(--success); background: #d1fae5;
+  }
+  .mc-option.disabled {
+    cursor: default; opacity: 0.85;
+  }
 
-  /* Solution box */
+  /* Solution box — hidden by default */
   .solution-box {
     margin-top: 2rem; padding: 1.5rem; border-left: 4px solid var(--accent);
     background: var(--accent-light); border-radius: 8px; font-size: 0.95rem;
-    line-height: 1.8;
+    line-height: 1.8; display: none;
+  }
+  .solution-box.visible {
+    display: block;
   }
   .solution-label {
     font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;
+  }
+
+  /* Show Solution button */
+  .show-solution-btn {
+    margin-top: 1.5rem; padding: 0.7rem 1.8rem; font-size: 0.9rem;
+    font-weight: 600; border: 2px solid var(--accent); border-radius: 8px;
+    background: transparent; color: var(--accent); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .show-solution-btn:hover {
+    background: var(--accent); color: #fff;
   }
 
   /* Footer */
@@ -874,20 +900,22 @@ function generateExam() {
   selected.forEach(problem => {
     const qDiv = document.createElement('div');
     qDiv.className = 'question-container';
+    const qId = 'q' + problemNum;
 
     let html = `<div class="question-number">Question ${problemNum}</div>`;
     html += `<div class="question-text">${problem.statement}</div>`;
 
     if (problem.type === 'mc') {
-      html += '<div class="mc-options">';
+      html += `<div class="mc-options" id="${qId}-options">`;
       const letters = ['A', 'B', 'C', 'D'];
       problem.choices.forEach((choice, i) => {
-        html += `<div class="mc-option">${letters[i]}) ${choice}</div>`;
+        html += `<div class="mc-option" data-letter="${letters[i]}" data-correct="${problem.correct}" data-qid="${qId}" onclick="checkMCAnswer(this)">${letters[i]}) ${choice}</div>`;
       });
       html += '</div>';
-      html += `<div class="solution-box"><div class="solution-label">Answer: ${problem.correct}</div><div>${problem.explanation}</div></div>`;
+      html += `<div class="solution-box" id="${qId}-solution"><div class="solution-label">Answer: ${problem.correct}</div><div>${problem.explanation}</div></div>`;
     } else {
-      html += `<div class="solution-box"><div class="solution-label">Solution:</div><div>${problem.solution}</div></div>`;
+      html += `<button class="show-solution-btn" onclick="revealSolution('${qId}')">Show Solution</button>`;
+      html += `<div class="solution-box" id="${qId}-solution"><div class="solution-label">Solution:</div><div>${problem.solution}</div></div>`;
     }
 
     qDiv.innerHTML = html;
@@ -902,6 +930,44 @@ function generateExam() {
 
   // Scroll to exam
   examEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function checkMCAnswer(el) {
+  if (el.classList.contains('disabled')) return;
+  const qId = el.dataset.qid;
+  const correct = el.dataset.correct;
+  const chosen = el.dataset.letter;
+  const options = document.querySelectorAll('#' + qId + '-options .mc-option');
+
+  // Disable all options
+  options.forEach(opt => {
+    opt.classList.add('disabled');
+    if (opt.dataset.letter === correct) {
+      opt.classList.add('correct-highlight');
+    }
+  });
+
+  // Mark the selected answer
+  if (chosen === correct) {
+    el.classList.add('selected-correct');
+  } else {
+    el.classList.add('selected-wrong');
+  }
+
+  // Reveal solution
+  const sol = document.getElementById(qId + '-solution');
+  sol.classList.add('visible');
+  initKaTeX();
+}
+
+function revealSolution(qId) {
+  const sol = document.getElementById(qId + '-solution');
+  sol.classList.add('visible');
+  const btn = sol.previousElementSibling;
+  if (btn && btn.classList.contains('show-solution-btn')) {
+    btn.style.display = 'none';
+  }
+  initKaTeX();
 }
 
 function initKaTeX() {
