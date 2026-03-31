@@ -372,7 +372,7 @@ function buildMindMap() {
 
   // Layout constants
   var svgW = 1100, boxW = 260;
-  var cx = svgW / 2, cy = 60;
+  var cx = svgW / 2, cy = 50;
   var centerW = 220, centerH = 70;
 
   // Compute box heights
@@ -384,7 +384,7 @@ function buildMindMap() {
   // Left column: Ch1, Ch2   |   Middle column: Ch5, Ch6   |   Right column: Ch3, Ch4
   // This groups related chapters visually
   var colX = [40, (svgW - boxW) / 2, svgW - boxW - 40];
-  var row1Y = 180;
+  var row1Y = 160;
   var colAssign = [
     {col: 0, row: 0}, // Ch1 — top-left
     {col: 0, row: 1}, // Ch2 — bottom-left
@@ -410,8 +410,8 @@ function buildMindMap() {
     positions.push({ x: colX[colAssign[i].col], y: rowY[colAssign[i].row] });
   }
 
-  // Total SVG height
-  var totalH = rowY[1] + rowMaxH[1] + 80;
+  // Total SVG height — enough room for row 2 boxes + applications bar + padding
+  var totalH = rowY[1] + rowMaxH[1] + 70 + 50;
   svg.setAttribute('viewBox', '0 0 ' + svgW + ' ' + totalH);
 
   // Defs
