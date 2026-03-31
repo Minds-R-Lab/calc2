@@ -9,6 +9,75 @@
     <title>3.3 Comparison Tests for Improper Integrals | Calculus II</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+    <style>
+        .definition-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #0077be;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .theorem-box {
+            background-color: #f0e6ff;
+            border-left: 4px solid #7c3aed;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .tip-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .example-box {
+            background-color: #f5f5f5;
+            border-left: 4px solid #666;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .collapsible-toggle {
+            cursor: pointer;
+            padding: 0.75rem 0;
+            margin-top: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .collapsible-toggle:hover {
+            text-decoration: underline;
+        }
+        .toggle-icon {
+            font-size: 0.9em;
+            transition: transform 0.3s;
+        }
+        .collapsible-toggle.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        .collapsible-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+            padding: 0 !important;
+        }
+        .math-block {
+            margin: 1rem 0;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -31,6 +100,17 @@
     <main class="container">
         <section id="intro" class="section">
             <h1>3.3 Comparison Tests for Improper Integrals</h1>
+
+            <div class="definition-box">
+                <strong>Learning Objectives</strong>
+                <ul>
+                    <li>Understand the Direct Comparison Test for improper integrals</li>
+                    <li>Apply the Limit Comparison Test effectively</li>
+                    <li>Choose appropriate benchmark functions for comparison</li>
+                    <li>Determine convergence without computing exact integral values</li>
+                </ul>
+            </div>
+
             <p>
                 For many improper integrals, finding the exact value is difficult or even impossible (e.g., $\int_1^{\infty} \frac{\sin^2 x}{x^2}\,dx$).
                 However, we often only need to know whether an integral converges or diverges, not its exact value.
@@ -45,61 +125,77 @@
         <section id="theory" class="section">
             <h2>Definition and Theory</h2>
 
-            <h3>Direct Comparison Test</h3>
-            <p>
-                Suppose $f$ and $g$ are continuous on $[a, \infty)$ with $0 \le f(x) \le g(x)$ for all $x \ge a$. Then:
-            </p>
-            <div class="math-block">
-                <strong>If $\displaystyle \int_a^{\infty} g(x)\,dx$ converges, then $\displaystyle \int_a^{\infty} f(x)\,dx$ converges.</strong>
+            <div class="theorem-box">
+                <strong>Theorem: Direct Comparison Test</strong>
+                <p>
+                    Suppose $f$ and $g$ are continuous on $[a, \infty)$ with $0 \le f(x) \le g(x)$ for all $x \ge a$. Then:
+                </p>
+                <div class="math-block">
+                    <strong>If $\displaystyle \int_a^{\infty} g(x)\,dx$ converges, then $\displaystyle \int_a^{\infty} f(x)\,dx$ converges.</strong>
+                </div>
+                <p>
+                    Equivalently, if $\displaystyle \int_a^{\infty} f(x)\,dx$ diverges, then $\displaystyle \int_a^{\infty} g(x)\,dx$ must also diverge.
+                </p>
             </div>
-            <p>
-                Equivalently, if $\displaystyle \int_a^{\infty} f(x)\,dx$ diverges, then $\displaystyle \int_a^{\infty} g(x)\,dx$ must also diverge.
-            </p>
 
-            <h3>Limit Comparison Test</h3>
-            <p>
-                Suppose $f$ and $g$ are positive and continuous on $[a, \infty)$, and suppose:
-            </p>
-            <div class="math-block">
-                $$\lim_{x \to \infty} \frac{f(x)}{g(x)} = L$$
+            <div class="theorem-box">
+                <strong>Theorem: Limit Comparison Test</strong>
+                <p>
+                    Suppose $f$ and $g$ are positive and continuous on $[a, \infty)$, and suppose:
+                </p>
+                <div class="math-block">
+                    $$\lim_{x \to \infty} \frac{f(x)}{g(x)} = L$$
+                </div>
+                <p>
+                    where $0 < L < \infty$ (i.e., $L$ is a positive finite number). Then:
+                </p>
+                <div class="math-block">
+                    <strong>$\displaystyle \int_a^{\infty} f(x)\,dx$ and $\displaystyle \int_a^{\infty} g(x)\,dx$ either both converge or both diverge.</strong>
+                </div>
+                <p>
+                    The limit comparison test is more flexible than the direct comparison because we don't need exact inequalities—just knowledge of the
+                    asymptotic behavior of the ratio.
+                </p>
             </div>
-            <p>
-                where $0 < L < \infty$ (i.e., $L$ is a positive finite number). Then:
-            </p>
-            <div class="math-block">
-                <strong>$\displaystyle \int_a^{\infty} f(x)\,dx$ and $\displaystyle \int_a^{\infty} g(x)\,dx$ either both converge or both diverge.</strong>
+
+            <div class="definition-box">
+                <strong>Common Comparison (Benchmark) Functions</strong>
+                <p>
+                    Useful "benchmark" functions for comparison:
+                </p>
+                <ul>
+                    <li>$\frac{1}{x^p}$ (converges if $p > 1$; diverges if $p \le 1$)</li>
+                    <li>$e^{-x}$ (converges)</li>
+                    <li>$\frac{1}{\ln x}$ (diverges; grows very slowly)</li>
+                    <li>$\frac{1}{x(\ln x)^p}$ (converges if $p > 1$; diverges if $p \le 1$)</li>
+                </ul>
             </div>
-            <p>
-                The limit comparison test is more flexible than the direct comparison because we don't need exact inequalities—just knowledge of the
-                asymptotic behavior of the ratio.
-            </p>
 
-            <h3>Common Comparison Functions</h3>
-            <p>
-                Useful "benchmark" functions for comparison:
-            </p>
-            <ul>
-                <li>$\frac{1}{x^p}$ (converges if $p > 1$; diverges if $p \le 1$)</li>
-                <li>$e^{-x}$ (converges)</li>
-                <li>$\frac{1}{\ln x}$ (diverges; grows very slowly)</li>
-                <li>$\frac{1}{x(\ln x)^p}$ (converges if $p > 1$; diverges if $p \le 1$)</li>
-            </ul>
+            <div class="definition-box">
+                <strong>Strategy for Choosing a Comparison Function</strong>
+                <p>
+                    When applying a comparison test:
+                </p>
+                <ol>
+                    <li>Identify the dominant term in the numerator and denominator as $x \to \infty$.</li>
+                    <li>Simplify the function to its "leading behavior"—this becomes your comparison function $g(x)$.</li>
+                    <li>Apply either the direct comparison (if inequalities are obvious) or the limit comparison (if you know the limit of the ratio).</li>
+                </ol>
+            </div>
 
-            <h3>Strategy for Choosing a Comparison Function</h3>
-            <p>
-                When applying a comparison test:
-            </p>
-            <ol>
-                <li>Identify the dominant term in the numerator and denominator as $x \to \infty$.</li>
-                <li>Simplify the function to its "leading behavior"—this becomes your comparison function $g(x)$.</li>
-                <li>Apply either the direct comparison (if inequalities are obvious) or the limit comparison (if you know the limit of the ratio).</li>
-            </ol>
+            <div class="tip-box">
+                <strong>💡 Pro Tip: Limit Comparison vs. Direct Comparison</strong>
+                <p>
+                    The limit comparison test is often easier because you only need to find a limit, not prove an inequality.
+                    When you can't immediately see which function is larger, try the limit comparison test first!
+                </p>
+            </div>
         </section>
 
         <section id="method" class="section">
             <h2>Method for Solving</h2>
 
-            <h4>Direct Comparison Test</h4>
+            <h3>Direct Comparison Test</h3>
             <ol>
                 <li>
                     <strong>Choose a comparison function $g(x)$</strong> where $\int_a^{\infty} g(x)\,dx$ is known to converge or diverge.
@@ -116,7 +212,7 @@
                 </li>
             </ol>
 
-            <h4>Limit Comparison Test</h4>
+            <h3>Limit Comparison Test</h3>
             <ol>
                 <li>
                     <strong>Choose a comparison function $g(x)$</strong> where the behavior is known.
@@ -133,80 +229,109 @@
                 </li>
             </ol>
 
-            <h3>Key Insights</h3>
-            <ul>
-                <li>Both tests require that $f$ and $g$ are eventually positive (for large $x$).</li>
-                <li>The limit comparison test often works better when the functions have complicated forms.</li>
-                <li>For Type II integrals (discontinuities), similar comparison tests exist but use different inequalities near the discontinuity.</li>
-            </ul>
+            <div class="definition-box">
+                <strong>Key Insights</strong>
+                <ul>
+                    <li>Both tests require that $f$ and $g$ are eventually positive (for large $x$).</li>
+                    <li>The limit comparison test often works better when the functions have complicated forms.</li>
+                    <li>For Type II integrals (discontinuities), similar comparison tests exist but use different inequalities near the discontinuity.</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Common Mistake: Mixing Up the Direction</strong>
+                <p>
+                    Remember: If $\int g$ <em>converges</em> and $f \le g$, then $\int f$ converges.
+                    If $\int f$ <em>diverges</em> and $f \le g$, then $\int g$ diverges.
+                    Don't flip these around! You can't conclude convergence of $f$ from divergence of $g$.
+                </p>
+            </div>
         </section>
 
         <section id="examples" class="section">
             <h2>Worked Examples</h2>
 
-            <article class="example">
-                <h3>Example 1: $\displaystyle \int_1^{\infty} \frac{1}{x^2+1}\,dx$ (Direct Comparison)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>
-                        <strong>Choose a comparison:</strong> For $x \ge 1$, we have $x^2 + 1 \ge x^2$, so $\frac{1}{x^2+1} \le \frac{1}{x^2}$.
-                    </li>
-                    <li>
-                        <strong>Check the comparison function:</strong> We know that $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges (it equals 1, by the $p$-test with $p=2 > 1$).
-                    </li>
-                    <li>
-                        <strong>Apply direct comparison:</strong> Since $0 \le \frac{1}{x^2+1} \le \frac{1}{x^2}$ and $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges,
-                        we conclude that $\int_1^{\infty} \frac{1}{x^2+1}\,dx$ <strong>converges</strong>.
-                    </li>
-                </ol>
-                <p>
-                    (We could even compute the exact value using arctangent: $\int_1^{\infty} \frac{1}{x^2+1}\,dx = \left[\arctan x\right]_1^{\infty} = \frac{\pi}{2} - \frac{\pi}{4} = \frac{\pi}{4}$,
-                    but the comparison test alone tells us convergence.)
-                </p>
-            </article>
+            <div class="example-box">
+                <strong>Example 1: $\displaystyle \int_1^{\infty} \frac{1}{x^2+1}\,dx$ (Direct Comparison)</strong>
+                <p><strong>Problem:</strong> Use a comparison test to determine convergence or divergence.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>
+                            <strong>Choose a comparison:</strong> For $x \ge 1$, we have $x^2 + 1 \ge x^2$, so $\frac{1}{x^2+1} \le \frac{1}{x^2}$.
+                        </li>
+                        <li>
+                            <strong>Check the comparison function:</strong> We know that $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges (it equals 1, by the $p$-test with $p=2 > 1$).
+                        </li>
+                        <li>
+                            <strong>Apply direct comparison:</strong> Since $0 \le \frac{1}{x^2+1} \le \frac{1}{x^2}$ and $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges,
+                            we conclude that $\int_1^{\infty} \frac{1}{x^2+1}\,dx$ <strong>converges</strong>.
+                        </li>
+                    </ol>
+                    <p>
+                        (We could even compute the exact value using arctangent: $\int_1^{\infty} \frac{1}{x^2+1}\,dx = \left[\arctan x\right]_1^{\infty} = \frac{\pi}{2} - \frac{\pi}{4} = \frac{\pi}{4}$,
+                        but the comparison test alone tells us convergence.)
+                    </p>
+                </div>
+            </div>
 
-            <article class="example">
-                <h3>Example 2: $\displaystyle \int_1^{\infty} \frac{x}{x^3+1}\,dx$ (Limit Comparison)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>
-                        <strong>Identify the leading behavior:</strong> For large $x$, the function behaves like $\frac{x}{x^3} = \frac{1}{x^2}$.
-                    </li>
-                    <li>
-                        <strong>Choose a comparison:</strong> Let $g(x) = \frac{1}{x^2}$.
-                    </li>
-                    <li>
-                        <strong>Compute the limit:</strong>
-                        $$\lim_{x \to \infty} \frac{f(x)}{g(x)} = \lim_{x \to \infty} \frac{\frac{x}{x^3+1}}{\frac{1}{x^2}} = \lim_{x \to \infty} \frac{x \cdot x^2}{x^3+1} = \lim_{x \to \infty} \frac{x^3}{x^3+1} = \lim_{x \to \infty} \frac{1}{1 + 1/x^3} = 1$$
-                    </li>
-                    <li>
-                        <strong>Apply limit comparison:</strong> Since $\lim \frac{f}{g} = 1$ (which is in $(0, \infty)$), the two integrals have the same convergence behavior.
-                        We know $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges, so $\int_1^{\infty} \frac{x}{x^3+1}\,dx$ <strong>converges</strong>.
-                    </li>
-                </ol>
-            </article>
+            <div class="example-box">
+                <strong>Example 2: $\displaystyle \int_1^{\infty} \frac{x}{x^3+1}\,dx$ (Limit Comparison)</strong>
+                <p><strong>Problem:</strong> Use a comparison test to determine convergence or divergence.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>
+                            <strong>Identify the leading behavior:</strong> For large $x$, the function behaves like $\frac{x}{x^3} = \frac{1}{x^2}$.
+                        </li>
+                        <li>
+                            <strong>Choose a comparison:</strong> Let $g(x) = \frac{1}{x^2}$.
+                        </li>
+                        <li>
+                            <strong>Compute the limit:</strong>
+                            $$\lim_{x \to \infty} \frac{f(x)}{g(x)} = \lim_{x \to \infty} \frac{\frac{x}{x^3+1}}{\frac{1}{x^2}} = \lim_{x \to \infty} \frac{x \cdot x^2}{x^3+1} = \lim_{x \to \infty} \frac{x^3}{x^3+1} = \lim_{x \to \infty} \frac{1}{1 + 1/x^3} = 1$$
+                        </li>
+                        <li>
+                            <strong>Apply limit comparison:</strong> Since $\lim \frac{f}{g} = 1$ (which is in $(0, \infty)$), the two integrals have the same convergence behavior.
+                            We know $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges, so $\int_1^{\infty} \frac{x}{x^3+1}\,dx$ <strong>converges</strong>.
+                        </li>
+                    </ol>
+                </div>
+            </div>
 
-            <article class="example">
-                <h3>Example 3: $\displaystyle \int_1^{\infty} \frac{\sin^2 x}{x^2}\,dx$ (Bounded Function)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>
-                        <strong>Identify bounds:</strong> Since $0 \le \sin^2 x \le 1$ for all $x$, we have
-                        $$0 \le \frac{\sin^2 x}{x^2} \le \frac{1}{x^2}$$
-                    </li>
-                    <li>
-                        <strong>Check the comparison function:</strong> $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges (by the $p$-test with $p=2$).
-                    </li>
-                    <li>
-                        <strong>Apply direct comparison:</strong> By the direct comparison test,
-                        $$\int_1^{\infty} \frac{\sin^2 x}{x^2}\,dx \quad \text{converges}$$
-                    </li>
-                </ol>
-                <p>
-                    <strong>Note:</strong> Even though $\sin^2 x$ oscillates wildly, the $1/x^2$ decay is strong enough to ensure convergence.
-                    This shows the power of comparison tests—we don't need to know the exact value or detailed behavior of the integrand.
-                </p>
-            </article>
+            <div class="example-box">
+                <strong>Example 3: $\displaystyle \int_1^{\infty} \frac{\sin^2 x}{x^2}\,dx$ (Bounded Function)</strong>
+                <p><strong>Problem:</strong> Use a comparison test to determine convergence or divergence.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>
+                            <strong>Identify bounds:</strong> Since $0 \le \sin^2 x \le 1$ for all $x$, we have
+                            $$0 \le \frac{\sin^2 x}{x^2} \le \frac{1}{x^2}$$
+                        </li>
+                        <li>
+                            <strong>Check the comparison function:</strong> $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges (by the $p$-test with $p=2$).
+                        </li>
+                        <li>
+                            <strong>Apply direct comparison:</strong> By the direct comparison test,
+                            $$\int_1^{\infty} \frac{\sin^2 x}{x^2}\,dx \quad \text{converges}$$
+                        </li>
+                    </ol>
+                    <p>
+                        <strong>Note:</strong> Even though $\sin^2 x$ oscillates wildly, the $1/x^2$ decay is strong enough to ensure convergence.
+                        This shows the power of comparison tests—we don't need to know the exact value or detailed behavior of the integrand.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <section id="visualizer" class="section">
@@ -259,80 +384,81 @@
         <section id="practice" class="section">
             <h2>Practice Problems</h2>
 
-            <div class="practice-problems">
-                <article class="problem">
-                    <h3>Problem 1</h3>
+            <div class="example-box">
+                <strong>Practice Problem 1</strong>
+                <p>
+                    Use a comparison test to determine whether the following integral converges or diverges:
+                    $$\int_2^{\infty} \frac{1}{x^2 - x}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Use a comparison test to determine whether the following integral converges or diverges:
-                        $$\int_2^{\infty} \frac{1}{x^2 - x}\,dx$$
+                        For $x \ge 2$, we have $x^2 - x < x^2$, so $\frac{1}{x^2-x} > \frac{1}{x^2}$.
+                        However, this gives us the wrong inequality for the direct comparison test.
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                For $x \ge 2$, we have $x^2 - x < x^2$, so $\frac{1}{x^2-x} > \frac{1}{x^2}$.
-                                However, this gives us the wrong inequality for the direct comparison test.
-                            </p>
-                            <p>
-                                Instead, observe that for $x \ge 2$, we have $x^2 - x = x(x-1) \ge \frac{x^2}{2}$ (since $x - 1 \ge x/2$ for $x \ge 2$).
-                                Thus $\frac{1}{x^2-x} \le \frac{2}{x^2}$.
-                            </p>
-                            <p>
-                                Since $\int_2^{\infty} \frac{1}{x^2}\,dx$ converges (by the $p$-test), and $\frac{1}{x^2-x} \le \frac{2}{x^2}$ for $x \ge 2$,
-                                the direct comparison test implies that $\int_2^{\infty} \frac{1}{x^2-x}\,dx$ <strong>converges</strong>.
-                            </p>
-                        </div>
-                    </details>
-                </article>
+                    <p>
+                        Instead, observe that for $x \ge 2$, we have $x^2 - x = x(x-1) \ge \frac{x^2}{2}$ (since $x - 1 \ge x/2$ for $x \ge 2$).
+                        Thus $\frac{1}{x^2-x} \le \frac{2}{x^2}$.
+                    </p>
+                    <p>
+                        Since $\int_2^{\infty} \frac{1}{x^2}\,dx$ converges (by the $p$-test), and $\frac{1}{x^2-x} \le \frac{2}{x^2}$ for $x \ge 2$,
+                        the direct comparison test implies that $\int_2^{\infty} \frac{1}{x^2-x}\,dx$ <strong>converges</strong>.
+                    </p>
+                </div>
+            </div>
 
-                <article class="problem">
-                    <h3>Problem 2</h3>
+            <div class="example-box">
+                <strong>Practice Problem 2</strong>
+                <p>
+                    Use the limit comparison test to determine convergence or divergence:
+                    $$\int_1^{\infty} \frac{3x + 2}{x^3 + x + 1}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Use the limit comparison test to determine convergence or divergence:
-                        $$\int_1^{\infty} \frac{3x + 2}{x^3 + x + 1}\,dx$$
+                        For large $x$, the function behaves like $\frac{3x}{x^3} = \frac{3}{x^2}$.
+                        Let $g(x) = \frac{1}{x^2}$.
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                For large $x$, the function behaves like $\frac{3x}{x^3} = \frac{3}{x^2}$.
-                                Let $g(x) = \frac{1}{x^2}$.
-                            </p>
-                            <div style="margin:1rem 0;">
-                                $$\lim_{x \to \infty} \frac{\frac{3x+2}{x^3+x+1}}{\frac{1}{x^2}} = \lim_{x \to \infty} \frac{(3x+2) \cdot x^2}{x^3+x+1}$$
-                                $$= \lim_{x \to \infty} \frac{3x^3 + 2x^2}{x^3+x+1} = \lim_{x \to \infty} \frac{3 + 2/x}{1 + 1/x^2 + 1/x^3} = 3$$
-                            </div>
-                            <p>
-                                Since the limit is 3 (a positive finite number) and $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges,
-                                the limit comparison test says that $\int_1^{\infty} \frac{3x+2}{x^3+x+1}\,dx$ <strong>converges</strong>.
-                            </p>
-                        </div>
-                    </details>
-                </article>
+                    <div style="margin:1rem 0;">
+                        $$\lim_{x \to \infty} \frac{\frac{3x+2}{x^3+x+1}}{\frac{1}{x^2}} = \lim_{x \to \infty} \frac{(3x+2) \cdot x^2}{x^3+x+1}$$
+                        $$= \lim_{x \to \infty} \frac{3x^3 + 2x^2}{x^3+x+1} = \lim_{x \to \infty} \frac{3 + 2/x}{1 + 1/x^2 + 1/x^3} = 3$$
+                    </div>
+                    <p>
+                        Since the limit is 3 (a positive finite number) and $\int_1^{\infty} \frac{1}{x^2}\,dx$ converges,
+                        the limit comparison test says that $\int_1^{\infty} \frac{3x+2}{x^3+x+1}\,dx$ <strong>converges</strong>.
+                    </p>
+                </div>
+            </div>
 
-                <article class="problem">
-                    <h3>Problem 3</h3>
+            <div class="example-box">
+                <strong>Practice Problem 3</strong>
+                <p>
+                    Use a comparison test to determine convergence or divergence:
+                    $$\int_1^{\infty} \frac{\sqrt{x}}{x^2 + 1}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Use a comparison test to determine convergence or divergence:
-                        $$\int_1^{\infty} \frac{\sqrt{x}}{x^2 + 1}\,dx$$
+                        For large $x$, $\sqrt{x}/x^2 \sim x^{1/2}/x^2 = x^{-3/2} = 1/x^{3/2}$.
+                        Let $g(x) = 1/x^{3/2}$.
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                For large $x$, $\sqrt{x}/x^2 \sim x^{1/2}/x^2 = x^{-3/2} = 1/x^{3/2}$.
-                                Let $g(x) = 1/x^{3/2}$.
-                            </p>
-                            <div style="margin:1rem 0;">
-                                $$\lim_{x \to \infty} \frac{\frac{\sqrt{x}}{x^2+1}}{\frac{1}{x^{3/2}}} = \lim_{x \to \infty} \frac{\sqrt{x} \cdot x^{3/2}}{x^2+1} = \lim_{x \to \infty} \frac{x^2}{x^2+1} = 1$$
-                            </div>
-                            <p>
-                                Since the limit equals 1 and $\int_1^{\infty} x^{-3/2}\,dx$ converges (by the $p$-test with $p = 3/2 > 1$),
-                                the limit comparison test says that $\int_1^{\infty} \frac{\sqrt{x}}{x^2+1}\,dx$ <strong>converges</strong>.
-                            </p>
-                        </div>
-                    </details>
-                </article>
+                    <div style="margin:1rem 0;">
+                        $$\lim_{x \to \infty} \frac{\frac{\sqrt{x}}{x^2+1}}{\frac{1}{x^{3/2}}} = \lim_{x \to \infty} \frac{\sqrt{x} \cdot x^{3/2}}{x^2+1} = \lim_{x \to \infty} \frac{x^2}{x^2+1} = 1$$
+                    </div>
+                    <p>
+                        Since the limit equals 1 and $\int_1^{\infty} x^{-3/2}\,dx$ converges (by the $p$-test with $p = 3/2 > 1$),
+                        the limit comparison test says that $\int_1^{\infty} \frac{\sqrt{x}}{x^2+1}\,dx$ <strong>converges</strong>.
+                    </p>
+                </div>
             </div>
         </section>
     </main>
@@ -349,8 +475,16 @@
     <script src="course-config.js"></script>
     <script src="course.js"></script>
     <script>
+        function toggleCollapsible(element) {
+            const icon = element.querySelector('.toggle-icon');
+            const content = element.nextElementSibling;
+
+            element.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            var mathElements = document.querySelectorAll('.math-block, .example, .problem, p, li, h3, h4');
+            var mathElements = document.querySelectorAll('.math-block, .example-box, .definition-box, .theorem-box, .warning-box, .tip-box, p, li, h3, h4');
             mathElements.forEach(function(el) {
                 if (el.textContent.includes('$')) {
                     renderMathInElement(el, {

@@ -33,12 +33,23 @@
     <main>
         <h1>Chapter 4.2: Infinite Series</h1>
 
+        <!-- Learning Objectives -->
+        <div class="definition-box">
+            <strong>Learning Objectives</strong>
+            <ul>
+                <li>Understand the definition of infinite series and partial sums</li>
+                <li>Determine convergence using the divergence test</li>
+                <li>Apply tests for geometric and telescoping series</li>
+                <li>Recognize and work with the harmonic series</li>
+            </ul>
+        </div>
+
         <!-- Introduction Section -->
         <section id="intro" class="chapter-section">
             <h2>Introduction</h2>
             <p>
                 An <strong>infinite series</strong> is the sum of the terms in a sequence. We write it as
-                \(\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \cdots\)
+                $\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \cdots$
             </p>
             <p>
                 The main questions in studying series are:
@@ -57,80 +68,103 @@
         <section id="theory" class="chapter-section">
             <h2>Theory</h2>
 
-            <h3>Definition: Partial Sums</h3>
-            <p>
-                Given a series \(\sum_{n=1}^{\infty} a_n\), the \(N\)-th <strong>partial sum</strong> is:
-            </p>
-            <p style="text-align: center; font-size: 1.1em;">
-                \(S_N = \sum_{n=1}^{N} a_n = a_1 + a_2 + \cdots + a_N\)
-            </p>
-            <p>
-                A series <strong>converges</strong> to \(S\) if the sequence of partial sums \(\{S_N\}\) converges to \(S\).
-                We write \(\sum_{n=1}^{\infty} a_n = S\).
-            </p>
-            <p>
-                A series <strong>diverges</strong> if the sequence of partial sums does not converge.
-            </p>
+            <div class="definition-box">
+                <strong>Definition: Partial Sums and Convergence</strong>
+                <p>
+                    Given a series $\sum_{n=1}^{\infty} a_n$, the $N$-th <strong>partial sum</strong> is:
+                </p>
+                <p style="text-align: center; font-size: 1.1em;">
+                    $$S_N = \sum_{n=1}^{N} a_n = a_1 + a_2 + \cdots + a_N$$
+                </p>
+                <p>
+                    A series <strong>converges</strong> to $S$ if the sequence of partial sums $\{S_N\}$ converges to $S$.
+                    We write $\sum_{n=1}^{\infty} a_n = S$.
+                </p>
+                <p>
+                    A series <strong>diverges</strong> if the sequence of partial sums does not converge.
+                </p>
+            </div>
 
-            <h3>Geometric Series</h3>
-            <p>
-                A <strong>geometric series</strong> has the form:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\sum_{n=0}^{\infty} ar^n = a + ar + ar^2 + ar^3 + \cdots\)
-            </p>
-            <p>
-                <strong>Convergence criterion:</strong>
-            </p>
-            <ul>
-                <li>If \(|r| < 1\), the series converges to \(\frac{a}{1-r}\)</li>
-                <li>If \(|r| \ge 1\), the series diverges</li>
-            </ul>
-            <p>
-                <strong>Proof (for \(|r| < 1\)):</strong> The partial sum is:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(S_N = a \cdot \frac{1 - r^N}{1 - r}\)
-            </p>
-            <p>
-                As \(N \to \infty\), \(r^N \to 0\), so \(S_N \to \frac{a}{1-r}\).
-            </p>
+            <div class="definition-box">
+                <strong>Definition: Geometric Series</strong>
+                <p>
+                    A <strong>geometric series</strong> has the form:
+                </p>
+                <p style="text-align: center; font-size: 1.05em;">
+                    $$\sum_{n=0}^{\infty} ar^n = a + ar + ar^2 + ar^3 + \cdots$$
+                </p>
+                <p>
+                    <strong>Convergence criterion:</strong>
+                </p>
+                <ul>
+                    <li>If $|r| < 1$, the series converges to $\frac{a}{1-r}$</li>
+                    <li>If $|r| \ge 1$, the series diverges</li>
+                </ul>
+                <p>
+                    <strong>Proof (for $|r| < 1$):</strong> The partial sum is:
+                </p>
+                <p style="text-align: center; font-size: 1.05em;">
+                    $$S_N = a \cdot \frac{1 - r^N}{1 - r}$$
+                </p>
+                <p>
+                    As $N \to \infty$, $r^N \to 0$, so $S_N \to \frac{a}{1-r}$.
+                </p>
+            </div>
 
-            <h3>Telescoping Series</h3>
-            <p>
-                A <strong>telescoping series</strong> is one where consecutive terms cancel. The general form is:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\sum_{n=1}^{\infty} (b_n - b_{n+1}) = b_1 - \lim_{n \to \infty} b_n\)
-            </p>
-            <p>
-                If \(\lim_{n \to \infty} b_n = 0\), the series converges to \(b_1\).
-            </p>
+            <div class="definition-box">
+                <strong>Definition: Telescoping Series</strong>
+                <p>
+                    A <strong>telescoping series</strong> is one where consecutive terms cancel. The general form is:
+                </p>
+                <p style="text-align: center; font-size: 1.05em;">
+                    $$\sum_{n=1}^{\infty} (b_n - b_{n+1}) = b_1 - \lim_{n \to \infty} b_n$$
+                </p>
+                <p>
+                    If $\lim_{n \to \infty} b_n = 0$, the series converges to $b_1$.
+                </p>
+            </div>
 
-            <h3>The Divergence Test</h3>
-            <p>
-                <strong>Theorem:</strong> If \(\sum_{n=1}^{\infty} a_n\) converges, then \(\lim_{n \to \infty} a_n = 0\).
-            </p>
-            <p>
-                <strong>Contrapositive (Divergence Test):</strong> If \(\lim_{n \to \infty} a_n \neq 0\) or does not exist,
-                then the series \(\sum_{n=1}^{\infty} a_n\) diverges.
-            </p>
-            <p>
-                <strong>Note:</strong> The converse is false! If \(\lim_{n \to \infty} a_n = 0\), the series may still diverge
-                (like the harmonic series).
-            </p>
+            <div class="theorem-box">
+                <strong>Theorem: The Divergence Test</strong>
+                <p>
+                    <strong>Theorem:</strong> If $\sum_{n=1}^{\infty} a_n$ converges, then $\lim_{n \to \infty} a_n = 0$.
+                </p>
+                <p>
+                    <strong>Contrapositive (Divergence Test):</strong> If $\lim_{n \to \infty} a_n \neq 0$ or does not exist,
+                    then the series $\sum_{n=1}^{\infty} a_n$ diverges.
+                </p>
+            </div>
 
-            <h3>The Harmonic Series</h3>
-            <p>
-                The <strong>harmonic series</strong> is:
-            </p>
-            <p style="text-align: center; font-size: 1.1em;">
-                \(\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots\)
-            </p>
-            <p>
-                Even though \(\lim_{n \to \infty} \frac{1}{n} = 0\), this series <strong>diverges</strong>!
-                This famous example shows that convergence of \(a_n\) is necessary but not sufficient for series convergence.
-            </p>
+            <div class="warning-box">
+                <strong>⚠️ Common Mistake</strong>
+                <p>
+                    The converse is false! If $\lim_{n \to \infty} a_n = 0$, the series may still diverge
+                    (like the harmonic series $\sum \frac{1}{n}$). The divergence test only tells us when a series MUST diverge.
+                    Convergence of the terms is necessary but not sufficient for series convergence.
+                </p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Definition: The Harmonic Series</strong>
+                <p>
+                    The <strong>harmonic series</strong> is:
+                </p>
+                <p style="text-align: center; font-size: 1.1em;">
+                    $$\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots$$
+                </p>
+                <p>
+                    Even though $\lim_{n \to \infty} \frac{1}{n} = 0$, this series <strong>diverges</strong>!
+                    This famous example shows that convergence of $a_n$ is necessary but not sufficient for series convergence.
+                </p>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip</strong>
+                <p>
+                    Always apply the Divergence Test first! If the terms don't approach 0, you immediately know the series diverges.
+                    This saves time before attempting more complex tests.
+                </p>
+            </div>
         </section>
 
         <!-- Method Section -->
@@ -139,104 +173,130 @@
 
             <h3>Step-by-Step Approach</h3>
             <ol>
-                <li><strong>Divergence Test First:</strong> Check if \(\lim_{n \to \infty} a_n \neq 0\). If so, diverge.</li>
+                <li><strong>Divergence Test First:</strong> Check if $\lim_{n \to \infty} a_n \neq 0$. If so, diverge.</li>
                 <li><strong>Recognize Type:</strong> Is it geometric? Telescoping? Power series?</li>
                 <li><strong>Apply Appropriate Test:</strong> Use tests developed in later sections</li>
                 <li><strong>State Conclusion:</strong> Clearly state convergence or divergence</li>
             </ol>
 
-            <h3>Quick Convergence Summary</h3>
-            <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
-                <tr style="background-color: var(--border);">
-                    <th style="padding: 10px; text-align: left;">Series Type</th>
-                    <th style="padding: 10px; text-align: left;">Convergence</th>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                    <td style="padding: 10px;">Geometric: \(\sum ar^n\)</td>
-                    <td style="padding: 10px;">Converges iff \(|r| < 1\)</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                    <td style="padding: 10px;">p-series: \(\sum \frac{1}{n^p}\)</td>
-                    <td style="padding: 10px;">Converges iff \(p > 1\)</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                    <td style="padding: 10px;">Harmonic: \(\sum \frac{1}{n}\)</td>
-                    <td style="padding: 10px;">Diverges</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;">Telescoping</td>
-                    <td style="padding: 10px;">Usually converges to first term</td>
-                </tr>
-            </table>
+            <div class="definition-box">
+                <strong>Quick Convergence Summary</strong>
+                <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
+                    <tr style="background-color: var(--border);">
+                        <th style="padding: 10px; text-align: left;">Series Type</th>
+                        <th style="padding: 10px; text-align: left;">Convergence</th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 10px;">Geometric: $\sum ar^n$</td>
+                        <td style="padding: 10px;">Converges iff $|r| < 1$</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 10px;">p-series: $\sum \frac{1}{n^p}$</td>
+                        <td style="padding: 10px;">Converges iff $p > 1$</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 10px;">Harmonic: $\sum \frac{1}{n}$</td>
+                        <td style="padding: 10px;">Diverges</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">Telescoping</td>
+                        <td style="padding: 10px;">Usually converges to first term</td>
+                    </tr>
+                </table>
+            </div>
         </section>
 
         <!-- Examples Section -->
         <section id="examples" class="chapter-section">
             <h2>Examples</h2>
 
-            <h3>Example 1: Geometric Series \(\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n\)</h3>
-            <p>
-                Find the sum of the series \(\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n\).
-            </p>
-            <p>
-                <strong>Solution:</strong> This is a geometric series with \(a = 1\) and \(r = \frac{1}{2}\).
-            </p>
-            <p>
-                Since \(|r| = \frac{1}{2} < 1\), the series converges:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n = \frac{1}{1 - \frac{1}{2}} = \frac{1}{\frac{1}{2}} = 2\)
-            </p>
+            <div class="example-box">
+                <strong>Example 1: Geometric Series $\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n$</strong>
+                <p>
+                    Find the sum of the series $\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n$.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        This is a geometric series with $a = 1$ and $r = \frac{1}{2}$.
+                    </p>
+                    <p>
+                        Since $|r| = \frac{1}{2} < 1$, the series converges:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n = \frac{1}{1 - \frac{1}{2}} = \frac{1}{\frac{1}{2}} = 2$$
+                    </p>
+                </div>
+            </div>
 
-            <h3>Example 2: Telescoping Series \(\sum_{n=1}^{\infty} \frac{1}{n(n+1)}\)</h3>
-            <p>
-                Find the sum of \(\sum_{n=1}^{\infty} \frac{1}{n(n+1)}\).
-            </p>
-            <p>
-                <strong>Solution:</strong> Use partial fractions:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}\)
-            </p>
-            <p>
-                The partial sum is:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(S_N = \sum_{n=1}^{N} \left(\frac{1}{n} - \frac{1}{n+1}\right) = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{N} - \frac{1}{N+1}\right)\)
-            </p>
-            <p>
-                Most terms cancel (telescope), leaving:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(S_N = 1 - \frac{1}{N+1}\)
-            </p>
-            <p>
-                Taking the limit:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\sum_{n=1}^{\infty} \frac{1}{n(n+1)} = \lim_{N \to \infty} \left(1 - \frac{1}{N+1}\right) = 1\)
-            </p>
+            <div class="example-box">
+                <strong>Example 2: Telescoping Series $\sum_{n=1}^{\infty} \frac{1}{n(n+1)}$</strong>
+                <p>
+                    Find the sum of $\sum_{n=1}^{\infty} \frac{1}{n(n+1)}$.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        Use partial fractions:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}$$
+                    </p>
+                    <p>
+                        The partial sum is:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$S_N = \sum_{n=1}^{N} \left(\frac{1}{n} - \frac{1}{n+1}\right) = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{N} - \frac{1}{N+1}\right)$$
+                    </p>
+                    <p>
+                        Most terms cancel (telescope), leaving:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$S_N = 1 - \frac{1}{N+1}$$
+                    </p>
+                    <p>
+                        Taking the limit:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$\sum_{n=1}^{\infty} \frac{1}{n(n+1)} = \lim_{N \to \infty} \left(1 - \frac{1}{N+1}\right) = 1$$
+                    </p>
+                </div>
+            </div>
 
-            <h3>Example 3: Divergence Test \(\sum_{n=1}^{\infty} \frac{n}{n+1}\)</h3>
-            <p>
-                Determine if \(\sum_{n=1}^{\infty} \frac{n}{n+1}\) converges or diverges.
-            </p>
-            <p>
-                <strong>Solution:</strong> Apply the divergence test:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(\lim_{n \to \infty} \frac{n}{n+1} = \lim_{n \to \infty} \frac{1}{1 + \frac{1}{n}} = 1 \neq 0\)
-            </p>
-            <p>
-                Since the terms do not approach 0, the series <strong>diverges</strong> by the Divergence Test.
-            </p>
+            <div class="example-box">
+                <strong>Example 3: Divergence Test $\sum_{n=1}^{\infty} \frac{n}{n+1}$</strong>
+                <p>
+                    Determine if $\sum_{n=1}^{\infty} \frac{n}{n+1}$ converges or diverges.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        Apply the divergence test:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$\lim_{n \to \infty} \frac{n}{n+1} = \lim_{n \to \infty} \frac{1}{1 + \frac{1}{n}} = 1 \neq 0$$
+                    </p>
+                    <p>
+                        Since the terms do not approach 0, the series <strong>diverges</strong> by the Divergence Test.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- Visualizer Section -->
         <section id="visualizer" class="chapter-section">
             <h2>Interactive Visualizer</h2>
             <p>
-                The plot below shows partial sums of the geometric series \(\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n\)
+                The plot below shows partial sums of the geometric series $\sum_{n=0}^{\infty} \left(\frac{1}{2}\right)^n$
                 approaching the limit of 2:
             </p>
             <div id="seriesPlot" style="width:100%;height:500px;"></div>
@@ -249,73 +309,82 @@
         <section id="practice" class="chapter-section">
             <h2>Practice Problems</h2>
 
-            <div class="practice-problem">
-                <h3>Problem 1</h3>
+            <div class="example-box">
+                <strong>Practice Problem 1</strong>
                 <p>
-                    Determine if the series \(\sum_{n=1}^{\infty} \frac{3}{4^n}\) converges. If it does, find the sum.
+                    Determine if the series $\sum_{n=1}^{\infty} \frac{3}{4^n}$ converges. If it does, find the sum.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        This is a geometric series with \(a = \frac{3}{4}\) and \(r = \frac{1}{4}\).
+                        This is a geometric series with $a = \frac{3}{4}$ and $r = \frac{1}{4}$.
                     </p>
                     <p>
-                        Since \(|r| = \frac{1}{4} < 1\), the series converges:
+                        Since $|r| = \frac{1}{4} < 1$, the series converges:
                     </p>
                     <p style="text-align: center;">
-                        \(\sum_{n=1}^{\infty} \frac{3}{4^n} = \sum_{n=1}^{\infty} 3 \cdot \left(\frac{1}{4}\right)^n = \frac{3/4}{1 - 1/4} = \frac{3/4}{3/4} = 1\)
+                        $$\sum_{n=1}^{\infty} \frac{3}{4^n} = \sum_{n=1}^{\infty} 3 \cdot \left(\frac{1}{4}\right)^n = \frac{3/4}{1 - 1/4} = \frac{3/4}{3/4} = 1$$
                     </p>
-                </details>
+                </div>
             </div>
 
-            <div class="practice-problem">
-                <h3>Problem 2</h3>
+            <div class="example-box">
+                <strong>Practice Problem 2</strong>
                 <p>
-                    Show that \(\sum_{n=1}^{\infty} \frac{1}{n^2 - 1}\) converges by recognizing it as a telescoping series
+                    Show that $\sum_{n=1}^{\infty} \frac{1}{n^2 - 1}$ converges by recognizing it as a telescoping series
                     and finding its sum.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
                         Use partial fractions:
                     </p>
                     <p style="text-align: center;">
-                        \(\frac{1}{n^2 - 1} = \frac{1}{(n-1)(n+1)} = \frac{1}{2}\left(\frac{1}{n-1} - \frac{1}{n+1}\right)\)
+                        $$\frac{1}{n^2 - 1} = \frac{1}{(n-1)(n+1)} = \frac{1}{2}\left(\frac{1}{n-1} - \frac{1}{n+1}\right)$$
                     </p>
                     <p>
                         The partial sum telescopes:
                     </p>
                     <p style="text-align: center;">
-                        \(S_N = \frac{1}{2}\left[\left(\frac{1}{0} - \frac{1}{2}\right) + \left(\frac{1}{1} - \frac{1}{3}\right) + \left(\frac{1}{2} - \frac{1}{4}\right) + \cdots\right]\)
+                        $$S_N = \frac{1}{2}\left[\left(\frac{1}{0} - \frac{1}{2}\right) + \left(\frac{1}{1} - \frac{1}{3}\right) + \left(\frac{1}{2} - \frac{1}{4}\right) + \cdots\right]$$
                     </p>
                     <p>
                         After cancellation:
                     </p>
                     <p style="text-align: center;">
-                        \(S_N = \frac{1}{2}\left(1 + \frac{1}{2} - \frac{1}{N} - \frac{1}{N+1}\right) \to \frac{1}{2}\left(\frac{3}{2}\right) = \frac{3}{4}\)
+                        $$S_N = \frac{1}{2}\left(1 + \frac{1}{2} - \frac{1}{N} - \frac{1}{N+1}\right) \to \frac{1}{2}\left(\frac{3}{2}\right) = \frac{3}{4}$$
                     </p>
-                </details>
+                </div>
             </div>
 
-            <div class="practice-problem">
-                <h3>Problem 3</h3>
+            <div class="example-box">
+                <strong>Practice Problem 3</strong>
                 <p>
-                    Use the divergence test to determine whether \(\sum_{n=1}^{\infty} \frac{\sqrt{n}}{n+1}\) converges or diverges.
+                    Use the divergence test to determine whether $\sum_{n=1}^{\infty} \frac{\sqrt{n}}{n+1}$ converges or diverges.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
                         Check the limit of the terms:
                     </p>
                     <p style="text-align: center;">
-                        \(\lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{1}{\sqrt{n}+\frac{1}{\sqrt{n}}} = 0\)
+                        $$\lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{1}{\sqrt{n}+\frac{1}{\sqrt{n}}} = 0$$
                     </p>
                     <p>
-                        Hmm, the divergence test is inconclusive (limit is 0). We'd need another test (like comparison test) to determine convergence.
-                        However, since \(\frac{\sqrt{n}}{n+1} \approx \frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}\) and \(\sum \frac{1}{\sqrt{n}} = \sum \frac{1}{n^{1/2}}\) diverges (p-series with \(p = 1/2 < 1\)),
+                        The divergence test is inconclusive (limit is 0). We'd need another test (like comparison test) to determine convergence.
+                        However, since $\frac{\sqrt{n}}{n+1} \approx \frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}$ and $\sum \frac{1}{\sqrt{n}} = \sum \frac{1}{n^{1/2}}$ diverges (p-series with $p = 1/2 < 1$),
                         this series <strong>diverges</strong> by the limit comparison test.
                     </p>
-                </details>
+                </div>
             </div>
         </section>
     </main>
@@ -332,6 +401,18 @@
     <script src="course-config.js"></script>
     <script src="course.js"></script>
     <script>
+        // Collapsible content function
+        function toggleCollapsible(element) {
+            var content = element.nextElementSibling;
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                element.querySelector('.toggle-icon').textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                element.querySelector('.toggle-icon').textContent = '▼';
+            }
+        }
+
         // Generate partial sums for geometric series with r = 1/2
         var n = [];
         var partialSums = [];

@@ -33,12 +33,23 @@
     <main>
         <h1>Chapter 4.4: Alternating Series</h1>
 
+        <!-- Learning Objectives -->
+        <div class="definition-box">
+            <strong>Learning Objectives</strong>
+            <ul>
+                <li>Apply the Alternating Series Test (Leibniz Test)</li>
+                <li>Estimate errors in alternating series approximations</li>
+                <li>Distinguish between absolute and conditional convergence</li>
+                <li>Understand the Rearrangement Theorem</li>
+            </ul>
+        </div>
+
         <!-- Introduction Section -->
         <section id="intro" class="chapter-section">
             <h2>Introduction</h2>
             <p>
                 An <strong>alternating series</strong> is a series whose terms alternate in sign, such as
-                \(\sum_{n=1}^{\infty} (-1)^{n+1} a_n\) where \(a_n > 0\).
+                $\sum_{n=1}^{\infty} (-1)^{n+1} a_n$ where $a_n > 0$.
             </p>
             <p>
                 Unlike positive series that require stricter convergence conditions, alternating series can converge even when
@@ -55,55 +66,71 @@
         <section id="theory" class="chapter-section">
             <h2>Theory</h2>
 
-            <h3>The Alternating Series Test (Leibniz Test)</h3>
-            <p>
-                <strong>Theorem:</strong> Let \(\{b_n\}\) be a sequence of positive terms. If
-            </p>
-            <ol style="font-size: 1.05em; text-align: center;">
-                <li>\(b_{n+1} \le b_n\) for all \(n\) (the sequence is monotone decreasing)</li>
-                <li>\(\lim_{n \to \infty} b_n = 0\)</li>
-            </ol>
-            <p>
-                then the alternating series \(\sum_{n=1}^{\infty} (-1)^{n+1} b_n\) converges.
-            </p>
-            <p style="text-align: center; color: var(--text-secondary); font-size: 0.95em;">
-                The conditions are very mild: the terms only need to decrease to zero, not decrease rapidly.
-            </p>
+            <div class="theorem-box">
+                <strong>Theorem: The Alternating Series Test (Leibniz Test)</strong>
+                <p>
+                    Let $\{b_n\}$ be a sequence of positive terms. If
+                </p>
+                <ol style="font-size: 1.05em;">
+                    <li>$b_{n+1} \le b_n$ for all $n$ (the sequence is monotone decreasing)</li>
+                    <li>$\lim_{n \to \infty} b_n = 0$</li>
+                </ol>
+                <p>
+                    then the alternating series $\sum_{n=1}^{\infty} (-1)^{n+1} b_n$ converges.
+                </p>
+                <p style="text-align: center; color: var(--text-secondary); font-size: 0.95em;">
+                    The conditions are very mild: the terms only need to decrease to zero, not decrease rapidly.
+                </p>
+            </div>
 
-            <h3>Error Estimation for Alternating Series</h3>
-            <p>
-                If \(\sum (-1)^{n+1} b_n\) converges to \(S\) and \(S_N\) is the \(N\)-th partial sum, then
-            </p>
-            <p style="text-align: center; font-size: 1.1em;">
-                \(|R_N| = |S - S_N| \le b_{N+1}\)
-            </p>
-            <p>
-                The error is bounded by the first omitted term!
-            </p>
+            <div class="definition-box">
+                <strong>Definition: Error Bounds for Alternating Series</strong>
+                <p>
+                    If $\sum (-1)^{n+1} b_n$ converges to $S$ and $S_N$ is the $N$-th partial sum, then
+                </p>
+                <p style="text-align: center; font-size: 1.1em;">
+                    $$|R_N| = |S - S_N| \le b_{N+1}$$
+                </p>
+                <p>
+                    <strong>Key insight:</strong> The error is bounded by the first omitted term! This is incredibly useful for practical approximations.
+                </p>
+            </div>
 
-            <h3>Absolute vs. Conditional Convergence</h3>
-            <p>
-                A series \(\sum a_n\):
-            </p>
-            <ul>
-                <li><strong>Converges absolutely</strong> if \(\sum |a_n|\) converges</li>
-                <li><strong>Converges conditionally</strong> if \(\sum a_n\) converges but \(\sum |a_n|\) diverges</li>
-            </ul>
-            <p>
-                <strong>Key fact:</strong> Absolute convergence implies convergence. If \(\sum |a_n|\) converges, then \(\sum a_n\) converges.
-            </p>
-            <p>
-                However, conditional convergence can occur with alternating series!
-            </p>
+            <div class="definition-box">
+                <strong>Definition: Absolute vs. Conditional Convergence</strong>
+                <p>
+                    A series $\sum a_n$:
+                </p>
+                <ul>
+                    <li><strong>Converges absolutely</strong> if $\sum |a_n|$ converges</li>
+                    <li><strong>Converges conditionally</strong> if $\sum a_n$ converges but $\sum |a_n|$ diverges</li>
+                </ul>
+                <p>
+                    <strong>Key fact:</strong> Absolute convergence implies convergence. If $\sum |a_n|$ converges, then $\sum a_n$ converges.
+                </p>
+                <p>
+                    However, conditional convergence can occur with alternating series!
+                </p>
+            </div>
 
-            <h3>The Rearrangement Theorem</h3>
-            <p>
-                An important consequence of absolute vs. conditional convergence:
-            </p>
-            <ul>
-                <li>If a series converges absolutely, any rearrangement of its terms converges to the same value</li>
-                <li>If a series converges conditionally, rearrangements can converge to different values or diverge!</li>
-            </ul>
+            <div class="theorem-box">
+                <strong>Theorem: The Rearrangement Theorem</strong>
+                <p>
+                    An important consequence of absolute vs. conditional convergence:
+                </p>
+                <ul>
+                    <li>If a series converges absolutely, any rearrangement of its terms converges to the same value</li>
+                    <li>If a series converges conditionally, rearrangements can converge to different values or diverge!</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip</strong>
+                <p>
+                    When testing an alternating series, always check both conditions: (1) Is the sequence decreasing? (2) Does it approach 0?
+                    Both must be true for the test to apply. Many students forget to check the first condition!
+                </p>
+            </div>
         </section>
 
         <!-- Method Section -->
@@ -112,113 +139,147 @@
 
             <h3>Step-by-Step Approach</h3>
             <ol>
-                <li><strong>Identify the form:</strong> Is it \(\sum (-1)^n b_n\) or \(\sum (-1)^{n+1} b_n\)?</li>
-                <li><strong>Extract \(b_n\):</strong> Write the series as \(\sum (\text{sign}) \cdot b_n\) where \(b_n > 0\)</li>
-                <li><strong>Check monotonicity:</strong> Verify that \(b_n\) is decreasing (show \(b_{n+1} \le b_n\))</li>
-                <li><strong>Check limit:</strong> Verify that \(\lim_{n \to \infty} b_n = 0\)</li>
+                <li><strong>Identify the form:</strong> Is it $\sum (-1)^n b_n$ or $\sum (-1)^{n+1} b_n$?</li>
+                <li><strong>Extract $b_n$:</strong> Write the series as $\sum (\text{sign}) \cdot b_n$ where $b_n > 0$</li>
+                <li><strong>Check monotonicity:</strong> Verify that $b_n$ is decreasing (show $b_{n+1} \le b_n$)</li>
+                <li><strong>Check limit:</strong> Verify that $\lim_{n \to \infty} b_n = 0$</li>
                 <li><strong>Apply test:</strong> Conclude the series converges (by Alternating Series Test)</li>
-                <li><strong>Check absolute convergence:</strong> Test if \(\sum |a_n| = \sum b_n\) converges</li>
+                <li><strong>Check absolute convergence:</strong> Test if $\sum |a_n| = \sum b_n$ converges</li>
                 <li><strong>Classify:</strong> Absolute or conditional?</li>
             </ol>
 
-            <h3>Checking Monotonicity</h3>
-            <p>
-                To show \(b_{n+1} \le b_n\), use one of these methods:
-            </p>
-            <ul>
-                <li><strong>Derivative test:</strong> If \(f'(x) < 0\), then \(f\) is decreasing, so \(f(n+1) < f(n)\)</li>
-                <li><strong>Ratio test:</strong> Show \(\frac{b_{n+1}}{b_n} < 1\)</li>
-                <li><strong>Direct computation:</strong> Compute first few terms to verify the pattern</li>
-            </ul>
+            <div class="definition-box">
+                <strong>Checking Monotonicity</strong>
+                <p>
+                    To show $b_{n+1} \le b_n$, use one of these methods:
+                </p>
+                <ul>
+                    <li><strong>Derivative test:</strong> If $f'(x) < 0$, then $f$ is decreasing, so $f(n+1) < f(n)$</li>
+                    <li><strong>Ratio test:</strong> Show $\frac{b_{n+1}}{b_n} < 1$</li>
+                    <li><strong>Direct computation:</strong> Compute first few terms to verify the pattern</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Common Mistake</strong>
+                <p>
+                    Students often assume $\lim_{n \to \infty} a_n = 0$ is sufficient. It's NOT! You must also verify monotonicity.
+                    For example, $a_n = (-1)^n + \frac{1}{n}$ approaches 0 but oscillates, so the Alternating Series Test doesn't apply.
+                </p>
+            </div>
         </section>
 
         <!-- Examples Section -->
         <section id="examples" class="chapter-section">
             <h2>Examples</h2>
 
-            <h3>Example 1: \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}\) (Harmonic Series with Alternating Signs)</h3>
-            <p>
-                Determine if \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots\) converges.
-            </p>
-            <p>
-                <strong>Solution:</strong> We have \(b_n = \frac{1}{n}\).
-            </p>
-            <ul>
-                <li><strong>Decreasing:</strong> \(\frac{1}{n+1} < \frac{1}{n}\) ✓</li>
-                <li><strong>Limit:</strong> \(\lim_{n \to \infty} \frac{1}{n} = 0\) ✓</li>
-            </ul>
-            <p>
-                By the Alternating Series Test, the series <strong>converges</strong>.
-            </p>
-            <p>
-                For absolute convergence, we check \(\sum \left|\frac{(-1)^{n+1}}{n}\right| = \sum \frac{1}{n}\), which is the harmonic series and <strong>diverges</strong>.
-            </p>
-            <p style="text-align: center; font-weight: bold;">
-                Therefore, \(\sum \frac{(-1)^{n+1}}{n}\) converges <strong>conditionally</strong>.
-            </p>
-            <p style="text-align: center; color: var(--text-secondary);">
-                (Note: This sum equals \(\ln(2) \approx 0.693147...\))
-            </p>
+            <div class="example-box">
+                <strong>Example 1: $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}$ (Alternating Harmonic Series)</strong>
+                <p>
+                    Determine if $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots$ converges.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        We have $b_n = \frac{1}{n}$.
+                    </p>
+                    <ul>
+                        <li><strong>Decreasing:</strong> $\frac{1}{n+1} < \frac{1}{n}$ ✓</li>
+                        <li><strong>Limit:</strong> $\lim_{n \to \infty} \frac{1}{n} = 0$ ✓</li>
+                    </ul>
+                    <p>
+                        By the Alternating Series Test, the series <strong>converges</strong>.
+                    </p>
+                    <p>
+                        For absolute convergence, we check $\sum \left|\frac{(-1)^{n+1}}{n}\right| = \sum \frac{1}{n}$, which is the harmonic series and <strong>diverges</strong>.
+                    </p>
+                    <p style="text-align: center; font-weight: bold;">
+                        Therefore, $\sum \frac{(-1)^{n+1}}{n}$ converges <strong>conditionally</strong>.
+                    </p>
+                    <p style="text-align: center; color: var(--text-secondary);">
+                        (Note: This sum equals $\ln(2) \approx 0.693147...$)
+                    </p>
+                </div>
+            </div>
 
-            <h3>Example 2: \(\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}\)</h3>
-            <p>
-                Determine if \(\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}\) converges, and classify the convergence.
-            </p>
-            <p>
-                <strong>Solution:</strong> We have \(b_n = \frac{1}{n^2}\).
-            </p>
-            <ul>
-                <li><strong>Decreasing:</strong> \(\frac{1}{(n+1)^2} < \frac{1}{n^2}\) ✓</li>
-                <li><strong>Limit:</strong> \(\lim_{n \to \infty} \frac{1}{n^2} = 0\) ✓</li>
-            </ul>
-            <p>
-                By the Alternating Series Test, the series converges.
-            </p>
-            <p>
-                For absolute convergence, \(\sum \frac{1}{n^2}\) is a p-series with \(p = 2 > 1\), so it <strong>converges</strong>.
-            </p>
-            <p style="text-align: center; font-weight: bold;">
-                Therefore, \(\sum \frac{(-1)^n}{n^2}\) converges <strong>absolutely</strong>.
-            </p>
+            <div class="example-box">
+                <strong>Example 2: $\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}$</strong>
+                <p>
+                    Determine if $\sum_{n=1}^{\infty} \frac{(-1)^n}{n^2}$ converges, and classify the convergence.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        We have $b_n = \frac{1}{n^2}$.
+                    </p>
+                    <ul>
+                        <li><strong>Decreasing:</strong> $\frac{1}{(n+1)^2} < \frac{1}{n^2}$ ✓</li>
+                        <li><strong>Limit:</strong> $\lim_{n \to \infty} \frac{1}{n^2} = 0$ ✓</li>
+                    </ul>
+                    <p>
+                        By the Alternating Series Test, the series converges.
+                    </p>
+                    <p>
+                        For absolute convergence, $\sum \frac{1}{n^2}$ is a p-series with $p = 2 > 1$, so it <strong>converges</strong>.
+                    </p>
+                    <p style="text-align: center; font-weight: bold;">
+                        Therefore, $\sum \frac{(-1)^n}{n^2}$ converges <strong>absolutely</strong>.
+                    </p>
+                </div>
+            </div>
 
-            <h3>Example 3: Error Estimation for \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}\)</h3>
-            <p>
-                Approximate \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}\) using the first 5 terms, and estimate the error.
-            </p>
-            <p>
-                <strong>Solution:</strong> The partial sum is:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(S_5 = 1 - \frac{1}{2!} + \frac{1}{3!} - \frac{1}{4!} + \frac{1}{5!}\)
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(= 1 - 0.5 + 0.1667 - 0.0417 + 0.0083 = 0.6333\)
-            </p>
-            <p>
-                By the error bound:
-            </p>
-            <p style="text-align: center; font-size: 1.05em;">
-                \(|R_5| \le b_6 = \frac{1}{6!} = \frac{1}{720} \approx 0.00139\)
-            </p>
-            <p>
-                So the sum is \(0.6333 \pm 0.00139\), or between 0.632 and 0.635.
-            </p>
-            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
-                (Note: This series sum is \(e^{-1} - 1 \approx 0.36788\). Our approximation is not great with just 5 terms,
-                but the error bound is guaranteed accurate!)
-            </p>
+            <div class="example-box">
+                <strong>Example 3: Error Estimation for $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}$</strong>
+                <p>
+                    Approximate $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n!}$ using the first 5 terms, and estimate the error.
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <p>
+                        The partial sum is:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$S_5 = 1 - \frac{1}{2!} + \frac{1}{3!} - \frac{1}{4!} + \frac{1}{5!}$$
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$= 1 - 0.5 + 0.1667 - 0.0417 + 0.0083 = 0.6333$$
+                    </p>
+                    <p>
+                        By the error bound:
+                    </p>
+                    <p style="text-align: center; font-size: 1.05em;">
+                        $$|R_5| \le b_6 = \frac{1}{6!} = \frac{1}{720} \approx 0.00139$$
+                    </p>
+                    <p>
+                        So the sum is $0.6333 \pm 0.00139$, or between 0.632 and 0.635.
+                    </p>
+                    <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
+                        (Note: This series sum is $e^{-1} - 1 \approx 0.36788$. The approximation isn't perfect with just 5 terms,
+                        but the error bound is guaranteed accurate!)
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- Visualizer Section -->
         <section id="visualizer" class="chapter-section">
             <h2>Interactive Visualizer</h2>
             <p>
-                The chart below shows partial sums of the alternating series \(\sum \frac{(-1)^{n+1}}{n}\)
-                oscillating around and converging to \(\ln(2)\):
+                The chart below shows partial sums of the alternating series $\sum \frac{(-1)^{n+1}}{n}$
+                oscillating around and converging to $\ln(2)$:
             </p>
             <div id="alternatingPlot" style="width:100%;height:500px;"></div>
             <p style="text-align: center; color: var(--text-secondary); font-size: 0.9em;">
-                Blue oscillating line: partial sums | Red dashed line: limit \(\ln(2) \approx 0.693\)
+                Blue oscillating line: partial sums | Red dashed line: limit $\ln(2) \approx 0.693$
             </p>
         </section>
 
@@ -226,78 +287,87 @@
         <section id="practice" class="chapter-section">
             <h2>Practice Problems</h2>
 
-            <div class="practice-problem">
-                <h3>Problem 1</h3>
+            <div class="example-box">
+                <strong>Practice Problem 1</strong>
                 <p>
-                    Use the Alternating Series Test to show that \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1} \sqrt{n}}{n+1}\) converges.
+                    Use the Alternating Series Test to show that $\sum_{n=1}^{\infty} \frac{(-1)^{n+1} \sqrt{n}}{n+1}$ converges.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Let \(b_n = \frac{\sqrt{n}}{n+1}\).
+                        Let $b_n = \frac{\sqrt{n}}{n+1}$.
                     </p>
                     <p>
-                        <strong>Decreasing:</strong> We can check that \(b_n = \frac{\sqrt{n}}{n+1}\) is eventually decreasing.
-                        For large \(n\), \(n+1 \approx n\), so \(b_n \approx \frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}\), which is decreasing.
-                        (Alternatively, take the derivative: \(f(x) = \frac{\sqrt{x}}{x+1}\) has \(f'(x) = \frac{1/(2\sqrt{x}) \cdot (x+1) - \sqrt{x}}{(x+1)^2} < 0\) for large \(x\).)
+                        <strong>Decreasing:</strong> We can check that $b_n = \frac{\sqrt{n}}{n+1}$ is eventually decreasing.
+                        For large $n$, $n+1 \approx n$, so $b_n \approx \frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}$, which is decreasing.
+                        (Alternatively, take the derivative: $f(x) = \frac{\sqrt{x}}{x+1}$ has $f'(x) = \frac{1/(2\sqrt{x}) \cdot (x+1) - \sqrt{x}}{(x+1)^2} < 0$ for large $x$.)
                     </p>
                     <p>
-                        <strong>Limit:</strong> \(\lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{1/\sqrt{n}}{1 + 1/n} = 0\) ✓
+                        <strong>Limit:</strong> $\lim_{n \to \infty} \frac{\sqrt{n}}{n+1} = \lim_{n \to \infty} \frac{1/\sqrt{n}}{1 + 1/n} = 0$ ✓
                     </p>
                     <p>
                         Both conditions are satisfied, so by the Alternating Series Test, the series converges.
                     </p>
-                </details>
+                </div>
             </div>
 
-            <div class="practice-problem">
-                <h3>Problem 2</h3>
+            <div class="example-box">
+                <strong>Practice Problem 2</strong>
                 <p>
-                    Determine whether \(\sum_{n=1}^{\infty} \frac{(-1)^n}{2^n}\) converges absolutely, converges conditionally, or diverges.
+                    Determine whether $\sum_{n=1}^{\infty} \frac{(-1)^n}{2^n}$ converges absolutely, converges conditionally, or diverges.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        First, test the series itself: \(b_n = \frac{1}{2^n}\) is decreasing and \(\lim b_n = 0\),
+                        First, test the series itself: $b_n = \frac{1}{2^n}$ is decreasing and $\lim b_n = 0$,
                         so by the Alternating Series Test, the series <strong>converges</strong>.
                     </p>
                     <p>
-                        Now test for absolute convergence: \(\sum \left|\frac{(-1)^n}{2^n}\right| = \sum \frac{1}{2^n}\)
-                        is a geometric series with \(r = 1/2 < 1\), so it <strong>converges</strong>.
+                        Now test for absolute convergence: $\sum \left|\frac{(-1)^n}{2^n}\right| = \sum \frac{1}{2^n}$
+                        is a geometric series with $r = 1/2 < 1$, so it <strong>converges</strong>.
                     </p>
                     <p>
-                        Therefore, \(\sum \frac{(-1)^n}{2^n}\) converges <strong>absolutely</strong>.
+                        Therefore, $\sum \frac{(-1)^n}{2^n}$ converges <strong>absolutely</strong>.
                     </p>
-                </details>
+                </div>
             </div>
 
-            <div class="practice-problem">
-                <h3>Problem 3</h3>
+            <div class="example-box">
+                <strong>Practice Problem 3</strong>
                 <p>
-                    Approximate the sum \(\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^3}\) using the first 4 terms,
+                    Approximate the sum $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^3}$ using the first 4 terms,
                     and find an upper bound for the error.
                 </p>
-                <details>
-                    <summary>Solution</summary>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
                         The partial sum is:
                     </p>
                     <p style="text-align: center;">
-                        \(S_4 = 1 - \frac{1}{8} + \frac{1}{27} - \frac{1}{64}\)
+                        $$S_4 = 1 - \frac{1}{8} + \frac{1}{27} - \frac{1}{64}$$
                     </p>
                     <p style="text-align: center;">
-                        \(= 1 - 0.125 + 0.0370 - 0.0156 = 0.8864\)
+                        $$= 1 - 0.125 + 0.0370 - 0.0156 = 0.8864$$
                     </p>
                     <p>
                         The error bound is:
                     </p>
                     <p style="text-align: center;">
-                        \(|R_4| \le b_5 = \frac{1}{5^3} = \frac{1}{125} = 0.008\)
+                        $$|R_4| \le b_5 = \frac{1}{5^3} = \frac{1}{125} = 0.008$$
                     </p>
                     <p>
-                        So the sum is approximately \(0.8864 \pm 0.008\).
+                        So the sum is approximately $0.8864 \pm 0.008$.
                     </p>
-                </details>
+                </div>
             </div>
         </section>
     </main>
@@ -314,6 +384,18 @@
     <script src="course-config.js"></script>
     <script src="course.js"></script>
     <script>
+        // Collapsible content function
+        function toggleCollapsible(element) {
+            var content = element.nextElementSibling;
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                element.querySelector('.toggle-icon').textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                element.querySelector('.toggle-icon').textContent = '▼';
+            }
+        }
+
         // Generate partial sums for alternating harmonic series
         var n = [];
         var partialSums = [];

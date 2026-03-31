@@ -33,6 +33,17 @@
 
 <section id="intro">
   <h1>Chapter 5.3: Applications of Taylor Series</h1>
+
+  <div class="definition-box">
+    <strong>Learning Objectives</strong>
+    <ul>
+      <li>Use Taylor series to evaluate challenging limits</li>
+      <li>Apply Taylor series to approximate definite integrals</li>
+      <li>Use error bounds to quantify approximation accuracy</li>
+      <li>Determine the number of terms needed for desired precision</li>
+    </ul>
+  </div>
+
   <p>
     Taylor series are not just theoretical tools—they have powerful practical applications in calculus.
     Three important uses are:
@@ -48,143 +59,207 @@
   <h2>Theory</h2>
 
   <h3>Using Series to Evaluate Limits</h3>
-  <p>
-    When direct substitution in a limit leads to an indeterminate form like $\frac{0}{0}$, Taylor series can help by
-    expanding the numerator and denominator, then simplifying. This is often more straightforward than L'Hôpital's rule
-    when multiple derivatives are needed.
-  </p>
+
+  <div class="definition-box">
+    <strong>Method: Series to Evaluate Limits</strong>
+    <p>
+      When direct substitution in a limit leads to an indeterminate form like $\frac{0}{0}$, Taylor series can help by
+      expanding the numerator and denominator, then simplifying. This is often more straightforward than L'Hôpital's rule
+      when multiple derivatives are needed.
+    </p>
+  </div>
 
   <h3>Approximating Integrals</h3>
-  <p>
-    Some integrals have no elementary antiderivative (e.g., $\int e^{-x^2} dx$). We can expand the integrand as a Taylor series,
-    integrate term-by-term, and then approximate the result by truncating the series.
-  </p>
+
+  <div class="definition-box">
+    <strong>Method: Series to Approximate Integrals</strong>
+    <p>
+      Some integrals have no elementary antiderivative (e.g., $\int e^{-x^2} dx$). We can expand the integrand as a Taylor series,
+      integrate term-by-term, and then approximate the result by truncating the series.
+    </p>
+  </div>
 
   <h3>Taylor's Inequality and Error Bounds</h3>
-  <p>
-    If we approximate $f(x)$ by its $n$-th degree Taylor polynomial $T_n(x)$, the error is bounded by:
-    $$|f(x) - T_n(x)| \leq \frac{M}{(n+1)!} |x-a|^{n+1}$$
-    where $M$ is an upper bound for $|f^{(n+1)}(\xi)|$ for $\xi$ between $a$ and $x$.
-  </p>
-  <p>
-    This inequality allows us to estimate the error and determine how many terms we need for desired accuracy.
-  </p>
+
+  <div class="theorem-box">
+    <strong>Theorem: Taylor's Inequality</strong>
+    <p>
+      If we approximate $f(x)$ by its $n$-th degree Taylor polynomial $T_n(x)$, the error is bounded by:
+      $$|f(x) - T_n(x)| \leq \frac{M}{(n+1)!} |x-a|^{n+1}$$
+      where $M$ is an upper bound for $|f^{(n+1)}(\xi)|$ for $\xi$ between $a$ and $x$.
+    </p>
+    <p>
+      This inequality allows us to estimate the error and determine how many terms we need for desired accuracy.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 Pro Tip</strong>
+    <p>
+      Taylor's inequality is extremely useful in applications! If you need an answer accurate to within
+      $\epsilon = 10^{-6}$, you can solve $\frac{M}{(n+1)!}|x-a|^{n+1} < \epsilon$ for the minimum value of $n$.
+    </p>
+  </div>
+
 </section>
 
 <section id="method">
   <h2>Method</h2>
 
   <h3>For Evaluating Limits:</h3>
-  <ol>
-    <li>Expand the numerator and denominator as Taylor series.</li>
-    <li>Factor out the dominant term (often the lowest power of $x$).</li>
-    <li>Simplify and take the limit.</li>
-  </ol>
+
+  <div class="example-box">
+    <strong>Step-by-Step Procedure</strong>
+    <ol>
+      <li>Expand the numerator and denominator as Taylor series.</li>
+      <li>Factor out the dominant term (often the lowest power of $x$).</li>
+      <li>Simplify and take the limit.</li>
+    </ol>
+  </div>
 
   <h3>For Approximating Integrals:</h3>
-  <ol>
-    <li>Expand the integrand as a Taylor series.</li>
-    <li>Integrate term-by-term.</li>
-    <li>Truncate at a term whose magnitude is smaller than the desired error tolerance.</li>
-  </ol>
+
+  <div class="example-box">
+    <strong>Step-by-Step Procedure</strong>
+    <ol>
+      <li>Expand the integrand as a Taylor series.</li>
+      <li>Integrate term-by-term.</li>
+      <li>Truncate at a term whose magnitude is smaller than the desired error tolerance.</li>
+    </ol>
+  </div>
 
   <h3>For Error Estimation:</h3>
-  <ol>
-    <li>Find an upper bound $M$ for the $(n+1)$-th derivative in the region of interest.</li>
-    <li>Use Taylor's inequality: $|f(x) - T_n(x)| \leq \frac{M}{(n+1)!}|x-a|^{n+1}$</li>
-    <li>Solve for $n$ such that this bound is less than your tolerance.</li>
-  </ol>
+
+  <div class="example-box">
+    <strong>Step-by-Step Procedure</strong>
+    <ol>
+      <li>Find an upper bound $M$ for the $(n+1)$-th derivative in the region of interest.</li>
+      <li>Use Taylor's inequality: $|f(x) - T_n(x)| \leq \frac{M}{(n+1)!}|x-a|^{n+1}$</li>
+      <li>Solve for $n$ such that this bound is less than your tolerance.</li>
+    </ol>
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ Common Mistake</strong>
+    <p>
+      Don't confuse the truncation error with the error in series approximations! When truncating an alternating series,
+      the error is bounded by the first omitted term. But for general series (non-alternating), use Taylor's inequality instead.
+    </p>
+  </div>
+
 </section>
 
 <section id="examples">
   <h2>Examples</h2>
 
-  <h3>Example 1: Evaluate $\lim_{x \to 0} \frac{e^x - 1 - x}{x^2}$</h3>
-  <p><strong>Evaluate the limit using Taylor series.</strong></p>
+  <div class="example-box">
+    <strong>Example 1: Evaluate $\lim_{x \to 0} \frac{e^x - 1 - x}{x^2}$</strong>
+    <p><strong>Evaluate the limit using Taylor series.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    We know that $e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$
-  </p>
-  <p>
-    So:
-    $$e^x - 1 - x = \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots$$
-  </p>
-  <p>
-    Therefore:
-    $$\frac{e^x - 1 - x}{x^2} = \frac{1}{2!} + \frac{x}{3!} + \frac{x^2}{4!} + \cdots = \frac{1}{2} + \frac{x}{6} + \frac{x^2}{24} + \cdots$$
-  </p>
-  <p>
-    As $x \to 0$:
-    $$\lim_{x \to 0} \frac{e^x - 1 - x}{x^2} = \frac{1}{2}$$
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        We know that $e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$
+      </p>
+      <p>
+        So:
+        $$e^x - 1 - x = \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots$$
+      </p>
+      <p>
+        Therefore:
+        $$\frac{e^x - 1 - x}{x^2} = \frac{1}{2!} + \frac{x}{3!} + \frac{x^2}{4!} + \cdots = \frac{1}{2} + \frac{x}{6} + \frac{x^2}{24} + \cdots$$
+      </p>
+      <p>
+        As $x \to 0$:
+        $$\lim_{x \to 0} \frac{e^x - 1 - x}{x^2} = \frac{1}{2}$$
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 2: Approximate $\int_0^1 e^{-x^2}\,dx$ to within 0.001</h3>
-  <p><strong>Find an approximation with error less than 0.001.</strong></p>
+  <div class="example-box">
+    <strong>Example 2: Approximate $\int_0^1 e^{-x^2}\,dx$ to within 0.001</strong>
+    <p><strong>Find an approximation with error less than 0.001.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    We know that $e^u = \sum_{n=0}^{\infty} \frac{u^n}{n!}$. With $u = -x^2$:
-    $$e^{-x^2} = \sum_{n=0}^{\infty} \frac{(-x^2)^n}{n!} = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{n!}$$
-  </p>
-  <p>
-    Integrating from 0 to 1:
-    $$\int_0^1 e^{-x^2}\,dx = \sum_{n=0}^{\infty} \frac{(-1)^n}{n!} \int_0^1 x^{2n}\,dx = \sum_{n=0}^{\infty} \frac{(-1)^n}{n!(2n+1)}$$
-  </p>
-  <p>
-    Computing the first few terms:
-    $$n=0: \frac{1}{1} = 1$$
-    $$n=1: -\frac{1}{1 \cdot 3} = -\frac{1}{3} \approx -0.333$$
-    $$n=2: \frac{1}{2 \cdot 5} = \frac{1}{10} = 0.1$$
-    $$n=3: -\frac{1}{6 \cdot 7} = -\frac{1}{42} \approx -0.024$$
-    $$n=4: \frac{1}{24 \cdot 9} = \frac{1}{216} \approx 0.0046$$
-  </p>
-  <p>
-    The sum of the first 4 terms: $1 - 0.333 + 0.1 - 0.024 + 0.0046 \approx 0.748$
-  </p>
-  <p>
-    The error from dropping the remaining terms is at most the magnitude of the 5th term:
-    $$\left|\frac{1}{120 \cdot 11}\right| = \frac{1}{1320} \approx 0.00076 < 0.001$$
-  </p>
-  <p>
-    Therefore, $\int_0^1 e^{-x^2}\,dx \approx \boxed{0.748}$ with error less than 0.001.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        We know that $e^u = \sum_{n=0}^{\infty} \frac{u^n}{n!}$. With $u = -x^2$:
+        $$e^{-x^2} = \sum_{n=0}^{\infty} \frac{(-x^2)^n}{n!} = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{n!}$$
+      </p>
+      <p>
+        Integrating from 0 to 1:
+        $$\int_0^1 e^{-x^2}\,dx = \sum_{n=0}^{\infty} \frac{(-1)^n}{n!} \int_0^1 x^{2n}\,dx = \sum_{n=0}^{\infty} \frac{(-1)^n}{n!(2n+1)}$$
+      </p>
+      <p>
+        Computing the first few terms:
+        $$n=0: \frac{1}{1} = 1$$
+        $$n=1: -\frac{1}{1 \cdot 3} = -\frac{1}{3} \approx -0.333$$
+        $$n=2: \frac{1}{2 \cdot 5} = \frac{1}{10} = 0.1$$
+        $$n=3: -\frac{1}{6 \cdot 7} = -\frac{1}{42} \approx -0.024$$
+        $$n=4: \frac{1}{24 \cdot 9} = \frac{1}{216} \approx 0.0046$$
+      </p>
+      <p>
+        The sum of the first 4 terms: $1 - 0.333 + 0.1 - 0.024 + 0.0046 \approx 0.748$
+      </p>
+      <p>
+        The error from dropping the remaining terms is at most the magnitude of the 5th term:
+        $$\left|\frac{1}{120 \cdot 11}\right| = \frac{1}{1320} \approx 0.00076 < 0.001$$
+      </p>
+      <p>
+        Therefore, $\int_0^1 e^{-x^2}\,dx \approx \boxed{0.748}$ with error less than 0.001.
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 3: Estimate $\cos(0.1)$ with error less than $10^{-6}$</h3>
-  <p><strong>Find the Taylor polynomial degree needed and compute the estimate.</strong></p>
+  <div class="example-box">
+    <strong>Example 3: Estimate $\cos(0.1)$ with error less than $10^{-6}$</strong>
+    <p><strong>Find the Taylor polynomial degree needed and compute the estimate.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    The Maclaurin series for $\cos x$ is:
-    $$\cos x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!}$$
-  </p>
-  <p>
-    By Taylor's inequality, with $a = 0$ and $x = 0.1$:
-    $$|\cos(0.1) - T_n(0.1)| \leq \frac{M}{(n+1)!} (0.1)^{n+1}$$
-  </p>
-  <p>
-    For $\cos x$, $|f^{(n+1)}(\xi)| \leq 1$ for all $\xi$. So $M = 1$.
-  </p>
-  <p>
-    We need:
-    $$\frac{1}{(n+1)!} (0.1)^{n+1} < 10^{-6}$$
-  </p>
-  <p>
-    Testing values:
-    - $n = 3$: $\frac{(0.1)^4}{4!} = \frac{10^{-4}}{24} \approx 4.17 \times 10^{-6}$ (too large)
-    - $n = 4$: $\frac{(0.1)^5}{5!} = \frac{10^{-5}}{120} \approx 8.33 \times 10^{-8}$ (acceptable)
-  </p>
-  <p>
-    So we need the Taylor polynomial of degree 4. However, since $\cos x$ has only even powers:
-    $$T_4(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!}$$
-  </p>
-  <p>
-    Computing:
-    $$\cos(0.1) \approx 1 - \frac{(0.1)^2}{2} + \frac{(0.1)^4}{24} = 1 - 0.005 + 0.00000417 \approx \boxed{0.99500}$$
-  </p>
-  <p>
-    with error less than $10^{-6}$.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        The Maclaurin series for $\cos x$ is:
+        $$\cos x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!}$$
+      </p>
+      <p>
+        By Taylor's inequality, with $a = 0$ and $x = 0.1$:
+        $$|\cos(0.1) - T_n(0.1)| \leq \frac{M}{(n+1)!} (0.1)^{n+1}$$
+      </p>
+      <p>
+        For $\cos x$, $|f^{(n+1)}(\xi)| \leq 1$ for all $\xi$. So $M = 1$.
+      </p>
+      <p>
+        We need:
+        $$\frac{1}{(n+1)!} (0.1)^{n+1} < 10^{-6}$$
+      </p>
+      <p>
+        Testing values:
+        - $n = 3$: $\frac{(0.1)^4}{4!} = \frac{10^{-4}}{24} \approx 4.17 \times 10^{-6}$ (too large)
+        - $n = 4$: $\frac{(0.1)^5}{5!} = \frac{10^{-5}}{120} \approx 8.33 \times 10^{-8}$ (acceptable)
+      </p>
+      <p>
+        So we need the Taylor polynomial of degree 4. However, since $\cos x$ has only even powers:
+        $$T_4(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!}$$
+      </p>
+      <p>
+        Computing:
+        $$\cos(0.1) \approx 1 - \frac{(0.1)^2}{2} + \frac{(0.1)^4}{24} = 1 - 0.005 + 0.00000417 \approx \boxed{0.99500}$$
+      </p>
+      <p>
+        with error less than $10^{-6}$.
+      </p>
+    </div>
+  </div>
+
 </section>
 
 <section id="visualizer">
@@ -196,20 +271,23 @@
   <div id="plotError" style="width:100%; height:500px;"></div>
   <p style="font-size:0.9em; color:#666; margin-top:1rem;">
     The $n$-th degree Taylor polynomial $T_n(x)$ is centered at $a = 0$.
-    For $x > 2$, the error grows exponentially.
+    For $x > 2$, the error grows exponentially without higher-degree polynomials.
   </p>
 </section>
 
 <section id="practice">
   <h2>Practice Problems</h2>
 
-  <div class="problem">
-    <h3>Problem 1</h3>
+  <div class="example-box">
+    <strong>Practice Problem 1</strong>
     <p>
       Evaluate $\lim_{x \to 0} \frac{\sin x - x}{x^3}$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         We know that $\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$
       </p>
@@ -225,16 +303,19 @@
         As $x \to 0$:
         $$\lim_{x \to 0} \frac{\sin x - x}{x^3} = -\frac{1}{6}$$
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 2</h3>
+  <div class="example-box">
+    <strong>Practice Problem 2</strong>
     <p>
       Use Taylor series to approximate $\int_0^{0.5} \sin(x^2)\,dx$ using the first three nonzero terms.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         We know that $\sin u = u - \frac{u^3}{3!} + \frac{u^5}{5!} - \cdots$
       </p>
@@ -258,16 +339,19 @@
       <p>
         $$\approx 0.04148$$
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 3</h3>
+  <div class="example-box">
+    <strong>Practice Problem 3</strong>
     <p>
       How many terms of the Maclaurin series for $e^x$ are needed to approximate $e^{0.5}$ to within $10^{-5}$?
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         By Taylor's inequality:
         $$|e^{0.5} - T_n(0.5)| \leq \frac{M}{(n+1)!} (0.5)^{n+1}$$
@@ -289,7 +373,7 @@
       <p>
         Therefore, <strong>we need at least 7 terms</strong> (i.e., $n = 6$).
       </p>
-    </details>
+    </div>
   </div>
 
 </section>
@@ -308,6 +392,17 @@
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 <script>
+function toggleCollapsible(elem) {
+  var content = elem.nextElementSibling;
+  if (content.style.display === "none" || content.style.display === "") {
+    content.style.display = "block";
+    elem.querySelector(".toggle-icon").textContent = "▲";
+  } else {
+    content.style.display = "none";
+    elem.querySelector(".toggle-icon").textContent = "▼";
+  }
+}
+
 // Plot error in e^x approximation
 function plotError() {
   var x = [];
@@ -355,6 +450,10 @@ function plotError() {
 }
 
 plotError();
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderMathInElement(document.body);
+});
 </script>
 
 </body>

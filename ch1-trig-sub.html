@@ -33,8 +33,24 @@
     <!-- Introduction Section -->
     <section id="intro">
       <h1>1.3 Trigonometric Substitution</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Recognize when to apply trigonometric substitution (integrals with square roots of quadratic expressions)</li>
+          <li>Master the three cases: $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$, and $\sqrt{x^2 - a^2}$</li>
+          <li>Use Pythagorean identities to eliminate square roots</li>
+          <li>Construct and use reference triangles for back-substitution</li>
+          <li>Evaluate complex integrals involving $\sec^3 \theta$ and logarithmic terms</li>
+        </ul>
+      </div>
+
       <p>Trigonometric substitution is a specialized technique for evaluating integrals containing square roots of quadratic expressions. By replacing the variable with a trigonometric function, we can use Pythagorean identities to simplify expressions like $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$, and $\sqrt{x^2 - a^2}$.</p>
-      <p><strong>Key Principle:</strong> Transform algebraic expressions into trigonometric ones where Pythagorean identities apply.</p>
+
+      <div class="definition-box">
+        <strong>Key Principle</strong>
+        <p>Transform algebraic expressions involving square roots into trigonometric ones where Pythagorean identities apply, yielding polynomial-like integrals that are tractable.</p>
+      </div>
     </section>
 
     <!-- Theory Section -->
@@ -43,51 +59,71 @@
 
       <h3>Three Cases of Trigonometric Substitution</h3>
 
-      <h4>Case 1: Integrals containing $\sqrt{a^2 - x^2}$</h4>
-      <p><strong>Substitution:</strong> $x = a \sin \theta$, where $-\frac{\pi}{2} \leq \theta \leq \frac{\pi}{2}$</p>
-      <div class="math-display">$$dx = a \cos \theta \, d\theta$$</div>
-      <div class="math-display">$$\sqrt{a^2 - x^2} = \sqrt{a^2 - a^2 \sin^2 \theta} = \sqrt{a^2(1 - \sin^2 \theta)} = a\cos \theta$$</div>
-      <p><strong>Why it works:</strong> The Pythagorean identity $1 - \sin^2 \theta = \cos^2 \theta$ eliminates the square root.</p>
+      <div class="definition-box">
+        <strong>Case 1: Integrals containing $\sqrt{a^2 - x^2}$</strong>
+        <p><strong>Substitution:</strong> $x = a \sin \theta$, where $-\frac{\pi}{2} \leq \theta \leq \frac{\pi}{2}$</p>
+        <div class="math-display">$$dx = a \cos \theta \, d\theta$$</div>
+        <div class="math-display">$$\sqrt{a^2 - x^2} = \sqrt{a^2 - a^2 \sin^2 \theta} = \sqrt{a^2(1 - \sin^2 \theta)} = a\cos \theta$$</div>
+        <p><strong>Why it works:</strong> The Pythagorean identity $1 - \sin^2 \theta = \cos^2 \theta$ eliminates the square root.</p>
+      </div>
 
-      <h4>Case 2: Integrals containing $\sqrt{a^2 + x^2}$</h4>
-      <p><strong>Substitution:</strong> $x = a \tan \theta$, where $-\frac{\pi}{2} < \theta < \frac{\pi}{2}$</p>
-      <div class="math-display">$$dx = a \sec^2 \theta \, d\theta$$</div>
-      <div class="math-display">$$\sqrt{a^2 + x^2} = \sqrt{a^2 + a^2 \tan^2 \theta} = \sqrt{a^2(1 + \tan^2 \theta)} = a\sec \theta$$</div>
-      <p><strong>Why it works:</strong> The Pythagorean identity $1 + \tan^2 \theta = \sec^2 \theta$ eliminates the square root.</p>
+      <div class="definition-box">
+        <strong>Case 2: Integrals containing $\sqrt{a^2 + x^2}$</strong>
+        <p><strong>Substitution:</strong> $x = a \tan \theta$, where $-\frac{\pi}{2} < \theta < \frac{\pi}{2}$</p>
+        <div class="math-display">$$dx = a \sec^2 \theta \, d\theta$$</div>
+        <div class="math-display">$$\sqrt{a^2 + x^2} = \sqrt{a^2 + a^2 \tan^2 \theta} = \sqrt{a^2(1 + \tan^2 \theta)} = a\sec \theta$$</div>
+        <p><strong>Why it works:</strong> The Pythagorean identity $1 + \tan^2 \theta = \sec^2 \theta$ eliminates the square root.</p>
+      </div>
 
-      <h4>Case 3: Integrals containing $\sqrt{x^2 - a^2}$</h4>
-      <p><strong>Substitution:</strong> $x = a \sec \theta$, where $0 \leq \theta < \frac{\pi}{2}$ or $\pi \leq \theta < \frac{3\pi}{2}$</p>
-      <div class="math-display">$$dx = a \sec \theta \tan \theta \, d\theta$$</div>
-      <div class="math-display">$$\sqrt{x^2 - a^2} = \sqrt{a^2 \sec^2 \theta - a^2} = \sqrt{a^2(\sec^2 \theta - 1)} = a\tan \theta$$</div>
-      <p><strong>Why it works:</strong> The Pythagorean identity $\sec^2 \theta - 1 = \tan^2 \theta$ eliminates the square root.</p>
+      <div class="definition-box">
+        <strong>Case 3: Integrals containing $\sqrt{x^2 - a^2}$</strong>
+        <p><strong>Substitution:</strong> $x = a \sec \theta$, where $0 \leq \theta < \frac{\pi}{2}$ or $\pi \leq \theta < \frac{3\pi}{2}$</p>
+        <div class="math-display">$$dx = a \sec \theta \tan \theta \, d\theta$$</div>
+        <div class="math-display">$$\sqrt{x^2 - a^2} = \sqrt{a^2 \sec^2 \theta - a^2} = \sqrt{a^2(\sec^2 \theta - 1)} = a\tan \theta$$</div>
+        <p><strong>Why it works:</strong> The Pythagorean identity $\sec^2 \theta - 1 = \tan^2 \theta$ eliminates the square root.</p>
+      </div>
 
       <h3>Reference Triangle Method</h3>
-      <p>After integration, converting back to the original variable is easier using a reference triangle:</p>
-      <ul>
-        <li>Draw a right triangle with the substitution as one side and angle $\theta$ marked</li>
-        <li>Use the Pythagorean theorem to find the third side</li>
-        <li>Use the triangle to express all trigonometric functions in terms of $x$ and $a$</li>
-      </ul>
+
+      <div class="tip-box">
+        <strong>💡 Pro Tip: The Reference Triangle</strong>
+        <p>After integration, converting back to the original variable is easier using a reference triangle:</p>
+        <ul>
+          <li>Draw a right triangle with the substitution as one side and angle $\theta$ marked</li>
+          <li>Use the Pythagorean theorem to find the third side</li>
+          <li>Use the triangle to express all trigonometric functions in terms of $x$ and $a$</li>
+        </ul>
+        <p>This avoids the need to solve for $\theta$ explicitly!</p>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Common Mistake</strong>
+        <p>Don't forget to include the differential $dx$ when substituting! Also, when back-substituting, be careful with the signs and domains of inverse trigonometric functions. The reference triangle helps ensure you get the signs right.</p>
+      </div>
     </section>
 
     <!-- Method Section -->
     <section id="method">
       <h2>Step-by-Step Method</h2>
-      <ol>
-        <li><strong>Identify the form:</strong> Determine which case applies: $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$, or $\sqrt{x^2 - a^2}$</li>
-        <li><strong>Choose substitution:</strong> Apply the appropriate trigonometric substitution and find $dx$</li>
-        <li><strong>Substitute:</strong> Replace all instances of $x$ and $dx$ in the integral. Simplify using Pythagorean identities.</li>
-        <li><strong>Integrate:</strong> The integral now involves only trigonometric functions (usually polynomial-like in $\sin \theta$ or $\cos \theta$)</li>
-        <li><strong>Back-substitute:</strong> Use the reference triangle to express the answer in terms of the original variable $x$</li>
-        <li><strong>Simplify:</strong> Combine and simplify the final expression</li>
-      </ol>
+
+      <div class="definition-box">
+        <strong>Trigonometric Substitution Algorithm</strong>
+        <ol>
+          <li><strong>Identify the form:</strong> Determine which case applies: $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$, or $\sqrt{x^2 - a^2}$</li>
+          <li><strong>Choose substitution:</strong> Apply the appropriate trigonometric substitution and find $dx$</li>
+          <li><strong>Substitute:</strong> Replace all instances of $x$ and $dx$ in the integral. Simplify using Pythagorean identities.</li>
+          <li><strong>Integrate:</strong> The integral now involves only trigonometric functions (usually polynomial-like in $\sin \theta$ or $\cos \theta$)</li>
+          <li><strong>Back-substitute:</strong> Use the reference triangle to express the answer in terms of the original variable $x$</li>
+          <li><strong>Simplify:</strong> Combine and simplify the final expression</li>
+        </ol>
+      </div>
     </section>
 
     <!-- Examples Section -->
     <section id="examples">
       <h2>Worked Examples</h2>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 1: $\int \frac{dx}{\sqrt{4 - x^2}}$</h3>
         <p>This contains $\sqrt{4 - x^2} = \sqrt{2^2 - x^2}$, so use Case 1.</p>
 
@@ -102,9 +138,17 @@
         <div class="math-display">$$\int \frac{dx}{\sqrt{4 - x^2}} = \arcsin\left(\frac{x}{2}\right) + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\arcsin\left(\frac{x}{2}\right) + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Solution Details</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This is the simplest trigonometric substitution example. The key insight is that $\sqrt{4 - 4\sin^2 \theta} = 2|\cos \theta| = 2\cos \theta$ (since $-\pi/2 \leq \theta \leq \pi/2$ ensures $\cos \theta \geq 0$). The substitution transforms the entire integral into a trivial form.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 2: $\int \frac{x^2}{\sqrt{x^2 + 9}} \, dx$</h3>
         <p>This contains $\sqrt{x^2 + 9} = \sqrt{x^2 + 3^2}$, so use Case 2.</p>
 
@@ -135,9 +179,22 @@
         <div class="math-display">$$= \frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Understanding This Complex Example</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This example demonstrates several important techniques:</p>
+          <ul>
+            <li>The reference triangle is crucial: from $x = 3\tan \theta$, we draw a right triangle with opposite side $x$ and adjacent side 3, giving hypotenuse $\sqrt{x^2 + 9}$.</li>
+            <li>The integral of $\sec^3 \theta$ is a standard form that appears frequently in trigonometric substitution problems.</li>
+            <li>The logarithmic term in the final answer arises from the $\int \sec \theta \, d\theta$ component.</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 3: $\int \frac{\sqrt{x^2 - 1}}{x} \, dx$</h3>
         <p>This contains $\sqrt{x^2 - 1} = \sqrt{x^2 - 1^2}$, so use Case 3.</p>
 
@@ -160,13 +217,21 @@
         <div class="math-display">$$= \sqrt{x^2 - 1} - \text{arcsec}(x) + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\sqrt{x^2 - 1} - \text{arcsec}(x) + C}$ or equivalently $\boxed{\sqrt{x^2 - 1} - \arccos\left(\frac{1}{x}\right) + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Case 3 Details</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>Case 3 is less common than Cases 1 and 2, but it's essential for integrals involving $\sqrt{x^2 - a^2}$. The key is recognizing that $x = \sec \theta$ naturally satisfies the restriction $|x| \geq 1$, and the resulting reference triangle has opposite side $\sqrt{x^2-1}$ and hypotenuse $x$.</p>
+        </div>
       </div>
     </section>
 
     <!-- Visualizer Section -->
     <section id="visualizer">
       <h2>Interactive Visualizer</h2>
-      <p>Below is a unit circle with a reference triangle illustrating the trig substitution $x = \sin \theta$ for Case 1.</p>
+      <p>Below is a unit circle with a reference triangle illustrating the trig substitution $x = \sin \theta$ for Case 1. The visualization shows how the angle $\theta$ relates to $x$ and $\sqrt{a^2-x^2}$.</p>
       <div id="plotly-chart" style="width:100%;height:500px;"></div>
       <script>
         // Draw unit circle
@@ -235,23 +300,31 @@
     <section id="practice">
       <h2>Practice Problems</h2>
 
-      <div class="practice-problem">
-        <h3>Problem 1: $\int \frac{dx}{\sqrt{9 - x^2}}$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 1: $\int \frac{dx}{\sqrt{9 - x^2}}$</h3>
+        <p>A simple Case 1 trigonometric substitution problem.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Form:</strong> $\sqrt{9 - x^2} = \sqrt{3^2 - x^2}$ — Use Case 1 with $a = 3$</p>
           <p><strong>Substitute:</strong> $x = 3\sin \theta$, $dx = 3\cos \theta \, d\theta$</p>
           <p><strong>Simplify:</strong> $\sqrt{9 - x^2} = 3\cos \theta$</p>
           <p><strong>Integral:</strong> $\displaystyle \int \frac{3\cos \theta \, d\theta}{3\cos \theta} = \int d\theta = \theta + C$</p>
           <p><strong>Back-substitute:</strong> $\theta = \arcsin(x/3)$</p>
           <p><strong>Answer:</strong> $\displaystyle \arcsin\left(\frac{x}{3}\right) + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 2: $\int \frac{dx}{x^2\sqrt{x^2 + 4}}$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 2: $\int \frac{dx}{x^2\sqrt{x^2 + 4}}$</h3>
+        <p>A Case 2 problem requiring careful manipulation of trigonometric functions.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Form:</strong> $\sqrt{x^2 + 4} = \sqrt{x^2 + 2^2}$ — Use Case 2 with $a = 2$</p>
           <p><strong>Substitute:</strong> $x = 2\tan \theta$, $dx = 2\sec^2 \theta \, d\theta$</p>
           <p><strong>Simplify:</strong> $\sqrt{x^2 + 4} = 2\sec \theta$</p>
@@ -259,13 +332,17 @@
           <p><strong>Simplify:</strong> $\displaystyle \frac{1}{4}\int \frac{1}{\sin^2 \theta} \cos \theta \, d\theta = \frac{1}{4}\int \csc^2 \theta \cos \theta \, d\theta$</p>
           <p>Using $\csc^2 \theta = 1/\sin^2 \theta$ and $\cos \theta = 1/\sec \theta$, after integration and back-substitution:</p>
           <p><strong>Answer:</strong> $\displaystyle -\frac{\sqrt{x^2+4}}{4x} + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 3: $\int \sqrt{x^2 - 4} \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 3: $\int \sqrt{x^2 - 4} \, dx$</h3>
+        <p>A Case 3 problem where we integrate a power of the trigonometric substitution.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Form:</strong> $\sqrt{x^2 - 4} = \sqrt{x^2 - 2^2}$ — Use Case 3 with $a = 2$</p>
           <p><strong>Substitute:</strong> $x = 2\sec \theta$, $dx = 2\sec \theta \tan \theta \, d\theta$</p>
           <p><strong>Simplify:</strong> $\sqrt{x^2 - 4} = 2\tan \theta$</p>
@@ -274,7 +351,7 @@
           <p><strong>Standard integrals:</strong> $\displaystyle 4\left[\frac{1}{2}(\sec \theta \tan \theta + \ln|\sec \theta + \tan \theta|) - \ln|\sec \theta + \tan \theta|\right]$</p>
           <p><strong>After back-substitution with $\sec \theta = x/2$ and $\tan \theta = \sqrt{x^2-4}/2$:</strong></p>
           <p><strong>Answer:</strong> $\displaystyle \frac{x\sqrt{x^2-4}}{2} - 2\ln\left|x + \sqrt{x^2-4}\right| + C$ (plus constant adjustments)</p>
-        </details>
+        </div>
       </div>
     </section>
   </main>
@@ -291,6 +368,14 @@
   <script src="course-config.js"></script>
   <script src="course.js"></script>
   <script>
+    function toggleCollapsible(element) {
+      element.classList.toggle('active');
+      const content = element.nextElementSibling;
+      if (content) {
+        content.classList.toggle('active');
+      }
+    }
+
     // Render math after page loads
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof renderMathInElement !== 'undefined') {

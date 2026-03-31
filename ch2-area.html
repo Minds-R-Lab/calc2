@@ -35,6 +35,18 @@
 
   <section id="intro">
     <h2>Introduction</h2>
+
+    <div class="definition-box">
+      <strong>Learning Objectives</strong>
+      <ul>
+        <li>Find intersection points of two curves algebraically</li>
+        <li>Determine which function is on top in a given interval</li>
+        <li>Calculate the area between two curves using vertical integration</li>
+        <li>Apply horizontal integration when necessary</li>
+        <li>Handle regions where curves intersect multiple times</li>
+      </ul>
+    </div>
+
     <p>
       In this chapter, we extend the concept of the definite integral from finding the area under a single curve to finding the area between two curves. This is a fundamental application of integration and will lead us to volumes of solids of revolution in subsequent chapters.
     </p>
@@ -45,32 +57,62 @@
 
   <section id="theory">
     <h2>Theory</h2>
-    <p><strong>Main Formula:</strong></p>
-    <p class="math-display">
-      $$A = \int_a^b |f(x) - g(x)| \, dx$$
-    </p>
-    <p>
-      When <span class="math">$f(x) \geq g(x)$</span> on <span class="math">$[a, b]$</span>, the absolute value can be removed:
-    </p>
-    <p class="math-display">
-      $$A = \int_a^b [f(x) - g(x)] \, dx$$
-    </p>
-    <p>
-      <strong>Key Principle:</strong> Top minus bottom (for vertical integration) or right minus left (for horizontal integration).
-    </p>
-    <p>
-      <strong>Steps to solve:</strong>
-    </p>
-    <ol>
-      <li>Find intersection points by solving <span class="math">$f(x) = g(x)$</span></li>
-      <li>Determine which function is on top in each interval</li>
-      <li>Set up the integral(s) with the appropriate bounds and integrand</li>
-      <li>Evaluate the antiderivative</li>
-    </ol>
+
+    <div class="definition-box">
+      <strong>Definition: Area Between Curves</strong>
+      <p>
+        The area of the region between two curves <span class="math">$f(x)$</span> and <span class="math">$g(x)$</span> from <span class="math">$x = a$</span> to <span class="math">$x = b$</span> is:
+      </p>
+      <p class="math-display">
+        $$A = \int_a^b |f(x) - g(x)| \, dx$$
+      </p>
+      <p>
+        When <span class="math">$f(x) \geq g(x)$</span> on <span class="math">$[a, b]$</span>, the absolute value can be removed:
+      </p>
+      <p class="math-display">
+        $$A = \int_a^b [f(x) - g(x)] \, dx$$
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Pro Tip</strong>
+      <p><strong>Key Principle:</strong> "Top minus bottom" (for vertical integration) or "right minus left" (for horizontal integration). Always subtract the lower function from the upper function to get a positive area.</p>
+    </div>
+
+    <div class="definition-box">
+      <strong>Definition: Horizontal Integration</strong>
+      <p>
+        If it's easier to express <span class="math">$x$</span> as a function of <span class="math">$y$</span>, you can integrate with respect to <span class="math">$y$</span>:
+      </p>
+      <p class="math-display">
+        $$A = \int_c^d [f(y) - g(y)] \, dy$$
+      </p>
+      <p>
+        where <span class="math">$f(y) \geq g(y)$</span> (right minus left).
+      </p>
+    </div>
+
   </section>
 
   <section id="method">
     <h2>Method: Finding Intersection Points and Setting Up Integrals</h2>
+
+    <div class="definition-box">
+      <strong>Steps to Find Area Between Curves</strong>
+      <ol>
+        <li><strong>Find intersection points:</strong> Solve <span class="math">$f(x) = g(x)$</span> to find where the curves meet</li>
+        <li><strong>Determine the top function:</strong> Evaluate both functions at a test point in each interval to see which is larger</li>
+        <li><strong>Set up the integral:</strong> Use <span class="math">$A = \int_a^b [\text{top} - \text{bottom}] \, dx$</span></li>
+        <li><strong>Split if needed:</strong> If curves intersect multiple times, split into multiple integrals</li>
+        <li><strong>Evaluate:</strong> Find the antiderivative and apply the Fundamental Theorem of Calculus</li>
+      </ol>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Common Mistake</strong>
+      <p>Don't forget to check which function is on top! A function that is "below" at one point might be "above" at another if the curves intersect. Always test a point or use the original functions to verify.</p>
+    </div>
+
     <p>
       To find where two curves intersect, set them equal: <span class="math">$f(x) = g(x)$</span> and solve for <span class="math">$x$</span>.
     </p>
@@ -84,92 +126,101 @@
     <p>
       If the curves intersect multiple times, you may need to split the integral into multiple parts.
     </p>
-    <p>
-      <strong>Horizontal Integration:</strong> If it's easier to express <span class="math">$x$</span> as a function of <span class="math">$y$</span>, you can integrate with respect to <span class="math">$y$</span>:
-    </p>
-    <p class="math-display">
-      $$A = \int_c^d [f(y) - g(y)] \, dy$$
-    </p>
-    <p>
-      where <span class="math">$f(y) \geq g(y)$</span> (right minus left).
-    </p>
   </section>
 
   <section id="examples">
     <h2>Examples</h2>
 
-    <div class="example">
-      <h3>Example 1: Area Between $y = x^2$ and $y = x$</h3>
+    <div class="example-box">
+      <strong>Example 1: Area Between $y = x^2$ and $y = x$</strong>
       <p>
         Find the area between the curves <span class="math">$y = x^2$</span> and <span class="math">$y = x$</span>.
       </p>
-      <p><strong>Step 1: Find intersection points</strong></p>
-      <p class="math-display">
-        $$x^2 = x$$
-        $$x^2 - x = 0$$
-        $$x(x - 1) = 0$$
-        $$x = 0 \text{ or } x = 1$$
-      </p>
-      <p><strong>Step 2: Determine which function is on top</strong></p>
-      <p>
-        At <span class="math">$x = 0.5$</span>: <span class="math">$y = 0.5$</span> (linear) and <span class="math">$y = 0.25$</span> (quadratic). So <span class="math">$y = x$</span> is above <span class="math">$y = x^2$</span>.
-      </p>
-      <p><strong>Step 3: Set up and evaluate the integral</strong></p>
-      <p class="math-display">
-        $$A = \int_0^1 (x - x^2) \, dx$$
-        $$= \left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1$$
-        $$= \frac{1}{2} - \frac{1}{3} - 0$$
-        $$= \frac{3 - 2}{6} = \frac{1}{6}$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find intersection points</strong></p>
+        <p class="math-display">
+          $$x^2 = x$$
+          $$x^2 - x = 0$$
+          $$x(x - 1) = 0$$
+          $$x = 0 \text{ or } x = 1$$
+        </p>
+        <p><strong>Step 2: Determine which function is on top</strong></p>
+        <p>
+          At <span class="math">$x = 0.5$</span>: <span class="math">$y = 0.5$</span> (linear) and <span class="math">$y = 0.25$</span> (quadratic). So <span class="math">$y = x$</span> is above <span class="math">$y = x^2$</span>.
+        </p>
+        <p><strong>Step 3: Set up and evaluate the integral</strong></p>
+        <p class="math-display">
+          $$A = \int_0^1 (x - x^2) \, dx$$
+          $$= \left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1$$
+          $$= \frac{1}{2} - \frac{1}{3} - 0$$
+          $$= \frac{3 - 2}{6} = \frac{1}{6}$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 2: Area Between $y = \sin x$ and $y = \cos x$ on $[0, \pi/2]$</h3>
+    <div class="example-box">
+      <strong>Example 2: Area Between $y = \sin x$ and $y = \cos x$ on $[0, \pi/2]$</strong>
       <p>
         Find the area enclosed between <span class="math">$y = \sin x$</span> and <span class="math">$y = \cos x$</span> on the interval <span class="math">$[0, \pi/2]$</span>.
       </p>
-      <p><strong>Step 1: Find intersection points in $[0, \pi/2]$</strong></p>
-      <p class="math-display">
-        $$\sin x = \cos x$$
-        $$\tan x = 1$$
-        $$x = \frac{\pi}{4}$$
-      </p>
-      <p><strong>Step 2: Determine which function is on top</strong></p>
-      <p>
-        On <span class="math">$[0, \pi/4]$</span>: <span class="math">$\cos x \geq \sin x$</span> (e.g., at <span class="math">$x=0$</span>, <span class="math">$\cos 0 = 1 > 0 = \sin 0$</span>)
-        <br>
-        On <span class="math">$[\pi/4, \pi/2]$</span>: <span class="math">$\sin x \geq \cos x$</span> (e.g., at <span class="math">$x = \pi/2$</span>, <span class="math">$\sin(\pi/2) = 1 > 0 = \cos(\pi/2)$</span>)
-      </p>
-      <p><strong>Step 3: Set up and evaluate the integral</strong></p>
-      <p class="math-display">
-        $$A = \int_0^{\pi/4} (\cos x - \sin x) \, dx + \int_{\pi/4}^{\pi/2} (\sin x - \cos x) \, dx$$
-        $$= \left[\sin x + \cos x\right]_0^{\pi/4} + \left[-\cos x - \sin x\right]_{\pi/4}^{\pi/2}$$
-        $$= \left(\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}\right) - (0 + 1) + \left(0 - 1\right) - \left(-\frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2}\right)$$
-        $$= \sqrt{2} - 1 - 1 + \sqrt{2}$$
-        $$= 2\sqrt{2} - 2 = 2(\sqrt{2} - 1)$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find intersection points in $[0, \pi/2]$</strong></p>
+        <p class="math-display">
+          $$\sin x = \cos x$$
+          $$\tan x = 1$$
+          $$x = \frac{\pi}{4}$$
+        </p>
+        <p><strong>Step 2: Determine which function is on top</strong></p>
+        <p>
+          On <span class="math">$[0, \pi/4]$</span>: <span class="math">$\cos x \geq \sin x$</span> (e.g., at <span class="math">$x=0$</span>, <span class="math">$\cos 0 = 1 > 0 = \sin 0$</span>)
+          <br>
+          On <span class="math">$[\pi/4, \pi/2]$</span>: <span class="math">$\sin x \geq \cos x$</span> (e.g., at <span class="math">$x = \pi/2$</span>, <span class="math">$\sin(\pi/2) = 1 > 0 = \cos(\pi/2)$</span>)
+        </p>
+        <p><strong>Step 3: Set up and evaluate the integral</strong></p>
+        <p class="math-display">
+          $$A = \int_0^{\pi/4} (\cos x - \sin x) \, dx + \int_{\pi/4}^{\pi/2} (\sin x - \cos x) \, dx$$
+          $$= \left[\sin x + \cos x\right]_0^{\pi/4} + \left[-\cos x - \sin x\right]_{\pi/4}^{\pi/2}$$
+          $$= \left(\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}\right) - (0 + 1) + \left(0 - 1\right) - \left(-\frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2}\right)$$
+          $$= \sqrt{2} - 1 - 1 + \sqrt{2}$$
+          $$= 2\sqrt{2} - 2 = 2(\sqrt{2} - 1)$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 3: Area Enclosed by $x = y^2$ and $x = 4$</h3>
+    <div class="example-box">
+      <strong>Example 3: Area Enclosed by $x = y^2$ and $x = 4$</strong>
       <p>
         Find the area enclosed by the parabola <span class="math">$x = y^2$</span> and the vertical line <span class="math">$x = 4$</span>.
       </p>
-      <p><strong>Step 1: Find intersection points</strong></p>
-      <p class="math-display">
-        $$y^2 = 4 \implies y = \pm 2$$
-      </p>
-      <p><strong>Step 2: Integrate with respect to $y$ (horizontal integration)</strong></p>
-      <p>
-        For <span class="math">$y \in [-2, 2]$</span>, the right curve is <span class="math">$x = 4$</span> and the left curve is <span class="math">$x = y^2$</span>.
-      </p>
-      <p class="math-display">
-        $$A = \int_{-2}^{2} (4 - y^2) \, dy$$
-        $$= \left[4y - \frac{y^3}{3}\right]_{-2}^{2}$$
-        $$= \left(8 - \frac{8}{3}\right) - \left(-8 + \frac{8}{3}\right)$$
-        $$= 8 - \frac{8}{3} + 8 - \frac{8}{3}$$
-        $$= 16 - \frac{16}{3} = \frac{48 - 16}{3} = \frac{32}{3}$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find intersection points</strong></p>
+        <p class="math-display">
+          $$y^2 = 4 \implies y = \pm 2$$
+        </p>
+        <p><strong>Step 2: Integrate with respect to $y$ (horizontal integration)</strong></p>
+        <p>
+          For <span class="math">$y \in [-2, 2]$</span>, the right curve is <span class="math">$x = 4$</span> and the left curve is <span class="math">$x = y^2$</span>.
+        </p>
+        <p class="math-display">
+          $$A = \int_{-2}^{2} (4 - y^2) \, dy$$
+          $$= \left[4y - \frac{y^3}{3}\right]_{-2}^{2}$$
+          $$= \left(8 - \frac{8}{3}\right) - \left(-8 + \frac{8}{3}\right)$$
+          $$= 8 - \frac{8}{3} + 8 - \frac{8}{3}$$
+          $$= 16 - \frac{16}{3} = \frac{48 - 16}{3} = \frac{32}{3}$$
+        </p>
+      </div>
     </div>
 
   </section>
@@ -222,13 +273,17 @@
 
   <section id="practice">
     <h2>Practice Problems</h2>
-    <div class="practice-problem">
-      <h3>Problem 1</h3>
+
+    <div class="example-box">
+      <strong>Practice Problem 1</strong>
       <p>
         Find the area between the curves <span class="math">$y = 2x$</span> and <span class="math">$y = x^2 - 3$</span> between their intersection points.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           First, find intersections: <span class="math">$2x = x^2 - 3 \implies x^2 - 2x - 3 = 0 \implies (x-3)(x+1) = 0$</span>, so <span class="math">$x = -1$</span> or <span class="math">$x = 3$</span>.
         </p>
@@ -240,32 +295,38 @@
           $$= \left[-\frac{x^3}{3} + x^2 + 3x\right]_{-1}^{3}$$
           $$= \left(-9 + 9 + 9\right) - \left(\frac{1}{3} + 1 - 3\right) = 9 - \frac{1}{3} + 2 = \frac{32}{3}$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 2</h3>
+    <div class="example-box">
+      <strong>Practice Problem 2</strong>
       <p>
         Find the area of the region bounded by <span class="math">$y = e^x$</span>, <span class="math">$y = 0$</span>, <span class="math">$x = 0$</span>, and <span class="math">$x = 1$</span>.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           This is simply the area under the curve <span class="math">$y = e^x$</span> from 0 to 1.
         </p>
         <p class="math-display">
           $$A = \int_0^1 e^x \, dx = \left[e^x\right]_0^1 = e - 1$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 3</h3>
+    <div class="example-box">
+      <strong>Practice Problem 3</strong>
       <p>
         Find the area enclosed by <span class="math">$x = y^2 - 2$</span> and <span class="math">$x = y$</span>.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           Find intersections: <span class="math">$y = y^2 - 2 \implies y^2 - y - 2 = 0 \implies (y-2)(y+1) = 0$</span>, so <span class="math">$y = -1$</span> or <span class="math">$y = 2$</span>.
         </p>
@@ -277,7 +338,7 @@
           $$= \left[-\frac{y^3}{3} + \frac{y^2}{2} + 2y\right]_{-1}^{2}$$
           $$= \left(-\frac{8}{3} + 2 + 4\right) - \left(\frac{1}{3} + \frac{1}{2} - 2\right) = \frac{10}{3} + \frac{1}{2} + \frac{1}{3} + 2 = 9$$
         </p>
-      </details>
+      </div>
     </div>
 
   </section>
@@ -297,9 +358,20 @@
 <script src="course.js"></script>
 
 <script>
-  document.querySelectorAll('.math').forEach(function(el) {
-  });
-  document.querySelectorAll('.math-display').forEach(function(el) {
+  function toggleCollapsible(element) {
+    const content = element.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    const icon = element.querySelector('.toggle-icon');
+    icon.textContent = content.style.display === 'block' ? '▲' : '▼';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
   });
 </script>
 

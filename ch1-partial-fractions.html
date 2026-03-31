@@ -33,8 +33,24 @@
     <!-- Introduction Section -->
     <section id="intro">
       <h1>1.4 Partial Fractions Decomposition</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Decompose rational functions into simpler partial fractions</li>
+          <li>Handle distinct linear factors, repeated linear factors, and irreducible quadratic factors</li>
+          <li>Solve systems of equations to find partial fraction coefficients</li>
+          <li>Integrate rational functions by integrating their partial fraction decomposition</li>
+          <li>Perform polynomial long division when necessary</li>
+        </ul>
+      </div>
+
       <p>Partial fraction decomposition is a technique for breaking down rational functions (ratios of polynomials) into simpler fractions that can be integrated term by term. This is particularly useful when the denominator factors into linear or irreducible quadratic factors.</p>
-      <p><strong>Key Idea:</strong> A complex rational function can be written as a sum of simpler fractions, each with a lower-degree denominator, making integration straightforward.</p>
+
+      <div class="definition-box">
+        <strong>Key Idea</strong>
+        <p>A complex rational function can be written as a sum of simpler fractions, each with a lower-degree denominator, making integration straightforward.</p>
+      </div>
     </section>
 
     <!-- Theory Section -->
@@ -42,53 +58,87 @@
       <h2>Theory & Decomposition Rules</h2>
 
       <h3>General Principle</h3>
-      <p>If $\frac{P(x)}{Q(x)}$ is a rational function where $P(x)$ and $Q(x)$ are polynomials, we can decompose it as:</p>
-      <div class="math-display">$$\frac{P(x)}{Q(x)} = \text{(polynomial)} + \text{(proper rational function)}$$</div>
-      <p>A <strong>proper rational function</strong> is one where the degree of the numerator is less than the degree of the denominator.</p>
+
+      <div class="definition-box">
+        <strong>Definition: Partial Fractions</strong>
+        <p>If $\frac{P(x)}{Q(x)}$ is a rational function where $P(x)$ and $Q(x)$ are polynomials, we can decompose it as:</p>
+        <div class="math-display">$$\frac{P(x)}{Q(x)} = \text{(polynomial)} + \text{(proper rational function)}$$</div>
+        <p>A <strong>proper rational function</strong> is one where the degree of the numerator is less than the degree of the denominator.</p>
+      </div>
 
       <h3>Case 1: Distinct Linear Factors</h3>
-      <p>If the denominator factors as $Q(x) = (x - a_1)(x - a_2)\cdots(x - a_n)$ with distinct roots, then:</p>
-      <div class="math-display">$$\frac{P(x)}{Q(x)} = \frac{A_1}{x - a_1} + \frac{A_2}{x - a_2} + \cdots + \frac{A_n}{x - a_n}$$</div>
-      <p>where $A_1, A_2, \ldots, A_n$ are constants found by solving a system of equations.</p>
+
+      <div class="definition-box">
+        <strong>Case 1: Distinct Linear Factors</strong>
+        <p>If the denominator factors as $Q(x) = (x - a_1)(x - a_2)\cdots(x - a_n)$ with distinct roots, then:</p>
+        <div class="math-display">$$\frac{P(x)}{Q(x)} = \frac{A_1}{x - a_1} + \frac{A_2}{x - a_2} + \cdots + \frac{A_n}{x - a_n}$$</div>
+        <p>where $A_1, A_2, \ldots, A_n$ are constants found by solving a system of equations.</p>
+      </div>
 
       <h3>Case 2: Repeated Linear Factors</h3>
-      <p>If $(x - a)$ appears $k$ times in the denominator, then include terms:</p>
-      <div class="math-display">$$\frac{A_1}{x - a} + \frac{A_2}{(x - a)^2} + \cdots + \frac{A_k}{(x - a)^k}$$</div>
+
+      <div class="definition-box">
+        <strong>Case 2: Repeated Linear Factors</strong>
+        <p>If $(x - a)$ appears $k$ times in the denominator, then include terms:</p>
+        <div class="math-display">$$\frac{A_1}{x - a} + \frac{A_2}{(x - a)^2} + \cdots + \frac{A_k}{(x - a)^k}$$</div>
+      </div>
 
       <h3>Case 3: Irreducible Quadratic Factors</h3>
-      <p>If $ax^2 + bx + c$ is an irreducible quadratic (no real roots) that appears $k$ times, include terms:</p>
-      <div class="math-display">$$\frac{A_1 x + B_1}{ax^2 + bx + c} + \frac{A_2 x + B_2}{(ax^2 + bx + c)^2} + \cdots + \frac{A_k x + B_k}{(ax^2 + bx + c)^k}$$</div>
+
+      <div class="definition-box">
+        <strong>Case 3: Irreducible Quadratic Factors</strong>
+        <p>If $ax^2 + bx + c$ is an irreducible quadratic (no real roots) that appears $k$ times, include terms:</p>
+        <div class="math-display">$$\frac{A_1 x + B_1}{ax^2 + bx + c} + \frac{A_2 x + B_2}{(ax^2 + bx + c)^2} + \cdots + \frac{A_k x + B_k}{(ax^2 + bx + c)^k}$$</div>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Common Mistake</strong>
+        <p>For irreducible quadratic factors, don't forget that the numerator must be linear (of the form $Ax + B$), not constant! Failing to include the $x$ term will lead to an incorrect number of equations.</p>
+      </div>
 
       <h3>Prerequisite: Long Division</h3>
-      <p>If the degree of the numerator is greater than or equal to the degree of the denominator, perform polynomial long division first:</p>
-      <div class="math-display">$$\frac{P(x)}{Q(x)} = D(x) + \frac{R(x)}{Q(x)}$$</div>
-      <p>where $D(x)$ is the quotient and $R(x)$ is the remainder with $\deg(R) < \deg(Q)$.</p>
+
+      <div class="definition-box">
+        <strong>When to Use Polynomial Long Division</strong>
+        <p>If the degree of the numerator is greater than or equal to the degree of the denominator, perform polynomial long division first:</p>
+        <div class="math-display">$$\frac{P(x)}{Q(x)} = D(x) + \frac{R(x)}{Q(x)}$$</div>
+        <p>where $D(x)$ is the quotient and $R(x)$ is the remainder with $\deg(R) < \deg(Q)$. Then decompose only $\frac{R(x)}{Q(x)}$ into partial fractions.</p>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 Pro Tip</strong>
+        <p>Always check the degrees first! If the numerator has degree $\geq$ the denominator, you must do long division before partial fractions.</p>
+      </div>
     </section>
 
     <!-- Method Section -->
     <section id="method">
       <h2>Step-by-Step Method</h2>
-      <ol>
-        <li><strong>Check degrees:</strong> If degree of numerator $\geq$ degree of denominator, use long division first.</li>
-        <li><strong>Factor the denominator:</strong> Factor $Q(x)$ into distinct and repeated linear factors, and irreducible quadratic factors.</li>
-        <li><strong>Set up the decomposition:</strong> Write the partial fraction form based on the factorization (Cases 1–3 above).</li>
-        <li><strong>Find constants:</strong> Multiply both sides by the common denominator $Q(x)$ and use one of these methods:
-          <ul>
-            <li><strong>Substitution method:</strong> Substitute strategic values of $x$ (roots of factors) to isolate constants</li>
-            <li><strong>Coefficient matching:</strong> Expand the right side and equate coefficients of like powers of $x$</li>
-            <li><strong>Combination:</strong> Use substitution for some constants and coefficient matching for others</li>
-          </ul>
-        </li>
-        <li><strong>Integrate:</strong> Integrate each partial fraction term separately</li>
-        <li><strong>Combine:</strong> Add the results and include the constant of integration</li>
-      </ol>
+
+      <div class="definition-box">
+        <strong>Partial Fractions Algorithm</strong>
+        <ol>
+          <li><strong>Check degrees:</strong> If degree of numerator $\geq$ degree of denominator, use long division first.</li>
+          <li><strong>Factor the denominator:</strong> Factor $Q(x)$ into distinct and repeated linear factors, and irreducible quadratic factors.</li>
+          <li><strong>Set up the decomposition:</strong> Write the partial fraction form based on the factorization (Cases 1–3 above).</li>
+          <li><strong>Find constants:</strong> Multiply both sides by the common denominator $Q(x)$ and use one of these methods:
+            <ul>
+              <li><strong>Substitution method:</strong> Substitute strategic values of $x$ (roots of factors) to isolate constants</li>
+              <li><strong>Coefficient matching:</strong> Expand the right side and equate coefficients of like powers of $x$</li>
+              <li><strong>Combination:</strong> Use substitution for some constants and coefficient matching for others</li>
+            </ul>
+          </li>
+          <li><strong>Integrate:</strong> Integrate each partial fraction term separately</li>
+          <li><strong>Combine:</strong> Add the results and include the constant of integration</li>
+        </ol>
+      </div>
     </section>
 
     <!-- Examples Section -->
     <section id="examples">
       <h2>Worked Examples</h2>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 1: $\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx$</h3>
         <p>The denominator has distinct linear factors and the numerator has lower degree.</p>
 
@@ -112,9 +162,17 @@
         <div class="math-display">$$= \frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C}$ or $\displaystyle \ln\left|(x-1)^{8/3}(x+2)^{1/3}\right| + C$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Solution Explanation</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This is the simplest case—distinct linear factors. The substitution method works perfectly because plugging in the roots eliminates one term at a time, leaving us with simple equations for each constant.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 2: $\int \frac{2x}{(x - 1)^2} \, dx$</h3>
         <p>The denominator has a repeated linear factor ($(x-1)^2$).</p>
 
@@ -139,9 +197,17 @@
         <div class="math-display">$$= 2\ln|x - 1| - \frac{2}{x - 1} + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{2\ln|x - 1| - \frac{2}{x - 1} + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Handling Repeated Factors</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>For repeated factors, we include a partial fraction term for each power of the factor. Notice how the integration of $\frac{2}{(x-1)^2}$ uses the power rule: $\int (x-1)^{-2} dx = -1 \cdot (x-1)^{-1} = -\frac{1}{x-1}$.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 3: $\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx$</h3>
         <p>The denominator has a linear factor $x$ and an irreducible quadratic factor $x^2 + 4$.</p>
 
@@ -168,13 +234,21 @@
         <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C}$ or $\displaystyle \ln\left|x^{1/4}(x^2+4)^{3/8}\right| + C$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Working with Quadratic Factors</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>When an irreducible quadratic factor appears, the numerator of its partial fraction must be linear ($Bx + C$). The integral $\int \frac{x}{x^2+4} dx$ evaluates to $\frac{1}{2}\ln(x^2+4)$ using substitution. If the numerator had been constant, we'd need arctangent, but the linear numerator makes it a logarithm.</p>
+        </div>
       </div>
     </section>
 
     <!-- Visualizer Section -->
     <section id="visualizer">
       <h2>Interactive Visualizer</h2>
-      <p>Below is a plot comparing the original rational function $\frac{3x+5}{(x-1)(x+2)}$ with its partial fraction components.</p>
+      <p>Below is a plot comparing the original rational function $\frac{3x+5}{(x-1)(x+2)}$ with its partial fraction components. Notice how the original function equals the sum of the two components.</p>
       <div id="plotly-chart" style="width:100%;height:500px;"></div>
       <script>
         var x = [];
@@ -258,23 +332,31 @@
     <section id="practice">
       <h2>Practice Problems</h2>
 
-      <div class="practice-problem">
-        <h3>Problem 1: $\int \frac{5x - 2}{(x - 2)(x + 1)} \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 1: $\int \frac{5x - 2}{(x - 2)(x + 1)} \, dx$</h3>
+        <p>A distinct linear factors problem similar to Example 1.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Set up decomposition:</strong> $\displaystyle \frac{5x-2}{(x-2)(x+1)} = \frac{A}{x-2} + \frac{B}{x+1}$</p>
           <p><strong>Multiply by common denominator:</strong> $5x - 2 = A(x + 1) + B(x - 2)$</p>
           <p><strong>Substitute $x = 2$:</strong> $5(2) - 2 = A(3) \Rightarrow 8 = 3A \Rightarrow A = \frac{8}{3}$</p>
           <p><strong>Substitute $x = -1$:</strong> $5(-1) - 2 = B(-3) \Rightarrow -7 = -3B \Rightarrow B = \frac{7}{3}$</p>
           <p><strong>Integrate:</strong> $\displaystyle \int \frac{5x-2}{(x-2)(x+1)} \, dx = \frac{8}{3}\ln|x-2| + \frac{7}{3}\ln|x+1| + C$</p>
           <p><strong>Answer:</strong> $\displaystyle \frac{8}{3}\ln|x-2| + \frac{7}{3}\ln|x+1| + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 2: $\int \frac{x + 3}{(x + 1)^2} \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 2: $\int \frac{x + 3}{(x + 1)^2} \, dx$</h3>
+        <p>A repeated linear factors problem similar to Example 2.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Set up decomposition:</strong> $\displaystyle \frac{x+3}{(x+1)^2} = \frac{A}{x+1} + \frac{B}{(x+1)^2}$</p>
           <p><strong>Multiply by common denominator:</strong> $x + 3 = A(x + 1) + B$</p>
           <p><strong>Substitute $x = -1$:</strong> $-1 + 3 = 0 + B \Rightarrow B = 2$</p>
@@ -282,13 +364,17 @@
           <p><strong>Integrate:</strong> $\displaystyle \int \frac{x+3}{(x+1)^2} \, dx = \int \frac{1}{x+1} \, dx + 2\int \frac{1}{(x+1)^2} \, dx$</p>
           <p>$\displaystyle = \ln|x+1| + 2 \cdot \frac{(x+1)^{-1}}{-1} = \ln|x+1| - \frac{2}{x+1} + C$</p>
           <p><strong>Answer:</strong> $\displaystyle \ln|x+1| - \frac{2}{x+1} + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 3: $\int \frac{1}{x^3 - 1} \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 3: $\int \frac{1}{x^3 - 1} \, dx$</h3>
+        <p>An irreducible quadratic factor problem that's more challenging.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Factor:</strong> $x^3 - 1 = (x - 1)(x^2 + x + 1)$ where $x^2 + x + 1$ is irreducible (discriminant is negative)</p>
           <p><strong>Set up decomposition:</strong> $\displaystyle \frac{1}{(x-1)(x^2+x+1)} = \frac{A}{x-1} + \frac{Bx+C}{x^2+x+1}$</p>
           <p><strong>Multiply by common denominator:</strong> $1 = A(x^2+x+1) + (Bx+C)(x-1)$</p>
@@ -300,7 +386,7 @@
           <p>Constant: $1 = \frac{1}{3} - C \Rightarrow C = -\frac{2}{3}$</p>
           <p><strong>Integrate:</strong> The first part gives $\frac{1}{3}\ln|x-1|$. The quadratic part requires completing the square and arctangent substitution.</p>
           <p><strong>Answer (simplified):</strong> $\displaystyle \frac{1}{3}\ln|x-1| - \frac{1}{6}\ln(x^2+x+1) - \frac{1}{\sqrt{3}}\arctan\left(\frac{2x+1}{\sqrt{3}}\right) + C$</p>
-        </details>
+        </div>
       </div>
     </section>
   </main>
@@ -317,6 +403,14 @@
   <script src="course-config.js"></script>
   <script src="course.js"></script>
   <script>
+    function toggleCollapsible(element) {
+      element.classList.toggle('active');
+      const content = element.nextElementSibling;
+      if (content) {
+        content.classList.toggle('active');
+      }
+    }
+
     // Render math after page loads
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof renderMathInElement !== 'undefined') {

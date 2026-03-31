@@ -33,45 +33,75 @@
 
 <section id="intro">
   <h1>Chapter 6.3: Calculus in Polar Coordinates</h1>
-  <p>
-    Just as we can compute areas, arc lengths, and volumes for Cartesian and parametric curves,
-    we can do the same for curves given in polar form. The calculus is adapted to account for the
-    radial structure of polar coordinates, leading to elegant formulas for area and arc length.
-  </p>
+
+  <div class="definition-box">
+    <strong>Learning Objectives</strong>
+    <ul>
+      <li>Compute areas enclosed by polar curves</li>
+      <li>Find areas between two polar curves</li>
+      <li>Calculate arc length for polar curves</li>
+      <li>Apply integration techniques to polar regions with radial symmetry</li>
+    </ul>
+  </div>
+
+  <div class="definition-box">
+    <strong>Overview</strong>
+    <p>
+      Just as we can compute areas, arc lengths, and volumes for Cartesian and parametric curves,
+      we can do the same for curves given in polar form. The calculus is adapted to account for the
+      radial structure of polar coordinates, leading to elegant formulas for area and arc length.
+    </p>
+  </div>
 </section>
 
 <section id="theory">
   <h2>Theory</h2>
 
-  <h3>Area in Polar Coordinates</h3>
-  <p>
-    For a region bounded by a polar curve $r = f(\theta)$ and the rays $\theta = \alpha$ and $\theta = \beta$,
-    the area is:
-    $$A = \frac{1}{2}\int_{\alpha}^{\beta} r^2\,d\theta$$
-  </p>
-  <p>
-    This formula comes from the fact that a thin wedge-shaped sector of angle $d\theta$ and radius $r$
-    has area $\frac{1}{2}r^2 d\theta$.
-  </p>
+  <div class="theorem-box">
+    <strong>Theorem: Area in Polar Coordinates</strong>
+    <p>
+      For a region bounded by a polar curve $r = f(\theta)$ and the rays $\theta = \alpha$ and $\theta = \beta$,
+      the area is:
+      $$A = \frac{1}{2}\int_{\alpha}^{\beta} r^2\,d\theta$$
+    </p>
+    <p>
+      This formula comes from the fact that a thin wedge-shaped sector of angle $d\theta$ and radius $r$
+      has area $\frac{1}{2}r^2 d\theta$.
+    </p>
+  </div>
 
-  <h3>Area Between Two Polar Curves</h3>
-  <p>
-    If two curves $r = f(\theta)$ and $r = g(\theta)$ with $f(\theta) \geq g(\theta)$ enclose a region
-    from $\theta = \alpha$ to $\theta = \beta$, the area is:
-    $$A = \frac{1}{2}\int_{\alpha}^{\beta} \left[f(\theta)^2 - g(\theta)^2\right]\,d\theta$$
-  </p>
-  <p>
-    This is the area swept out by the outer curve minus the area swept out by the inner curve.
-  </p>
+  <div class="theorem-box">
+    <strong>Theorem: Area Between Two Polar Curves</strong>
+    <p>
+      If two curves $r = f(\theta)$ and $r = g(\theta)$ with $f(\theta) \geq g(\theta)$ enclose a region
+      from $\theta = \alpha$ to $\theta = \beta$, the area is:
+      $$A = \frac{1}{2}\int_{\alpha}^{\beta} \left[f(\theta)^2 - g(\theta)^2\right]\,d\theta$$
+    </p>
+    <p>
+      This is the area swept out by the outer curve minus the area swept out by the inner curve.
+    </p>
+  </div>
 
-  <h3>Arc Length in Polar Coordinates</h3>
-  <p>
-    For a curve $r = f(\theta)$ from $\theta = \alpha$ to $\theta = \beta$, the arc length is:
-    $$L = \int_{\alpha}^{\beta} \sqrt{r^2 + \left(\frac{dr}{d\theta}\right)^2}\,d\theta$$
-  </p>
-  <p>
-    This formula reflects that the position changes both radially (through $dr$) and angularly (through $r d\theta$).
-  </p>
+  <div class="theorem-box">
+    <strong>Theorem: Arc Length in Polar Coordinates</strong>
+    <p>
+      For a curve $r = f(\theta)$ from $\theta = \alpha$ to $\theta = \beta$, the arc length is:
+      $$L = \int_{\alpha}^{\beta} \sqrt{r^2 + \left(\frac{dr}{d\theta}\right)^2}\,d\theta$$
+    </p>
+    <p>
+      This formula reflects that the position changes both radially (through $dr$) and angularly (through $r d\theta$).
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 Pro Tip</strong>
+    <p>The area formula $A = \frac{1}{2}\int r^2 d\theta$ is elegant because it avoids the need for double integrals. For Cartesian regions, we might need integration with respect to $x$ and $y$, but polar coordinates naturally simplify radial regions.</p>
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ Common Mistake</strong>
+    <p>When finding areas between two curves, always determine which curve is the outer curve in each angular region. The formula requires $f(\theta) \geq g(\theta)$, so be careful about where curves intersect and which is larger in different intervals.</p>
+  </div>
 </section>
 
 <section id="method">
@@ -103,91 +133,112 @@
 <section id="examples">
   <h2>Examples</h2>
 
-  <h3>Example 1: Area Inside the Cardioid $r = 1 + \cos\theta$</h3>
-  <p><strong>Find the total area enclosed by the cardioid.</strong></p>
+  <div class="example-box">
+    <strong>Example 1: Area Inside the Cardioid $r = 1 + \cos\theta$</strong>
+    <p><strong>Find the total area enclosed by the cardioid.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    The cardioid is traced once as $\theta$ goes from $0$ to $2\pi$.
-  </p>
-  <p>
-    $$A = \frac{1}{2}\int_0^{2\pi} (1 + \cos\theta)^2\,d\theta$$
-  </p>
-  <p>
-    Expand:
-    $$(1 + \cos\theta)^2 = 1 + 2\cos\theta + \cos^2\theta$$
-  </p>
-  <p>
-    Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
-    $$1 + 2\cos\theta + \frac{1 + \cos(2\theta)}{2} = \frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}$$
-  </p>
-  <p>
-    $$A = \frac{1}{2}\int_0^{2\pi} \left(\frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}\right)\,d\theta$$
-  </p>
-  <p>
-    $$= \frac{1}{2}\left[\frac{3\theta}{2} + 2\sin\theta + \frac{\sin(2\theta)}{4}\right]_0^{2\pi}$$
-  </p>
-  <p>
-    $$= \frac{1}{2}\left[\frac{3 \cdot 2\pi}{2} + 0 + 0\right] = \frac{1}{2} \cdot 3\pi = \frac{3\pi}{2}$$
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        The cardioid is traced once as $\theta$ goes from $0$ to $2\pi$.
+      </p>
+      <p>
+        $$A = \frac{1}{2}\int_0^{2\pi} (1 + \cos\theta)^2\,d\theta$$
+      </p>
+      <p>
+        Expand:
+        $$(1 + \cos\theta)^2 = 1 + 2\cos\theta + \cos^2\theta$$
+      </p>
+      <p>
+        Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
+        $$1 + 2\cos\theta + \frac{1 + \cos(2\theta)}{2} = \frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}$$
+      </p>
+      <p>
+        $$A = \frac{1}{2}\int_0^{2\pi} \left(\frac{3}{2} + 2\cos\theta + \frac{\cos(2\theta)}{2}\right)\,d\theta$$
+      </p>
+      <p>
+        $$= \frac{1}{2}\left[\frac{3\theta}{2} + 2\sin\theta + \frac{\sin(2\theta)}{4}\right]_0^{2\pi}$$
+      </p>
+      <p>
+        $$= \frac{1}{2}\left[\frac{3 \cdot 2\pi}{2} + 0 + 0\right] = \frac{1}{2} \cdot 3\pi = \frac{3\pi}{2}$$
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 2: Area Inside $r = 3\cos\theta$ and Outside $r = 1 + \cos\theta$</h3>
-  <p><strong>Find the area of the region inside the first curve but outside the second.</strong></p>
+  <div class="example-box">
+    <strong>Example 2: Area Inside $r = 3\cos\theta$ and Outside $r = 1 + \cos\theta$</strong>
+    <p><strong>Find the area of the region inside the first curve but outside the second.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    First, find intersection points by setting $3\cos\theta = 1 + \cos\theta$:
-    $$2\cos\theta = 1 \implies \cos\theta = \frac{1}{2} \implies \theta = \frac{\pi}{3}, \frac{5\pi}{3}$$
-  </p>
-  <p>
-    For $\theta \in [-\frac{\pi}{3}, \frac{\pi}{3}]$, we have $r = 3\cos\theta \geq r = 1 + \cos\theta$.
-  </p>
-  <p>
-    By symmetry about the x-axis:
-    $$A = 2 \cdot \frac{1}{2}\int_0^{\pi/3} [(3\cos\theta)^2 - (1 + \cos\theta)^2]\,d\theta$$
-  </p>
-  <p>
-    $$= \int_0^{\pi/3} [9\cos^2\theta - (1 + 2\cos\theta + \cos^2\theta)]\,d\theta$$
-  </p>
-  <p>
-    $$= \int_0^{\pi/3} [8\cos^2\theta - 2\cos\theta - 1]\,d\theta$$
-  </p>
-  <p>
-    Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
-    $$= \int_0^{\pi/3} [4(1 + \cos(2\theta)) - 2\cos\theta - 1]\,d\theta$$
-  </p>
-  <p>
-    $$= \int_0^{\pi/3} [3 + 4\cos(2\theta) - 2\cos\theta]\,d\theta$$
-  </p>
-  <p>
-    $$= \left[3\theta + 2\sin(2\theta) - 2\sin\theta\right]_0^{\pi/3}$$
-  </p>
-  <p>
-    $$= 3 \cdot \frac{\pi}{3} + 2\sin\frac{2\pi}{3} - 2\sin\frac{\pi}{3} - 0$$
-  </p>
-  <p>
-    $$= \pi + 2 \cdot \frac{\sqrt{3}}{2} - 2 \cdot \frac{\sqrt{3}}{2} = \pi$$
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        First, find intersection points by setting $3\cos\theta = 1 + \cos\theta$:
+        $$2\cos\theta = 1 \implies \cos\theta = \frac{1}{2} \implies \theta = \frac{\pi}{3}, \frac{5\pi}{3}$$
+      </p>
+      <p>
+        For $\theta \in [-\frac{\pi}{3}, \frac{\pi}{3}]$, we have $r = 3\cos\theta \geq r = 1 + \cos\theta$.
+      </p>
+      <p>
+        By symmetry about the x-axis:
+        $$A = 2 \cdot \frac{1}{2}\int_0^{\pi/3} [(3\cos\theta)^2 - (1 + \cos\theta)^2]\,d\theta$$
+      </p>
+      <p>
+        $$= \int_0^{\pi/3} [9\cos^2\theta - (1 + 2\cos\theta + \cos^2\theta)]\,d\theta$$
+      </p>
+      <p>
+        $$= \int_0^{\pi/3} [8\cos^2\theta - 2\cos\theta - 1]\,d\theta$$
+      </p>
+      <p>
+        Using $\cos^2\theta = \frac{1 + \cos(2\theta)}{2}$:
+        $$= \int_0^{\pi/3} [4(1 + \cos(2\theta)) - 2\cos\theta - 1]\,d\theta$$
+      </p>
+      <p>
+        $$= \int_0^{\pi/3} [3 + 4\cos(2\theta) - 2\cos\theta]\,d\theta$$
+      </p>
+      <p>
+        $$= \left[3\theta + 2\sin(2\theta) - 2\sin\theta\right]_0^{\pi/3}$$
+      </p>
+      <p>
+        $$= 3 \cdot \frac{\pi}{3} + 2\sin\frac{2\pi}{3} - 2\sin\frac{\pi}{3} - 0$$
+      </p>
+      <p>
+        $$= \pi + 2 \cdot \frac{\sqrt{3}}{2} - 2 \cdot \frac{\sqrt{3}}{2} = \pi$$
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 3: Arc Length of the Spiral $r = e^{\theta}$ from $\theta = 0$ to $\theta = 2\pi$</h3>
-  <p><strong>Find the arc length of the logarithmic spiral.</strong></p>
+  <div class="example-box">
+    <strong>Example 3: Arc Length of the Spiral $r = e^{\theta}$ from $\theta = 0$ to $\theta = 2\pi$</strong>
+    <p><strong>Find the arc length of the logarithmic spiral.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    We have $r = e^{\theta}$ and $\frac{dr}{d\theta} = e^{\theta}$.
-  </p>
-  <p>
-    $$L = \int_0^{2\pi} \sqrt{(e^{\theta})^2 + (e^{\theta})^2}\,d\theta = \int_0^{2\pi} \sqrt{2e^{2\theta}}\,d\theta$$
-  </p>
-  <p>
-    $$= \sqrt{2}\int_0^{2\pi} e^{\theta}\,d\theta = \sqrt{2}\left[e^{\theta}\right]_0^{2\pi}$$
-  </p>
-  <p>
-    $$= \sqrt{2}(e^{2\pi} - 1)$$
-  </p>
-  <p>
-    Numerically, $e^{2\pi} \approx 535.5$, so $L \approx \sqrt{2}(535.5 - 1) \approx 756.3$.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        We have $r = e^{\theta}$ and $\frac{dr}{d\theta} = e^{\theta}$.
+      </p>
+      <p>
+        $$L = \int_0^{2\pi} \sqrt{(e^{\theta})^2 + (e^{\theta})^2}\,d\theta = \int_0^{2\pi} \sqrt{2e^{2\theta}}\,d\theta$$
+      </p>
+      <p>
+        $$= \sqrt{2}\int_0^{2\pi} e^{\theta}\,d\theta = \sqrt{2}\left[e^{\theta}\right]_0^{2\pi}$$
+      </p>
+      <p>
+        $$= \sqrt{2}(e^{2\pi} - 1)$$
+      </p>
+      <p>
+        Numerically, $e^{2\pi} \approx 535.5$, so $L \approx \sqrt{2}(535.5 - 1) \approx 756.3$.
+      </p>
+    </div>
+  </div>
 </section>
 
 <section id="visualizer">
@@ -205,13 +256,16 @@
 <section id="practice">
   <h2>Practice Problems</h2>
 
-  <div class="problem">
-    <h3>Problem 1</h3>
+  <div class="example-box">
+    <strong>Practice Problem 1</strong>
     <p>
       Find the area inside the circle $r = 2\sin\theta$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         The circle $r = 2\sin\theta$ is traced once as $\theta$ goes from $0$ to $\pi$.
       </p>
@@ -230,16 +284,19 @@
       <p>
         <strong>Area = $\pi$</strong> (This matches a circle of radius 1, as $r = 2\sin\theta$ is equivalent to $(x - 0)^2 + (y - 1)^2 = 1$.)
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 2</h3>
+  <div class="example-box">
+    <strong>Practice Problem 2</strong>
     <p>
       Find the area inside one petal of the rose curve $r = \sin(3\theta)$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         The rose $r = \sin(3\theta)$ has 3 petals. One petal is traced as $\theta$ goes from $0$ to $\frac{\pi}{3}$
         (where $r$ goes from 0 to 1 back to 0).
@@ -260,16 +317,19 @@
       <p>
         <strong>Area of one petal = $\frac{\pi}{12}$</strong>
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 3</h3>
+  <div class="example-box">
+    <strong>Practice Problem 3</strong>
     <p>
       Find the arc length of $r = \theta$ (Archimedean spiral) from $\theta = 0$ to $\theta = \pi$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         We have $r = \theta$ and $\frac{dr}{d\theta} = 1$.
       </p>
@@ -293,7 +353,7 @@
       <p>
         $$L \approx \frac{3.14159 \cdot 3.297}{2} + \frac{1.86}{2} \approx 5.18 + 0.93 \approx 6.11$$
       </p>
-    </details>
+    </div>
   </div>
 
 </section>
@@ -312,6 +372,18 @@
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 <script>
+// Collapsible toggle functionality
+function toggleCollapsible(element) {
+  var content = element.nextElementSibling;
+  if (content.style.display === 'block') {
+    content.style.display = 'none';
+    element.querySelector('.toggle-icon').textContent = '▼';
+  } else {
+    content.style.display = 'block';
+    element.querySelector('.toggle-icon').textContent = '▲';
+  }
+}
+
 // Plot cardioid with shaded area
 function plotCardioidArea() {
   var theta = [];
@@ -351,6 +423,18 @@ function plotCardioidArea() {
 }
 
 plotCardioidArea();
+</script>
+
+<script>
+// KaTeX rendering
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ]
+  });
+});
 </script>
 
 </body>

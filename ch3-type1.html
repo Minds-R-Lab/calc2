@@ -9,6 +9,75 @@
     <title>3.1 Type I Improper Integrals — Infinite Intervals | Calculus II</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+    <style>
+        .definition-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #0077be;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .theorem-box {
+            background-color: #f0e6ff;
+            border-left: 4px solid #7c3aed;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .tip-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .example-box {
+            background-color: #f5f5f5;
+            border-left: 4px solid #666;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .collapsible-toggle {
+            cursor: pointer;
+            padding: 0.75rem 0;
+            margin-top: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .collapsible-toggle:hover {
+            text-decoration: underline;
+        }
+        .toggle-icon {
+            font-size: 0.9em;
+            transition: transform 0.3s;
+        }
+        .collapsible-toggle.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        .collapsible-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+            padding: 0 !important;
+        }
+        .math-block {
+            margin: 1rem 0;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -31,6 +100,17 @@
     <main class="container">
         <section id="intro" class="section">
             <h1>3.1 Type I Improper Integrals — Infinite Intervals</h1>
+
+            <div class="definition-box">
+                <strong>Learning Objectives</strong>
+                <ul>
+                    <li>Understand the definition of Type I improper integrals with infinite endpoints</li>
+                    <li>Learn to evaluate improper integrals using limits</li>
+                    <li>Distinguish between convergent and divergent integrals</li>
+                    <li>Apply the $p$-test to determine convergence of power functions</li>
+                </ul>
+            </div>
+
             <p>
                 In elementary calculus, we define the Riemann integral $\int_a^b f(x)\,dx$ for bounded intervals $[a,b]$.
                 But what happens when one or both endpoints are infinite? A <strong>Type I improper integral</strong> is an integral
@@ -45,52 +125,68 @@
         <section id="theory" class="section">
             <h2>Definition and Theory</h2>
 
-            <h3>Type I Improper Integral: Upper Limit at Infinity</h3>
-            <p>
-                For a function $f$ that is continuous on $[a, \infty)$, we define:
-            </p>
-            <div class="math-block">
-                $$\int_a^{\infty} f(x)\,dx = \lim_{t \to \infty} \int_a^t f(x)\,dx$$
-            </div>
-            <p>
-                The improper integral <strong>converges</strong> if the limit exists and is finite. Otherwise, it <strong>diverges</strong>.
-            </p>
-
-            <h3>Lower Limit at Negative Infinity</h3>
-            <p>
-                For a function $f$ that is continuous on $(-\infty, b]$:
-            </p>
-            <div class="math-block">
-                $$\int_{-\infty}^b f(x)\,dx = \lim_{t \to -\infty} \int_t^b f(x)\,dx$$
+            <div class="definition-box">
+                <strong>Definition: Type I Improper Integral (Upper Limit at Infinity)</strong>
+                <p>
+                    For a function $f$ that is continuous on $[a, \infty)$, we define:
+                </p>
+                <div class="math-block">
+                    $$\int_a^{\infty} f(x)\,dx = \lim_{t \to \infty} \int_a^t f(x)\,dx$$
+                </div>
+                <p>
+                    The improper integral <strong>converges</strong> if the limit exists and is finite. Otherwise, it <strong>diverges</strong>.
+                </p>
             </div>
 
-            <h3>Both Limits at Infinity</h3>
-            <p>
-                For a function $f$ that is continuous on $(-\infty, \infty)$, we split the integral:
-            </p>
-            <div class="math-block">
-                $$\int_{-\infty}^{\infty} f(x)\,dx = \int_{-\infty}^c f(x)\,dx + \int_c^{\infty} f(x)\,dx$$
+            <div class="definition-box">
+                <strong>Definition: Type I Improper Integral (Lower Limit at Negative Infinity)</strong>
+                <p>
+                    For a function $f$ that is continuous on $(-\infty, b]$:
+                </p>
+                <div class="math-block">
+                    $$\int_{-\infty}^b f(x)\,dx = \lim_{t \to -\infty} \int_t^b f(x)\,dx$$
+                </div>
             </div>
-            <p>
-                where $c$ is any point (often $c=0$). The double integral converges if and only if both parts converge.
-            </p>
 
-            <h3>The $p$-Test for Type I Integrals</h3>
-            <p>
-                One of the most important results for Type I integrals is the <strong>$p$-test</strong>:
-            </p>
-            <div class="math-block">
-                $$\int_1^{\infty} \frac{1}{x^p}\,dx \quad \text{converges if and only if} \quad p > 1$$
+            <div class="definition-box">
+                <strong>Definition: Type I Improper Integral (Both Limits at Infinity)</strong>
+                <p>
+                    For a function $f$ that is continuous on $(-\infty, \infty)$, we split the integral:
+                </p>
+                <div class="math-block">
+                    $$\int_{-\infty}^{\infty} f(x)\,dx = \int_{-\infty}^c f(x)\,dx + \int_c^{\infty} f(x)\,dx$$
+                </div>
+                <p>
+                    where $c$ is any point (often $c=0$). The double integral converges if and only if both parts converge.
+                </p>
             </div>
-            <p>
-                When the integral converges (i.e., $p > 1$), the value is:
-            </p>
-            <div class="math-block">
-                $$\int_1^{\infty} \frac{1}{x^p}\,dx = \frac{1}{p-1}$$
+
+            <div class="theorem-box">
+                <strong>Theorem: The $p$-Test for Type I Integrals</strong>
+                <p>
+                    One of the most important results for Type I integrals is the <strong>$p$-test</strong>:
+                </p>
+                <div class="math-block">
+                    $$\int_1^{\infty} \frac{1}{x^p}\,dx \quad \text{converges if and only if} \quad p > 1$$
+                </div>
+                <p>
+                    When the integral converges (i.e., $p > 1$), the value is:
+                </p>
+                <div class="math-block">
+                    $$\int_1^{\infty} \frac{1}{x^p}\,dx = \frac{1}{p-1}$$
+                </div>
+                <p>
+                    This is a fundamental comparison tool for determining convergence of other integrals.
+                </p>
             </div>
-            <p>
-                This is a fundamental comparison tool for determining convergence of other integrals.
-            </p>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip: Pattern Recognition</strong>
+                <p>
+                    The $p$-test is incredibly useful. When you see an integral with the form $\frac{1}{x^p}$ or something that behaves similarly at infinity,
+                    you can immediately determine convergence by checking if $p > 1$. Keep this benchmark in mind when using comparison tests!
+                </p>
+            </div>
         </section>
 
         <section id="method" class="section">
@@ -118,78 +214,107 @@
                 </li>
             </ol>
 
-            <h3>Key Insights</h3>
-            <ul>
-                <li>Exponential decay functions (like $e^{-x}$) almost always lead to convergence.</li>
-                <li>Polynomial terms in denominators ($1/x^p$) converge only if the power is large enough ($p > 1$).</li>
-                <li>Oscillating functions (like $\sin x$) typically lead to divergence for Type I integrals.</li>
-            </ul>
+            <div class="definition-box">
+                <strong>Key Insights</strong>
+                <ul>
+                    <li>Exponential decay functions (like $e^{-x}$) almost always lead to convergence.</li>
+                    <li>Polynomial terms in denominators ($1/x^p$) converge only if the power is large enough ($p > 1$).</li>
+                    <li>Oscillating functions (like $\sin x$) typically lead to divergence for Type I integrals.</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Common Mistake: Forgetting the Limit</strong>
+                <p>
+                    Many students try to directly antidifferentiate and evaluate at infinity, like $[F(x)]_a^{\infty}$.
+                    This is informal notation! You <em>must</em> set up the limit first: $\lim_{t \to \infty} [F(t) - F(a)]$.
+                    This ensures you're correctly analyzing the limiting behavior.
+                </p>
+            </div>
         </section>
 
         <section id="examples" class="section">
             <h2>Worked Examples</h2>
 
-            <article class="example">
-                <h3>Example 1: $\displaystyle \int_1^{\infty} \frac{1}{x^2}\,dx$ (Converges)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>Set up the limit:
-                        $$\int_1^{\infty} \frac{1}{x^2}\,dx = \lim_{t \to \infty} \int_1^t x^{-2}\,dx$$
-                    </li>
-                    <li>Find the antiderivative: $F(x) = -\frac{1}{x}$</li>
-                    <li>Evaluate:
-                        $$\int_1^t x^{-2}\,dx = \left[-\frac{1}{x}\right]_1^t = -\frac{1}{t} - \left(-\frac{1}{1}\right) = -\frac{1}{t} + 1$$
-                    </li>
-                    <li>Take the limit:
-                        $$\lim_{t \to \infty} \left(-\frac{1}{t} + 1\right) = 0 + 1 = 1$$
-                    </li>
-                </ol>
-                <p>
-                    <strong>Conclusion:</strong> The integral converges to $\boxed{1}$. This also confirms the $p$-test with $p=2 > 1$:
-                    $$\int_1^{\infty} \frac{1}{x^2}\,dx = \frac{1}{2-1} = 1 \,\checkmark$$
-                </p>
-            </article>
+            <div class="example-box">
+                <strong>Example 1: $\displaystyle \int_1^{\infty} \frac{1}{x^2}\,dx$ (Converges)</strong>
+                <p><strong>Problem:</strong> Evaluate the improper integral or show that it diverges.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>Set up the limit:
+                            $$\int_1^{\infty} \frac{1}{x^2}\,dx = \lim_{t \to \infty} \int_1^t x^{-2}\,dx$$
+                        </li>
+                        <li>Find the antiderivative: $F(x) = -\frac{1}{x}$</li>
+                        <li>Evaluate:
+                            $$\int_1^t x^{-2}\,dx = \left[-\frac{1}{x}\right]_1^t = -\frac{1}{t} - \left(-\frac{1}{1}\right) = -\frac{1}{t} + 1$$
+                        </li>
+                        <li>Take the limit:
+                            $$\lim_{t \to \infty} \left(-\frac{1}{t} + 1\right) = 0 + 1 = 1$$
+                        </li>
+                    </ol>
+                    <p>
+                        <strong>Conclusion:</strong> The integral converges to $\boxed{1}$. This also confirms the $p$-test with $p=2 > 1$:
+                        $$\int_1^{\infty} \frac{1}{x^2}\,dx = \frac{1}{2-1} = 1 \,\checkmark$$
+                    </p>
+                </div>
+            </div>
 
-            <article class="example">
-                <h3>Example 2: $\displaystyle \int_1^{\infty} \frac{1}{x}\,dx$ (Diverges)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>Set up the limit:
-                        $$\int_1^{\infty} \frac{1}{x}\,dx = \lim_{t \to \infty} \int_1^t \frac{1}{x}\,dx$$
-                    </li>
-                    <li>Find the antiderivative: $F(x) = \ln|x| = \ln x$ (for $x > 0$)</li>
-                    <li>Evaluate:
-                        $$\int_1^t \frac{1}{x}\,dx = [\ln x]_1^t = \ln t - \ln 1 = \ln t$$
-                    </li>
-                    <li>Take the limit:
-                        $$\lim_{t \to \infty} \ln t = \infty$$
-                    </li>
-                </ol>
-                <p>
-                    <strong>Conclusion:</strong> The integral <strong>diverges</strong> to $\infty$. The $p$-test with $p=1$ predicts divergence:
-                    we need $p > 1$ for convergence. $\checkmark$
-                </p>
-            </article>
+            <div class="example-box">
+                <strong>Example 2: $\displaystyle \int_1^{\infty} \frac{1}{x}\,dx$ (Diverges)</strong>
+                <p><strong>Problem:</strong> Evaluate the improper integral or show that it diverges.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>Set up the limit:
+                            $$\int_1^{\infty} \frac{1}{x}\,dx = \lim_{t \to \infty} \int_1^t \frac{1}{x}\,dx$$
+                        </li>
+                        <li>Find the antiderivative: $F(x) = \ln|x| = \ln x$ (for $x > 0$)</li>
+                        <li>Evaluate:
+                            $$\int_1^t \frac{1}{x}\,dx = [\ln x]_1^t = \ln t - \ln 1 = \ln t$$
+                        </li>
+                        <li>Take the limit:
+                            $$\lim_{t \to \infty} \ln t = \infty$$
+                        </li>
+                    </ol>
+                    <p>
+                        <strong>Conclusion:</strong> The integral <strong>diverges</strong> to $\infty$. The $p$-test with $p=1$ predicts divergence:
+                        we need $p > 1$ for convergence. $\checkmark$
+                    </p>
+                </div>
+            </div>
 
-            <article class="example">
-                <h3>Example 3: $\displaystyle \int_0^{\infty} e^{-x}\,dx$ (Converges)</h3>
-                <p><strong>Solution:</strong></p>
-                <ol>
-                    <li>Set up the limit:
-                        $$\int_0^{\infty} e^{-x}\,dx = \lim_{t \to \infty} \int_0^t e^{-x}\,dx$$
-                    </li>
-                    <li>Find the antiderivative: $F(x) = -e^{-x}$</li>
-                    <li>Evaluate:
-                        $$\int_0^t e^{-x}\,dx = \left[-e^{-x}\right]_0^t = -e^{-t} - (-e^{0}) = -e^{-t} + 1$$
-                    </li>
-                    <li>Take the limit:
-                        $$\lim_{t \to \infty} \left(-e^{-t} + 1\right) = 0 + 1 = 1$$
-                    </li>
-                </ol>
-                <p>
-                    <strong>Conclusion:</strong> The integral converges to $\boxed{1}$. Exponential decay is powerful!
-                </p>
-            </article>
+            <div class="example-box">
+                <strong>Example 3: $\displaystyle \int_0^{\infty} e^{-x}\,dx$ (Converges)</strong>
+                <p><strong>Problem:</strong> Evaluate the improper integral or show that it diverges.</p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <ol>
+                        <li>Set up the limit:
+                            $$\int_0^{\infty} e^{-x}\,dx = \lim_{t \to \infty} \int_0^t e^{-x}\,dx$$
+                        </li>
+                        <li>Find the antiderivative: $F(x) = -e^{-x}$</li>
+                        <li>Evaluate:
+                            $$\int_0^t e^{-x}\,dx = \left[-e^{-x}\right]_0^t = -e^{-t} - (-e^{0}) = -e^{-t} + 1$$
+                        </li>
+                        <li>Take the limit:
+                            $$\lim_{t \to \infty} \left(-e^{-t} + 1\right) = 0 + 1 = 1$$
+                        </li>
+                    </ol>
+                    <p>
+                        <strong>Conclusion:</strong> The integral converges to $\boxed{1}$. Exponential decay is powerful!
+                    </p>
+                </div>
+            </div>
         </section>
 
         <section id="visualizer" class="section">
@@ -247,71 +372,70 @@
         <section id="practice" class="section">
             <h2>Practice Problems</h2>
 
-            <div class="practice-problems">
-                <article class="problem">
-                    <h3>Problem 1</h3>
+            <div class="example-box">
+                <strong>Practice Problem 1</strong>
+                <p>
+                    Evaluate the improper integral or show that it diverges:
+                    $$\int_2^{\infty} \frac{1}{x^3}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Evaluate the improper integral or show that it diverges:
-                        $$\int_2^{\infty} \frac{1}{x^3}\,dx$$
+                        By the $p$-test with $p=3 > 1$, this converges. Using antiderivative $F(x) = -\frac{1}{2x^2}$:
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                By the $p$-test with $p=3 > 1$, this converges. Using antiderivative $F(x) = -\frac{1}{2x^2}$:
-                            </p>
-                            <div style="margin:1rem 0;">
-                                $$\int_2^{\infty} x^{-3}\,dx = \lim_{t \to \infty} \left[-\frac{1}{2x^2}\right]_2^t = \lim_{t \to \infty} \left(-\frac{1}{2t^2} + \frac{1}{8}\right) = \frac{1}{8}$$
-                            </div>
-                            <p>Or using the $p$-test formula: $\displaystyle \frac{1}{p-1} = \frac{1}{3-1} = \frac{1}{2}$... wait, that's for $a=1$. Let me recalculate.</p>
-                            <p>Actually, $\displaystyle \int_2^{\infty} x^{-3}\,dx = \left[-\frac{1}{2x^2}\right]_2^{\infty} = 0 + \frac{1}{2(4)} = \frac{1}{8}$.</p>
-                        </div>
-                    </details>
-                </article>
+                    <div style="margin:1rem 0;">
+                        $$\int_2^{\infty} x^{-3}\,dx = \lim_{t \to \infty} \left[-\frac{1}{2x^2}\right]_2^t = \lim_{t \to \infty} \left(-\frac{1}{2t^2} + \frac{1}{8}\right) = \frac{1}{8}$$
+                    </div>
+                </div>
+            </div>
 
-                <article class="problem">
-                    <h3>Problem 2</h3>
+            <div class="example-box">
+                <strong>Practice Problem 2</strong>
+                <p>
+                    Determine whether the following improper integral converges or diverges:
+                    $$\int_1^{\infty} \frac{x}{x^2+1}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Determine whether the following improper integral converges or diverges:
-                        $$\int_1^{\infty} \frac{x}{x^2+1}\,dx$$
+                        Let $u = x^2 + 1$, so $du = 2x\,dx$. Then:
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                Let $u = x^2 + 1$, so $du = 2x\,dx$. Then:
-                            </p>
-                            <div style="margin:1rem 0;">
-                                $$\int_1^t \frac{x}{x^2+1}\,dx = \frac{1}{2}\int_2^{t^2+1} \frac{du}{u} = \frac{1}{2}[\ln u]_2^{t^2+1} = \frac{1}{2}\ln(t^2+1) - \frac{1}{2}\ln 2$$
-                            </div>
-                            <p>
-                                As $t \to \infty$, we have $\ln(t^2+1) \to \infty$, so the integral <strong>diverges</strong>.
-                            </p>
-                        </div>
-                    </details>
-                </article>
+                    <div style="margin:1rem 0;">
+                        $$\int_1^t \frac{x}{x^2+1}\,dx = \frac{1}{2}\int_2^{t^2+1} \frac{du}{u} = \frac{1}{2}[\ln u]_2^{t^2+1} = \frac{1}{2}\ln(t^2+1) - \frac{1}{2}\ln 2$$
+                    </div>
+                    <p>
+                        As $t \to \infty$, we have $\ln(t^2+1) \to \infty$, so the integral <strong>diverges</strong>.
+                    </p>
+                </div>
+            </div>
 
-                <article class="problem">
-                    <h3>Problem 3</h3>
+            <div class="example-box">
+                <strong>Practice Problem 3</strong>
+                <p>
+                    Evaluate or show that it diverges:
+                    $$\int_0^{\infty} e^{-2x}\,dx$$
+                </p>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+                    <strong>Show Solution</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
                     <p>
-                        Evaluate or show that it diverges:
-                        $$\int_0^{\infty} e^{-2x}\,dx$$
+                        The antiderivative of $e^{-2x}$ is $F(x) = -\frac{1}{2}e^{-2x}$. Therefore:
                     </p>
-                    <details>
-                        <summary>Solution</summary>
-                        <div>
-                            <p>
-                                The antiderivative of $e^{-2x}$ is $F(x) = -\frac{1}{2}e^{-2x}$. Therefore:
-                            </p>
-                            <div style="margin:1rem 0;">
-                                $$\int_0^{\infty} e^{-2x}\,dx = \lim_{t \to \infty} \left[-\frac{1}{2}e^{-2x}\right]_0^t = \lim_{t \to \infty}\left(-\frac{1}{2}e^{-2t} + \frac{1}{2}\right) = \frac{1}{2}$$
-                            </div>
-                            <p>
-                                The integral <strong>converges to $\displaystyle \frac{1}{2}$</strong>.
-                            </p>
-                        </div>
-                    </details>
-                </article>
+                    <div style="margin:1rem 0;">
+                        $$\int_0^{\infty} e^{-2x}\,dx = \lim_{t \to \infty} \left[-\frac{1}{2}e^{-2x}\right]_0^t = \lim_{t \to \infty}\left(-\frac{1}{2}e^{-2t} + \frac{1}{2}\right) = \frac{1}{2}$$
+                    </div>
+                    <p>
+                        The integral <strong>converges to $\displaystyle \frac{1}{2}$</strong>.
+                    </p>
+                </div>
             </div>
         </section>
     </main>
@@ -328,8 +452,16 @@
     <script src="course-config.js"></script>
     <script src="course.js"></script>
     <script>
+        function toggleCollapsible(element) {
+            const icon = element.querySelector('.toggle-icon');
+            const content = element.nextElementSibling;
+
+            element.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            var mathElements = document.querySelectorAll('.math-block, .example, .problem, p, li, h3, h4');
+            var mathElements = document.querySelectorAll('.math-block, .example-box, .definition-box, .theorem-box, .warning-box, .tip-box, p, li, h3, h4');
             mathElements.forEach(function(el) {
                 if (el.textContent.includes('$')) {
                     renderMathInElement(el, {

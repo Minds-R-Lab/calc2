@@ -33,6 +33,17 @@
 
 <section id="intro">
   <h1>Chapter 5.1: Power Series</h1>
+
+  <div class="definition-box">
+    <strong>Learning Objectives</strong>
+    <ul>
+      <li>Understand the definition and structure of power series</li>
+      <li>Find the radius of convergence using the Ratio Test</li>
+      <li>Determine the interval of convergence by checking endpoints</li>
+      <li>Apply convergence tests to analyze series behavior</li>
+    </ul>
+  </div>
+
   <p>
     A <strong>power series</strong> is a function series of the form
     $$\sum_{n=0}^{\infty} c_n(x-a)^n = c_0 + c_1(x-a) + c_2(x-a)^2 + c_3(x-a)^3 + \cdots$$
@@ -49,121 +60,176 @@
   <h2>Theory</h2>
 
   <h3>Radius and Interval of Convergence</h3>
-  <p>
-    Every power series $\sum_{n=0}^{\infty} c_n(x-a)^n$ has a <strong>radius of convergence</strong> $R \geq 0$ such that:
+
+  <div class="definition-box">
+    <strong>Definition: Radius of Convergence</strong>
+    <p>
+      Every power series $\sum_{n=0}^{\infty} c_n(x-a)^n$ has a <strong>radius of convergence</strong> $R \geq 0$ such that:
+    </p>
     <ul>
       <li>The series <strong>converges absolutely</strong> for all $x$ with $|x-a| < R$</li>
       <li>The series <strong>diverges</strong> for all $x$ with $|x-a| > R$</li>
       <li>At the endpoints $x = a \pm R$, the series may converge or diverge (must check)</li>
     </ul>
-  </p>
-  <p>
-    The <strong>interval of convergence</strong> is the set of all $x$ values for which the series converges.
-    It always has the form $[a-R, a+R]$, $(a-R, a+R)$, $[a-R, a+R)$, or $(a-R, a+R]$,
-    depending on whether the endpoints converge.
-  </p>
+  </div>
+
+  <div class="definition-box">
+    <strong>Definition: Interval of Convergence</strong>
+    <p>
+      The <strong>interval of convergence</strong> is the set of all $x$ values for which the series converges.
+      It always has the form $[a-R, a+R]$, $(a-R, a+R)$, $[a-R, a+R)$, or $(a-R, a+R]$,
+      depending on whether the endpoints converge.
+    </p>
+  </div>
 
   <h3>Finding the Radius of Convergence: Ratio Test</h3>
-  <p>
-    The most common method uses the <strong>ratio test</strong>:
-    $$\lim_{n \to \infty} \left| \frac{c_{n+1}}{c_n} \right| = L$$
-  </p>
-  <p>
-    Then the radius of convergence is:
-    $$R = \frac{1}{L}$$
-    (with conventions: if $L = 0$, then $R = \infty$; if $L = \infty$, then $R = 0$).
-  </p>
+
+  <div class="theorem-box">
+    <strong>Theorem: Ratio Test for Power Series</strong>
+    <p>
+      For the power series $\sum_{n=0}^{\infty} c_n(x-a)^n$, compute:
+      $$\lim_{n \to \infty} \left| \frac{c_{n+1}}{c_n} \right| = L$$
+    </p>
+    <p>
+      Then the radius of convergence is:
+      $$R = \frac{1}{L}$$
+      with conventions: if $L = 0$, then $R = \infty$; if $L = \infty$, then $R = 0$.
+    </p>
+  </div>
 
   <h3>Checking Endpoints</h3>
   <p>
     After finding $R$, substitute $x = a + R$ and $x = a - R$ into the series
     and test for convergence using standard convergence tests (alternating series test, p-test, etc.).
   </p>
+
+  <div class="tip-box">
+    <strong>💡 Pro Tip</strong>
+    <p>
+      Always remember to check the endpoints separately! The radius tells you about the open interval,
+      but endpoints may have different behavior. A series might converge on $(-1, 1)$, $[-1, 1)$, $(−1, 1]$, or $[-1, 1]$.
+    </p>
+  </div>
+
 </section>
 
 <section id="method">
   <h2>Method: Finding Radius and Interval of Convergence</h2>
 
-  <ol>
-    <li><strong>Apply the Ratio Test:</strong>
-      Calculate $\lim_{n \to \infty} \left|\frac{c_{n+1}(x-a)^{n+1}}{c_n(x-a)^n}\right|$
-      Simplify to get $|x-a| \cdot L$, where $L = \lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right|$.
-    </li>
-    <li><strong>Set up inequality:</strong>
-      For convergence, we need $|x-a| \cdot L < 1$, which gives $|x-a| < \frac{1}{L}$.
-      Thus $R = \frac{1}{L}$.
-    </li>
-    <li><strong>Check endpoint $x = a + R$:</strong>
-      Substitute and test the resulting series.
-    </li>
-    <li><strong>Check endpoint $x = a - R$:</strong>
-      Substitute and test the resulting series.
-    </li>
-    <li><strong>Write the interval of convergence:</strong>
-      Include endpoints if they converge; exclude if they diverge.
-    </li>
-  </ol>
+  <div class="example-box">
+    <strong>Step-by-Step Procedure</strong>
+    <ol>
+      <li><strong>Apply the Ratio Test:</strong>
+        Calculate $\lim_{n \to \infty} \left|\frac{c_{n+1}(x-a)^{n+1}}{c_n(x-a)^n}\right|$
+        Simplify to get $|x-a| \cdot L$, where $L = \lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right|$.
+      </li>
+      <li><strong>Set up inequality:</strong>
+        For convergence, we need $|x-a| \cdot L < 1$, which gives $|x-a| < \frac{1}{L}$.
+        Thus $R = \frac{1}{L}$.
+      </li>
+      <li><strong>Check endpoint $x = a + R$:</strong>
+        Substitute and test the resulting series using appropriate convergence tests.
+      </li>
+      <li><strong>Check endpoint $x = a - R$:</strong>
+        Substitute and test the resulting series using appropriate convergence tests.
+      </li>
+      <li><strong>Write the interval of convergence:</strong>
+        Include endpoints if they converge; exclude if they diverge.
+      </li>
+    </ol>
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ Common Mistake</strong>
+    <p>
+      Don't forget to include the $(x-a)^n$ factor when applying the ratio test! Many students drop it and
+      only compute the ratio of coefficients, which is incomplete. You must compute $\left|\frac{c_{n+1}(x-a)^{n+1}}{c_n(x-a)^n}\right|$ first.
+    </p>
+  </div>
+
 </section>
 
 <section id="examples">
   <h2>Examples</h2>
 
-  <h3>Example 1: $\sum_{n=1}^{\infty} \frac{x^n}{n}$</h3>
-  <p><strong>Find the radius and interval of convergence.</strong></p>
+  <div class="example-box">
+    <strong>Example 1: $\sum_{n=1}^{\infty} \frac{x^n}{n}$</strong>
+    <p><strong>Find the radius and interval of convergence.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    Here $a = 0$, $c_n = \frac{1}{n}$.
-  </p>
-  <p>
-    Apply the ratio test:
-    $$\lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right| = \lim_{n \to \infty} \frac{1/(n+1)}{1/n} = \lim_{n \to \infty} \frac{n}{n+1} = 1$$
-  </p>
-  <p>
-    Therefore $R = \frac{1}{1} = 1$, and we check $x = \pm 1$.
-  </p>
-  <p>
-    <strong>At $x = 1$:</strong> $\sum_{n=1}^{\infty} \frac{1}{n}$ is the harmonic series, which <em>diverges</em>.
-  </p>
-  <p>
-    <strong>At $x = -1$:</strong> $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ is the alternating harmonic series, which <em>converges</em>.
-  </p>
-  <p>
-    <strong>Interval of convergence:</strong> $[-1, 1)$
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        Here $a = 0$, $c_n = \frac{1}{n}$.
+      </p>
+      <p>
+        Apply the ratio test:
+        $$\lim_{n \to \infty} \left|\frac{c_{n+1}}{c_n}\right| = \lim_{n \to \infty} \frac{1/(n+1)}{1/n} = \lim_{n \to \infty} \frac{n}{n+1} = 1$$
+      </p>
+      <p>
+        Therefore $R = \frac{1}{1} = 1$, and we check $x = \pm 1$.
+      </p>
+      <p>
+        <strong>At $x = 1$:</strong> $\sum_{n=1}^{\infty} \frac{1}{n}$ is the harmonic series, which <em>diverges</em>.
+      </p>
+      <p>
+        <strong>At $x = -1$:</strong> $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ is the alternating harmonic series, which <em>converges</em>.
+      </p>
+      <p>
+        <strong>Interval of convergence:</strong> $[-1, 1)$
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 2: $\sum_{n=0}^{\infty} n! \, x^n$</h3>
-  <p><strong>Find the radius and interval of convergence.</strong></p>
+  <div class="example-box">
+    <strong>Example 2: $\sum_{n=0}^{\infty} n! \, x^n$</strong>
+    <p><strong>Find the radius and interval of convergence.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    Here $c_n = n!$.
-  </p>
-  <p>
-    Apply the ratio test:
-    $$\lim_{n \to \infty} \left|\frac{(n+1)!}{n!}\right| = \lim_{n \to \infty} (n+1) = \infty$$
-  </p>
-  <p>
-    Therefore $R = \frac{1}{\infty} = 0$. The series converges <strong>only at $x = 0$</strong>.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        Here $c_n = n!$.
+      </p>
+      <p>
+        Apply the ratio test:
+        $$\lim_{n \to \infty} \left|\frac{(n+1)!}{n!}\right| = \lim_{n \to \infty} (n+1) = \infty$$
+      </p>
+      <p>
+        Therefore $R = \frac{1}{\infty} = 0$. The series converges <strong>only at $x = 0$</strong>.
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 3: $\sum_{n=0}^{\infty} \frac{x^n}{n!}$</h3>
-  <p><strong>Find the radius and interval of convergence.</strong></p>
+  <div class="example-box">
+    <strong>Example 3: $\sum_{n=0}^{\infty} \frac{x^n}{n!}$</strong>
+    <p><strong>Find the radius and interval of convergence.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    Here $c_n = \frac{1}{n!}$.
-  </p>
-  <p>
-    Apply the ratio test:
-    $$\lim_{n \to \infty} \left|\frac{1/(n+1)!}{1/n!}\right| = \lim_{n \to \infty} \frac{n!}{(n+1)!} = \lim_{n \to \infty} \frac{1}{n+1} = 0$$
-  </p>
-  <p>
-    Therefore $R = \frac{1}{0} = \infty$. The series converges for <strong>all $x \in \mathbb{R}$</strong>.
-  </p>
-  <p>
-    <strong>Interval of convergence:</strong> $(-\infty, \infty)$
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        Here $c_n = \frac{1}{n!}$.
+      </p>
+      <p>
+        Apply the ratio test:
+        $$\lim_{n \to \infty} \left|\frac{1/(n+1)!}{1/n!}\right| = \lim_{n \to \infty} \frac{n!}{(n+1)!} = \lim_{n \to \infty} \frac{1}{n+1} = 0$$
+      </p>
+      <p>
+        Therefore $R = \frac{1}{0} = \infty$. The series converges for <strong>all $x \in \mathbb{R}$</strong>.
+      </p>
+      <p>
+        <strong>Interval of convergence:</strong> $(-\infty, \infty)$
+      </p>
+    </div>
+  </div>
+
 </section>
 
 <section id="visualizer">
@@ -182,13 +248,16 @@
 <section id="practice">
   <h2>Practice Problems</h2>
 
-  <div class="problem">
-    <h3>Problem 1</h3>
+  <div class="example-box">
+    <strong>Practice Problem 1</strong>
     <p>
       Find the radius and interval of convergence for $\sum_{n=1}^{\infty} \frac{(x-2)^n}{n \cdot 2^n}$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         Here $a = 2$ and $c_n = \frac{1}{n \cdot 2^n}$.
       </p>
@@ -208,16 +277,19 @@
       <p>
         <strong>Interval of convergence:</strong> $[0, 4)$
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 2</h3>
+  <div class="example-box">
+    <strong>Practice Problem 2</strong>
     <p>
       Find the radius of convergence for $\sum_{n=0}^{\infty} \frac{n^2 x^n}{5^n}$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         Here $c_n = \frac{n^2}{5^n}$.
       </p>
@@ -231,16 +303,19 @@
       <p>
         <strong>Radius of convergence:</strong> $R = 5$
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 3</h3>
+  <div class="example-box">
+    <strong>Practice Problem 3</strong>
     <p>
       Determine the interval of convergence for $\sum_{n=1}^{\infty} \frac{(-1)^n x^n}{n^2}$.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         Here $c_n = \frac{(-1)^n}{n^2}$.
       </p>
@@ -260,7 +335,7 @@
       <p>
         <strong>Interval of convergence:</strong> $[-1, 1]$
       </p>
-    </details>
+    </div>
   </div>
 
 </section>
@@ -279,7 +354,16 @@
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 <script>
-});
+function toggleCollapsible(elem) {
+  var content = elem.nextElementSibling;
+  if (content.style.display === "none" || content.style.display === "") {
+    content.style.display = "block";
+    elem.querySelector(".toggle-icon").textContent = "▲";
+  } else {
+    content.style.display = "none";
+    elem.querySelector(".toggle-icon").textContent = "▼";
+  }
+}
 
 // Plot partial sums of geometric series: sum_{n=0}^{N} x^n
 function plotPartialSums() {
@@ -338,6 +422,10 @@ function plotPartialSums() {
 }
 
 plotPartialSums();
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderMathInElement(document.body);
+});
 </script>
 
 </body>

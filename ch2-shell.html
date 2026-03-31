@@ -35,6 +35,18 @@
 
   <section id="intro">
     <h2>Introduction</h2>
+
+    <div class="definition-box">
+      <strong>Learning Objectives</strong>
+      <ul>
+        <li>Understand how the shell method uses cylindrical shells instead of disks</li>
+        <li>Apply the shell method for vertical and horizontal axes of revolution</li>
+        <li>Identify when to use shell method versus disk/washer method</li>
+        <li>Set up shell integrals with correct radius and height</li>
+        <li>Calculate volumes using the shell method formula</li>
+      </ul>
+    </div>
+
     <p>
       The shell method is an alternative to the disk/washer method for finding volumes of solids of revolution. Instead of slicing perpendicular to the axis of revolution, we slice parallel to it, creating cylindrical shells.
     </p>
@@ -46,120 +58,154 @@
   <section id="theory">
     <h2>Theory</h2>
 
-    <h3>Shell Method Formula</h3>
-    <p>
-      When revolving a region around the y-axis, we can use vertical cylindrical shells:
-    </p>
-    <p class="math-display">
-      $$V = 2\pi \int_a^b x \cdot f(x) \, dx$$
-    </p>
-    <p>
-      where <span class="math">$f(x)$</span> is the height of the shell at position <span class="math">$x$</span>, and <span class="math">$x$</span> is the distance (radius) from the axis of revolution.
-    </p>
+    <div class="definition-box">
+      <strong>Definition: Shell Method Formula (Vertical Shells)</strong>
+      <p>
+        When revolving a region around the y-axis, we can use vertical cylindrical shells:
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_a^b x \cdot f(x) \, dx$$
+      </p>
+      <p>
+        where <span class="math">$f(x)$</span> is the height of the shell at position <span class="math">$x$</span>, and <span class="math">$x$</span> is the distance (radius) from the axis of revolution.
+      </p>
+    </div>
 
-    <h3>General Shell Method</h3>
-    <p>
-      For a region between two curves <span class="math">$y = f(x)$</span> and <span class="math">$y = g(x)$</span> with <span class="math">$f(x) \geq g(x)$</span>, revolved around the y-axis:
-    </p>
-    <p class="math-display">
-      $$V = 2\pi \int_a^b x \cdot [f(x) - g(x)] \, dx$$
-    </p>
+    <div class="definition-box">
+      <strong>Definition: General Shell Method</strong>
+      <p>
+        For a region between two curves <span class="math">$y = f(x)$</span> and <span class="math">$y = g(x)$</span> with <span class="math">$f(x) \geq g(x)$</span>, revolved around the y-axis:
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_a^b x \cdot [f(x) - g(x)] \, dx$$
+      </p>
+    </div>
 
-    <h3>Revolving Around Other Axes</h3>
-    <p>
-      When revolving around a vertical line <span class="math">$x = c$</span>, the radius of the shell is <span class="math">$|x - c|$</span>:
-    </p>
-    <p class="math-display">
-      $$V = 2\pi \int_a^b |x - c| \cdot f(x) \, dx$$
-    </p>
-    <p>
-      When revolving around a horizontal line, use horizontal shells and integrate with respect to <span class="math">$y$</span>.
-    </p>
+    <div class="definition-box">
+      <strong>Definition: Shells Around Non-Standard Axes</strong>
+      <p>
+        When revolving around a vertical line <span class="math">$x = c$</span>, the radius of the shell is <span class="math">$|x - c|$</span>:
+      </p>
+      <p class="math-display">
+        $$V = 2\pi \int_a^b |x - c| \cdot f(x) \, dx$$
+      </p>
+      <p>
+        When revolving around a horizontal line, use horizontal shells and integrate with respect to <span class="math">$y$</span>.
+      </p>
+    </div>
 
-    <h3>Why Use Shells?</h3>
-    <p>
-      <strong>Shells are better than disks/washers when:</strong>
-    </p>
-    <ul>
-      <li>Inverting the function <span class="math">$y = f(x)$</span> to <span class="math">$x = f^{-1}(y)$</span> is difficult or impossible</li>
-      <li>The region is naturally described in terms of <span class="math">$x$</span> rather than <span class="math">$y$</span></li>
-      <li>Revolving around a vertical line (axis parallel to the y-axis)</li>
-    </ul>
+    <div class="tip-box">
+      <strong>💡 Pro Tip</strong>
+      <p>The shell method integrates the circumference $(2\pi r)$ times the height $(h)$ times an infinitesimal thickness $(dr)$. Think of "unrolling" a cylindrical shell to see it as a flat rectangle.</p>
+    </div>
+
   </section>
 
   <section id="method">
     <h2>Method: Setting Up Shell Integrals</h2>
-    <p>
-      <strong>Steps for Shell Method:</strong>
-    </p>
-    <ol>
-      <li>Identify the axis of revolution</li>
-      <li>Determine the bounds of integration (in the direction perpendicular to the axis)</li>
-      <li>Find the radius of a thin shell at position <span class="math">$x$</span>: <span class="math">$p(x)$</span></li>
-      <li>Find the height of the shell: <span class="math">$h(x) = f(x) - g(x)$</span> (or just <span class="math">$f(x)$</span> if one boundary is the axis)</li>
-      <li>Set up the integral: <span class="math">$V = 2\pi \int_a^b p(x) h(x) \, dx$</span></li>
-      <li>Evaluate</li>
-    </ol>
-    <p>
-      <strong>Key Formula:</strong> Circumference <span class="math">$\times$</span> Height <span class="math">$\times$</span> Thickness <span class="math">$= 2\pi r h \, dr$</span>
-    </p>
+
+    <div class="definition-box">
+      <strong>Steps for Shell Method</strong>
+      <ol>
+        <li><strong>Identify the axis of revolution</strong></li>
+        <li><strong>Determine the bounds</strong> of integration (in the direction perpendicular to the axis)</li>
+        <li><strong>Find the radius</strong> of a thin shell at position <span class="math">$x$</span>: <span class="math">$p(x)$</span> (distance to the axis)</li>
+        <li><strong>Find the height</strong> of the shell: <span class="math">$h(x) = f(x) - g(x)$</span> (or just <span class="math">$f(x)$</span> if one boundary is the axis)</li>
+        <li><strong>Set up the integral:</strong> <span class="math">$V = 2\pi \int_a^b p(x) h(x) \, dx$</span></li>
+        <li><strong>Evaluate</strong></li>
+      </ol>
+    </div>
+
+    <div class="definition-box">
+      <strong>Key Formula: Shell Volume</strong>
+      <p>
+        Volume of a thin shell:
+      </p>
+      <p class="math-display">
+        \text{Circumference} \times \text{Height} \times \text{Thickness} = 2\pi r h \, dr
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Common Mistake</strong>
+      <p>Don't confuse the radius $p(x)$ with the height $h(x)$. The radius is the distance from the axis of rotation to the shell, while the height is measured perpendicular to the axis. For rotation around the y-axis, the radius is typically $x$ and the height is $f(x) - g(x)$ or just $f(x)$.</p>
+    </div>
+
   </section>
 
   <section id="examples">
     <h2>Examples</h2>
 
-    <div class="example">
-      <h3>Example 1: Revolve $y = x^2$ From 0 to 2 About the y-axis</h3>
+    <div class="example-box">
+      <strong>Example 1: Revolve $y = x^2$ From 0 to 2 About the y-axis</strong>
       <p>
         Find the volume when the region under <span class="math">$y = x^2$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span> is revolved about the y-axis.
       </p>
-      <p><strong>Setup:</strong></p>
-      <p>
-        At position <span class="math">$x$</span>, the radius of the shell is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x^2$</span>.
-      </p>
-      <p class="math-display">
-        $$V = 2\pi \int_0^2 x \cdot x^2 \, dx = 2\pi \int_0^2 x^3 \, dx$$
-      </p>
-      <p><strong>Evaluation:</strong></p>
-      <p class="math-display">
-        $$V = 2\pi \left[\frac{x^4}{4}\right]_0^2 = 2\pi \cdot \frac{16}{4} = 8\pi$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Setup:</strong></p>
+        <p>
+          At position <span class="math">$x$</span>, the radius of the shell is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x^2$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^2 x \cdot x^2 \, dx = 2\pi \int_0^2 x^3 \, dx$$
+        </p>
+        <p><strong>Evaluation:</strong></p>
+        <p class="math-display">
+          $$V = 2\pi \left[\frac{x^4}{4}\right]_0^2 = 2\pi \cdot \frac{16}{4} = 8\pi$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 2: Revolve Region Between $y = x$ and $y = x^2$ About the y-axis</h3>
+    <div class="example-box">
+      <strong>Example 2: Revolve Region Between $y = x$ and $y = x^2$ About the y-axis</strong>
       <p>
         Find the volume when the region between <span class="math">$y = x$</span> (above) and <span class="math">$y = x^2$</span> (below) from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> is revolved about the y-axis.
       </p>
-      <p><strong>Setup:</strong></p>
-      <p>
-        At position <span class="math">$x$</span>, the radius is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x - x^2$</span>.
-      </p>
-      <p class="math-display">
-        $$V = 2\pi \int_0^1 x(x - x^2) \, dx = 2\pi \int_0^1 (x^2 - x^3) \, dx$$
-      </p>
-      <p><strong>Evaluation:</strong></p>
-      <p class="math-display">
-        $$V = 2\pi \left[\frac{x^3}{3} - \frac{x^4}{4}\right]_0^1 = 2\pi \left(\frac{1}{3} - \frac{1}{4}\right) = 2\pi \cdot \frac{1}{12} = \frac{\pi}{6}$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Setup:</strong></p>
+        <p>
+          At position <span class="math">$x$</span>, the radius is <span class="math">$p(x) = x$</span>, and the height is <span class="math">$h(x) = x - x^2$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^1 x(x - x^2) \, dx = 2\pi \int_0^1 (x^2 - x^3) \, dx$$
+        </p>
+        <p><strong>Evaluation:</strong></p>
+        <p class="math-display">
+          $$V = 2\pi \left[\frac{x^3}{3} - \frac{x^4}{4}\right]_0^1 = 2\pi \left(\frac{1}{3} - \frac{1}{4}\right) = 2\pi \cdot \frac{1}{12} = \frac{\pi}{6}$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 3: Revolve $y = x^2$ From 0 to 2 About $x = 3$</h3>
+    <div class="example-box">
+      <strong>Example 3: Revolve $y = x^2$ From 0 to 2 About $x = 3$</strong>
       <p>
         Find the volume when the region under <span class="math">$y = x^2$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 2$</span> is revolved about the vertical line <span class="math">$x = 3$</span>.
       </p>
-      <p><strong>Setup:</strong></p>
-      <p>
-        At position <span class="math">$x$</span>, the distance from the line <span class="math">$x = 3$</span> is <span class="math">$p(x) = 3 - x$</span> (since <span class="math">$0 \leq x \leq 2 < 3$</span>). The height is <span class="math">$h(x) = x^2$</span>.
-      </p>
-      <p class="math-display">
-        $$V = 2\pi \int_0^2 (3 - x) \cdot x^2 \, dx = 2\pi \int_0^2 (3x^2 - x^3) \, dx$$
-      </p>
-      <p><strong>Evaluation:</strong></p>
-      <p class="math-display">
-        $$V = 2\pi \left[x^3 - \frac{x^4}{4}\right]_0^2 = 2\pi \left(8 - 4\right) = 8\pi$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Setup:</strong></p>
+        <p>
+          At position <span class="math">$x$</span>, the distance from the line <span class="math">$x = 3$</span> is <span class="math">$p(x) = 3 - x$</span> (since <span class="math">$0 \leq x \leq 2 < 3$</span>). The height is <span class="math">$h(x) = x^2$</span>.
+        </p>
+        <p class="math-display">
+          $$V = 2\pi \int_0^2 (3 - x) \cdot x^2 \, dx = 2\pi \int_0^2 (3x^2 - x^3) \, dx$$
+        </p>
+        <p><strong>Evaluation:</strong></p>
+        <p class="math-display">
+          $$V = 2\pi \left[x^3 - \frac{x^4}{4}\right]_0^2 = 2\pi \left(8 - 4\right) = 8\pi$$
+        </p>
+      </div>
     </div>
 
   </section>
@@ -230,13 +276,17 @@
 
   <section id="practice">
     <h2>Practice Problems</h2>
-    <div class="practice-problem">
-      <h3>Problem 1</h3>
+
+    <div class="example-box">
+      <strong>Practice Problem 1</strong>
       <p>
         Find the volume of the solid obtained by revolving the region under <span class="math">$y = \sqrt{x}$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 4$</span> about the y-axis using the shell method.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           At position <span class="math">$x$</span>, radius is <span class="math">$x$</span> and height is <span class="math">$\sqrt{x}$</span>.
         </p>
@@ -244,16 +294,19 @@
           $$V = 2\pi \int_0^4 x \cdot \sqrt{x} \, dx = 2\pi \int_0^4 x^{3/2} \, dx$$
           $$= 2\pi \left[\frac{2}{5}x^{5/2}\right]_0^4 = 2\pi \cdot \frac{2}{5} \cdot 32 = \frac{128\pi}{5}$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 2</h3>
+    <div class="example-box">
+      <strong>Practice Problem 2</strong>
       <p>
         Find the volume obtained by revolving the region bounded by <span class="math">$y = 2 - x$</span>, <span class="math">$y = 0$</span>, and <span class="math">$x = 0$</span> about the y-axis.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           The line <span class="math">$y = 2 - x$</span> goes from <span class="math">$(0,2)$</span> to <span class="math">$(2,0)$</span>.
         </p>
@@ -264,16 +317,19 @@
           $$V = 2\pi \int_0^2 x(2 - x) \, dx = 2\pi \int_0^2 (2x - x^2) \, dx$$
           $$= 2\pi \left[x^2 - \frac{x^3}{3}\right]_0^2 = 2\pi \left(4 - \frac{8}{3}\right) = \frac{8\pi}{3}$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 3</h3>
+    <div class="example-box">
+      <strong>Practice Problem 3</strong>
       <p>
         Find the volume obtained by revolving the region under <span class="math">$y = e^x$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> about the y-axis.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           At position <span class="math">$x$</span>, radius is <span class="math">$x$</span> and height is <span class="math">$e^x$</span>.
         </p>
@@ -290,7 +346,7 @@
           $$V = 2\pi [e^x(x-1)]_0^1 = 2\pi [(e(1-1)) - (e^0(0-1))]$$
           $$= 2\pi [0 - (-1)] = 2\pi$$
         </p>
-      </details>
+      </div>
     </div>
 
   </section>
@@ -310,9 +366,20 @@
 <script src="course.js"></script>
 
 <script>
-  document.querySelectorAll('.math').forEach(function(el) {
-  });
-  document.querySelectorAll('.math-display').forEach(function(el) {
+  function toggleCollapsible(element) {
+    const content = element.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    const icon = element.querySelector('.toggle-icon');
+    icon.textContent = content.style.display === 'block' ? '▲' : '▼';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
   });
 </script>
 

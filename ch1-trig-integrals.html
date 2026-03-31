@@ -33,8 +33,24 @@
     <!-- Introduction Section -->
     <section id="intro">
       <h1>1.2 Trigonometric Integrals</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Evaluate integrals of products and powers of sine and cosine</li>
+          <li>Apply the odd power strategy using the Pythagorean identity</li>
+          <li>Apply the even power strategy using half-angle formulas</li>
+          <li>Integrate powers of tangent and secant functions</li>
+          <li>Combine trigonometric identities strategically to simplify integrals</li>
+        </ul>
+      </div>
+
       <p>Trigonometric integrals involve integrating products and powers of sine and cosine functions. While these may appear complicated, systematic techniques can transform them into manageable forms using trigonometric identities and substitution strategies.</p>
-      <p><strong>Key Strategy:</strong> Use parity of exponents (odd vs. even) and fundamental trigonometric identities to simplify the integrals.</p>
+
+      <div class="tip-box">
+        <strong>💡 Pro Tip</strong>
+        <p>The key to solving trigonometric integrals is recognizing the parity (odd vs. even) of the exponents. This determines which strategy to use and often makes the integral straightforward.</p>
+      </div>
     </section>
 
     <!-- Theory Section -->
@@ -42,57 +58,80 @@
       <h2>Theory & Identities</h2>
 
       <h3>Odd Power Strategy</h3>
-      <p>For integrals with odd powers of sine or cosine, factor out one function and use the Pythagorean identity:</p>
-      <div class="math-display">$$\sin^2 x + \cos^2 x = 1$$</div>
-      <p><strong>For odd powers of $\sin x$:</strong> Factor out $\sin x$ and convert even powers to cosine.</p>
-      <div class="math-display">$$\sin^{2k+1} x = \sin^{2k} x \cdot \sin x = (\sin^2 x)^k \sin x = (1 - \cos^2 x)^k \sin x$$</div>
-      <p><strong>For odd powers of $\cos x$:</strong> Factor out $\cos x$ and convert even powers to sine.</p>
-      <div class="math-display">$$\cos^{2k+1} x = \cos^{2k} x \cdot \cos x = (\cos^2 x)^k \cos x = (1 - \sin^2 x)^k \cos x$$</div>
+
+      <div class="definition-box">
+        <strong>Definition: Odd Power Factorization</strong>
+        <p>For integrals with odd powers of sine or cosine, factor out one function and use the Pythagorean identity:</p>
+        <p>$$\sin^2 x + \cos^2 x = 1$$</p>
+        <p><strong>For odd powers of $\sin x$:</strong> Factor out $\sin x$ and convert even powers to cosine.</p>
+        <div class="math-display">$$\sin^{2k+1} x = \sin^{2k} x \cdot \sin x = (\sin^2 x)^k \sin x = (1 - \cos^2 x)^k \sin x$$</div>
+        <p><strong>For odd powers of $\cos x$:</strong> Factor out $\cos x$ and convert even powers to sine.</p>
+        <div class="math-display">$$\cos^{2k+1} x = \cos^{2k} x \cdot \cos x = (\cos^2 x)^k \cos x = (1 - \sin^2 x)^k \cos x$$</div>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Common Mistake</strong>
+        <p>Don't try to use the odd power strategy when the integrand has only even powers. This will not yield a simple substitution! Always check the parity first before choosing your approach.</p>
+      </div>
 
       <h3>Even Power Strategy</h3>
-      <p>For integrals with even powers, use the half-angle formulas:</p>
-      <div class="math-display">$$\sin^2 x = \frac{1 - \cos 2x}{2}, \quad \cos^2 x = \frac{1 + \cos 2x}{2}$$</div>
-      <p>These formulas reduce the power of the trigonometric function, making the integral more tractable.</p>
+
+      <div class="definition-box">
+        <strong>Definition: Half-Angle Formulas</strong>
+        <p>For integrals with even powers, use the half-angle formulas to reduce the power:</p>
+        <p>$$\sin^2 x = \frac{1 - \cos 2x}{2}, \quad \cos^2 x = \frac{1 + \cos 2x}{2}$$</p>
+        <p>These formulas reduce the power of the trigonometric function, making the integral more tractable. Repeat as needed until all powers are reduced.</p>
+      </div>
 
       <h3>Products of Tangent and Secant</h3>
-      <p>For integrals of $\tan^m x \sec^n x$, use the identities:</p>
-      <div class="math-display">$$\sec^2 x = 1 + \tan^2 x, \quad \frac{d}{dx}[\tan x] = \sec^2 x, \quad \frac{d}{dx}[\sec x] = \sec x \tan x$$</div>
-      <p><strong>Strategy:</strong> If $n$ is even, factor out $\sec^2 x$ and convert. If $m$ is odd, factor out $\sec x \tan x$ and convert using $\sec^2 x = 1 + \tan^2 x$.</p>
+
+      <div class="definition-box">
+        <strong>Definition: Tangent-Secant Identities</strong>
+        <p>For integrals of $\tan^m x \sec^n x$, use the identities:</p>
+        <p>$$\sec^2 x = 1 + \tan^2 x, \quad \frac{d}{dx}[\tan x] = \sec^2 x, \quad \frac{d}{dx}[\sec x] = \sec x \tan x$$</p>
+        <p><strong>Strategy:</strong> If $n$ is even, factor out $\sec^2 x$ and convert. If $m$ is odd, factor out $\sec x \tan x$ and convert using $\sec^2 x = 1 + \tan^2 x$.</p>
+      </div>
     </section>
 
     <!-- Method Section -->
     <section id="method">
       <h2>Solution Methods</h2>
 
-      <h3>For $\int \sin^m x \cos^n x \, dx$ with at least one odd exponent:</h3>
-      <ol>
-        <li>If $m$ is odd: Factor as $\sin^m x = \sin^{m-1} x \sin x = (1 - \cos^2 x)^{(m-1)/2} \sin x$</li>
-        <li>Substitute $u = \cos x$, so $du = -\sin x \, dx$</li>
-        <li>The integral becomes a polynomial in $u$ (with no more trigonometry)</li>
-        <li>Integrate and substitute back</li>
-      </ol>
+      <div class="definition-box">
+        <strong>For $\int \sin^m x \cos^n x \, dx$ with at least one odd exponent:</strong>
+        <ol>
+          <li>If $m$ is odd: Factor as $\sin^m x = \sin^{m-1} x \sin x = (1 - \cos^2 x)^{(m-1)/2} \sin x$</li>
+          <li>Substitute $u = \cos x$, so $du = -\sin x \, dx$</li>
+          <li>The integral becomes a polynomial in $u$ (with no more trigonometry)</li>
+          <li>Integrate and substitute back</li>
+        </ol>
+      </div>
 
-      <h3>For $\int \sin^m x \cos^n x \, dx$ with both exponents even:</h3>
-      <ol>
-        <li>Use half-angle formulas: $\sin^2 x = \frac{1 - \cos 2x}{2}$ and $\cos^2 x = \frac{1 + \cos 2x}{2}$</li>
-        <li>Expand and simplify using products of cosines of multiples of $x$</li>
-        <li>Repeat until all exponents are reduced to one</li>
-        <li>Integrate directly</li>
-      </ol>
+      <div class="definition-box">
+        <strong>For $\int \sin^m x \cos^n x \, dx$ with both exponents even:</strong>
+        <ol>
+          <li>Use half-angle formulas: $\sin^2 x = \frac{1 - \cos 2x}{2}$ and $\cos^2 x = \frac{1 + \cos 2x}{2}$</li>
+          <li>Expand and simplify using products of cosines of multiples of $x$</li>
+          <li>Repeat until all exponents are reduced to one</li>
+          <li>Integrate directly</li>
+        </ol>
+      </div>
 
-      <h3>For $\int \tan^m x \sec^n x \, dx$:</h3>
-      <ol>
-        <li>If $n$ is even and positive: Factor out $\sec^2 x$, substitute $u = \tan x$</li>
-        <li>If $m$ is odd: Factor out $\sec x \tan x$, substitute $u = \sec x$</li>
-        <li>Convert remaining terms using $\sec^2 x = 1 + \tan^2 x$</li>
-      </ol>
+      <div class="definition-box">
+        <strong>For $\int \tan^m x \sec^n x \, dx$:</strong>
+        <ol>
+          <li>If $n$ is even and positive: Factor out $\sec^2 x$, substitute $u = \tan x$</li>
+          <li>If $m$ is odd: Factor out $\sec x \tan x$, substitute $u = \sec x$</li>
+          <li>Convert remaining terms using $\sec^2 x = 1 + \tan^2 x$</li>
+        </ol>
+      </div>
     </section>
 
     <!-- Examples Section -->
     <section id="examples">
       <h2>Worked Examples</h2>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 1: $\int \sin^3 x \cos^2 x \, dx$</h3>
         <p>The exponent of $\sin x$ is odd (3), so we use the odd power strategy.</p>
 
@@ -110,9 +149,17 @@
         <div class="math-display">$$= -\frac{\cos^3 x}{3} + \frac{\cos^5 x}{5} + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{\cos^5 x}{5} - \frac{\cos^3 x}{3} + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Solution Details</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This example shows the power of the odd exponent strategy. By factoring out a single sine and converting the remaining even power to cosine, we create a substitution that converts the entire trigonometric integral into an algebraic polynomial integral.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 2: $\int \sin^2 x \cos^2 x \, dx$</h3>
         <p>Both exponents are even, so we use the half-angle formulas.</p>
 
@@ -131,9 +178,17 @@
         <div class="math-display">$$= \frac{1}{8}\left(x - \frac{\sin 4x}{4}\right) + C = \frac{x}{8} - \frac{\sin 4x}{32} + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{x}{8} - \frac{\sin 4x}{32} + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Understanding the Pattern</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>Notice how we use the half-angle formulas twice. The first application reduces $\sin^2 x \cos^2 x$ to $\frac{1 - \cos^2 2x}{4}$, but we still have $\cos^2 2x$ (an even power). The second application of the formula finally reduces it to something we can integrate directly.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 3: $\int \tan^3 x \sec x \, dx$</h3>
         <p>The exponent of $\tan x$ is odd, so we factor out $\sec x \tan x$.</p>
 
@@ -151,13 +206,21 @@
         <div class="math-display">$$= \frac{\sec^3 x}{3} - \sec x + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{\sec^3 x}{3} - \sec x + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Tangent-Secant Strategy</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>For $\tan^m x \sec^n x$ integrals, recognizing the odd power of tangent allows us to factor out $\sec x \tan x$ (whose derivative, in the form $\frac{d}{dx}[\sec x]$, appears naturally). This creates the perfect substitution $u = \sec x$.</p>
+        </div>
       </div>
     </section>
 
     <!-- Visualizer Section -->
     <section id="visualizer">
       <h2>Interactive Visualizer</h2>
-      <p>Below are plots of $\sin^2 x$ and $\cos^2 x$, illustrating the periodic behavior used in even-power trigonometric integrals.</p>
+      <p>Below are plots of $\sin^2 x$ and $\cos^2 x$, illustrating the periodic behavior used in even-power trigonometric integrals. Notice how they are complementary—at any point where one peaks, the other is at a minimum.</p>
       <div id="plotly-chart" style="width:100%;height:500px;"></div>
       <script>
         var x = [];
@@ -200,40 +263,52 @@
     <section id="practice">
       <h2>Practice Problems</h2>
 
-      <div class="practice-problem">
-        <h3>Problem 1: $\int \sin^5 x \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 1: $\int \sin^5 x \, dx$</h3>
+        <p>This integral has an odd power of sine with no cosine factor.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Rewrite:</strong> $\sin^5 x = \sin^4 x \sin x = (1 - \cos^2 x)^2 \sin x$</p>
           <p><strong>Substitute:</strong> Let $u = \cos x$, $du = -\sin x \, dx$</p>
           <p><strong>Integral becomes:</strong> $\displaystyle -\int (1 - u^2)^2 \, du = -\int (1 - 2u^2 + u^4) \, du$</p>
           <p><strong>Integrate:</strong> $\displaystyle -\left(u - \frac{2u^3}{3} + \frac{u^5}{5}\right) + C$</p>
           <p><strong>Answer:</strong> $\displaystyle -\cos x + \frac{2\cos^3 x}{3} - \frac{\cos^5 x}{5} + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 2: $\int \cos^4 x \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 2: $\int \cos^4 x \, dx$</h3>
+        <p>This integral uses repeated applications of the half-angle formula.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Use half-angle formula:</strong> $\cos^2 x = \frac{1 + \cos 2x}{2}$</p>
           <p><strong>Square:</strong> $\cos^4 x = \left(\frac{1 + \cos 2x}{2}\right)^2 = \frac{1 + 2\cos 2x + \cos^2 2x}{4}$</p>
           <p><strong>Apply formula again:</strong> $\cos^2 2x = \frac{1 + \cos 4x}{2}$</p>
           <p><strong>Combine:</strong> $\cos^4 x = \frac{1}{4}\left(1 + 2\cos 2x + \frac{1 + \cos 4x}{2}\right) = \frac{3 + 4\cos 2x + \cos 4x}{8}$</p>
           <p><strong>Integrate:</strong> $\displaystyle \frac{3x}{8} + \frac{4\sin 2x}{16} + \frac{\sin 4x}{32} + C = \frac{3x}{8} + \frac{\sin 2x}{4} + \frac{\sin 4x}{32} + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 3: $\int \sin^2 x \sin 2x \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 3: $\int \sin^2 x \sin 2x \, dx$</h3>
+        <p>This combines the even power strategy with the double angle formula.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Use identity:</strong> $\sin 2x = 2\sin x \cos x$</p>
           <p><strong>Rewrite:</strong> $\int \sin^2 x \cdot 2\sin x \cos x \, dx = 2\int \sin^3 x \cos x \, dx$</p>
           <p><strong>Substitute:</strong> Let $u = \sin x$, $du = \cos x \, dx$</p>
           <p><strong>Integral becomes:</strong> $\displaystyle 2\int u^3 \, du = 2 \cdot \frac{u^4}{4} = \frac{u^4}{2} + C$</p>
           <p><strong>Answer:</strong> $\displaystyle \frac{\sin^4 x}{2} + C$</p>
-        </details>
+        </div>
       </div>
     </section>
   </main>
@@ -250,6 +325,14 @@
   <script src="course-config.js"></script>
   <script src="course.js"></script>
   <script>
+    function toggleCollapsible(element) {
+      element.classList.toggle('active');
+      const content = element.nextElementSibling;
+      if (content) {
+        content.classList.toggle('active');
+      }
+    }
+
     // Render math after page loads
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof renderMathInElement !== 'undefined') {

@@ -33,57 +33,84 @@
 
 <section id="intro">
   <h1>Chapter 6.2: Polar Coordinates</h1>
-  <p>
-    <strong>Polar coordinates</strong> provide an alternative way to describe points in the plane.
-    Instead of using rectangular coordinates $(x, y)$, we use polar coordinates $(r, \theta)$, where
-    $r$ is the distance from the origin and $\theta$ is the angle from the positive x-axis.
-  </p>
-  <p>
-    Polar coordinates are particularly useful for describing curves with radial symmetry (circles, spirals, roses, cardioids)
-    and for computing integrals in regions with circular or angular structure.
-  </p>
+
+  <div class="definition-box">
+    <strong>Learning Objectives</strong>
+    <ul>
+      <li>Understand polar coordinates and conversion between polar and rectangular forms</li>
+      <li>Recognize and sketch common polar curves (circles, cardioids, roses, spirals, lemniscates)</li>
+      <li>Find slopes of tangent lines to polar curves</li>
+      <li>Understand the advantages of polar coordinates for describing curves with radial symmetry</li>
+    </ul>
+  </div>
+
+  <div class="definition-box">
+    <strong>Definition: Polar Coordinates</strong>
+    <p>
+      <strong>Polar coordinates</strong> provide an alternative way to describe points in the plane.
+      Instead of using rectangular coordinates $(x, y)$, we use polar coordinates $(r, \theta)$, where
+      $r$ is the distance from the origin and $\theta$ is the angle from the positive x-axis.
+    </p>
+    <p>
+      Polar coordinates are particularly useful for describing curves with radial symmetry (circles, spirals, roses, cardioids)
+      and for computing integrals in regions with circular or angular structure.
+    </p>
+  </div>
 </section>
 
 <section id="theory">
   <h2>Theory</h2>
 
-  <h3>Converting Between Rectangular and Polar Coordinates</h3>
-  <p>
-    The conversion formulas are:
-    $$x = r\cos\theta, \quad y = r\sin\theta$$
-    $$r^2 = x^2 + y^2, \quad \tan\theta = \frac{y}{x}$$
-  </p>
-  <p>
-    Note that $r$ can be negative; $r < 0$ means the point is in the opposite direction of angle $\theta$.
-  </p>
+  <div class="theorem-box">
+    <strong>Theorem: Conversion Between Rectangular and Polar Coordinates</strong>
+    <p>
+      The conversion formulas are:
+      $$x = r\cos\theta, \quad y = r\sin\theta$$
+      $$r^2 = x^2 + y^2, \quad \tan\theta = \frac{y}{x}$$
+    </p>
+  </div>
 
-  <h3>Common Polar Curves</h3>
-  <p>
-    <strong>1. Circles:</strong> $r = a$ (circle of radius $a$ centered at origin)
-  </p>
-  <p>
-    <strong>2. Cardioid:</strong> $r = a(1 + \cos\theta)$ or $r = a(1 + \sin\theta)$
-  </p>
-  <p>
-    <strong>3. Rose curves:</strong> $r = a\cos(n\theta)$ or $r = a\sin(n\theta)$
-    (creates $n$ petals if $n$ is odd, $2n$ petals if $n$ is even)
-  </p>
-  <p>
-    <strong>4. Spiral:</strong> $r = a\theta$ (Archimedean spiral) or $r = ae^{b\theta}$ (logarithmic spiral)
-  </p>
-  <p>
-    <strong>5. Lemniscate:</strong> $r^2 = a^2\cos(2\theta)$
-  </p>
+  <div class="warning-box">
+    <strong>⚠️ Common Mistake</strong>
+    <p>Note that $r$ can be negative; $r < 0$ means the point is in the opposite direction of angle $\theta$. Don't forget to consider negative values of $r$ when sketching polar curves.</p>
+  </div>
 
-  <h3>Tangent Lines in Polar Coordinates</h3>
-  <p>
-    For a curve $r = f(\theta)$, the slope of the tangent line is:
-    $$\frac{dy}{dx} = \frac{r'\sin\theta + r\cos\theta}{r'\cos\theta - r\sin\theta}$$
-    where $r' = \frac{dr}{d\theta}$.
-  </p>
-  <p>
-    The tangent line is horizontal when the numerator is 0, and vertical when the denominator is 0.
-  </p>
+  <div class="definition-box">
+    <strong>Definition: Common Polar Curves</strong>
+    <p>
+      <strong>1. Circles:</strong> $r = a$ (circle of radius $a$ centered at origin)
+    </p>
+    <p>
+      <strong>2. Cardioid:</strong> $r = a(1 + \cos\theta)$ or $r = a(1 + \sin\theta)$
+    </p>
+    <p>
+      <strong>3. Rose curves:</strong> $r = a\cos(n\theta)$ or $r = a\sin(n\theta)$
+      (creates $n$ petals if $n$ is odd, $2n$ petals if $n$ is even)
+    </p>
+    <p>
+      <strong>4. Spiral:</strong> $r = a\theta$ (Archimedean spiral) or $r = ae^{b\theta}$ (logarithmic spiral)
+    </p>
+    <p>
+      <strong>5. Lemniscate:</strong> $r^2 = a^2\cos(2\theta)$
+    </p>
+  </div>
+
+  <div class="theorem-box">
+    <strong>Theorem: Tangent Lines in Polar Coordinates</strong>
+    <p>
+      For a curve $r = f(\theta)$, the slope of the tangent line is:
+      $$\frac{dy}{dx} = \frac{r'\sin\theta + r\cos\theta}{r'\cos\theta - r\sin\theta}$$
+      where $r' = \frac{dr}{d\theta}$.
+    </p>
+    <p>
+      The tangent line is horizontal when the numerator is 0, and vertical when the denominator is 0.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 Pro Tip</strong>
+    <p>When converting from polar to rectangular form, multiply by $r$ strategically to introduce $r^2 = x^2 + y^2$ or $r\sin\theta = y$ or $r\cos\theta = x$. This often simplifies the equation significantly.</p>
+  </div>
 </section>
 
 <section id="method">
@@ -113,58 +140,79 @@
 <section id="examples">
   <h2>Examples</h2>
 
-  <h3>Example 1: Convert $x^2 + y^2 = 4$ to Polar Form</h3>
-  <p><strong>Express the circle in polar coordinates.</strong></p>
+  <div class="example-box">
+    <strong>Example 1: Convert $x^2 + y^2 = 4$ to Polar Form</strong>
+    <p><strong>Express the circle in polar coordinates.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    Using $r^2 = x^2 + y^2$:
-    $$x^2 + y^2 = 4 \implies r^2 = 4 \implies r = 2$$
-  </p>
-  <p>
-    In polar form, this is simply <strong>$r = 2$</strong>, a circle of radius 2 centered at the origin.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        Using $r^2 = x^2 + y^2$:
+        $$x^2 + y^2 = 4 \implies r^2 = 4 \implies r = 2$$
+      </p>
+      <p>
+        In polar form, this is simply <strong>$r = 2$</strong>, a circle of radius 2 centered at the origin.
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 2: Sketch the Cardioid $r = 1 + \cos\theta$</h3>
-  <p><strong>Describe and sketch the curve.</strong></p>
+  <div class="example-box">
+    <strong>Example 2: Sketch the Cardioid $r = 1 + \cos\theta$</strong>
+    <p><strong>Describe and sketch the curve.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    Key values:
-    <ul>
-      <li>$\theta = 0$: $r = 1 + 1 = 2$</li>
-      <li>$\theta = \frac{\pi}{2}$: $r = 1 + 0 = 1$</li>
-      <li>$\theta = \pi$: $r = 1 - 1 = 0$ (cusps at origin)</li>
-      <li>$\theta = \frac{3\pi}{2}$: $r = 1 + 0 = 1$</li>
-      <li>$\theta = 2\pi$: $r = 1 + 1 = 2$</li>
-    </ul>
-  </p>
-  <p>
-    <strong>Symmetry:</strong> The curve is symmetric about the x-axis (since $\cos\theta$ is even).
-  </p>
-  <p>
-    <strong>Description:</strong> A heart-shaped curve (cardioid) with a cusp at the origin and maximum distance 2 from the origin
-    (at $\theta = 0$, the rightmost point).
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        Key values:
+        <ul>
+          <li>$\theta = 0$: $r = 1 + 1 = 2$</li>
+          <li>$\theta = \frac{\pi}{2}$: $r = 1 + 0 = 1$</li>
+          <li>$\theta = \pi$: $r = 1 - 1 = 0$ (cusps at origin)</li>
+          <li>$\theta = \frac{3\pi}{2}$: $r = 1 + 0 = 1$</li>
+          <li>$\theta = 2\pi$: $r = 1 + 1 = 2$</li>
+        </ul>
+      </p>
+      <p>
+        <strong>Symmetry:</strong> The curve is symmetric about the x-axis (since $\cos\theta$ is even).
+      </p>
+      <p>
+        <strong>Description:</strong> A heart-shaped curve (cardioid) with a cusp at the origin and maximum distance 2 from the origin
+        (at $\theta = 0$, the rightmost point).
+      </p>
+    </div>
+  </div>
 
-  <h3>Example 3: Sketch the Rose Curve $r = \cos(3\theta)$</h3>
-  <p><strong>Identify the curve and describe its shape.</strong></p>
+  <div class="example-box">
+    <strong>Example 3: Sketch the Rose Curve $r = \cos(3\theta)$</strong>
+    <p><strong>Identify the curve and describe its shape.</strong></p>
 
-  <p><em>Solution:</em></p>
-  <p>
-    The equation $r = \cos(n\theta)$ with $n = 3$ (odd) creates a rose curve with <strong>3 petals</strong>.
-  </p>
-  <p>
-    Key observations:
-    <ul>
-      <li>$r = 0$ when $\cos(3\theta) = 0$, i.e., $3\theta = \frac{\pi}{2}, \frac{3\pi}{2}, \frac{5\pi}{2}, \ldots$</li>
-      <li>Maximum $r = 1$ when $\cos(3\theta) = 1$, i.e., $\theta = 0, \frac{2\pi}{3}, \frac{4\pi}{3}$</li>
-      <li>The curve has 3 petals emanating from the origin at angles $\theta = 0, \frac{2\pi}{3}, \frac{4\pi}{3}$.</li>
-    </ul>
-  </p>
-  <p>
-    <strong>Symmetry:</strong> The curve has 3-fold rotational symmetry about the origin.
-  </p>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+      <p>
+        The equation $r = \cos(n\theta)$ with $n = 3$ (odd) creates a rose curve with <strong>3 petals</strong>.
+      </p>
+      <p>
+        Key observations:
+        <ul>
+          <li>$r = 0$ when $\cos(3\theta) = 0$, i.e., $3\theta = \frac{\pi}{2}, \frac{3\pi}{2}, \frac{5\pi}{2}, \ldots$</li>
+          <li>Maximum $r = 1$ when $\cos(3\theta) = 1$, i.e., $\theta = 0, \frac{2\pi}{3}, \frac{4\pi}{3}$</li>
+          <li>The curve has 3 petals emanating from the origin at angles $\theta = 0, \frac{2\pi}{3}, \frac{4\pi}{3}$.</li>
+        </ul>
+      </p>
+      <p>
+        <strong>Symmetry:</strong> The curve has 3-fold rotational symmetry about the origin.
+      </p>
+    </div>
+  </div>
 </section>
 
 <section id="visualizer">
@@ -182,13 +230,16 @@
 <section id="practice">
   <h2>Practice Problems</h2>
 
-  <div class="problem">
-    <h3>Problem 1</h3>
+  <div class="example-box">
+    <strong>Practice Problem 1</strong>
     <p>
       Convert the polar equation $r = 2\sin\theta$ to rectangular form.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         Starting with $r = 2\sin\theta$, multiply both sides by $r$:
         $$r^2 = 2r\sin\theta$$
@@ -205,16 +256,19 @@
       <p>
         <strong>This is a circle with center $(0, 1)$ and radius 1.</strong>
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 2</h3>
+  <div class="example-box">
+    <strong>Practice Problem 2</strong>
     <p>
       For the curve $r = 1 + 2\cos\theta$, find all points where $\frac{dy}{dx} = 0$ (horizontal tangents).
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         We have $r = 1 + 2\cos\theta$ and $r' = -2\sin\theta$.
       </p>
@@ -241,16 +295,19 @@
       <p>
         Find the corresponding $\theta$ values and compute the points $(r, \theta)$ and convert to $(x, y)$.
       </p>
-    </details>
+    </div>
   </div>
 
-  <div class="problem">
-    <h3>Problem 3</h3>
+  <div class="example-box">
+    <strong>Practice Problem 3</strong>
     <p>
       Sketch the curve $r = 2 - 2\cos\theta$ (a cardioid) and identify its key features.
     </p>
-    <details>
-      <summary>Solution</summary>
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <strong>Show Solution</strong>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
       <p>
         Key values:
         <ul>
@@ -269,7 +326,7 @@
           <li>Heart-shaped (cardioid) with cusp pointing left</li>
         </ul>
       </p>
-    </details>
+    </div>
   </div>
 
 </section>
@@ -288,6 +345,18 @@
 <script src="course-config.js"></script>
 <script src="course.js"></script>
 <script>
+// Collapsible toggle functionality
+function toggleCollapsible(element) {
+  var content = element.nextElementSibling;
+  if (content.style.display === 'block') {
+    content.style.display = 'none';
+    element.querySelector('.toggle-icon').textContent = '▼';
+  } else {
+    content.style.display = 'block';
+    element.querySelector('.toggle-icon').textContent = '▲';
+  }
+}
+
 // Plot cardioid and rose curves
 function plotPolarCurves() {
   var traces = [];
@@ -340,6 +409,18 @@ function plotPolarCurves() {
 }
 
 plotPolarCurves();
+</script>
+
+<script>
+// KaTeX rendering
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ]
+  });
+});
 </script>
 
 </body>

@@ -33,53 +33,85 @@
     <!-- Introduction Section -->
     <section id="intro">
       <h1>1.1 Integration by Parts</h1>
+
+      <div class="definition-box">
+        <strong>Learning Objectives</strong>
+        <ul>
+          <li>Understand the integration by parts formula and when to apply it</li>
+          <li>Master the LIATE rule for choosing $u$ and $dv$</li>
+          <li>Solve integrals involving products of functions, including repeated applications</li>
+          <li>Handle cyclic integration by parts (when the integral returns to itself)</li>
+        </ul>
+      </div>
+
       <p>Integration by parts is a powerful technique for finding antiderivatives of products of functions. It is derived from the product rule of differentiation and transforms difficult integrals into simpler ones.</p>
-      <p><strong>Key Formula:</strong></p>
-      <div class="math-display">$$\int u \, dv = uv - \int v \, du$$</div>
-      <p>This formula allows us to convert a complex product integral into a simpler form, often repeatedly, to evaluate integrals that would otherwise be impossible to solve directly.</p>
+
+      <div class="definition-box">
+        <strong>Definition: Integration by Parts Formula</strong>
+        <p>$$\int u \, dv = uv - \int v \, du$$</p>
+        <p>This formula allows us to convert a complex product integral into a simpler form, often repeatedly, to evaluate integrals that would otherwise be impossible to solve directly.</p>
+      </div>
     </section>
 
     <!-- Theory Section -->
     <section id="theory">
       <h2>Theory & Derivation</h2>
-      <p>Integration by parts is derived from the product rule of differentiation. Recall that:</p>
-      <div class="math-display">$$\frac{d}{dx}[uv] = u'v + uv'$$</div>
-      <p>Integrating both sides:</p>
-      <div class="math-display">$$uv = \int (u'v + uv') \, dx = \int u'v \, dx + \int uv' \, dx$$</div>
-      <p>Rearranging:</p>
-      <div class="math-display">$$\int uv' \, dx = uv - \int u'v \, dx$$</div>
-      <p>Substituting $du = u' \, dx$ and $dv = v' \, dx$, we get the integration by parts formula:</p>
-      <div class="math-display">$$\int u \, dv = uv - \int v \, du$$</div>
+
+      <div class="theorem-box">
+        <strong>Theorem: Product Rule to Integration by Parts</strong>
+        <p>Integration by parts is derived from the product rule of differentiation:</p>
+        <p>$$\frac{d}{dx}[uv] = u'v + uv'$$</p>
+        <p>Integrating both sides and rearranging yields:</p>
+        <p>$$\int u \, dv = uv - \int v \, du$$</p>
+      </div>
 
       <h3>Choosing $u$ and $dv$: The LIATE Rule</h3>
-      <p>When applying integration by parts, the choice of $u$ and $dv$ is crucial. Use the <strong>LIATE rule</strong> to decide which factor should be $u$:</p>
-      <ul>
-        <li><strong>L</strong> — Logarithmic functions (e.g., $\ln x$)</li>
-        <li><strong>I</strong> — Inverse trigonometric functions (e.g., $\arctan x$, $\arcsin x$)</li>
-        <li><strong>A</strong> — Algebraic functions (e.g., $x$, $x^2$)</li>
-        <li><strong>T</strong> — Trigonometric functions (e.g., $\sin x$, $\cos x$)</li>
-        <li><strong>E</strong> — Exponential functions (e.g., $e^x$)</li>
-      </ul>
-      <p>Choose $u$ to be the function that appears earliest in this list. The remaining factor is $dv$.</p>
+
+      <div class="definition-box">
+        <strong>Definition: LIATE Priority Rule</strong>
+        <p>When applying integration by parts, the choice of $u$ and $dv$ is crucial. Use the <strong>LIATE rule</strong> to decide which factor should be $u$:</p>
+        <ul>
+          <li><strong>L</strong> — Logarithmic functions (e.g., $\ln x$)</li>
+          <li><strong>I</strong> — Inverse trigonometric functions (e.g., $\arctan x$, $\arcsin x$)</li>
+          <li><strong>A</strong> — Algebraic functions (e.g., $x$, $x^2$)</li>
+          <li><strong>T</strong> — Trigonometric functions (e.g., $\sin x$, $\cos x$)</li>
+          <li><strong>E</strong> — Exponential functions (e.g., $e^x$)</li>
+        </ul>
+        <p>Choose $u$ to be the function that appears earliest in this list. The remaining factor is $dv$.</p>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 Pro Tip</strong>
+        <p>The LIATE rule works because it prioritizes functions that become simpler when differentiated (like logarithms and inverse trig functions) and reserves easily-integrable functions (like exponentials) for the $dv$ term.</p>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Common Mistake</strong>
+        <p>Don't forget to include the constant of integration $C$ only at the final step, not at intermediate stages. Also, when computing $v$ from $dv$, you integrate without adding a constant.</p>
+      </div>
     </section>
 
     <!-- Method Section -->
     <section id="method">
       <h2>Step-by-Step Method</h2>
-      <ol>
-        <li><strong>Choose $u$ and $dv$:</strong> Use the LIATE rule to select $u$ from the integrand. Let $dv$ be the remaining part.</li>
-        <li><strong>Compute $du$ and $v$:</strong> Differentiate $u$ to get $du$. Integrate $dv$ to get $v$ (without adding $C$).</li>
-        <li><strong>Apply the Formula:</strong> Substitute into $\int u \, dv = uv - \int v \, du$.</li>
-        <li><strong>Simplify:</strong> Evaluate $uv$ and simplify the new integral $\int v \, du$. This integral should be simpler than the original.</li>
-        <li><strong>Add the Constant of Integration:</strong> After fully evaluating, add $C$ to the final answer.</li>
-      </ol>
+
+      <div class="definition-box">
+        <strong>Integration by Parts Algorithm</strong>
+        <ol>
+          <li><strong>Choose $u$ and $dv$:</strong> Use the LIATE rule to select $u$ from the integrand. Let $dv$ be the remaining part.</li>
+          <li><strong>Compute $du$ and $v$:</strong> Differentiate $u$ to get $du$. Integrate $dv$ to get $v$ (without adding $C$).</li>
+          <li><strong>Apply the Formula:</strong> Substitute into $\int u \, dv = uv - \int v \, du$.</li>
+          <li><strong>Simplify:</strong> Evaluate $uv$ and simplify the new integral $\int v \, du$. This integral should be simpler than the original.</li>
+          <li><strong>Add the Constant of Integration:</strong> After fully evaluating, add $C$ to the final answer.</li>
+        </ol>
+      </div>
     </section>
 
     <!-- Examples Section -->
     <section id="examples">
       <h2>Worked Examples</h2>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 1: $\int x e^x \, dx$</h3>
         <p><strong>Step 1:</strong> Choose $u$ and $dv$</p>
         <p>By LIATE, algebraic functions come before exponential, so:</p>
@@ -95,10 +127,20 @@
         <div class="math-display">$$\int x e^x \, dx = x e^x - e^x + C = e^x(x - 1) + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{xe^x - e^x + C}$ or $\boxed{e^x(x-1) + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Full Solution Walkthrough</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This is a straightforward application of integration by parts with just one application of the formula.</p>
+          <p>Since $du = dx$ is simpler than $u = x$, and integrating $dv = e^x \, dx$ to get $v = e^x$ is elementary, we reduce the problem to computing $\int e^x \, dx = e^x$.</p>
+          <p>The final answer can be written as a product $e^x(x-1) + C$ by factoring out the common exponential term.</p>
+        </div>
       </div>
 
-      <div class="example">
-        <h3>Example 2: $\int x^2 \sin x \, dx$</h3>
+      <div class="example-box">
+        <h3>Example 2: $\int x^2 \sin x \, dx$ (Repeated Integration by Parts)</h3>
         <p>This requires integration by parts <strong>twice</strong>.</p>
 
         <p><strong>First Application:</strong></p>
@@ -117,9 +159,19 @@
         <div class="math-display">$$= -x^2 \cos x + 2x \sin x + 2\cos x + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{-x^2 \cos x + 2x \sin x + 2\cos x + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Solution Explanation</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>This example demonstrates how repeated applications of integration by parts are necessary when the original integrand contains higher powers of algebraic functions.</p>
+          <p>The first application reduces the power of $x$ from 2 to 1. The second application reduces it further to 0, yielding a simple trigonometric integral we can evaluate directly.</p>
+          <p>This systematic reduction is why the LIATE rule is so effective: it always prioritizes the term that decreases in complexity under differentiation.</p>
+        </div>
       </div>
 
-      <div class="example">
+      <div class="example-box">
         <h3>Example 3: $\int e^x \cos x \, dx$ (Cyclic Integration by Parts)</h3>
         <p>This integral returns to itself, creating a system we can solve.</p>
 
@@ -140,13 +192,23 @@
         <div class="math-display">$$I = \frac{e^x(\cos x + \sin x)}{2} + C$$</div>
 
         <p><strong>Answer:</strong> $\boxed{\frac{e^x(\cos x + \sin x)}{2} + C}$</p>
+
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Understanding Cyclic Integration</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <p>When integrating products of exponential and trigonometric functions, the integral often returns to a form proportional to itself after two applications of integration by parts.</p>
+          <p>Rather than continuing indefinitely, we solve algebraically: if $I$ represents our original integral and we derive an equation like $I = (\text{expression}) - I$, we can collect terms to get $2I = (\text{expression})$, then solve for $I$.</p>
+          <p>This technique is elegant and efficient for integrals that would otherwise seem circular.</p>
+        </div>
       </div>
     </section>
 
     <!-- Visualizer Section -->
     <section id="visualizer">
       <h2>Interactive Visualizer</h2>
-      <p>Below is a plot of $f(x) = xe^x - e^x$, which is the antiderivative from Example 1.</p>
+      <p>Below is a plot of $f(x) = xe^x - e^x$, which is the antiderivative from Example 1. Notice how the function decreases to a minimum around $x = 0$ and then increases.</p>
       <div id="plotly-chart" style="width:100%;height:500px;"></div>
       <script>
         var x = [];
@@ -179,21 +241,29 @@
     <section id="practice">
       <h2>Practice Problems</h2>
 
-      <div class="practice-problem">
-        <h3>Problem 1: $\int x \cos x \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 1: $\int x \cos x \, dx$</h3>
+        <p>Evaluate this integral using the standard integration by parts method.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Choose:</strong> $u = x$, $dv = \cos x \, dx$</p>
           <p><strong>Then:</strong> $du = dx$, $v = \sin x$</p>
           <p><strong>Apply:</strong> $\int x \cos x \, dx = x \sin x - \int \sin x \, dx$</p>
           <p><strong>Evaluate:</strong> $\int x \cos x \, dx = x \sin x + \cos x + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 2: $\int x^2 e^{2x} \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 2: $\int x^2 e^{2x} \, dx$</h3>
+        <p>This integral requires two applications of integration by parts.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>First Application:</strong> $u = x^2$, $dv = e^{2x} \, dx$</p>
           <p><strong>Then:</strong> $du = 2x \, dx$, $v = \frac{1}{2}e^{2x}$</p>
           <p><strong>Result:</strong> $\int x^2 e^{2x} \, dx = \frac{1}{2}x^2 e^{2x} - \int x e^{2x} \, dx$</p>
@@ -205,19 +275,23 @@
 
           <p><strong>Final Answer:</strong> $\displaystyle \int x^2 e^{2x} \, dx = \frac{1}{2}x^2 e^{2x} - \frac{1}{2}x e^{2x} + \frac{1}{4}e^{2x} + C$</p>
           <p style="font-size: 0.9em;">Or factored: $\displaystyle = \frac{e^{2x}}{4}(2x^2 - 2x + 1) + C$</p>
-        </details>
+        </div>
       </div>
 
-      <div class="practice-problem">
-        <h3>Problem 3: $\int \ln x \, dx$</h3>
-        <details>
-          <summary>Solution</summary>
+      <div class="example-box">
+        <h3>Practice Problem 3: $\int \ln x \, dx$</h3>
+        <p>This is a classic example where we treat the function cleverly with integration by parts.</p>
+        <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+          <strong>Show Solution</strong>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content">
           <p><strong>Choose:</strong> $u = \ln x$, $dv = dx$</p>
           <p><strong>Then:</strong> $du = \frac{1}{x} dx$, $v = x$</p>
           <p><strong>Apply:</strong> $\int \ln x \, dx = x \ln x - \int x \cdot \frac{1}{x} \, dx$</p>
           <p><strong>Evaluate:</strong> $\int \ln x \, dx = x \ln x - \int 1 \, dx = x \ln x - x + C$</p>
           <p><strong>Final Answer:</strong> $\boxed{x \ln x - x + C}$ or $\boxed{x(\ln x - 1) + C}$</p>
-        </details>
+        </div>
       </div>
     </section>
   </main>
@@ -234,6 +308,14 @@
   <script src="course-config.js"></script>
   <script src="course.js"></script>
   <script>
+    function toggleCollapsible(element) {
+      element.classList.toggle('active');
+      const content = element.nextElementSibling;
+      if (content) {
+        content.classList.toggle('active');
+      }
+    }
+
     // Render math after page loads
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof renderMathInElement !== 'undefined') {

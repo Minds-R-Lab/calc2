@@ -35,6 +35,18 @@
 
   <section id="intro">
     <h2>Introduction</h2>
+
+    <div class="definition-box">
+      <strong>Learning Objectives</strong>
+      <ul>
+        <li>Understand the arc length formula and its geometric interpretation</li>
+        <li>Calculate arc length for curves given as functions</li>
+        <li>Understand surface area of revolution conceptually</li>
+        <li>Apply the surface area formula for curves revolved around axes</li>
+        <li>Handle both vertical and horizontal axes of revolution</li>
+      </ul>
+    </div>
+
     <p>
       Beyond finding areas and volumes, we can use integration to find the length of a curve (arc length) and the area of a surface of revolution (surface area).
     </p>
@@ -46,150 +58,185 @@
   <section id="theory">
     <h2>Theory</h2>
 
-    <h3>Arc Length Formula</h3>
-    <p>
-      The length of the curve <span class="math">$y = f(x)$</span> from <span class="math">$x = a$</span> to <span class="math">$x = b$</span> is:
-    </p>
-    <p class="math-display">
-      $$L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$$
-    </p>
-    <p>
-      <strong>Derivation:</strong> A small arc segment has length <span class="math">$ds = \sqrt{(dx)^2 + (dy)^2} = \sqrt{1 + (dy/dx)^2} \, dx$</span>.
-    </p>
+    <div class="definition-box">
+      <strong>Definition: Arc Length Formula</strong>
+      <p>
+        The length of the curve <span class="math">$y = f(x)$</span> from <span class="math">$x = a$</span> to <span class="math">$x = b$</span> is:
+      </p>
+      <p class="math-display">
+        $$L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$$
+      </p>
+      <p>
+        <strong>Derivation:</strong> A small arc segment has length <span class="math">$ds = \sqrt{(dx)^2 + (dy)^2} = \sqrt{1 + (dy/dx)^2} \, dx$</span>.
+      </p>
+    </div>
 
-    <h3>Surface Area of Revolution Formula</h3>
-    <p>
-      When the curve <span class="math">$y = f(x)$</span> from <span class="math">$x = a$</span> to <span class="math">$x = b$</span> (with <span class="math">$f(x) \geq 0$</span>) is revolved around the x-axis, the surface area is:
-    </p>
-    <p class="math-display">
-      $$S = 2\pi \int_a^b f(x) \sqrt{1 + [f'(x)]^2} \, dx$$
-    </p>
-    <p>
-      <strong>Interpretation:</strong> The circumference of the circle at height <span class="math">$f(x)$</span> is <span class="math">$2\pi f(x)$</span>, and we multiply by the arc length element <span class="math">$ds$</span>.
-    </p>
+    <div class="definition-box">
+      <strong>Definition: Surface Area of Revolution (Around x-axis)</strong>
+      <p>
+        When the curve <span class="math">$y = f(x)$</span> from <span class="math">$x = a$</span> to <span class="math">$x = b$</span> (with <span class="math">$f(x) \geq 0$</span>) is revolved around the x-axis, the surface area is:
+      </p>
+      <p class="math-display">
+        $$S = 2\pi \int_a^b f(x) \sqrt{1 + [f'(x)]^2} \, dx$$
+      </p>
+      <p>
+        <strong>Interpretation:</strong> The circumference of the circle at height <span class="math">$f(x)$</span> is <span class="math">$2\pi f(x)$</span>, and we multiply by the arc length element <span class="math">$ds$</span>.
+      </p>
+    </div>
 
-    <h3>General Form</h3>
-    <p>
-      For a curve revolved around the y-axis:
-    </p>
-    <p class="math-display">
-      $$S = 2\pi \int_a^b x \sqrt{1 + [f'(x)]^2} \, dx$$
-    </p>
-    <p>
-      where <span class="math">$x$</span> is the distance from the y-axis.
-    </p>
+    <div class="definition-box">
+      <strong>Definition: Surface Area of Revolution (Around y-axis)</strong>
+      <p>
+        For a curve revolved around the y-axis:
+      </p>
+      <p class="math-display">
+        $$S = 2\pi \int_a^b x \sqrt{1 + [f'(x)]^2} \, dx$$
+      </p>
+      <p>
+        where <span class="math">$x$</span> is the distance from the y-axis.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Pro Tip</strong>
+      <p>The surface area formula is $2\pi \cdot (\text{distance from axis}) \cdot ds$. This is the circumference times the arc length element, which makes intuitive sense when you "unwrap" the surface.</p>
+    </div>
+
   </section>
 
   <section id="method">
     <h2>Method: Computing Arc Length and Surface Area</h2>
-    <p>
-      <strong>Steps for Arc Length:</strong>
-    </p>
-    <ol>
-      <li>Find the derivative <span class="math">$f'(x)$</span></li>
-      <li>Compute <span class="math">$[f'(x)]^2$</span></li>
-      <li>Form the integrand: <span class="math">$\sqrt{1 + [f'(x)]^2}$</span></li>
-      <li>Set up and evaluate <span class="math">$L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$</span></li>
-    </ol>
-    <p>
-      <strong>Note:</strong> Arc length integrals are often difficult to evaluate and may require numerical methods or special techniques.
-    </p>
-    <p>
-      <strong>Steps for Surface Area:</strong>
-    </p>
-    <ol>
-      <li>Find <span class="math">$f'(x)$</span> and compute the arc length element <span class="math">$\sqrt{1 + [f'(x)]^2}$</span></li>
-      <li>Determine the radius of revolution (distance from axis to curve)</li>
-      <li>Set up the integral: <span class="math">$S = 2\pi \int_a^b (\text{radius}) \sqrt{1 + [f'(x)]^2} \, dx$</span></li>
-      <li>Evaluate</li>
-    </ol>
+
+    <div class="definition-box">
+      <strong>Steps for Arc Length</strong>
+      <ol>
+        <li><strong>Find the derivative</strong> <span class="math">$f'(x)$</span></li>
+        <li><strong>Compute</strong> <span class="math">$[f'(x)]^2$</span></li>
+        <li><strong>Form the integrand:</strong> <span class="math">$\sqrt{1 + [f'(x)]^2}$</span></li>
+        <li><strong>Set up and evaluate</strong> <span class="math">$L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$</span></li>
+      </ol>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Common Mistake</strong>
+      <p>Arc length integrals are often difficult to evaluate and may require numerical methods or special techniques. Don't expect all arc length integrals to have nice closed forms. Sometimes they simplify to elementary functions by recognizing patterns like $1 + \tan^2 x = \sec^2 x$ or $1 + \sinh^2 x = \cosh^2 x$.</p>
+    </div>
+
+    <div class="definition-box">
+      <strong>Steps for Surface Area</strong>
+      <ol>
+        <li><strong>Find</strong> <span class="math">$f'(x)$</span> and compute the arc length element <span class="math">$\sqrt{1 + [f'(x)]^2}$</span></li>
+        <li><strong>Determine the radius</strong> of revolution (distance from axis to curve)</li>
+        <li><strong>Set up the integral:</strong> <span class="math">$S = 2\pi \int_a^b (\text{radius}) \sqrt{1 + [f'(x)]^2} \, dx$</span></li>
+        <li><strong>Evaluate</strong></li>
+      </ol>
+    </div>
+
   </section>
 
   <section id="examples">
     <h2>Examples</h2>
 
-    <div class="example">
-      <h3>Example 1: Arc Length of $y = x^{3/2}$ From 0 to 4</h3>
+    <div class="example-box">
+      <strong>Example 1: Arc Length of $y = x^{3/2}$ From 0 to 4</strong>
       <p>
         Find the arc length of the curve <span class="math">$y = x^{3/2}$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 4$</span>.
       </p>
-      <p><strong>Step 1: Find the derivative</strong></p>
-      <p class="math-display">
-        $$f'(x) = \frac{3}{2}x^{1/2}$$
-      </p>
-      <p><strong>Step 2: Compute the integrand</strong></p>
-      <p class="math-display">
-        $$[f'(x)]^2 = \frac{9}{4}x$$
-        $$1 + [f'(x)]^2 = 1 + \frac{9}{4}x = \frac{4 + 9x}{4}$$
-        $$\sqrt{1 + [f'(x)]^2} = \frac{\sqrt{4 + 9x}}{2}$$
-      </p>
-      <p><strong>Step 3: Set up and evaluate the integral</strong></p>
-      <p class="math-display">
-        $$L = \int_0^4 \frac{\sqrt{4 + 9x}}{2} \, dx$$
-      </p>
-      <p>
-        Let <span class="math">$u = 4 + 9x$</span>, so <span class="math">$du = 9 \, dx$</span> and <span class="math">$dx = \frac{du}{9}$</span>.
-        <br>
-        When <span class="math">$x = 0$</span>, <span class="math">$u = 4$</span>; when <span class="math">$x = 4$</span>, <span class="math">$u = 40$</span>.
-      </p>
-      <p class="math-display">
-        $$L = \int_4^{40} \frac{\sqrt{u}}{2} \cdot \frac{du}{9} = \frac{1}{18} \int_4^{40} u^{1/2} \, du$$
-        $$= \frac{1}{18} \left[\frac{2}{3}u^{3/2}\right]_4^{40} = \frac{1}{27}[u^{3/2}]_4^{40}$$
-        $$= \frac{1}{27}(40^{3/2} - 8) = \frac{1}{27}(40\sqrt{40} - 8)$$
-        $$= \frac{1}{27}(80\sqrt{10} - 8) = \frac{8(10\sqrt{10} - 1)}{27}$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find the derivative</strong></p>
+        <p class="math-display">
+          $$f'(x) = \frac{3}{2}x^{1/2}$$
+        </p>
+        <p><strong>Step 2: Compute the integrand</strong></p>
+        <p class="math-display">
+          $$[f'(x)]^2 = \frac{9}{4}x$$
+          $$1 + [f'(x)]^2 = 1 + \frac{9}{4}x = \frac{4 + 9x}{4}$$
+          $$\sqrt{1 + [f'(x)]^2} = \frac{\sqrt{4 + 9x}}{2}$$
+        </p>
+        <p><strong>Step 3: Set up and evaluate the integral</strong></p>
+        <p class="math-display">
+          $$L = \int_0^4 \frac{\sqrt{4 + 9x}}{2} \, dx$$
+        </p>
+        <p>
+          Let <span class="math">$u = 4 + 9x$</span>, so <span class="math">$du = 9 \, dx$</span> and <span class="math">$dx = \frac{du}{9}$</span>.
+          <br>
+          When <span class="math">$x = 0$</span>, <span class="math">$u = 4$</span>; when <span class="math">$x = 4$</span>, <span class="math">$u = 40$</span>.
+        </p>
+        <p class="math-display">
+          $$L = \int_4^{40} \frac{\sqrt{u}}{2} \cdot \frac{du}{9} = \frac{1}{18} \int_4^{40} u^{1/2} \, du$$
+          $$= \frac{1}{18} \left[\frac{2}{3}u^{3/2}\right]_4^{40} = \frac{1}{27}[u^{3/2}]_4^{40}$$
+          $$= \frac{1}{27}(40^{3/2} - 8) = \frac{1}{27}(40\sqrt{40} - 8)$$
+          $$= \frac{1}{27}(80\sqrt{10} - 8) = \frac{8(10\sqrt{10} - 1)}{27}$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 2: Arc Length of $y = \ln(\sec x)$ From 0 to $\pi/4$</h3>
+    <div class="example-box">
+      <strong>Example 2: Arc Length of $y = \ln(\sec x)$ From 0 to $\pi/4$</strong>
       <p>
         Find the arc length of <span class="math">$y = \ln(\sec x)$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = \pi/4$</span>.
       </p>
-      <p><strong>Step 1: Find the derivative</strong></p>
-      <p class="math-display">
-        $$f'(x) = \frac{1}{\sec x} \cdot \sec x \tan x = \tan x$$
-      </p>
-      <p><strong>Step 2: Compute the integrand</strong></p>
-      <p class="math-display">
-        $$[f'(x)]^2 = \tan^2 x$$
-        $$1 + [f'(x)]^2 = 1 + \tan^2 x = \sec^2 x$$
-        $$\sqrt{1 + [f'(x)]^2} = |\sec x| = \sec x \quad \text{(for } x \in [0, \pi/4]\text{)}$$
-      </p>
-      <p><strong>Step 3: Set up and evaluate</strong></p>
-      <p class="math-display">
-        $$L = \int_0^{\pi/4} \sec x \, dx = [\ln|\sec x + \tan x|]_0^{\pi/4}$$
-        $$= \ln(\sqrt{2} + 1) - \ln(1 + 0) = \ln(\sqrt{2} + 1)$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find the derivative</strong></p>
+        <p class="math-display">
+          $$f'(x) = \frac{1}{\sec x} \cdot \sec x \tan x = \tan x$$
+        </p>
+        <p><strong>Step 2: Compute the integrand</strong></p>
+        <p class="math-display">
+          $$[f'(x)]^2 = \tan^2 x$$
+          $$1 + [f'(x)]^2 = 1 + \tan^2 x = \sec^2 x$$
+          $$\sqrt{1 + [f'(x)]^2} = |\sec x| = \sec x \quad \text{(for } x \in [0, \pi/4]\text{)}$$
+        </p>
+        <p><strong>Step 3: Set up and evaluate</strong></p>
+        <p class="math-display">
+          $$L = \int_0^{\pi/4} \sec x \, dx = [\ln|\sec x + \tan x|]_0^{\pi/4}$$
+          $$= \ln(\sqrt{2} + 1) - \ln(1 + 0) = \ln(\sqrt{2} + 1)$$
+        </p>
+      </div>
     </div>
 
-    <div class="example">
-      <h3>Example 3: Surface Area of $y = \sqrt{x}$ From 0 to 1, Revolved About x-axis</h3>
+    <div class="example-box">
+      <strong>Example 3: Surface Area of $y = \sqrt{x}$ From 0 to 1, Revolved About x-axis</strong>
       <p>
         Find the surface area when <span class="math">$y = \sqrt{x}$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> is revolved about the x-axis.
       </p>
-      <p><strong>Step 1: Find the derivative</strong></p>
-      <p class="math-display">
-        $$f'(x) = \frac{1}{2\sqrt{x}}$$
-      </p>
-      <p><strong>Step 2: Compute the arc length element</strong></p>
-      <p class="math-display">
-        $$[f'(x)]^2 = \frac{1}{4x}$$
-        $$1 + [f'(x)]^2 = 1 + \frac{1}{4x} = \frac{4x + 1}{4x}$$
-        $$\sqrt{1 + [f'(x)]^2} = \frac{\sqrt{4x + 1}}{2\sqrt{x}}$$
-      </p>
-      <p><strong>Step 3: Set up and evaluate the surface area integral</strong></p>
-      <p class="math-display">
-        $$S = 2\pi \int_0^1 \sqrt{x} \cdot \frac{\sqrt{4x+1}}{2\sqrt{x}} \, dx = \pi \int_0^1 \sqrt{4x+1} \, dx$$
-      </p>
-      <p>
-        Let <span class="math">$u = 4x + 1$</span>, so <span class="math">$du = 4 \, dx$</span> and <span class="math">$dx = \frac{du}{4}$</span>.
-        <br>
-        When <span class="math">$x = 0$</span>, <span class="math">$u = 1$</span>; when <span class="math">$x = 1$</span>, <span class="math">$u = 5$</span>.
-      </p>
-      <p class="math-display">
-        $$S = \pi \int_1^5 \sqrt{u} \cdot \frac{du}{4} = \frac{\pi}{4} \left[\frac{2}{3}u^{3/2}\right]_1^5$$
-        $$= \frac{\pi}{6}[u^{3/2}]_1^5 = \frac{\pi}{6}(5\sqrt{5} - 1)$$
-      </p>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
+        <p><strong>Step 1: Find the derivative</strong></p>
+        <p class="math-display">
+          $$f'(x) = \frac{1}{2\sqrt{x}}$$
+        </p>
+        <p><strong>Step 2: Compute the arc length element</strong></p>
+        <p class="math-display">
+          $$[f'(x)]^2 = \frac{1}{4x}$$
+          $$1 + [f'(x)]^2 = 1 + \frac{1}{4x} = \frac{4x + 1}{4x}$$
+          $$\sqrt{1 + [f'(x)]^2} = \frac{\sqrt{4x + 1}}{2\sqrt{x}}$$
+        </p>
+        <p><strong>Step 3: Set up and evaluate the surface area integral</strong></p>
+        <p class="math-display">
+          $$S = 2\pi \int_0^1 \sqrt{x} \cdot \frac{\sqrt{4x+1}}{2\sqrt{x}} \, dx = \pi \int_0^1 \sqrt{4x+1} \, dx$$
+        </p>
+        <p>
+          Let <span class="math">$u = 4x + 1$</span>, so <span class="math">$du = 4 \, dx$</span> and <span class="math">$dx = \frac{du}{4}$</span>.
+          <br>
+          When <span class="math">$x = 0$</span>, <span class="math">$u = 1$</span>; when <span class="math">$x = 1$</span>, <span class="math">$u = 5$</span>.
+        </p>
+        <p class="math-display">
+          $$S = \pi \int_1^5 \sqrt{u} \cdot \frac{du}{4} = \frac{\pi}{4} \left[\frac{2}{3}u^{3/2}\right]_1^5$$
+          $$= \frac{\pi}{6}[u^{3/2}]_1^5 = \frac{\pi}{6}(5\sqrt{5} - 1)$$
+        </p>
+      </div>
     </div>
 
   </section>
@@ -249,13 +296,17 @@
 
   <section id="practice">
     <h2>Practice Problems</h2>
-    <div class="practice-problem">
-      <h3>Problem 1</h3>
+
+    <div class="example-box">
+      <strong>Practice Problem 1</strong>
       <p>
         Find the arc length of the curve <span class="math">$y = \frac{1}{3}(x^2 + 2)^{3/2}$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span>.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           First, find the derivative:
         </p>
@@ -276,16 +327,19 @@
         <p class="math-display">
           $$L = \int_0^1 (x^2 + 1) \, dx = \left[\frac{x^3}{3} + x\right]_0^1 = \frac{1}{3} + 1 = \frac{4}{3}$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 2</h3>
+    <div class="example-box">
+      <strong>Practice Problem 2</strong>
       <p>
         Find the surface area when <span class="math">$y = 3x$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span> is revolved about the x-axis.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           We have <span class="math">$f(x) = 3x$</span> and <span class="math">$f'(x) = 3$</span>.
         </p>
@@ -299,16 +353,19 @@
           $$S = 2\pi \int_0^1 3x \cdot \sqrt{10} \, dx = 6\pi\sqrt{10} \int_0^1 x \, dx$$
           $$= 6\pi\sqrt{10} \left[\frac{x^2}{2}\right]_0^1 = 3\pi\sqrt{10}$$
         </p>
-      </details>
+      </div>
     </div>
 
-    <div class="practice-problem">
-      <h3>Problem 3</h3>
+    <div class="example-box">
+      <strong>Practice Problem 3</strong>
       <p>
         Find the arc length of the curve <span class="math">$y = \cosh(x)$</span> from <span class="math">$x = 0$</span> to <span class="math">$x = 1$</span>.
       </p>
-      <details>
-        <summary>Solution</summary>
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <strong>Show Solution</strong>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content">
         <p>
           We have <span class="math">$f(x) = \cosh(x)$</span> and <span class="math">$f'(x) = \sinh(x)$</span>.
         </p>
@@ -324,7 +381,7 @@
         <p>
           Note: <span class="math">$\sinh(1) = \frac{e - e^{-1}}{2} \approx 1.175$</span>
         </p>
-      </details>
+      </div>
     </div>
 
   </section>
@@ -344,9 +401,20 @@
 <script src="course.js"></script>
 
 <script>
-  document.querySelectorAll('.math').forEach(function(el) {
-  });
-  document.querySelectorAll('.math-display').forEach(function(el) {
+  function toggleCollapsible(element) {
+    const content = element.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    const icon = element.querySelector('.toggle-icon');
+    icon.textContent = content.style.display === 'block' ? '▲' : '▼';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
   });
 </script>
 
