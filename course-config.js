@@ -26,7 +26,7 @@ const COURSE = {
   // ── Hero Stats ──
   stats: [
     { num: "7",    label: "Chapters" },
-    { num: "26",   label: "Topics" },
+    { num: "27",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -282,6 +282,14 @@ const COURSE = {
           description: "An interactive flowchart and wizard to help you choose the right convergence test for any series.",
           mathPreview: "\\sum a_n \\;\\to\\; \\text{which test?}",
           file: "ch4-decision-guide.html",
+        },
+        {
+          id: "ch4-study-tools",
+          title: "4.7 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 4 convergence tests.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch4-study-tools.html",
         },
       ],
     },
