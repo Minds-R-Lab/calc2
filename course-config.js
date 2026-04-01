@@ -26,7 +26,7 @@ const COURSE = {
   // ── Hero Stats ──
   stats: [
     { num: "7",    label: "Chapters" },
-    { num: "25",   label: "Topics" },
+    { num: "26",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -140,6 +140,14 @@ const COURSE = {
           description: "An interactive flowchart and wizard to help you choose the right integration technique for any problem.",
           mathPreview: "\\int f(x)\\,dx \\;\\to\\; \\text{which method?}",
           file: "ch1-decision-guide.html",
+        },
+        {
+          id: "ch1-study-tools",
+          title: "1.6 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 1 techniques.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch1-study-tools.html",
         },
       ],
     },

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 1 Study Tools — Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Tab System ── */
+    .tab-bar {
+      display: flex; gap: 0; background: #fff; border-radius: 14px 14px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      overflow-x: auto; margin-top: 1.5rem;
+    }
+    .tab-btn {
+      flex: 1; min-width: 140px; padding: 1rem 0.75rem; border: none; background: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .tab-btn:hover { background: var(--primary-light); color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+      background: linear-gradient(to bottom, var(--primary-light), #fff);
+    }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-panel {
+      display: none; background: #fff; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      padding: 2rem; min-height: 400px;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ── Formula Sheet ── */
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+    .formula-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+      background: linear-gradient(135deg, #f8fafc, #fff);
+      border-left: 4px solid var(--primary); transition: box-shadow 0.2s;
+    }
+    .formula-card:hover { box-shadow: var(--shadow-lg); }
+    .formula-card h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .formula-card .formula-main { font-size: 1.05rem; margin: 0.75rem 0; text-align: center; }
+    .formula-card .formula-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Step-by-Step Solver ── */
+    .solver-problem {
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border: 2px solid var(--primary); border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .solver-problem h4 { color: var(--primary); margin-bottom: 0.5rem; }
+    .step-list { list-style: none; padding: 0; }
+    .step-item {
+      display: flex; gap: 1rem; padding: 1rem; margin: 0.5rem 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; opacity: 0.3; transition: all 0.4s;
+      position: relative;
+    }
+    .step-item.revealed { opacity: 1; background: #f0fdf4; border-color: var(--success); }
+    .step-item.current { opacity: 1; background: #eff6ff; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.85rem; flex-shrink: 0;
+      background: var(--primary-light); color: var(--primary);
+    }
+    .step-item.revealed .step-num { background: var(--success-light); color: var(--success); }
+    .step-content { flex: 1; }
+    .step-math { margin: 0.5rem 0; }
+    .step-why {
+      display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 8px;
+      background: #fefce8; border: 1px solid var(--warning); font-size: 0.85rem;
+    }
+    .step-why.show { display: block; }
+    .why-btn {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid var(--warning); background: var(--warning-light);
+      color: var(--warning); cursor: pointer; font-weight: 600; margin-top: 0.4rem;
+    }
+    .why-btn:hover { background: var(--warning); color: #fff; }
+    .solver-controls { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .solver-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next { background: var(--primary); color: #fff; }
+    .btn-next:hover { background: var(--primary-dark); }
+    .btn-reset { background: var(--border); color: var(--text); }
+    .btn-reset:hover { background: #cbd5e1; }
+    .btn-reveal { background: var(--success); color: #fff; }
+    .btn-reveal:hover { background: #047857; }
+
+    /* ── Flashcards ── */
+    .flashcard-area { display: flex; flex-direction: column; align-items: center; }
+    .flashcard-container { perspective: 1000px; width: 100%; max-width: 550px; height: 320px; margin: 1.5rem 0; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s;
+      cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .flashcard-front {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff; font-size: 1.15rem;
+    }
+    .flashcard-front .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-front .card-prompt { font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
+    .flashcard-back {
+      background: #fff; border: 2px solid var(--primary);
+      transform: rotateY(180deg); color: var(--text); font-size: 1rem;
+    }
+    .flashcard-back .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-nav {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .flashcard-nav button {
+      padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .flashcard-nav button:hover { background: var(--primary-light); color: var(--primary); }
+    .card-counter { font-weight: 600; color: var(--text-muted); min-width: 80px; text-align: center; }
+    .confidence-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .confidence-btns button {
+      padding: 0.4rem 1rem; border-radius: 8px; border: none;
+      font-weight: 600; cursor: pointer; font-size: 0.8rem;
+    }
+    .conf-hard { background: #fee2e2; color: var(--danger); }
+    .conf-medium { background: #fef3c7; color: var(--warning); }
+    .conf-easy { background: #d1fae5; color: var(--success); }
+
+    /* ── Common Mistakes ── */
+    .mistake-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 1.5rem; background: #fff;
+    }
+    .mistake-header {
+      padding: 1rem 1.25rem; font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fff); border-bottom: 1px solid var(--border);
+      color: var(--danger);
+    }
+    .mistake-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .mistake-wrong, .mistake-right {
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .mistake-wrong {
+      border-color: var(--danger); background: #fef2f2;
+    }
+    .mistake-right {
+      border-color: var(--success); background: #f0fdf4;
+    }
+    .mistake-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mistake-wrong .mistake-label { color: var(--danger); }
+    .mistake-right .mistake-label { color: var(--success); }
+    .mistake-explain {
+      padding: 1rem 1.25rem; background: #fffbeb; border-top: 1px solid var(--border);
+      font-size: 0.9rem; color: #92400e;
+    }
+
+    /* ── ELI5 ── */
+    .eli5-section { margin-bottom: 2rem; }
+    .eli5-formal {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .eli5-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid var(--accent);
+      background: var(--accent-light); color: var(--accent);
+      cursor: pointer; font-weight: 600; font-size: 0.82rem; margin-top: 0.75rem;
+      transition: all 0.2s;
+    }
+    .eli5-toggle-btn:hover { background: var(--accent); color: #fff; }
+    .eli5-simple {
+      display: none; margin-top: 0.75rem; padding: 1.25rem; border-radius: 12px;
+      background: linear-gradient(135deg, #fdf4ff, #faf5ff);
+      border: 2px solid var(--accent); font-size: 0.95rem; line-height: 1.7;
+    }
+    .eli5-simple.show { display: block; }
+    .eli5-simple .eli5-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .eli5-analogy {
+      margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+      background: rgba(124,58,237,0.08); font-style: italic;
+    }
+
+    @media (max-width: 700px) {
+      .mistake-body { grid-template-columns: 1fr; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .tab-btn { min-width: 80px; font-size: 0.75rem; padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch1-by-parts.html">1.1 By Parts</a>
+    <a href="ch1-trig-integrals.html">1.2 Trig Int.</a>
+    <a href="ch1-trig-sub.html">1.3 Trig Sub</a>
+    <a href="ch1-partial-fractions.html">1.4 Partial Frac.</a>
+    <a href="ch1-decision-guide.html">1.5 Which?</a>
+    <a href="ch1-study-tools.html" class="active">1.6 Study</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 1: Study Tools</h1>
+  <p>Five powerful tools to master Integration Techniques. Use the tabs below to switch between tools.</p>
+
+  <!-- ════════════════ TAB BAR ════════════════ -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('formulas')" role="tab">
+      <span class="tab-icon">📋</span> Formula Sheet
+    </button>
+    <button class="tab-btn" onclick="switchTab('solver')" role="tab">
+      <span class="tab-icon">🧩</span> Step-by-Step
+    </button>
+    <button class="tab-btn" onclick="switchTab('flashcards')" role="tab">
+      <span class="tab-icon">🃏</span> Flashcards
+    </button>
+    <button class="tab-btn" onclick="switchTab('mistakes')" role="tab">
+      <span class="tab-icon">🚫</span> Common Mistakes
+    </button>
+    <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
+      <span class="tab-icon">💡</span> ELI5
+    </button>
+  </div>
+
+  <!-- ════════════════ TAB 1: FORMULA SHEET ════════════════ -->
+  <div id="tab-formulas" class="tab-panel active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;">Quick Reference: All Chapter 1 Formulas</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Everything you need on one page. Print-friendly — use Ctrl+P to save as PDF.</p>
+
+    <h3 style="color:var(--primary);margin-bottom:1rem;">1.1 Integration by Parts</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Core Formula</h4>
+        <div class="formula-main">$$\int u\, dv = uv - \int v\, du$$</div>
+        <div class="formula-note">Choose $u$ and $dv$ using the LIATE priority rule.</div>
+      </div>
+      <div class="formula-card">
+        <h4>LIATE Priority (choose $u$ first)</h4>
+        <div class="formula-main">$$\mathbf{L} \to \mathbf{I} \to \mathbf{A} \to \mathbf{T} \to \mathbf{E}$$</div>
+        <div class="formula-note"><strong>L</strong>ogarithmic, <strong>I</strong>nverse trig, <strong>A</strong>lgebraic, <strong>T</strong>rig, <strong>E</strong>xponential. Pick $u$ as the type that comes first.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Definite Integral Version</h4>
+        <div class="formula-main">$$\int_a^b u\, dv = \Big[uv\Big]_a^b - \int_a^b v\, du$$</div>
+        <div class="formula-note">Apply the boundary term $[uv]_a^b$ before evaluating the remaining integral.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Cyclic (Boomerang) Pattern</h4>
+        <div class="formula-main">$$I = f(x) - g(x) + I \;\Rightarrow\; I = \frac{f(x) - g(x)}{2} + C$$</div>
+        <div class="formula-note">When by-parts returns the original integral $I$, solve algebraically for $I$. Common with $e^x \sin x$, $e^x \cos x$.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">1.2 Trigonometric Integrals</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>$\sin^n x \cos^m x$ — odd power of $\sin$</h4>
+        <div class="formula-main">$$\text{Save one } \sin x, \text{ convert rest: } \sin^2 x = 1 - \cos^2 x$$</div>
+        <div class="formula-note">Substitute $u = \cos x$, $du = -\sin x\, dx$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\sin^n x \cos^m x$ — odd power of $\cos$</h4>
+        <div class="formula-main">$$\text{Save one } \cos x, \text{ convert rest: } \cos^2 x = 1 - \sin^2 x$$</div>
+        <div class="formula-note">Substitute $u = \sin x$, $du = \cos x\, dx$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\sin^n x \cos^m x$ — both even</h4>
+        <div class="formula-main">$$\sin^2 x = \tfrac{1 - \cos 2x}{2}, \quad \cos^2 x = \tfrac{1 + \cos 2x}{2}$$</div>
+        <div class="formula-note">Use half-angle identities to reduce powers. May need to apply repeatedly.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\tan^n x \sec^m x$ Strategy</h4>
+        <div class="formula-main">$$\sec^2 x = 1 + \tan^2 x, \quad \frac{d}{dx}\tan x = \sec^2 x$$</div>
+        <div class="formula-note">Even power of $\sec$: save $\sec^2 x$, convert rest to $\tan$. Odd power of $\tan$: save $\sec x \tan x$.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">1.3 Trigonometric Substitution</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>$\sqrt{a^2 - x^2}$</h4>
+        <div class="formula-main">$$x = a\sin\theta, \quad dx = a\cos\theta\, d\theta$$</div>
+        <div class="formula-note">Result: $\sqrt{a^2 - x^2} = a\cos\theta$. Use when you see $a^2 - x^2$ under a root.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\sqrt{a^2 + x^2}$</h4>
+        <div class="formula-main">$$x = a\tan\theta, \quad dx = a\sec^2\theta\, d\theta$$</div>
+        <div class="formula-note">Result: $\sqrt{a^2 + x^2} = a\sec\theta$. Common in arc-length and distance problems.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\sqrt{x^2 - a^2}$</h4>
+        <div class="formula-main">$$x = a\sec\theta, \quad dx = a\sec\theta\tan\theta\, d\theta$$</div>
+        <div class="formula-note">Result: $\sqrt{x^2 - a^2} = a\tan\theta$. Used with expressions like $\sqrt{x^2 - 9}$.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">1.4 Partial Fractions</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Distinct Linear Factors</h4>
+        <div class="formula-main">$$\frac{P(x)}{(x-a)(x-b)} = \frac{A}{x-a} + \frac{B}{x-b}$$</div>
+        <div class="formula-note">Each linear factor gets one constant. Use cover-up method: $A = P(a)/(a-b)$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Repeated Linear Factor</h4>
+        <div class="formula-main">$$\frac{P(x)}{(x-a)^3} = \frac{A}{x-a} + \frac{B}{(x-a)^2} + \frac{C}{(x-a)^3}$$</div>
+        <div class="formula-note">Repeated factor of multiplicity $k$ contributes $k$ terms with increasing powers.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Irreducible Quadratic Factor</h4>
+        <div class="formula-main">$$\frac{P(x)}{(x^2+bx+c)} = \frac{Ax+B}{x^2+bx+c}$$</div>
+        <div class="formula-note">Quadratic factor gets $Ax+B$ in numerator. Integrate by completing the square $\to$ arctan.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Key Integration Results</h4>
+        <div class="formula-main">$$\int \frac{dx}{x-a} = \ln|x-a|+C, \quad \int \frac{dx}{x^2+a^2} = \frac{1}{a}\arctan\frac{x}{a}+C$$</div>
+        <div class="formula-note">These are the building blocks after partial fraction decomposition.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 2: STEP-BY-STEP SOLVER ════════════════ -->
+  <div id="tab-solver" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Step-by-Step Problem Solver</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Click <strong>Next Step</strong> to reveal each step. Click <strong>Why?</strong> to understand the reasoning.</p>
+
+    <!-- Problem selector -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <button class="btn-next" onclick="loadProblem(0)" id="prob-btn-0" style="opacity:1">By Parts: $\int x^2 e^x\, dx$</button>
+      <button class="btn-reset" onclick="loadProblem(1)" id="prob-btn-1">Trig Sub: $\int \frac{dx}{\sqrt{9-x^2}}$</button>
+      <button class="btn-reset" onclick="loadProblem(2)" id="prob-btn-2">Partial Frac: $\int \frac{2x+1}{x^2-1}\, dx$</button>
+    </div>
+
+    <div id="solver-area"></div>
+  </div>
+
+  <!-- ════════════════ TAB 3: FLASHCARDS ════════════════ -->
+  <div id="tab-flashcards" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Flashcard Review</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Click the card to flip it. Rate your confidence to focus on weak areas.</p>
+
+    <div class="flashcard-area">
+      <div class="flashcard-nav">
+        <button onclick="prevCard()">&#9664; Prev</button>
+        <span class="card-counter" id="card-counter">1 / 15</span>
+        <button onclick="nextCard()">Next &#9654;</button>
+        <button onclick="shuffleCards()" style="background:var(--accent-light);color:var(--accent);">Shuffle</button>
+      </div>
+
+      <div class="flashcard-container" onclick="flipCard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front" id="card-front">
+            <span class="card-label">Question</span>
+            <div id="card-question"></div>
+            <div class="card-prompt">Click to reveal answer</div>
+          </div>
+          <div class="flashcard-face flashcard-back" id="card-back">
+            <span class="card-label">Answer</span>
+            <div id="card-answer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confidence-btns" id="confidence-btns" style="display:none;">
+        <span style="font-size:0.8rem;color:var(--text-muted);margin-right:0.5rem;">How well did you know this?</span>
+        <button class="conf-hard" onclick="rateCard('hard')">Hard</button>
+        <button class="conf-medium" onclick="rateCard('medium')">Medium</button>
+        <button class="conf-easy" onclick="rateCard('easy')">Easy</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:550px;margin-top:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem;">
+          <span id="hard-count">Hard: 0</span>
+          <span id="medium-count">Medium: 0</span>
+          <span id="easy-count">Easy: 0</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex;">
+          <div id="bar-hard" style="background:var(--danger);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-medium" style="background:var(--warning);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-easy" style="background:var(--success);width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: COMMON MISTAKES ════════════════ -->
+  <div id="tab-mistakes" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Common Mistakes Gallery</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Learn from the errors students make most often. Red = wrong, Green = correct.</p>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #1: Wrong LIATE choice in Integration by Parts</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $\int x \ln x\, dx$:</p>
+          <p>Let $u = x$, $dv = \ln x\, dx$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Problem: $\int \ln x\, dx$ is hard to integrate as $dv$!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>For $\int x \ln x\, dx$:</p>
+          <p>Let $u = \ln x$ (L before A), $dv = x\, dx$</p>
+          <p>Then $du = \frac{1}{x}dx$, $v = \frac{x^2}{2}$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> LIATE says Logarithmic before Algebraic. Always pick $u$ as the function that simplifies when differentiated.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #2: Forgetting to convert back from $\theta$ after trig substitution</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int \frac{dx}{\sqrt{4-x^2}}$ with $x = 2\sin\theta$:</p>
+          <p>$$= \theta + C$$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Final answer left in terms of $\theta$!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$= \theta + C = \arcsin\frac{x}{2} + C$$</p>
+          <p style="font-size:0.85rem;">Since $x = 2\sin\theta$, we get $\theta = \arcsin(x/2)$. Always convert back to $x$.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The original integral was in terms of $x$, so the answer must be too. Draw a reference triangle to convert back.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #3: Forgetting long division before partial fractions</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int \frac{x^3 + 1}{x^2 - 1}\, dx$</p>
+          <p>Directly decomposing $\frac{x^3+1}{(x-1)(x+1)} = \frac{A}{x-1} + \frac{B}{x+1}$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Degree of numerator $\geq$ denominator!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>First divide: $\frac{x^3+1}{x^2-1} = x + \frac{x+1}{x^2-1}$</p>
+          <p>Then decompose the proper fraction $\frac{x+1}{(x-1)(x+1)} = \frac{1}{x-1}$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Partial fractions only works on <em>proper</em> fractions (degree of numerator &lt; degree of denominator). Always check and do polynomial long division first.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #4: Wrong identity for even powers of sine/cosine</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int \sin^2 x\, dx$</p>
+          <p>Using $\sin^2 x = 1 - \cos^2 x$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">This just trades one even power for another — you're going in circles!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Using the half-angle identity:</p>
+          <p>$\sin^2 x = \frac{1 - \cos 2x}{2}$</p>
+          <p>$= \frac{x}{2} - \frac{\sin 2x}{4} + C$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The Pythagorean identity $\sin^2 x + \cos^2 x = 1$ doesn't reduce the power — it just shifts it. You need the <em>half-angle</em> (double-angle) identities to actually lower the degree.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #5: Dropping the absolute value in $\ln$</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$$\int \frac{dx}{x-3} = \ln(x-3) + C$$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Missing absolute value bars!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$\int \frac{dx}{x-3} = \ln|x-3| + C$$</p>
+          <p style="font-size:0.85rem;">The absolute value ensures the logarithm is defined for $x &lt; 3$ as well.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> $\ln(x)$ is only defined for $x > 0$, but $\frac{1}{x}$ exists for all $x \neq 0$. The absolute value extends the antiderivative to negative values.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ELI5 ════════════════ -->
+  <div id="tab-eli5" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Explain Like I'm 5</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Simple, intuitive explanations next to the formal definitions. Click the purple button to toggle.</p>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">1.1 Integration by Parts</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> If $u = f(x)$ and $v = g(x)$ are differentiable, then
+        $$\int u\, dv = uv - \int v\, du$$
+        This reverses the product rule: $d(uv) = u\, dv + v\, du$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🤝</span>
+        <strong>The simple version:</strong> Integration by parts is the <strong>product rule running backwards</strong>. When you have two functions multiplied together inside an integral, you pick one to differentiate (make simpler) and one to integrate. You're basically trading a hard integral for an easier one.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine you're trying to carry two heavy boxes at once. Integration by parts says: "Put down one box (differentiate $u$), pick up the other differently (integrate $dv$), and the job becomes easier." The LIATE rule tells you which box to put down first — always the one that gets lighter fastest when you set it down.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">1.2 Trigonometric Integrals</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> Integrals of the form $\int \sin^n x \cos^m x\, dx$ are solved using Pythagorean identities ($\sin^2 x + \cos^2 x = 1$) and half-angle formulas to reduce powers, combined with $u$-substitution.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎯</span>
+        <strong>The simple version:</strong> When you see powers of sin and cos multiplied together, your goal is simple: <strong>get everything in terms of one trig function</strong> so you can do a basic $u$-substitution.
+        <div class="eli5-analogy">
+          <strong>The recipe:</strong> Got an odd power? Great — peel off one copy (like peeling a banana), convert the rest using $\sin^2 + \cos^2 = 1$, then substitute. Both powers even? Use the half-angle trick to cut every power in half. It's like repeatedly breaking a problem in half until it's small enough to solve.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">1.3 Trigonometric Substitution</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> For integrands containing $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$, or $\sqrt{x^2 - a^2}$, substitute $x = a\sin\theta$, $x = a\tan\theta$, or $x = a\sec\theta$ respectively, using the Pythagorean identity to eliminate the radical.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🪄</span>
+        <strong>The simple version:</strong> Square roots with $x^2$ inside them are ugly. Trig substitution is a <strong>magic trick to make the square root disappear</strong>. You replace $x$ with a trig expression that, thanks to the Pythagorean theorem ($\sin^2 + \cos^2 = 1$), makes everything under the root simplify perfectly.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Think of $\sqrt{a^2 - x^2}$ as one side of a right triangle. When you say $x = a\sin\theta$, you're literally building a right triangle where the hypotenuse is $a$ and one leg is $x$. The remaining leg — the one you couldn't simplify — is automatically $a\cos\theta$. The square root was just the Pythagorean theorem in disguise!
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">1.4 Partial Fractions</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> Any proper rational function $P(x)/Q(x)$ (with $\deg P < \deg Q$) can be decomposed into a sum of simpler fractions whose denominators are the factors of $Q(x)$, each of which can be integrated individually.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🍕</span>
+        <strong>The simple version:</strong> Partial fractions is like <strong>un-adding fractions</strong>. In school, you learned to combine $\frac{1}{2} + \frac{1}{3} = \frac{5}{6}$. Now you're going backwards: given $\frac{5}{6}$, break it back into $\frac{1}{2} + \frac{1}{3}$. Why? Because each small piece is trivially easy to integrate — they all become $\ln$ or $\arctan$.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine a complicated fraction is a pizza that someone already cut and reassembled. You need to figure out the original slices. Each factor in the denominator tells you one slice shape. Once you find the pieces, integrating each one is like eating a single slice — easy!
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="main-footer"></footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  // Footer
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // KaTeX
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  });
+
+  // ── Tab System ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    // Re-render math in newly visible tab
+    renderMathInElement(document.getElementById('tab-' + name), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  // ── ELI5 Toggle ──
+  function toggleEli5(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('show');
+    btn.textContent = panel.classList.contains('show') ? '💡 Hide simple explanation' : '💡 Explain simply';
+  }
+
+  // ══════════════════════════════════════════════
+  // STEP-BY-STEP SOLVER
+  // ══════════════════════════════════════════════
+
+  const problems = [
+    {
+      title: 'Integration by Parts: $\\int x^2 e^x\\, dx$',
+      steps: [
+        { math: '\\text{Identify: product of Algebraic } (x^2) \\text{ and Exponential } (e^x)',
+          explain: 'LIATE says Algebraic comes before Exponential, so we choose $u = x^2$ (to differentiate) and $dv = e^x\\, dx$ (to integrate).' },
+        { math: 'u = x^2, \\quad dv = e^x\\, dx \\quad\\Rightarrow\\quad du = 2x\\, dx, \\quad v = e^x',
+          explain: 'Differentiating $u$ reduces the power from $x^2$ to $2x$, making it simpler. Integrating $dv = e^x\\, dx$ is easy since $e^x$ stays $e^x$.' },
+        { math: '\\int x^2 e^x\\, dx = x^2 e^x - \\int 2x e^x\\, dx',
+          explain: 'Applying the formula $\\int u\\, dv = uv - \\int v\\, du$. The new integral $\\int 2x e^x\\, dx$ still has $x \\cdot e^x$, so we need by-parts again.' },
+        { math: '\\text{Apply by-parts again: } u = 2x,\\; dv = e^x\\, dx \\;\\Rightarrow\\; du = 2\\, dx,\\; v = e^x',
+          explain: 'Same logic: differentiate the algebraic part ($2x \\to 2$) to make it even simpler.' },
+        { math: '\\int 2x e^x\\, dx = 2xe^x - \\int 2e^x\\, dx = 2xe^x - 2e^x',
+          explain: 'Now $\\int 2e^x\\, dx = 2e^x$ is immediate. No more by-parts needed!' },
+        { math: '\\boxed{\\int x^2 e^x\\, dx = x^2 e^x - 2xe^x + 2e^x + C = e^x(x^2 - 2x + 2) + C}',
+          explain: 'Substituting back and combining. Factor out $e^x$ for a clean final answer.' }
+      ]
+    },
+    {
+      title: 'Trig Substitution: $\\int \\frac{dx}{\\sqrt{9 - x^2}}$',
+      steps: [
+        { math: '\\text{Recognize the pattern: } \\sqrt{a^2 - x^2} \\text{ with } a = 3',
+          explain: 'The expression $\\sqrt{9 - x^2} = \\sqrt{3^2 - x^2}$ matches the $\\sqrt{a^2 - x^2}$ pattern, which calls for the substitution $x = a\\sin\\theta$.' },
+        { math: 'x = 3\\sin\\theta, \\quad dx = 3\\cos\\theta\\, d\\theta',
+          explain: 'We replace $x$ with $3\\sin\\theta$. Don\'t forget to also replace $dx$!' },
+        { math: '\\sqrt{9 - x^2} = \\sqrt{9 - 9\\sin^2\\theta} = 3\\sqrt{1 - \\sin^2\\theta} = 3\\cos\\theta',
+          explain: 'This is the magic moment: $1 - \\sin^2\\theta = \\cos^2\\theta$ (Pythagorean identity), so the square root simplifies completely.' },
+        { math: '\\int \\frac{3\\cos\\theta\\, d\\theta}{3\\cos\\theta} = \\int d\\theta = \\theta + C',
+          explain: 'Everything cancels beautifully, leaving the simplest possible integral.' },
+        { math: '\\boxed{\\theta = \\arcsin\\frac{x}{3}, \\quad\\text{so } \\int \\frac{dx}{\\sqrt{9-x^2}} = \\arcsin\\frac{x}{3} + C}',
+          explain: 'Convert back to $x$: since $x = 3\\sin\\theta$, we have $\\theta = \\arcsin(x/3)$. Always convert back!' }
+      ]
+    },
+    {
+      title: 'Partial Fractions: $\\int \\frac{2x+1}{x^2-1}\\, dx$',
+      steps: [
+        { math: '\\text{Factor the denominator: } x^2 - 1 = (x-1)(x+1)',
+          explain: 'Difference of squares. Always factor the denominator completely before decomposing.' },
+        { math: '\\frac{2x+1}{(x-1)(x+1)} = \\frac{A}{x-1} + \\frac{B}{x+1}',
+          explain: 'Two distinct linear factors means two constants $A$ and $B$ to find.' },
+        { math: '2x + 1 = A(x+1) + B(x-1)',
+          explain: 'Multiply both sides by $(x-1)(x+1)$ to clear the denominators.' },
+        { math: 'x = 1: \\quad 3 = 2A \\;\\Rightarrow\\; A = \\tfrac{3}{2}. \\quad x = -1: \\quad -1 = -2B \\;\\Rightarrow\\; B = \\tfrac{1}{2}',
+          explain: 'The cover-up method: plug in the roots of each factor to isolate each constant.' },
+        { math: '\\int \\frac{3/2}{x-1} + \\frac{1/2}{x+1}\\, dx = \\frac{3}{2}\\ln|x-1| + \\frac{1}{2}\\ln|x+1| + C',
+          explain: 'Each term is now a simple $\\int \\frac{k}{x-a}\\, dx = k\\ln|x-a|$ integral.' },
+        { math: '\\boxed{\\int \\frac{2x+1}{x^2-1}\\, dx = \\frac{3}{2}\\ln|x-1| + \\frac{1}{2}\\ln|x+1| + C}',
+          explain: 'Final answer. Don\'t forget the absolute value bars inside the logarithm!' }
+      ]
+    }
+  ];
+
+  let currentStep = -1;
+  let currentProblem = 0;
+
+  function loadProblem(idx) {
+    currentProblem = idx;
+    currentStep = -1;
+    document.querySelectorAll('[id^="prob-btn"]').forEach((b, i) => {
+      b.className = i === idx ? 'btn-next' : 'btn-reset';
+      b.style.opacity = i === idx ? '1' : '';
+    });
+
+    const p = problems[idx];
+    let html = '<div class="solver-problem"><h4>' + p.title + '</h4></div>';
+    html += '<ol class="step-list">';
+    p.steps.forEach((s, i) => {
+      html += '<li class="step-item" id="step-' + i + '">';
+      html += '<div class="step-num">' + (i + 1) + '</div>';
+      html += '<div class="step-content">';
+      html += '<div class="step-math">$$' + s.math + '$$</div>';
+      html += '<button class="why-btn" onclick="toggleWhy(' + i + ')">Why?</button>';
+      html += '<div class="step-why" id="why-' + i + '">' + s.explain + '</div>';
+      html += '</div></li>';
+    });
+    html += '</ol>';
+    html += '<div class="solver-controls">';
+    html += '<button class="btn-next" onclick="revealNext()">Next Step &#9654;</button>';
+    html += '<button class="btn-reveal" onclick="revealAll()">Reveal All</button>';
+    html += '<button class="btn-reset" onclick="loadProblem(' + idx + ')">Reset</button>';
+    html += '</div>';
+
+    document.getElementById('solver-area').innerHTML = html;
+    renderMathInElement(document.getElementById('solver-area'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function revealNext() {
+    const steps = document.querySelectorAll('.step-item');
+    if (currentStep >= 0 && currentStep < steps.length) {
+      steps[currentStep].classList.remove('current');
+      steps[currentStep].classList.add('revealed');
+    }
+    currentStep++;
+    if (currentStep < steps.length) {
+      steps[currentStep].classList.add('current');
+      steps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.step-item').forEach(s => {
+      s.classList.remove('current');
+      s.classList.add('revealed');
+    });
+    currentStep = problems[currentProblem].steps.length;
+  }
+
+  function toggleWhy(i) {
+    document.getElementById('why-' + i).classList.toggle('show');
+  }
+
+  // Load first problem on init
+  document.addEventListener('DOMContentLoaded', () => loadProblem(0));
+
+  // ══════════════════════════════════════════════
+  // FLASHCARDS
+  // ══════════════════════════════════════════════
+
+  const cards = [
+    { q: 'What is the integration by parts formula?', a: '$$\\int u\\, dv = uv - \\int v\\, du$$' },
+    { q: 'What does LIATE stand for?', a: '<strong>L</strong>ogarithmic, <strong>I</strong>nverse trig, <strong>A</strong>lgebraic, <strong>T</strong>rigonometric, <strong>E</strong>xponential<br><br>Choose $u$ as the type that appears earliest in this list.' },
+    { q: 'When you see $\\sqrt{a^2 - x^2}$, what substitution do you use?', a: '$$x = a\\sin\\theta, \\quad dx = a\\cos\\theta\\, d\\theta$$\n$$\\sqrt{a^2 - x^2} = a\\cos\\theta$$' },
+    { q: 'When you see $\\sqrt{a^2 + x^2}$, what substitution do you use?', a: '$$x = a\\tan\\theta, \\quad dx = a\\sec^2\\theta\\, d\\theta$$\n$$\\sqrt{a^2 + x^2} = a\\sec\\theta$$' },
+    { q: 'When you see $\\sqrt{x^2 - a^2}$, what substitution do you use?', a: '$$x = a\\sec\\theta, \\quad dx = a\\sec\\theta\\tan\\theta\\, d\\theta$$\n$$\\sqrt{x^2 - a^2} = a\\tan\\theta$$' },
+    { q: 'How do you integrate $\\sin^2 x$?', a: 'Use the half-angle identity:\n$$\\sin^2 x = \\frac{1 - \\cos 2x}{2}$$\n$$\\int \\sin^2 x\\, dx = \\frac{x}{2} - \\frac{\\sin 2x}{4} + C$$' },
+    { q: 'How do you handle $\\int \\sin^5 x \\cos^2 x\\, dx$?', a: 'Odd power of $\\sin$: save one $\\sin x$, convert rest using $\\sin^2 x = 1 - \\cos^2 x$, then $u = \\cos x$.' },
+    { q: 'What must you check before using partial fractions?', a: 'The fraction must be <strong>proper</strong>: degree of numerator $<$ degree of denominator.<br><br>If not, do <strong>polynomial long division</strong> first.' },
+    { q: 'What form does a repeated linear factor $(x - a)^3$ contribute?', a: '$$\\frac{A}{x-a} + \\frac{B}{(x-a)^2} + \\frac{C}{(x-a)^3}$$\nOne term for each power up to the multiplicity.' },
+    { q: 'What form does an irreducible quadratic $x^2 + bx + c$ contribute?', a: '$$\\frac{Ax + B}{x^2 + bx + c}$$\nNumerator is linear ($Ax + B$), not just a constant.' },
+    { q: 'What is $\\int \\frac{dx}{x^2 + a^2}$?', a: '$$\\frac{1}{a}\\arctan\\frac{x}{a} + C$$' },
+    { q: 'In the cyclic by-parts pattern, $I$ reappears. How do you solve?', a: 'If $I = f(x) + cI$, then solve algebraically:\n$$I(1 - c) = f(x) \\;\\Rightarrow\\; I = \\frac{f(x)}{1 - c} + C$$' },
+    { q: 'When is the shell method preferred over disk/washer?', a: 'When revolving around the <strong>y-axis</strong> but the function is easier to express as $y = f(x)$, or when disk/washer would require splitting into multiple integrals.' },
+    { q: 'What is the cover-up method for partial fractions?', a: 'To find $A$ in $\\frac{A}{x-a}$: multiply both sides by $(x-a)$ and set $x = a$. The other terms vanish, giving $A$ directly.' },
+    { q: 'For $\\int \\sec^3 x\\, dx$, what technique is needed?', a: 'Integration by parts with $u = \\sec x$, $dv = \\sec^2 x\\, dx$, plus the cyclic pattern:\n$$\\int \\sec^3 x\\, dx = \\frac{1}{2}(\\sec x \\tan x + \\ln|\\sec x + \\tan x|) + C$$' },
+  ];
+
+  let cardIdx = 0;
+  let cardRatings = new Array(cards.length).fill(null);
+
+  function renderCard() {
+    const card = cards[cardIdx];
+    document.getElementById('card-question').innerHTML = card.q;
+    document.getElementById('card-answer').innerHTML = card.a;
+    document.getElementById('card-counter').textContent = (cardIdx + 1) + ' / ' + cards.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('confidence-btns').style.display = 'none';
+
+    // Re-render math
+    renderMathInElement(document.getElementById('card-question'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    renderMathInElement(document.getElementById('card-answer'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function flipCard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+    if (document.getElementById('flashcard').classList.contains('flipped')) {
+      document.getElementById('confidence-btns').style.display = 'flex';
+    }
+  }
+
+  function nextCard() { cardIdx = (cardIdx + 1) % cards.length; renderCard(); }
+  function prevCard() { cardIdx = (cardIdx - 1 + cards.length) % cards.length; renderCard(); }
+
+  function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+      [cardRatings[i], cardRatings[j]] = [cardRatings[j], cardRatings[i]];
+    }
+    cardIdx = 0;
+    renderCard();
+  }
+
+  function rateCard(level) {
+    cardRatings[cardIdx] = level;
+    updateProgressBar();
+    nextCard();
+  }
+
+  function updateProgressBar() {
+    const h = cardRatings.filter(r => r === 'hard').length;
+    const m = cardRatings.filter(r => r === 'medium').length;
+    const e = cardRatings.filter(r => r === 'easy').length;
+    const total = cards.length;
+    document.getElementById('hard-count').textContent = 'Hard: ' + h;
+    document.getElementById('medium-count').textContent = 'Medium: ' + m;
+    document.getElementById('easy-count').textContent = 'Easy: ' + e;
+    document.getElementById('bar-hard').style.width = (h / total * 100) + '%';
+    document.getElementById('bar-medium').style.width = (m / total * 100) + '%';
+    document.getElementById('bar-easy').style.width = (e / total * 100) + '%';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCard);
+</script>
+
+</body>
+</html>
