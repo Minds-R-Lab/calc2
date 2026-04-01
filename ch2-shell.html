@@ -7,6 +7,7 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <title>Chapter 2.3: Shell Method</title>
   <link rel="stylesheet" href="styles.css">
   <style>
@@ -524,60 +525,149 @@
   });
 
   // ============================================================
-  // HELPER: Create a cylindrical surface trace (solid, not dots)
-  // Returns a Plotly surface trace for a cylinder from radius r,
-  // height 0..h, around the y-axis (displayed as z-axis up).
+  // THREE.JS 3D ENGINE — smooth solid rendering with orbit controls
   // ============================================================
 
-  function makeCylinderSurface(radius, height, color, name, opacity) {
-    const nTheta = 40;
-    const xs = [], ys = [], zs = [];
-    // Two rows: bottom (z=0) and top (z=height)
-    for (let h = 0; h <= 1; h++) {
-      const row_x = [], row_y = [], row_z = [];
-      for (let j = 0; j <= nTheta; j++) {
-        const theta = (j / nTheta) * 2 * Math.PI;
-        row_x.push(radius * Math.cos(theta));
-        row_y.push(radius * Math.sin(theta));
-        row_z.push(h * height);
-      }
-      xs.push(row_x); ys.push(row_y); zs.push(row_z);
+  function create3DView(containerId, opts) {
+    opts = opts || {};
+    const el = document.getElementById(containerId);
+    const w = el.clientWidth || parseInt(el.style.width) || 500;
+    const h = parseInt(el.style.height) || el.clientHeight || 500;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf8fafc);
+
+    const cam = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    el.innerHTML = '';
+    el.appendChild(renderer.domElement);
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+    const d1 = new THREE.DirectionalLight(0xffffff, 0.65);
+    d1.position.set(5, 8, 6); scene.add(d1);
+    const d2 = new THREE.DirectionalLight(0xffffff, 0.25);
+    d2.position.set(-4, 3, -5); scene.add(d2);
+
+    // Grid
+    const grid = new THREE.GridHelper(opts.gridSize || 6, opts.gridDiv || 6, 0xaaaaaa, 0xdddddd);
+    scene.add(grid);
+
+    // Axis lines (colored: red=x, green=y, blue=z)
+    const axes = new THREE.AxesHelper(opts.axesLen || 3);
+    scene.add(axes);
+
+    // Orbit camera state
+    const target = new THREE.Vector3(0, opts.lookY || 1.5, 0);
+    let theta = opts.theta || 0.7, phi = opts.phi || 1.0, dist = opts.dist || 8;
+    let dirty = true;
+
+    function positionCam() {
+      cam.position.set(
+        target.x + dist * Math.sin(phi) * Math.cos(theta),
+        target.y + dist * Math.cos(phi),
+        target.z + dist * Math.sin(phi) * Math.sin(theta)
+      );
+      cam.lookAt(target);
+      dirty = true;
     }
+    positionCam();
+
+    // Mouse / touch orbit
+    const cvs = renderer.domElement;
+    let drag = false, mx = 0, my = 0;
+    cvs.style.cursor = 'grab';
+    cvs.addEventListener('pointerdown', e => {
+      drag = true; mx = e.clientX; my = e.clientY;
+      cvs.setPointerCapture(e.pointerId);
+      cvs.style.cursor = 'grabbing';
+    });
+    cvs.addEventListener('pointermove', e => {
+      if (!drag) return;
+      theta -= (e.clientX - mx) * 0.008;
+      phi = Math.max(0.15, Math.min(2.95, phi + (e.clientY - my) * 0.008));
+      mx = e.clientX; my = e.clientY;
+      positionCam();
+    });
+    cvs.addEventListener('pointerup', e => {
+      drag = false; cvs.releasePointerCapture(e.pointerId);
+      cvs.style.cursor = 'grab';
+    });
+    cvs.addEventListener('wheel', e => {
+      e.preventDefault();
+      dist = Math.max(3, Math.min(25, dist + e.deltaY * 0.01));
+      positionCam();
+    }, { passive: false });
+
+    // Render loop (only when dirty)
+    const meshes = [];
+    (function loop() {
+      requestAnimationFrame(loop);
+      if (dirty) { renderer.render(scene, cam); dirty = false; }
+    })();
+
     return {
-      x: xs, y: ys, z: zs, type: 'surface',
-      colorscale: [[0, color], [1, color]],
-      showscale: false, opacity: opacity || 0.8,
-      name: name || '', hoverinfo: 'skip'
+      add(geom, mat) {
+        const m = new THREE.Mesh(geom, mat);
+        scene.add(m); meshes.push(m);
+        dirty = true; return m;
+      },
+      clear() {
+        meshes.forEach(m => { scene.remove(m); m.geometry.dispose(); m.material.dispose(); });
+        meshes.length = 0; dirty = true;
+      },
+      render() { dirty = true; }
     };
   }
 
-  // ============================================================
-  // VISUALIZATION 1: 3D Shell Builder (solid surfaces)
-  // ============================================================
+  // ---- Geometry helpers ----
 
-  function createSolidBackground() {
-    // Ghost surface of revolution for y = x^2 about y-axis
-    const nT = 30, nTheta = 40;
-    const xs = [], ys = [], zs = [];
-    for (let i = 0; i <= nT; i++) {
-      const t = (i / nT) * 2; // x from 0 to 2
-      const height = t * t;
-      const row_x = [], row_y = [], row_z = [];
-      for (let j = 0; j <= nTheta; j++) {
-        const theta = (j / nTheta) * 2 * Math.PI;
-        row_x.push(t * Math.cos(theta));
-        row_y.push(t * Math.sin(theta));
-        row_z.push(height);
-      }
-      xs.push(row_x); ys.push(row_y); zs.push(row_z);
-    }
-    return {
-      x: xs, y: ys, z: zs, type: 'surface',
-      colorscale: [[0, 'rgba(150,150,255,0.15)'], [1, 'rgba(150,150,255,0.15)']],
-      showscale: false, opacity: 0.15, name: 'Exact solid', hoverinfo: 'skip'
-    };
+  function shellGeom(innerR, outerR, height) {
+    const pts = [
+      new THREE.Vector2(Math.max(0.003, innerR), 0),
+      new THREE.Vector2(outerR, 0),
+      new THREE.Vector2(outerR, height),
+      new THREE.Vector2(Math.max(0.003, innerR), height)
+    ];
+    return new THREE.LatheGeometry(pts, 48);
   }
 
+  function diskGeom(radius, yPos, thickness) {
+    const pts = [
+      new THREE.Vector2(0.003, yPos),
+      new THREE.Vector2(Math.max(0.01, radius), yPos),
+      new THREE.Vector2(Math.max(0.01, radius), yPos + thickness),
+      new THREE.Vector2(0.003, yPos + thickness)
+    ];
+    return new THREE.LatheGeometry(pts, 48);
+  }
+
+  function paraboloidGhostGeom() {
+    const pts = [new THREE.Vector2(0.003, 0)];
+    pts.push(new THREE.Vector2(2, 0));
+    for (let i = 50; i >= 0; i--) {
+      pts.push(new THREE.Vector2(Math.max(0.003, (i / 50) * 2), Math.pow((i / 50) * 2, 2)));
+    }
+    return new THREE.LatheGeometry(pts, 64);
+  }
+
+  function mat(color, opacity) {
+    return new THREE.MeshPhongMaterial({
+      color: color, transparent: opacity < 0.99, opacity: opacity,
+      side: THREE.DoubleSide, shininess: 50,
+      depthWrite: opacity >= 0.5
+    });
+  }
+
+  function hslCol(h, s, l) { return new THREE.Color().setHSL(h / 360, s / 100, l / 100); }
+
+  // ============================================================
+  // VISUALIZATION 1: 3D Shell Builder
+  // ============================================================
+
+  let shellView = null;
   const shellSlider = document.getElementById('shell-slider');
   const shellCount = document.getElementById('shell-count');
   const approxVolume = document.getElementById('approx-volume');
@@ -587,209 +677,66 @@
     const n = parseInt(shellSlider.value);
     shellCount.textContent = n;
 
+    if (!shellView) {
+      shellView = create3DView('shell-3d', { lookY: 2, dist: 10, phi: 0.85, theta: 0.6, gridSize: 6, gridDiv: 6, axesLen: 2.5 });
+    }
+    shellView.clear();
+
+    // Ghost paraboloid
+    shellView.add(paraboloidGhostGeom(), mat(0x4466ff, 0.08));
+
     const a = 0, b = 2, dx = (b - a) / n;
-    const traces = [createSolidBackground()];
-    let totalVolume = 0;
-    const nTheta = 40;
+    let totalVol = 0;
 
     for (let i = 0; i < n; i++) {
       const x_i = a + (i + 0.5) * dx;
       const h_i = x_i * x_i;
-      const shellVol = 2 * Math.PI * x_i * h_i * dx;
-      totalVolume += shellVol;
-
+      totalVol += 2 * Math.PI * x_i * h_i * dx;
       const innerR = Math.max(0, x_i - dx / 2);
       const outerR = x_i + dx / 2;
-      const hue = (i * 360 / n);
-      const clr = 'hsl(' + hue + ',70%,55%)';
-
-      // Outer cylinder wall
-      const oxs = [], oys = [], ozs = [];
-      for (let h = 0; h <= 1; h++) {
-        const row_x = [], row_y = [], row_z = [];
-        for (let j = 0; j <= nTheta; j++) {
-          const theta = (j / nTheta) * 2 * Math.PI;
-          row_x.push(outerR * Math.cos(theta));
-          row_y.push(outerR * Math.sin(theta));
-          row_z.push(h * h_i);
-        }
-        oxs.push(row_x); oys.push(row_y); ozs.push(row_z);
-      }
-      traces.push({ x: oxs, y: oys, z: ozs, type: 'surface',
-        colorscale: [[0, clr], [1, clr]], showscale: false,
-        opacity: 0.8, name: 'Shell ' + (i+1), hoverinfo: 'skip' });
-
-      // Inner cylinder wall
-      if (innerR > 0.01) {
-        const ixs = [], iys = [], izs = [];
-        for (let h = 0; h <= 1; h++) {
-          const row_x = [], row_y = [], row_z = [];
-          for (let j = 0; j <= nTheta; j++) {
-            const theta = (j / nTheta) * 2 * Math.PI;
-            row_x.push(innerR * Math.cos(theta));
-            row_y.push(innerR * Math.sin(theta));
-            row_z.push(h * h_i);
-          }
-          ixs.push(row_x); iys.push(row_y); izs.push(row_z);
-        }
-        traces.push({ x: ixs, y: iys, z: izs, type: 'surface',
-          colorscale: [[0, clr], [1, clr]], showscale: false,
-          opacity: 0.6, name: '', hoverinfo: 'skip' });
-      }
-
-      // Top ring (annular cap)
-      const txs = [], tys = [], tzs = [];
-      for (let r = 0; r <= 1; r++) {
-        const row_x = [], row_y = [], row_z = [];
-        const rad = innerR + r * (outerR - innerR);
-        for (let j = 0; j <= nTheta; j++) {
-          const theta = (j / nTheta) * 2 * Math.PI;
-          row_x.push(rad * Math.cos(theta));
-          row_y.push(rad * Math.sin(theta));
-          row_z.push(h_i);
-        }
-        txs.push(row_x); tys.push(row_y); tzs.push(row_z);
-      }
-      traces.push({ x: txs, y: tys, z: tzs, type: 'surface',
-        colorscale: [[0, clr], [1, clr]], showscale: false,
-        opacity: 0.9, name: '', hoverinfo: 'skip' });
+      shellView.add(shellGeom(innerR, outerR, h_i), mat(hslCol(i * 360 / n, 72, 55), 0.88));
     }
 
-    const exactVol = 8 * Math.PI;
-    approxVolume.textContent = totalVolume.toFixed(2);
-    errorVolume.textContent = Math.abs(exactVol - totalVolume).toFixed(2);
-
-    const layout = {
-      title: 'Interactive 3D Shell Builder: y = x\u00B2 revolved about y-axis',
-      scene: {
-        xaxis: { title: 'x' }, yaxis: { title: 'y' },
-        zaxis: { title: 'height (y=x\u00B2)' },
-        camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
-        aspectmode: 'auto'
-      },
-      margin: { l: 0, r: 0, t: 40, b: 0 }
-    };
-
-    Plotly.newPlot('shell-3d', traces, layout, { responsive: true });
+    const exact = 8 * Math.PI;
+    approxVolume.textContent = totalVol.toFixed(2);
+    errorVolume.textContent = Math.abs(exact - totalVol).toFixed(2);
   }
 
   shellSlider.addEventListener('input', updateShellVisualization);
   updateShellVisualization();
 
   // ============================================================
-  // VISUALIZATION 2: Shell Unwrap (solid surfaces)
+  // VISUALIZATION 2: Shell Unwrap
   // ============================================================
 
   function createUnwrap3D() {
-    const r = 1.2;
-    const h = r * r;
-    const dr = 0.1;
-    const nTheta = 50;
-    const traces = [];
-
-    // Outer cylinder wall
-    const oxs = [], oys = [], ozs = [];
-    for (let i = 0; i <= 1; i++) {
-      const row_x = [], row_y = [], row_z = [];
-      for (let j = 0; j <= nTheta; j++) {
-        const theta = (j / nTheta) * 2 * Math.PI;
-        row_x.push((r + dr) * Math.cos(theta));
-        row_y.push((r + dr) * Math.sin(theta));
-        row_z.push(i * h);
-      }
-      oxs.push(row_x); oys.push(row_y); ozs.push(row_z);
-    }
-    traces.push({ x: oxs, y: oys, z: ozs, type: 'surface',
-      colorscale: [[0, 'rgb(0,120,215)'], [1, 'rgb(0,80,180)']],
-      showscale: false, opacity: 0.7, hoverinfo: 'skip' });
-
-    // Inner cylinder wall
-    const ixs = [], iys = [], izs = [];
-    for (let i = 0; i <= 1; i++) {
-      const row_x = [], row_y = [], row_z = [];
-      for (let j = 0; j <= nTheta; j++) {
-        const theta = (j / nTheta) * 2 * Math.PI;
-        row_x.push(r * Math.cos(theta));
-        row_y.push(r * Math.sin(theta));
-        row_z.push(i * h);
-      }
-      ixs.push(row_x); iys.push(row_y); izs.push(row_z);
-    }
-    traces.push({ x: ixs, y: iys, z: izs, type: 'surface',
-      colorscale: [[0, 'rgb(50,140,230)'], [1, 'rgb(30,100,200)']],
-      showscale: false, opacity: 0.6, hoverinfo: 'skip' });
-
-    // Top annular cap
-    const txs = [], tys = [], tzs = [];
-    for (let rr = 0; rr <= 1; rr++) {
-      const row_x = [], row_y = [], row_z = [];
-      const rad = r + rr * dr;
-      for (let j = 0; j <= nTheta; j++) {
-        const theta = (j / nTheta) * 2 * Math.PI;
-        row_x.push(rad * Math.cos(theta));
-        row_y.push(rad * Math.sin(theta));
-        row_z.push(h);
-      }
-      txs.push(row_x); tys.push(row_y); tzs.push(row_z);
-    }
-    traces.push({ x: txs, y: tys, z: tzs, type: 'surface',
-      colorscale: [[0, 'rgb(0,100,200)'], [1, 'rgb(0,80,180)']],
-      showscale: false, opacity: 0.85, hoverinfo: 'skip' });
-
-    const layout = {
-      title: '3D Cylindrical Shell at r = 1.2',
-      scene: {
-        xaxis: { title: 'x', range: [-2, 2] },
-        yaxis: { title: 'y', range: [-2, 2] },
-        zaxis: { title: 'height', range: [0, 2] },
-        camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } }
-      },
-      margin: { l: 0, r: 0, t: 30, b: 0 },
-      width: 400, height: 400
-    };
-
-    Plotly.newPlot('unwrap-3d', traces, layout, { responsive: false });
+    const view = create3DView('unwrap-3d', { lookY: 0.7, dist: 5, phi: 0.95, theta: 0.5, gridSize: 4, gridDiv: 4, axesLen: 1.5 });
+    view.add(shellGeom(1.2, 1.3, 1.44), mat(0x0066cc, 0.88));
   }
 
   function createUnwrapFlat() {
-    const r = 1.2;
-    const h = r * r;
-    const dr = 0.1;
-    const circumference = 2 * Math.PI * r;
-
-    const trace = {
-      x: [0, circumference, circumference, 0, 0],
-      y: [0, 0, h, h, 0],
-      mode: 'lines',
-      line: { color: 'rgb(0, 102, 204)', width: 3 },
-      fill: 'toself',
-      fillcolor: 'rgba(0, 102, 204, 0.3)',
-      name: 'Unwrapped Shell',
-      hoverinfo: 'text',
-      text: ['', 'Width = 2\u03C0r', '', 'Height h', '']
-    };
-
-    const layout = {
-      title: 'Unwrapped Rectangle: Width = 2\u03C0r, Height = h',
-      xaxis: { title: 'Width = 2\u03C0r \u2248 ' + circumference.toFixed(2), range: [-0.5, 8.5] },
+    const r = 1.2, h = r * r, dr = 0.1, circ = 2 * Math.PI * r;
+    Plotly.newPlot('unwrap-flat', [{
+      x: [0, circ, circ, 0, 0], y: [0, 0, h, h, 0],
+      mode: 'lines', line: { color: 'rgb(0,102,204)', width: 3 },
+      fill: 'toself', fillcolor: 'rgba(0,102,204,0.25)', hoverinfo: 'skip'
+    }], {
+      title: 'Unwrapped: Width = 2\u03C0r, Height = h',
+      xaxis: { title: 'Width = 2\u03C0r \u2248 ' + circ.toFixed(2), range: [-0.5, 8.5] },
       yaxis: { title: 'Height = h \u2248 ' + h.toFixed(2), range: [-0.2, 2] },
-      margin: { l: 60, r: 30, t: 40, b: 60 },
-      width: 400, height: 300,
+      margin: { l: 60, r: 30, t: 40, b: 60 }, width: 400, height: 300,
       annotations: [{
-        x: circumference / 2, y: h / 2,
-        text: 'Area = 2\u03C0rh \u2248 ' + (circumference * h).toFixed(2),
-        showarrow: false, font: { size: 14, color: 'rgb(0,80,180)' },
-        bgcolor: 'rgba(255,255,255,0.8)'
+        x: circ / 2, y: h / 2,
+        text: 'Area = 2\u03C0rh \u2248 ' + (circ * h).toFixed(2),
+        showarrow: false, font: { size: 14, color: '#0055aa' },
+        bgcolor: 'rgba(255,255,255,0.85)'
       }, {
-        x: circumference + 0.4, y: h / 2,
-        text: '\u0394r = ' + dr.toFixed(2),
+        x: circ + 0.4, y: h / 2, text: '\u0394r = 0.10',
         showarrow: true, arrowhead: 2, arrowwidth: 2, arrowcolor: 'red',
-        ax: 40, ay: 0, bgcolor: 'rgba(255,255,255,0.8)',
+        ax: 40, ay: 0, bgcolor: 'rgba(255,255,255,0.85)',
         bordercolor: 'red', borderwidth: 1
       }]
-    };
-
-    Plotly.newPlot('unwrap-flat', [trace], layout, { responsive: false });
+    }, { responsive: false });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -798,9 +745,10 @@
   });
 
   // ============================================================
-  // VISUALIZATION 3: Shell vs Disk Comparison (solid surfaces)
+  // VISUALIZATION 3: Shell vs Disk Comparison
   // ============================================================
 
+  let shellCompView = null, diskCompView = null;
   const comparisonSlider = document.getElementById('comparison-slider');
   const comparisonCount = document.getElementById('comparison-count');
   const comparisonShellVol = document.getElementById('comparison-shell-vol');
@@ -809,136 +757,39 @@
   function updateComparisonVisualization() {
     const n = parseInt(comparisonSlider.value);
     comparisonCount.textContent = n;
-    updateShellComparison(n);
-    updateDiskComparison(n);
-  }
 
-  function updateShellComparison(n) {
+    // --- Shell side ---
+    if (!shellCompView) {
+      shellCompView = create3DView('comparison-shells', { lookY: 2, dist: 10, phi: 0.85, theta: 0.6, gridSize: 6, gridDiv: 6, axesLen: 2.5 });
+    }
+    shellCompView.clear();
+
     const a = 0, b = 2, dx = (b - a) / n;
-    const traces = [];
-    let totalVolume = 0;
-    const nTheta = 36;
-
+    let sVol = 0;
     for (let i = 0; i < n; i++) {
       const x_i = a + (i + 0.5) * dx;
       const h_i = x_i * x_i;
-      totalVolume += 2 * Math.PI * x_i * h_i * dx;
-
+      sVol += 2 * Math.PI * x_i * h_i * dx;
       const innerR = Math.max(0, x_i - dx / 2);
-      const outerR = x_i + dx / 2;
-      const hue = (i * 360 / n);
-      const clr = 'hsl(' + hue + ',70%,55%)';
-
-      // Outer wall
-      const oxs = [], oys = [], ozs = [];
-      for (let h = 0; h <= 1; h++) {
-        const rx = [], ry = [], rz = [];
-        for (let j = 0; j <= nTheta; j++) {
-          const t = (j / nTheta) * 2 * Math.PI;
-          rx.push(outerR * Math.cos(t));
-          ry.push(outerR * Math.sin(t));
-          rz.push(h * h_i);
-        }
-        oxs.push(rx); oys.push(ry); ozs.push(rz);
-      }
-      traces.push({ x: oxs, y: oys, z: ozs, type: 'surface',
-        colorscale: [[0, clr], [1, clr]], showscale: false,
-        opacity: 0.75, hoverinfo: 'skip' });
-
-      // Top cap
-      const txs = [], tys = [], tzs = [];
-      for (let rr = 0; rr <= 1; rr++) {
-        const rx = [], ry = [], rz = [];
-        const rad = innerR + rr * (outerR - innerR);
-        for (let j = 0; j <= nTheta; j++) {
-          const t = (j / nTheta) * 2 * Math.PI;
-          rx.push(rad * Math.cos(t));
-          ry.push(rad * Math.sin(t));
-          rz.push(h_i);
-        }
-        txs.push(rx); tys.push(ry); tzs.push(rz);
-      }
-      traces.push({ x: txs, y: tys, z: tzs, type: 'surface',
-        colorscale: [[0, clr], [1, clr]], showscale: false,
-        opacity: 0.85, hoverinfo: 'skip' });
+      shellCompView.add(shellGeom(innerR, x_i + dx / 2, h_i), mat(hslCol(i * 360 / n, 72, 55), 0.82));
     }
+    comparisonShellVol.textContent = sVol.toFixed(2);
 
-    comparisonShellVol.textContent = totalVolume.toFixed(2);
+    // --- Disk side ---
+    if (!diskCompView) {
+      diskCompView = create3DView('comparison-disks', { lookY: 2, dist: 10, phi: 0.85, theta: 0.6, gridSize: 6, gridDiv: 6, axesLen: 2.5 });
+    }
+    diskCompView.clear();
 
-    Plotly.newPlot('comparison-shells', traces, {
-      title: 'Shell Method (n = ' + n + ')',
-      scene: {
-        xaxis: { title: 'x' }, yaxis: { title: 'y' },
-        zaxis: { title: 'height' },
-        camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
-        aspectmode: 'auto'
-      },
-      margin: { l: 0, r: 0, t: 40, b: 0 }
-    }, { responsive: true });
-  }
-
-  function updateDiskComparison(n) {
     const c = 0, d = 4, dy = (d - c) / n;
-    const traces = [];
-    let totalVolume = 0;
-    const nTheta = 36;
-
+    let dVol = 0;
     for (let i = 0; i < n; i++) {
-      const y_i = c + i * dy; // left-endpoint for visible convergence
+      const y_i = c + i * dy;
       const radius = Math.sqrt(y_i);
-      totalVolume += Math.PI * radius * radius * dy;
-
-      const hue = (i * 360 / n);
-      const clr = 'hsl(' + hue + ',70%,55%)';
-
-      // Disk as a surface: two rings at z=y_i and z=y_i+dy
-      const xs = [], ys = [], zs = [];
-      for (let h = 0; h <= 1; h++) {
-        const rx = [], ry = [], rz = [];
-        for (let j = 0; j <= nTheta; j++) {
-          const t = (j / nTheta) * 2 * Math.PI;
-          rx.push(radius * Math.cos(t));
-          ry.push(radius * Math.sin(t));
-          rz.push(y_i + h * dy);
-        }
-        xs.push(rx); ys.push(ry); zs.push(rz);
-      }
-      traces.push({ x: xs, y: ys, z: zs, type: 'surface',
-        colorscale: [[0, clr], [1, clr]], showscale: false,
-        opacity: 0.75, hoverinfo: 'skip' });
-
-      // Top face (filled circle at z = y_i + dy)
-      if (radius > 0.01) {
-        const fxs = [], fys = [], fzs = [];
-        for (let rr = 0; rr <= 1; rr++) {
-          const rx = [], ry = [], rz = [];
-          const r = rr * radius;
-          for (let j = 0; j <= nTheta; j++) {
-            const t = (j / nTheta) * 2 * Math.PI;
-            rx.push(r * Math.cos(t));
-            ry.push(r * Math.sin(t));
-            rz.push(y_i + dy);
-          }
-          fxs.push(rx); fys.push(ry); fzs.push(rz);
-        }
-        traces.push({ x: fxs, y: fys, z: fzs, type: 'surface',
-          colorscale: [[0, clr], [1, clr]], showscale: false,
-          opacity: 0.85, hoverinfo: 'skip' });
-      }
+      dVol += Math.PI * radius * radius * dy;
+      diskCompView.add(diskGeom(radius, y_i, dy), mat(hslCol(i * 360 / n, 72, 55), 0.82));
     }
-
-    comparisonDiskVol.textContent = totalVolume.toFixed(2);
-
-    Plotly.newPlot('comparison-disks', traces, {
-      title: 'Disk Method (n = ' + n + ')',
-      scene: {
-        xaxis: { title: 'x' }, yaxis: { title: 'y' },
-        zaxis: { title: 'height (y)' },
-        camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
-        aspectmode: 'auto'
-      },
-      margin: { l: 0, r: 0, t: 40, b: 0 }
-    }, { responsive: true });
+    comparisonDiskVol.textContent = dVol.toFixed(2);
   }
 
   comparisonSlider.addEventListener('input', updateComparisonVisualization);
