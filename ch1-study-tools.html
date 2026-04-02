@@ -202,6 +202,91 @@
       background: rgba(124,58,237,0.08); font-style: italic;
     }
 
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: var(--primary); color: #fff; }
+    .ws-print-btn:hover { background: var(--primary-dark); }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: var(--primary); margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid var(--primary-light); padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: var(--primary); background: var(--primary-light); }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: var(--primary);
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-space-select {
+      font-size: 0.8rem; padding: 0.2rem 0.4rem; border-radius: 4px;
+      border: 1px solid var(--border); background: #fff;
+    }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+
+    /* ── Print Preview Area (hidden until print) ── */
+    #print-worksheet { display: none; }
+
+    /* ── Print Styles ── */
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num {
+        font-weight: bold; font-size: 1rem;
+      }
+      .ws-print-problem .ws-prob-text {
+        font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem;
+      }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+        position: relative;
+      }
+      .ws-work-space::after {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
     @media (max-width: 700px) {
       .mistake-body { grid-template-columns: 1fr; }
       .formula-grid { grid-template-columns: 1fr; }
@@ -244,6 +329,9 @@
     </button>
     <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
       <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
     </button>
   </div>
 
@@ -574,6 +662,71 @@
     </div>
   </div>
 
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:var(--primary);">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>1.1 Integration by Parts</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int x e^x\, dx$" onchange="updateWsCount()"><label>$\int x e^x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int x^2 e^x\, dx$" onchange="updateWsCount()"><label>$\int x^2 e^x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int x \ln x\, dx$" onchange="updateWsCount()"><label>$\int x \ln x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int e^x \sin x\, dx$" onchange="updateWsCount()"><label>$\int e^x \sin x\, dx$ (cyclic pattern)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int \ln x\, dx$" onchange="updateWsCount()"><label>$\int \ln x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.1 Integration by Parts" data-problem="Evaluate $\int \arctan x\, dx$" onchange="updateWsCount()"><label>$\int \arctan x\, dx$</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>1.2 Trigonometric Integrals</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.2 Trigonometric Integrals" data-problem="Evaluate $\int \sin^3 x \cos^2 x\, dx$" onchange="updateWsCount()"><label>$\int \sin^3 x \cos^2 x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.2 Trigonometric Integrals" data-problem="Evaluate $\int \sin^2 x\, dx$" onchange="updateWsCount()"><label>$\int \sin^2 x\, dx$ (even power)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.2 Trigonometric Integrals" data-problem="Evaluate $\int \sin^2 x \cos^2 x\, dx$" onchange="updateWsCount()"><label>$\int \sin^2 x \cos^2 x\, dx$ (both even)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.2 Trigonometric Integrals" data-problem="Evaluate $\int \tan^3 x \sec^2 x\, dx$" onchange="updateWsCount()"><label>$\int \tan^3 x \sec^2 x\, dx$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.2 Trigonometric Integrals" data-problem="Evaluate $\int \sec^3 x\, dx$" onchange="updateWsCount()"><label>$\int \sec^3 x\, dx$</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>1.3 Trigonometric Substitution</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.3 Trigonometric Substitution" data-problem="Evaluate $\int \frac{dx}{\sqrt{9 - x^2}}$" onchange="updateWsCount()"><label>$\int \frac{dx}{\sqrt{9 - x^2}}$ — pattern $\sqrt{a^2 - x^2}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.3 Trigonometric Substitution" data-problem="Evaluate $\int \frac{dx}{\sqrt{4 + x^2}}$" onchange="updateWsCount()"><label>$\int \frac{dx}{\sqrt{4 + x^2}}$ — pattern $\sqrt{a^2 + x^2}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.3 Trigonometric Substitution" data-problem="Evaluate $\int \frac{\sqrt{x^2 - 1}}{x}\, dx$" onchange="updateWsCount()"><label>$\int \frac{\sqrt{x^2 - 1}}{x}\, dx$ — pattern $\sqrt{x^2 - a^2}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.3 Trigonometric Substitution" data-problem="Evaluate $\int_0^3 \frac{x^3}{\sqrt{9 - x^2}}\, dx$" onchange="updateWsCount()"><label>$\int_0^3 \frac{x^3}{\sqrt{9 - x^2}}\, dx$ (definite integral)</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>1.4 Partial Fractions</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.4 Partial Fractions" data-problem="Evaluate $\int \frac{2x+1}{x^2 - 1}\, dx$" onchange="updateWsCount()"><label>$\int \frac{2x+1}{x^2 - 1}\, dx$ (distinct linear factors)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.4 Partial Fractions" data-problem="Evaluate $\int \frac{3x + 5}{(x+1)^2}\, dx$" onchange="updateWsCount()"><label>$\int \frac{3x + 5}{(x+1)^2}\, dx$ (repeated linear factor)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.4 Partial Fractions" data-problem="Evaluate $\int \frac{x + 1}{x^2 + 4}\, dx$" onchange="updateWsCount()"><label>$\int \frac{x + 1}{x^2 + 4}\, dx$ (irreducible quadratic)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.4 Partial Fractions" data-problem="Evaluate $\int \frac{x^3 + 1}{x^2 - 1}\, dx$" onchange="updateWsCount()"><label>$\int \frac{x^3 + 1}{x^2 - 1}\, dx$ (long division first)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="1.4 Partial Fractions" data-problem="Evaluate $\int \frac{1}{x(x^2+1)}\, dx$" onchange="updateWsCount()"><label>$\int \frac{1}{x(x^2+1)}\, dx$ (linear + quadratic)</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
 </main>
 
 <footer id="main-footer"></footer>
@@ -821,6 +974,73 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    // Group by section
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    // Build print HTML
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 1: Integration Techniques — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    const printArea = document.getElementById('print-worksheet');
+    printArea.innerHTML = html;
+
+    // Render math in the print area
+    renderMathInElement(printArea, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+
+    // Small delay to let KaTeX render, then print
+    setTimeout(() => window.print(), 300);
+  }
 </script>
 
 </body>

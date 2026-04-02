@@ -215,6 +215,75 @@
     .test-table tr:nth-child(even) { background: #f8fafc; }
     .test-table tr:hover { background: var(--primary-light); }
 
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: var(--primary); color: #fff; }
+    .ws-print-btn:hover { background: var(--primary-dark); }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: var(--primary); margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid var(--primary-light); padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: var(--primary); background: var(--primary-light); }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: var(--primary);
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+    #print-worksheet { display: none; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num { font-weight: bold; font-size: 1rem; }
+      .ws-print-problem .ws-prob-text { font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem; }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
     @media (max-width: 700px) {
       .mistake-body { grid-template-columns: 1fr; }
       .formula-grid { grid-template-columns: 1fr; }
@@ -258,6 +327,9 @@
     </button>
     <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
       <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
     </button>
   </div>
 
@@ -652,6 +724,85 @@
     </div>
   </div>
 
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:var(--primary);">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>4.1 Sequences</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.1 Sequences" data-problem="Find $\lim_{n\to\infty} \frac{n^2 + 1}{3n^2 - 5}$" onchange="updateWsCount()"><label>$\lim_{n\to\infty} \frac{n^2 + 1}{3n^2 - 5}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.1 Sequences" data-problem="Find $\lim_{n\to\infty} \frac{(-1)^n}{n}$" onchange="updateWsCount()"><label>$\lim_{n\to\infty} \frac{(-1)^n}{n}$ (oscillating)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.1 Sequences" data-problem="Determine if $a_n = \frac{n!}{n^n}$ converges and find the limit." onchange="updateWsCount()"><label>$a_n = \frac{n!}{n^n}$ — does it converge?</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.1 Sequences" data-problem="Show that $a_n = \frac{2n}{n+1}$ is increasing and bounded, then find its limit." onchange="updateWsCount()"><label>$a_n = \frac{2n}{n+1}$ — monotone + bounded</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>4.2 Infinite Series</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.2 Infinite Series" data-problem="Find the sum: $\sum_{n=0}^{\infty} \frac{3}{4^n}$" onchange="updateWsCount()"><label>$\sum_{n=0}^{\infty} \frac{3}{4^n}$ (geometric series)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.2 Infinite Series" data-problem="Find the sum: $\sum_{n=1}^{\infty} \frac{1}{n(n+1)}$" onchange="updateWsCount()"><label>$\sum_{n=1}^{\infty} \frac{1}{n(n+1)}$ (telescoping)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.2 Infinite Series" data-problem="Does $\sum_{n=1}^{\infty} \frac{n}{2n+3}$ converge or diverge? Justify." onchange="updateWsCount()"><label>$\sum \frac{n}{2n+3}$ (Divergence Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.2 Infinite Series" data-problem="Find the sum: $\sum_{n=1}^{\infty} \left(\frac{1}{3}\right)^n + \left(\frac{1}{4}\right)^n$" onchange="updateWsCount()"><label>$\sum \left(\frac{1}{3}\right)^n + \left(\frac{1}{4}\right)^n$ (two geometric)</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>4.3 Integral & Comparison Tests</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.3 Integral & Comparison Tests" data-problem="Use the Integral Test to determine if $\sum_{n=1}^{\infty} \frac{1}{n^2+1}$ converges." onchange="updateWsCount()"><label>$\sum \frac{1}{n^2+1}$ (Integral Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.3 Integral & Comparison Tests" data-problem="Use the Comparison Test to determine if $\sum_{n=1}^{\infty} \frac{1}{n^3 + n}$ converges." onchange="updateWsCount()"><label>$\sum \frac{1}{n^3 + n}$ (Direct Comparison)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.3 Integral & Comparison Tests" data-problem="Use the Limit Comparison Test to determine if $\sum_{n=1}^{\infty} \frac{n}{n^3+1}$ converges." onchange="updateWsCount()"><label>$\sum \frac{n}{n^3+1}$ (Limit Comparison)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.3 Integral & Comparison Tests" data-problem="Determine if $\sum_{n=2}^{\infty} \frac{1}{n \ln n}$ converges or diverges." onchange="updateWsCount()"><label>$\sum \frac{1}{n \ln n}$ (Integral Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.3 Integral & Comparison Tests" data-problem="Use the Comparison Test: Does $\sum_{n=1}^{\infty} \frac{\sin^2 n}{n^2}$ converge?" onchange="updateWsCount()"><label>$\sum \frac{\sin^2 n}{n^2}$ (Comparison)</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>4.4 Alternating Series</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.4 Alternating Series" data-problem="Determine if $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}$ converges. Is it absolute or conditional?" onchange="updateWsCount()"><label>$\sum \frac{(-1)^{n+1}}{n}$ — absolute or conditional?</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.4 Alternating Series" data-problem="Does $\sum_{n=1}^{\infty} \frac{(-1)^n n}{n+1}$ converge? Justify." onchange="updateWsCount()"><label>$\sum \frac{(-1)^n n}{n+1}$ — check AST conditions</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.4 Alternating Series" data-problem="How many terms of $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^3}$ are needed to approximate the sum with error $< 0.001$?" onchange="updateWsCount()"><label>$\sum \frac{(-1)^{n+1}}{n^3}$ — error bound estimation</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.4 Alternating Series" data-problem="Determine if $\sum_{n=1}^{\infty} \frac{(-1)^n}{\sqrt{n}}$ converges absolutely, conditionally, or diverges." onchange="updateWsCount()"><label>$\sum \frac{(-1)^n}{\sqrt{n}}$ — classify convergence</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>4.5 Ratio & Root Tests</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.5 Ratio & Root Tests" data-problem="Use the Ratio Test: Does $\sum_{n=1}^{\infty} \frac{n!}{3^n}$ converge?" onchange="updateWsCount()"><label>$\sum \frac{n!}{3^n}$ (Ratio Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.5 Ratio & Root Tests" data-problem="Use the Ratio Test: Does $\sum_{n=1}^{\infty} \frac{2^n}{n!}$ converge?" onchange="updateWsCount()"><label>$\sum \frac{2^n}{n!}$ (Ratio Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.5 Ratio & Root Tests" data-problem="Use the Root Test: Does $\sum_{n=1}^{\infty} \left(\frac{n}{2n+1}\right)^n$ converge?" onchange="updateWsCount()"><label>$\sum \left(\frac{n}{2n+1}\right)^n$ (Root Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.5 Ratio & Root Tests" data-problem="Use the Ratio Test: Does $\sum_{n=1}^{\infty} \frac{n^2 \cdot 2^n}{n!}$ converge?" onchange="updateWsCount()"><label>$\sum \frac{n^2 \cdot 2^n}{n!}$ (Ratio Test)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="4.5 Ratio & Root Tests" data-problem="Determine convergence: $\sum_{n=1}^{\infty} \frac{n!}{n^n}$" onchange="updateWsCount()"><label>$\sum \frac{n!}{n^n}$ (Ratio Test)</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>Mixed Problems — Which Test?</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed — Which Test?" data-problem="Determine convergence and identify the test: $\sum_{n=1}^{\infty} \frac{1}{n^{3/2}}$" onchange="updateWsCount()"><label>$\sum \frac{1}{n^{3/2}}$ — identify the test and decide</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed — Which Test?" data-problem="Determine convergence and identify the test: $\sum_{n=1}^{\infty} \frac{3^n}{n!}$" onchange="updateWsCount()"><label>$\sum \frac{3^n}{n!}$ — identify the test and decide</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed — Which Test?" data-problem="Determine convergence and identify the test: $\sum_{n=1}^{\infty} \frac{\ln n}{n}$" onchange="updateWsCount()"><label>$\sum \frac{\ln n}{n}$ — identify the test and decide</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed — Which Test?" data-problem="Determine convergence and identify the test: $\sum_{n=1}^{\infty} \frac{(-1)^n n}{n^2+1}$" onchange="updateWsCount()"><label>$\sum \frac{(-1)^n n}{n^2+1}$ — identify the test and decide</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
 </main>
 
 <footer id="main-footer"></footer>
@@ -895,6 +1046,69 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 4: Sequences and Series — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    const printArea = document.getElementById('print-worksheet');
+    printArea.innerHTML = html;
+
+    renderMathInElement(printArea, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+
+    setTimeout(() => window.print(), 300);
+  }
 </script>
 
 </body>
