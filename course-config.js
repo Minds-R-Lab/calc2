@@ -424,7 +424,7 @@ const COURSE = {
 
   // ── Analytics ──
   analytics: {
-    gaId: "G-XXXXXXXXXX",  // ← Replace with your GA4 Measurement ID
+    gaId: "G-3C2JNTJ29M",
     trackInteractions: true,
   },
 
