@@ -979,9 +979,9 @@
     { q: 'Maclaurin series for $\\ln(1+x)$ (memorize!)', a: '$$\\ln(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n}x^n, \\quad -1 < x \\le 1$$<br>Starts at $n=1$, not $n=0$. Includes right endpoint.' },
     { q: 'What is the Taylor remainder?', a: '$$R_n(x) = f(x) - P_n(x)$$<br>The error when approximating $f(x)$ with the $n$th-degree Taylor polynomial $P_n(x)$.' },
     { q: 'State the Lagrange remainder formula.', a: '$$|R_n(x)| \\le \\frac{M|x-a|^{n+1}}{(n+1)!}$$<br>where $M$ bounds the $(n+1)$th derivative. Use this to guarantee approximation accuracy.' },
-    { q: 'Can you differentiate a power series term-by-term?', a: '<strong>Yes!</strong> If $f(x) = \\sum c_n(x-a)^n$ converges for $|x-a| < R$, then<br>$$f\\'(x) = \\sum nc_n(x-a)^{n-1}$$<br>The derivative series has the same radius of convergence.' },
+    { q: 'Can you differentiate a power series term-by-term?', a: '<strong>Yes!</strong> If $f(x) = \\sum c_n(x-a)^n$ converges for $|x-a| < R$, then<br>$$f\'(x) = \\sum nc_n(x-a)^{n-1}$$<br>The derivative series has the same radius of convergence.' },
     { q: 'Can you integrate a power series term-by-term?', a: '<strong>Yes!</strong> If $f(x) = \\sum c_n(x-a)^n$ converges for $|x-a| < R$, then<br>$$\\int f(x)dx = C + \\sum c_n\\frac{(x-a)^{n+1}}{n+1}$$<br>The integral series has the same radius of convergence.' },
-    { q: 'How do you find the Maclaurin series for $e^{-x^2}$?', a: '<strong>Don\\'t compute derivatives!</strong> Use substitution:<br>$e^u = \\sum x^n/n!$, so plug in $u = -x^2$:<br>$$e^{-x^2} = \\sum \\frac{(-x^2)^n}{n!} = \\sum \\frac{(-1)^n x^{2n}}{n!}$$' },
+    { q: 'How do you find the Maclaurin series for $e^{-x^2}$?', a: '<strong>Don\'t compute derivatives!</strong> Use substitution:<br>$e^u = \\sum x^n/n!$, so plug in $u = -x^2$:<br>$$e^{-x^2} = \\sum \\frac{(-x^2)^n}{n!} = \\sum \\frac{(-1)^n x^{2n}}{n!}$$' },
     { q: 'What is the binomial series $(1+x)^k$?', a: '$$(1+x)^k = \\sum_{n=0}^{\\infty} \\binom{k}{n} x^n, \\quad |x| < 1$$<br>$\\binom{k}{n} = \\frac{k(k-1)\\cdots(k-n+1)}{n!}$<br>Works for any real $k$ (not just integers).' },
   ];
 
