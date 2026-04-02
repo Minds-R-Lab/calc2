@@ -422,6 +422,12 @@ const COURSE = {
     { label: "Videos",         href: "videos.html",         active: false },
   ],
 
+  // ── Analytics ──
+  analytics: {
+    gaId: "G-XXXXXXXXXX",  // ← Replace with your GA4 Measurement ID
+    trackInteractions: true,
+  },
+
   // ── Footer ──
   footer: {
     courseName: "Calculus II (MATH 102)",
