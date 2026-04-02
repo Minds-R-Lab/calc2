@@ -26,7 +26,7 @@ const COURSE = {
   // ── Hero Stats ──
   stats: [
     { num: "7",    label: "Chapters" },
-    { num: "27",   label: "Topics" },
+    { num: "31",   label: "Topics" },
     { num: "120+", label: "Problems" },
     { num: "Live", label: "Visualizations" },
   ],
@@ -191,6 +191,14 @@ const COURSE = {
           mathPreview: "L = \\int_a^b \\sqrt{1 + [f'(x)]^2}\\,dx",
           file: "ch2-arc-length.html",
         },
+        {
+          id: "ch2-study-tools",
+          title: "2.5 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 2 applications.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch2-study-tools.html",
+        },
       ],
     },
     {
@@ -224,6 +232,14 @@ const COURSE = {
           description: "Determining convergence by comparing with known integrals.",
           mathPreview: "0 \\le f(x) \\le g(x) \\Rightarrow \\text{convergence}",
           file: "ch3-comparison.html",
+        },
+        {
+          id: "ch3-study-tools",
+          title: "3.4 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 3 improper integral techniques.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch3-study-tools.html",
         },
       ],
     },
@@ -325,6 +341,14 @@ const COURSE = {
           mathPreview: "e^x \\approx 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots",
           file: "ch5-applications.html",
         },
+        {
+          id: "ch5-study-tools",
+          title: "5.4 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 5 power series topics.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch5-study-tools.html",
+        },
       ],
     },
     {
@@ -358,6 +382,14 @@ const COURSE = {
           description: "Area and arc length using polar coordinates.",
           mathPreview: "A = \\frac{1}{2}\\int_{\\alpha}^{\\beta} [f(\\theta)]^2\\,d\\theta",
           file: "ch6-polar-calculus.html",
+        },
+        {
+          id: "ch6-study-tools",
+          title: "6.4 — Study Tools",
+          icon: "★",
+          description: "Formula sheet, step-by-step solver, flashcards, common mistakes gallery, and ELI5 explanations for all Chapter 6 parametric and polar topics.",
+          mathPreview: "\\text{Review} \\;\\&\\; \\text{Practice}",
+          file: "ch6-study-tools.html",
         },
       ],
     },

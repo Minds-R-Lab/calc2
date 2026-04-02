@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 6 Study Tools — Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Tab System ── */
+    .tab-bar {
+      display: flex; gap: 0; background: #fff; border-radius: 14px 14px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      overflow-x: auto; margin-top: 1.5rem;
+    }
+    .tab-btn {
+      flex: 1; min-width: 140px; padding: 1rem 0.75rem; border: none; background: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .tab-btn:hover { background: var(--primary-light); color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+      background: linear-gradient(to bottom, var(--primary-light), #fff);
+    }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-panel {
+      display: none; background: #fff; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      padding: 2rem; min-height: 400px;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ── Formula Sheet ── */
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+    .formula-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+      background: linear-gradient(135deg, #f0fdfa, #fff);
+      border-left: 4px solid #0891b2; transition: box-shadow 0.2s;
+    }
+    .formula-card:hover { box-shadow: var(--shadow-lg); }
+    .formula-card h4 { color: #0891b2; margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .formula-card .formula-main { font-size: 1.05rem; margin: 0.75rem 0; text-align: center; }
+    .formula-card .formula-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Step-by-Step Solver ── */
+    .solver-problem {
+      background: linear-gradient(135deg, #f0fdf4, #f8fafc);
+      border: 2px solid #0891b2; border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .solver-problem h4 { color: #0891b2; margin-bottom: 0.5rem; }
+    .step-list { list-style: none; padding: 0; }
+    .step-item {
+      display: flex; gap: 1rem; padding: 1rem; margin: 0.5rem 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; opacity: 0.3; transition: all 0.4s;
+      position: relative;
+    }
+    .step-item.revealed { opacity: 1; background: #f0fdf4; border-color: #10b981; }
+    .step-item.current { opacity: 1; background: #f0fdf4; border-color: #0891b2;
+      box-shadow: 0 0 0 3px rgba(8,145,178,0.15); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.85rem; flex-shrink: 0;
+      background: #cffafe; color: #0891b2;
+    }
+    .step-item.revealed .step-num { background: #dcfce7; color: #10b981; }
+    .step-content { flex: 1; }
+    .step-math { margin: 0.5rem 0; }
+    .step-why {
+      display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 8px;
+      background: #fefce8; border: 1px solid #fcd34d; font-size: 0.85rem;
+    }
+    .step-why.show { display: block; }
+    .why-btn {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid #fcd34d; background: #fef3c7;
+      color: #92400e; cursor: pointer; font-weight: 600; margin-top: 0.4rem;
+    }
+    .why-btn:hover { background: #fcd34d; color: #000; }
+    .solver-controls { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .solver-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next { background: #0891b2; color: #fff; }
+    .btn-next:hover { background: #0369a1; }
+    .btn-reset { background: var(--border); color: var(--text); }
+    .btn-reset:hover { background: #cbd5e1; }
+    .btn-reveal { background: #10b981; color: #fff; }
+    .btn-reveal:hover { background: #047857; }
+
+    /* ── Flashcards ── */
+    .flashcard-area { display: flex; flex-direction: column; align-items: center; }
+    .flashcard-container { perspective: 1000px; width: 100%; max-width: 550px; height: 320px; margin: 1.5rem 0; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s;
+      cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .flashcard-front {
+      background: linear-gradient(135deg, #0891b2, #06b6d4);
+      color: #fff; font-size: 1.15rem;
+    }
+    .flashcard-front .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-front .card-prompt { font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
+    .flashcard-back {
+      background: #fff; border: 2px solid #fcd34d;
+      transform: rotateY(180deg); color: var(--text); font-size: 1rem;
+    }
+    .flashcard-back .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-nav {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .flashcard-nav button {
+      padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .flashcard-nav button:hover { background: #cffafe; color: #0891b2; }
+    .card-counter { font-weight: 600; color: var(--text-muted); min-width: 80px; text-align: center; }
+    .confidence-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .confidence-btns button {
+      padding: 0.4rem 1rem; border-radius: 8px; border: none;
+      font-weight: 600; cursor: pointer; font-size: 0.8rem;
+    }
+    .conf-hard { background: #fee2e2; color: #dc2626; }
+    .conf-medium { background: #fef3c7; color: #d97706; }
+    .conf-easy { background: #d1fae5; color: #10b981; }
+
+    /* ── Common Mistakes ── */
+    .mistake-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 1.5rem; background: #fff;
+    }
+    .mistake-header {
+      padding: 1rem 1.25rem; font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fff); border-bottom: 1px solid var(--border);
+      color: #dc2626;
+    }
+    .mistake-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .mistake-wrong, .mistake-right {
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .mistake-wrong {
+      border-color: #dc2626; background: #fef2f2;
+    }
+    .mistake-right {
+      border-color: #10b981; background: #f0fdf4;
+    }
+    .mistake-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mistake-wrong .mistake-label { color: #dc2626; }
+    .mistake-right .mistake-label { color: #10b981; }
+    .mistake-explain {
+      padding: 1rem 1.25rem; background: #fffbeb; border-top: 1px solid var(--border);
+      font-size: 0.9rem; color: #92400e;
+    }
+
+    /* ── ELI5 ── */
+    .eli5-section { margin-bottom: 2rem; }
+    .eli5-formal {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .eli5-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid #06b6d4;
+      background: #cffafe; color: #0891b2;
+      cursor: pointer; font-weight: 600; font-size: 0.82rem; margin-top: 0.75rem;
+      transition: all 0.2s;
+    }
+    .eli5-toggle-btn:hover { background: #06b6d4; color: #fff; }
+    .eli5-simple {
+      display: none; margin-top: 0.75rem; padding: 1.25rem; border-radius: 12px;
+      background: linear-gradient(135deg, #f0fdfa, #e0f7fa);
+      border: 2px solid #06b6d4; font-size: 0.95rem; line-height: 1.7;
+    }
+    .eli5-simple.show { display: block; }
+    .eli5-simple .eli5-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .eli5-analogy {
+      margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+      background: rgba(6,182,212,0.08); font-style: italic;
+    }
+
+    /* ── Decision Table ── */
+    .test-table {
+      width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem;
+    }
+    .test-table th {
+      background: #0891b2; color: #fff; padding: 0.75rem; text-align: left;
+    }
+    .test-table td {
+      padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .test-table tr:nth-child(even) { background: #f8fafc; }
+    .test-table tr:hover { background: #cffafe; }
+
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: #0891b2; color: #fff; }
+    .ws-print-btn:hover { background: #0369a1; }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: #0891b2; margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid #cffafe; padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: #0891b2; background: #cffafe; }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: #0891b2;
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+    #print-worksheet { display: none; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num { font-weight: bold; font-size: 1rem; }
+      .ws-print-problem .ws-prob-text { font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem; }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
+    @media (max-width: 700px) {
+      .mistake-body { grid-template-columns: 1fr; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .tab-btn { min-width: 80px; font-size: 0.75rem; padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch6-parametric.html">6.1 Parametric</a>
+    <a href="ch6-polar.html">6.2 Polar</a>
+    <a href="ch6-polar-calculus.html">6.3 Polar Calc</a>
+    <a href="ch6-study-tools.html" class="active">6.4 Study</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 6: Study Tools</h1>
+  <p>Five powerful tools to master Parametric & Polar Curves. Use the tabs below to switch between tools.</p>
+
+  <!-- ════════════════ TAB BAR ════════════════ -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('formulas')" role="tab">
+      <span class="tab-icon">📋</span> Formula Sheet
+    </button>
+    <button class="tab-btn" onclick="switchTab('solver')" role="tab">
+      <span class="tab-icon">🧩</span> Step-by-Step
+    </button>
+    <button class="tab-btn" onclick="switchTab('flashcards')" role="tab">
+      <span class="tab-icon">🃏</span> Flashcards
+    </button>
+    <button class="tab-btn" onclick="switchTab('mistakes')" role="tab">
+      <span class="tab-icon">🚫</span> Common Mistakes
+    </button>
+    <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
+      <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
+    </button>
+  </div>
+
+  <!-- ════════════════ TAB 1: FORMULA SHEET ════════════════ -->
+  <div id="tab-formulas" class="tab-panel active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;">Quick Reference: All Chapter 6 Formulas</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Everything you need on one page. Print-friendly — use Ctrl+P to save as PDF.</p>
+
+    <h3 style="color:#0891b2;margin-bottom:1rem;">6.1 Parametric Curves</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Parametric Derivative</h4>
+        <div class="formula-main">$$\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{\dot{y}}{\dot{x}}$$</div>
+        <div class="formula-note">The slope of a parametric curve is the ratio of the $y$-rate to the $x$-rate. Watch out: it's NOT $dx/dy$!</div>
+      </div>
+      <div class="formula-card">
+        <h4>Horizontal Tangent</h4>
+        <div class="formula-main">$$\frac{dy}{dx} = 0 \iff \dot{y} = 0 \text{ and } \dot{x} \neq 0$$</div>
+        <div class="formula-note">When the numerator is zero but denominator is not zero.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Vertical Tangent</h4>
+        <div class="formula-main">$$\frac{dy}{dx} = \text{undefined} \iff \dot{x} = 0 \text{ and } \dot{y} \neq 0$$</div>
+        <div class="formula-note">When the denominator is zero but numerator is not zero.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Arc Length of Parametric Curve</h4>
+        <div class="formula-main">$$L = \int_\alpha^\beta \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\,dt$$</div>
+        <div class="formula-note">The speed formula: instantaneous speed is $\sqrt{(\dot{x})^2 + (\dot{y})^2}$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Area Under Parametric Curve</h4>
+        <div class="formula-main">$$A = \int_\alpha^\beta y(t) \cdot x'(t)\,dt$$</div>
+        <div class="formula-note">This is the parametric form of $\int y\,dx$. Watch the sign: if $x(t)$ is decreasing, use negatives carefully.</div>
+      </div>
+    </div>
+
+    <h3 style="color:#0891b2;margin:1.5rem 0 1rem;">6.2 Polar Coordinates</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Polar to Cartesian Conversion</h4>
+        <div class="formula-main">$$x = r\cos\theta, \quad y = r\sin\theta$$</div>
+        <div class="formula-note">Convert a polar equation $r = f(\theta)$ to Cartesian by substitution.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Cartesian to Polar Conversion</h4>
+        <div class="formula-main">$$r^2 = x^2 + y^2, \quad \tan\theta = \frac{y}{x}$$</div>
+        <div class="formula-note">Be careful with the angle: use the quadrant of $(x, y)$ to determine the correct $\theta$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Polar Area (Single Curve)</h4>
+        <div class="formula-main">$$A = \frac{1}{2}\int_\alpha^\beta [f(\theta)]^2\,d\theta$$</div>
+        <div class="formula-note">The crucial factor: $\frac{1}{2}$! This comes from the "pizza slice" formula: $\frac{1}{2}r^2\Delta\theta$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Polar Area Between Two Curves</h4>
+        <div class="formula-main">$$A = \frac{1}{2}\int_\alpha^\beta [f(\theta)]^2 - [g(\theta)]^2\,d\theta$$</div>
+        <div class="formula-note">Make sure $f(\theta) \ge g(\theta)$ on $[\alpha, \beta]$, and find the intersection points correctly!</div>
+      </div>
+      <div class="formula-card">
+        <h4>Common Polar Curves</h4>
+        <div class="formula-note"><strong>Circle (centered at origin):</strong> $r = a$ (radius $a$)<br><strong>Rose:</strong> $r = a\sin(n\theta)$ or $r = a\cos(n\theta)$ ($2n$ or $n$ petals)<br><strong>Cardioid:</strong> $r = a(1 + \cos\theta)$ or $r = a(1 + \sin\theta)$<br><strong>Lemniscate:</strong> $r^2 = a^2\cos(2\theta)$ (figure-eight)<br><strong>Limaçon:</strong> $r = a + b\cos\theta$ (various shapes)</div>
+      </div>
+    </div>
+
+    <h3 style="color:#0891b2;margin:1.5rem 0 1rem;">6.3 Calculus in Polar Coordinates</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Polar Arc Length</h4>
+        <div class="formula-main">$$L = \int_\alpha^\beta \sqrt{r^2 + \left(\frac{dr}{d\theta}\right)^2}\,d\theta$$</div>
+        <div class="formula-note">Compare to parametric: here $x = r\cos\theta$, $y = r\sin\theta$, so $(\dot{x})^2 + (\dot{y})^2 = r^2 + (r')^2$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Polar Tangent Slope</h4>
+        <div class="formula-main">$$\frac{dy}{dx} = \frac{r'\sin\theta + r\cos\theta}{r'\cos\theta - r\sin\theta}$$</div>
+        <div class="formula-note">This comes from differentiating $x = r\cos\theta$ and $y = r\sin\theta$. Use when finding tangent lines in polar form.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Horizontal Tangent in Polar</h4>
+        <div class="formula-main">$$\frac{dy}{d\theta} = 0 \text{ and } \frac{dx}{d\theta} \neq 0$$</div>
+        <div class="formula-note">Set the numerator of $dy/dx$ to zero: $r'\sin\theta + r\cos\theta = 0$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Vertical Tangent in Polar</h4>
+        <div class="formula-main">$$\frac{dx}{d\theta} = 0 \text{ and } \frac{dy}{d\theta} \neq 0$$</div>
+        <div class="formula-note">Set the denominator of $dy/dx$ to zero: $r'\cos\theta - r\sin\theta = 0$.</div>
+      </div>
+    </div>
+
+    <h3 style="color:#0891b2;margin:1.5rem 0 1rem;">Summary: When to Use What</h3>
+    <table class="test-table">
+      <thead>
+        <tr>
+          <th>Problem Type</th>
+          <th>Use This Formula</th>
+          <th>Key Insight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Find slope of parametric curve</td><td>$dy/dx = (dy/dt)/(dx/dt)$</td><td>Ratio of rates</td></tr>
+        <tr><td>Find arc length of parametric curve</td><td>$L = \int \sqrt{(\dot{x})^2 + (\dot{y})^2}\,dt$</td><td>Speed times time</td></tr>
+        <tr><td>Find area under parametric curve</td><td>$A = \int y(t) \cdot x'(t)\,dt$</td><td>Parametric $\int y\,dx$</td></tr>
+        <tr><td>Convert between coordinate systems</td><td>$r^2 = x^2 + y^2$ and $x = r\cos\theta$, $y = r\sin\theta$</td><td>Trig identities</td></tr>
+        <tr><td>Find area of polar region</td><td>$A = \frac{1}{2}\int r^2\,d\theta$</td><td>Don't forget $\frac{1}{2}$!</td></tr>
+        <tr><td>Find arc length in polar</td><td>$L = \int \sqrt{r^2 + (r')^2}\,d\theta$</td><td>Speed in polar form</td></tr>
+        <tr><td>Find slope in polar</td><td>$dy/dx = (r'\sin\theta + r\cos\theta)/(r'\cos\theta - r\sin\theta)$</td><td>From $x = r\cos\theta$, $y = r\sin\theta$</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════ TAB 2: STEP-BY-STEP SOLVER ════════════════ -->
+  <div id="tab-solver" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Step-by-Step Problem Solver</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Click <strong>Next Step</strong> to reveal each step. Click <strong>Why?</strong> to understand the reasoning.</p>
+
+    <!-- Problem selector -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <button class="btn-next" onclick="loadProblem(0)" id="prob-btn-0" style="opacity:1">Parametric: Find $dy/dx$ for $x = t^2$, $y = t^3 - 3t$</button>
+      <button class="btn-reset" onclick="loadProblem(1)" id="prob-btn-1">Polar: Area of one petal of $r = \sin(3\theta)$</button>
+      <button class="btn-reset" onclick="loadProblem(2)" id="prob-btn-2">Arc Length: $x = \cos t$, $y = \sin t$ for $0 \le t \le 2\pi$</button>
+    </div>
+
+    <div id="solver-area"></div>
+  </div>
+
+  <!-- ════════════════ TAB 3: FLASHCARDS ════════════════ -->
+  <div id="tab-flashcards" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Flashcard Review</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Click the card to flip it. Rate your confidence to focus on weak areas.</p>
+
+    <div class="flashcard-area">
+      <div class="flashcard-nav">
+        <button onclick="prevCard()">&#9664; Prev</button>
+        <span class="card-counter" id="card-counter">1 / 20</span>
+        <button onclick="nextCard()">Next &#9654;</button>
+        <button onclick="shuffleCards()" style="background:#cffafe;color:#0891b2;">Shuffle</button>
+      </div>
+
+      <div class="flashcard-container" onclick="flipCard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front" id="card-front">
+            <span class="card-label">Question</span>
+            <div id="card-question"></div>
+            <div class="card-prompt">Click to reveal answer</div>
+          </div>
+          <div class="flashcard-face flashcard-back" id="card-back">
+            <span class="card-label">Answer</span>
+            <div id="card-answer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;">
+        <div style="font-size:0.85rem;color:var(--text-muted);text-align:center;">
+          <span id="hard-count">Hard: 0</span>
+          <span id="medium-count">Medium: 0</span>
+          <span id="easy-count">Easy: 0</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex;">
+          <div id="bar-hard" style="background:#dc2626;width:0%;transition:width 0.3s;"></div>
+          <div id="bar-medium" style="background:#d97706;width:0%;transition:width 0.3s;"></div>
+          <div id="bar-easy" style="background:#10b981;width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="confidence-btns" style="display:none;margin-top:1.5rem;text-align:center;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
+      <button class="conf-hard" onclick="rateCard('hard')">Hard ✗</button>
+      <button class="conf-medium" onclick="rateCard('medium')">Medium ≈</button>
+      <button class="conf-easy" onclick="rateCard('easy')">Easy ✓</button>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: COMMON MISTAKES ════════════════ -->
+  <div id="tab-mistakes" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Common Mistakes Gallery</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Learn from the errors students make most often. Red = wrong, Green = correct.</p>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #1: Dividing $dy/dt$ by $dx/dt$ in the wrong order</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $x = t^2$, $y = t^3$:</p>
+          <p>$dx/dt = 2t$, $dy/dt = 3t^2$</p>
+          <p>"$dy/dx = (dx/dt)/(dy/dt) = 2t/(3t^2)$"</p>
+          <p style="color:#dc2626;font-size:0.85rem;">Backwards!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{3t^2}{2t} = \frac{3t}{2}$$</p>
+          <p style="font-size:0.85rem;">The $y$-rate goes on top, the $x$-rate on bottom.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> It's $\frac{dy/dt}{dx/dt}$ (rise over run in parametric form), not the other way around. An easy mnemonic: "to go from $x$ to $y$, divide $dy$ by $dx$".</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #2: Forgetting to check where a polar curve starts and ends</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $r = \sin(3\theta)$, compute area:</p>
+          <p>"$A = \frac{1}{2}\int_0^{2\pi} \sin^2(3\theta)\,d\theta$"</p>
+          <p style="color:#dc2626;font-size:0.85rem;">This counts all petals and the origin!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$\sin(3\theta) = 0$ at $\theta = 0, \pi/3, 2\pi/3, \pi, \ldots$</p>
+          <p>One petal spans $0 \le \theta \le \pi/3$:</p>
+          <p>$$A = \frac{1}{2}\int_0^{\pi/3} \sin^2(3\theta)\,d\theta$$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Polar curves trace different paths for different angle ranges. The curve $r = \sin(3\theta)$ has petals only where $r \ge 0$. You must find where $r = 0$ to identify the boundaries of each petal.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #3: Forgetting the $\frac{1}{2}$ in the polar area formula</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $r = 2$, a circle of radius 2:</p>
+          <p>"$A = \int_0^{2\pi} 4\,d\theta = 8\pi$"</p>
+          <p style="color:#dc2626;font-size:0.85rem;">Correct answer is $4\pi$!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$A = \frac{1}{2}\int_0^{2\pi} 4\,d\theta = 2 \cdot 2\pi = 4\pi$$</p>
+          <p style="font-size:0.85rem;">The $\frac{1}{2}$ comes from the pizza-slice area formula: $A = \frac{1}{2}r^2\Delta\theta$.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The factor $\frac{1}{2}$ is fundamental to polar area. It doesn't come from nowhere—it's the area of a circular sector: $A_{\text{sector}} = \frac{1}{2}r^2\theta$ (in radians). This is as essential as the $\frac{1}{2}$ in $A = \frac{1}{2}bh$ for triangles.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #4: Mishandling the area between two polar curves</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $r_1 = 2$ and $r_2 = 1$:</p>
+          <p>"$A = \frac{1}{2}\int [2]^2 - [1]^2\,d\theta$"</p>
+          <p>Then compute $\int (4 - 1)\,d\theta = 3\theta$ with wrong limits</p>
+          <p style="color:#dc2626;font-size:0.85rem;">Confused about what $[f(\theta)]^2$ means!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$A = \frac{1}{2}\int_0^{2\pi} [2]^2 - [1]^2\,d\theta$$</p>
+          <p>$$= \frac{1}{2}\int_0^{2\pi} (4 - 1)\,d\theta = \frac{1}{2} \cdot 3 \cdot 2\pi = 3\pi$$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The notation $[f(\theta)]^2$ means "the square of the function value," i.e., $(f(\theta))^2$. You plug in $\theta$ first, get a number, then square it. Also, always identify the correct integration limits from the geometry of the curves.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #5: Not recognizing that some polar curves trace over themselves</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>For $r = 1 - 2\cos\theta$, integrate from $0$ to $2\pi$:</p>
+          <p>"All of that region counts for the area."</p>
+          <p style="color:#dc2626;font-size:0.85rem;">But when $r < 0$, the curve backtracks!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Find where $r = 0$: $\cos\theta = 1/2 \Rightarrow \theta = \pm\pi/3$</p>
+          <p>For $\pi/3 < \theta < 5\pi/3$, $r < 0$ (curve retraces).</p>
+          <p style="font-size:0.85rem;">Count the inner loop separately, or use limits $0 \le \theta \le \pi/3$ for one lobe.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> In polar coordinates, negative $r$ means the point is in the opposite direction from angle $\theta$. This causes curves like limaçons to loop back and retrace themselves. Always sketch or check sign changes.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ELI5 ════════════════ -->
+  <div id="tab-eli5" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Explain Like I'm 5</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Simple, intuitive explanations next to the formal definitions. Click the cyan button to toggle.</p>
+
+    <div class="eli5-section">
+      <h3 style="color:#0891b2;margin-bottom:0.75rem;">6.1 Parametric Curves</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> A parametric curve is defined by two functions: $x = f(t)$ and $y = g(t)$, where $t$ ranges over some interval. The curve traces out points $(f(t), g(t))$ as $t$ varies.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎬</span>
+        <strong>The simple version:</strong> Imagine you're <strong>recording a movie of a dot moving</strong>. At each time $t$, the dot is at position $(x(t), y(t))$. When you play the movie in fast-forward, the dot traces a path on the plane—that's your parametric curve.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> A car driving on a road. At time $t$ seconds, the car is at position $(x(t), y(t))$. The path the car took is the parametric curve. The speed of the car is $\sqrt{(\dot{x})^2 + (\dot{y})^2}$.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:#0891b2;margin-bottom:0.75rem;">6.2 Polar Coordinates</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> A point in the plane is described by $(r, \theta)$ where $r$ is the distance from the origin and $\theta$ is the angle from the positive $x$-axis. Conversion: $x = r\cos\theta$ and $y = r\sin\theta$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎯</span>
+        <strong>The simple version:</strong> Instead of saying "go right 3 units and up 4 units" (Cartesian), you say <strong>"aim at angle $\theta$ and go 5 units out"</strong> (polar). Some curves are way easier to describe in polar (like circles centered at the origin or spiral shapes).
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Giving directions. Cartesian: "Go 3 blocks east, 4 blocks north." Polar: "Head northeast at a 53° angle and walk 5 blocks." Both get you to the same place!
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:#0891b2;margin-bottom:0.75rem;">6.3 Calculus with Parametric & Polar</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> For parametric curves, slopes, arc lengths, and areas are computed by converting to the chain rule and integration. For polar curves, area uses the formula $A = \frac{1}{2}\int r^2\,d\theta$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">⚙️</span>
+        <strong>The simple version:</strong> It's about <strong>relating rates and areas to the parameter</strong>. For parametric: $\frac{dy}{dx} = \frac{\text{vertical speed}}{\text{horizontal speed}}$. For polar: area of a pizza slice with radius $r$ and angle $\Delta\theta$ is $\frac{1}{2}r^2\Delta\theta$—just add up all the slices!
+        <div class="eli5-analogy">
+          <strong>Analogy (Parametric):</strong> You're walking along a path. Your northward speed is $dy/dt$, your eastward speed is $dx/dt$. Your slope (how steep the path is) is: "how fast I go north" divided by "how fast I go east."<br><br><strong>Analogy (Polar Area):</strong> You have a pizza centered at the origin. Each infinitesimal slice has area $\frac{1}{2}r^2\,d\theta$. To find the total area of the pizza (or a chunk of it), integrate the slice areas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:#0891b2;">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>6.1 Parametric Curves</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.1 Parametric Curves" data-problem="Find $dy/dx$ for $x = t^2$, $y = t^3 - 3t$ and find where the tangent is horizontal." onchange="updateWsCount()"><label>$x = t^2$, $y = t^3 - 3t$ — find slope and horizontal tangent</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.1 Parametric Curves" data-problem="Find the arc length of $x = \cos t$, $y = \sin t$ for $0 \le t \le 2\pi$." onchange="updateWsCount()"><label>Arc length of unit circle</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.1 Parametric Curves" data-problem="For the parametric curve $x = e^t\cos t$, $y = e^t\sin t$ on $0 \le t \le \pi$, find the arc length." onchange="updateWsCount()"><label>Arc length of logarithmic spiral</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.1 Parametric Curves" data-problem="Find the area under the parametric curve $x = t$, $y = t^2$ from $t = 0$ to $t = 2$." onchange="updateWsCount()"><label>Area under parametric parabola</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.1 Parametric Curves" data-problem="For $x = 3\cos t$, $y = 2\sin t$ (ellipse), find vertical tangents." onchange="updateWsCount()"><label>Find vertical tangents on ellipse</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>6.2 Polar Coordinates</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.2 Polar Coordinates" data-problem="Convert $r = 4\cos\theta$ to Cartesian coordinates." onchange="updateWsCount()"><label>Convert $r = 4\cos\theta$ to Cartesian</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.2 Polar Coordinates" data-problem="Convert $x^2 + y^2 = 5y$ to polar coordinates." onchange="updateWsCount()"><label>Convert $x^2 + y^2 = 5y$ to polar</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.2 Polar Coordinates" data-problem="Sketch and describe the polar curve $r = 1 + \cos\theta$ (cardioid)." onchange="updateWsCount()"><label>Sketch cardioid $r = 1 + \cos\theta$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.2 Polar Coordinates" data-problem="Sketch the rose curve $r = \sin(3\theta)$ and count the petals." onchange="updateWsCount()"><label>Rose curve $r = \sin(3\theta)$ — count petals</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.2 Polar Coordinates" data-problem="Find the points of intersection of $r = 2$ and $r = 4\cos\theta$." onchange="updateWsCount()"><label>Intersection of circle and cardioid</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>6.3 Calculus in Polar Coordinates</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.3 Calculus in Polar Coordinates" data-problem="Find the area enclosed by one petal of $r = \sin(3\theta)$." onchange="updateWsCount()"><label>Area of one petal of $r = \sin(3\theta)$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.3 Calculus in Polar Coordinates" data-problem="Find the area enclosed by the cardioid $r = 1 - \cos\theta$." onchange="updateWsCount()"><label>Area enclosed by cardioid</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.3 Calculus in Polar Coordinates" data-problem="Find the area inside $r = 2$ and outside $r = 1 + \cos\theta$." onchange="updateWsCount()"><label>Area between circle and cardioid</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.3 Calculus in Polar Coordinates" data-problem="Find the arc length of $r = e^{\theta}$ from $\theta = 0$ to $\theta = \pi$." onchange="updateWsCount()"><label>Arc length of spiral</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="6.3 Calculus in Polar Coordinates" data-problem="For $r = \sin\theta$, find the equation of the tangent line at $\theta = \pi/4$." onchange="updateWsCount()"><label>Tangent line to polar curve</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
+</main>
+
+<footer id="main-footer"></footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  // Footer
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // KaTeX
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  });
+
+  // ── Tab System ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    renderMathInElement(document.getElementById('tab-' + name), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  // ── ELI5 Toggle ──
+  function toggleEli5(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('show');
+    btn.textContent = panel.classList.contains('show') ? '💡 Hide simple explanation' : '💡 Explain simply';
+  }
+
+  // ══════════════════════════════════════════════
+  // STEP-BY-STEP SOLVER
+  // ══════════════════════════════════════════════
+
+  const problems = [
+    {
+      title: 'Parametric Derivative: $x = t^2$, $y = t^3 - 3t$',
+      steps: [
+        { math: '\\text{Given: } x(t) = t^2, \\quad y(t) = t^3 - 3t',
+          explain: 'Start by writing the parametric equations clearly. We need to find $dy/dx$, which requires both derivatives.' },
+        { math: '\\frac{dx}{dt} = 2t, \\quad \\frac{dy}{dt} = 3t^2 - 3',
+          explain: 'Take the derivative of each parametric equation with respect to the parameter $t$. Treat $t$ as the variable.' },
+        { math: '\\frac{dy}{dx} = \\frac{dy/dt}{dx/dt} = \\frac{3t^2 - 3}{2t} = \\frac{3(t^2 - 1)}{2t}',
+          explain: 'Apply the parametric derivative formula: the ratio of the rates. Factor the numerator if it helps.' },
+        { math: '\\text{For a horizontal tangent: } \\frac{dy}{dx} = 0 \\iff 3t^2 - 3 = 0 \\text{ and } 2t \\neq 0',
+          explain: 'Horizontal means the slope is zero, so set the numerator equal to zero. But the denominator must be nonzero.' },
+        { math: '3t^2 - 3 = 0 \\Rightarrow t^2 = 1 \\Rightarrow t = \\pm 1',
+          explain: 'Solve for $t$. Both $t = 1$ and $t = -1$ give horizontal tangents (since $2t \\neq 0$ for both).' },
+        { math: '\\boxed{\\text{Horizontal tangents at } t = 1 \\text{ and } t = -1, \\text{ where } \\frac{dy}{dx} = 0}',
+          explain: 'At $t = 1$: $(x, y) = (1, -2)$. At $t = -1$: $(x, y) = (1, 2)$. Both are horizontal points on the curve.' }
+      ]
+    },
+    {
+      title: 'Polar Area: One Petal of $r = \\sin(3\\theta)$',
+      steps: [
+        { math: '\\text{Identify the curve: } r = \\sin(3\\theta) \\text{ is a rose with } 3 \\text{ petals}',
+          explain: 'The rose $r = a\\sin(n\\theta)$ has $n$ petals when $n$ is odd. Here $n = 3$, so 3 petals. Each petal is identical.' },
+        { math: '\\text{Find where one petal starts and stops: } r = 0 \\text{ when } \\sin(3\\theta) = 0',
+          explain: 'The curve passes through the origin when $r = 0$. For $r = \\sin(3\\theta)$, this happens at $3\\theta = 0, \\pi, 2\\pi, \\ldots$' },
+        { math: 'r = 0 \\text{ at } 3\\theta = 0, \\pi, 2\\pi, \\ldots \\Rightarrow \\theta = 0, \\pi/3, 2\\pi/3, \\ldots',
+          explain: 'One petal spans from one zero to the next. The first petal (starting at the origin) goes from $\\theta = 0$ to $\\theta = \\pi/3$.' },
+        { math: '\\text{Apply the polar area formula:} \\quad A = \\frac{1}{2}\\int_0^{\\pi/3} [\\sin(3\\theta)]^2\\,d\\theta',
+          explain: 'Use $A = \\frac{1}{2}\\int_\\alpha^\\beta [f(\\theta)]^2\\,d\\theta$. Don\\'t forget the $\\frac{1}{2}$!' },
+        { math: 'A = \\frac{1}{2}\\int_0^{\\pi/3} \\sin^2(3\\theta)\\,d\\theta = \\frac{1}{2}\\int_0^{\\pi/3} \\frac{1 - \\cos(6\\theta)}{2}\\,d\\theta',
+          explain: 'Use the identity $\\sin^2(u) = \\frac{1 - \\cos(2u)}{2}$ with $u = 3\\theta$.' },
+        { math: 'A = \\frac{1}{4}\\left[\\theta - \\frac{\\sin(6\\theta)}{6}\\right]_0^{\\pi/3} = \\frac{1}{4}\\left(\\frac{\\pi}{3} - 0\\right) = \\boxed{\\frac{\\pi}{12}}',
+          explain: 'Integrate and evaluate. At $\\theta = \\pi/3$: $\\sin(2\\pi) = 0$. At $\\theta = 0$: both terms are 0.' }
+      ]
+    },
+    {
+      title: 'Parametric Arc Length: $x = \\cos t$, $y = \\sin t$ for $0 \\le t \\le 2\\pi$',
+      steps: [
+        { math: '\\text{Identify the curve: } x = \\cos t, \\quad y = \\sin t \\text{ for } 0 \\le t \\le 2\\pi',
+          explain: 'This is a unit circle. The parameter $t$ is the angle, and we trace the full circle once as $t$ goes from $0$ to $2\\pi$.' },
+        { math: '\\frac{dx}{dt} = -\\sin t, \\quad \\frac{dy}{dt} = \\cos t',
+          explain: 'Differentiate each coordinate with respect to $t$.' },
+        { math: '\\left(\\frac{dx}{dt}\\right)^2 + \\left(\\frac{dy}{dt}\\right)^2 = \\sin^2 t + \\cos^2 t = 1',
+          explain: 'Use the Pythagorean identity. This confirms the instantaneous speed is constant: 1 unit per radian.' },
+        { math: '\\sqrt{\\left(\\frac{dx}{dt}\\right)^2 + \\left(\\frac{dy}{dt}\\right)^2} = \\sqrt{1} = 1',
+          explain: 'The speed is 1. Intuitively, you\\'re moving at a constant speed around a circle of radius 1.' },
+        { math: 'L = \\int_0^{2\\pi} 1\\,dt = \\int_0^{2\\pi} dt = 2\\pi',
+          explain: 'Integrate the speed over the time interval. Arc length = speed × time.' },
+        { math: '\\boxed{L = 2\\pi}',
+          explain: 'The circumference of a circle of radius 1 is $2\\pi r = 2\\pi$. This confirms our formula!' }
+      ]
+    }
+  ];
+
+  let currentStep = -1;
+  let currentProblem = 0;
+
+  function loadProblem(idx) {
+    currentProblem = idx;
+    currentStep = -1;
+    document.querySelectorAll('[id^="prob-btn"]').forEach((b, i) => {
+      b.className = i === idx ? 'btn-next' : 'btn-reset';
+      b.style.opacity = i === idx ? '1' : '';
+    });
+
+    const p = problems[idx];
+    let html = '<div class="solver-problem"><h4>' + p.title + '</h4></div>';
+    html += '<ol class="step-list">';
+    p.steps.forEach((s, i) => {
+      html += '<li class="step-item" id="step-' + i + '">';
+      html += '<div class="step-num">' + (i + 1) + '</div>';
+      html += '<div class="step-content">';
+      html += '<div class="step-math">$$' + s.math + '$$</div>';
+      html += '<button class="why-btn" onclick="toggleWhy(' + i + ')">Why?</button>';
+      html += '<div class="step-why" id="why-' + i + '">' + s.explain + '</div>';
+      html += '</div></li>';
+    });
+    html += '</ol>';
+    html += '<div class="solver-controls">';
+    html += '<button class="btn-next" onclick="revealNext()">Next Step &#9654;</button>';
+    html += '<button class="btn-reveal" onclick="revealAll()">Reveal All</button>';
+    html += '<button class="btn-reset" onclick="loadProblem(' + idx + ')">Reset</button>';
+    html += '</div>';
+
+    document.getElementById('solver-area').innerHTML = html;
+    renderMathInElement(document.getElementById('solver-area'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function revealNext() {
+    const steps = document.querySelectorAll('.step-item');
+    if (currentStep >= 0 && currentStep < steps.length) {
+      steps[currentStep].classList.remove('current');
+      steps[currentStep].classList.add('revealed');
+    }
+    currentStep++;
+    if (currentStep < steps.length) {
+      steps[currentStep].classList.add('current');
+      steps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.step-item').forEach(s => {
+      s.classList.remove('current');
+      s.classList.add('revealed');
+    });
+    currentStep = problems[currentProblem].steps.length;
+  }
+
+  function toggleWhy(i) {
+    document.getElementById('why-' + i).classList.toggle('show');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => loadProblem(0));
+
+  // ══════════════════════════════════════════════
+  // FLASHCARDS
+  // ══════════════════════════════════════════════
+
+  const cards = [
+    { q: 'What is the parametric derivative formula?', a: '$$\\frac{dy}{dx} = \\frac{dy/dt}{dx/dt}$$<br>The slope is the ratio of the $y$-rate to the $x$-rate.' },
+    { q: 'How do you find a horizontal tangent on a parametric curve?', a: '$$\\frac{dy}{dx} = 0 \\iff \\frac{dy}{dt} = 0 \\text{ and } \\frac{dx}{dt} \\neq 0$$<br>Set the numerator to zero; the denominator must be nonzero.' },
+    { q: 'How do you find a vertical tangent on a parametric curve?', a: '$$\\frac{dy}{dx} = \\text{undefined} \\iff \\frac{dx}{dt} = 0 \\text{ and } \\frac{dy}{dt} \\neq 0$$<br>Set the denominator to zero; the numerator must be nonzero.' },
+    { q: 'What is the arc length formula for a parametric curve?', a: '$$L = \\int_\\alpha^\\beta \\sqrt{\\left(\\frac{dx}{dt}\\right)^2 + \\left(\\frac{dy}{dt}\\right)^2}\\,dt$$<br>Integrate the speed function.' },
+    { q: 'What is the area formula under a parametric curve?', a: '$$A = \\int_\\alpha^\\beta y(t) \\cdot x\'(t)\\,dt$$<br>This is the parametric form of $\\int y\\,dx$.' },
+    { q: 'How do you convert from polar to Cartesian?', a: '$$x = r\\cos\\theta, \\quad y = r\\sin\\theta$$<br>Use these substitutions in any polar equation.' },
+    { q: 'How do you convert from Cartesian to polar?', a: '$$r^2 = x^2 + y^2, \\quad \\tan\\theta = \\frac{y}{x}$$<br>Remember to check the quadrant of $(x,y)$ for $\\theta$.' },
+    { q: 'What is the polar area formula?', a: '$$A = \\frac{1}{2}\\int_\\alpha^\\beta [f(\\theta)]^2\\,d\\theta$$<br>The $\\frac{1}{2}$ is essential!' },
+    { q: 'What is the area formula between two polar curves?', a: '$$A = \\frac{1}{2}\\int_\\alpha^\\beta [f(\\theta)]^2 - [g(\\theta)]^2\\,d\\theta$$<br>Make sure $f(\\theta) \\ge g(\\theta)$ on the interval.' },
+    { q: 'Describe a rose curve $r = a\\sin(n\\theta)$.', a: '<strong>Number of petals:</strong> $n$ if $n$ is odd, $2n$ if $n$ is even<br><strong>Shape:</strong> Symmetrical flower with identical petals<br><strong>Range:</strong> One petal spans from $\\theta = 0$ to $\\theta = \\pi/n$' },
+    { q: 'Describe a cardioid $r = a(1 + \\cos\\theta)$.', a: '<strong>Shape:</strong> Heart-shaped curve<br><strong>Features:</strong> One cusp at the origin, one outward lobe<br><strong>Area:</strong> $\\frac{3\\pi a^2}{2}$' },
+    { q: 'What is a lemniscate?', a: '<strong>Equation:</strong> $r^2 = a^2\\cos(2\\theta)$ (or $\\sin(2\\theta)$)<br><strong>Shape:</strong> Figure-eight (∞ symbol)<br><strong>Note:</strong> $r^2 < 0$ for some $\\theta$, so the curve doesn\\'t exist everywhere.' },
+    { q: 'What is the polar arc length formula?', a: '$$L = \\int_\\alpha^\\beta \\sqrt{r^2 + \\left(\\frac{dr}{d\\theta}\\right)^2}\\,d\\theta$$<br>This accounts for both the distance $r$ and how fast it changes.' },
+    { q: 'What is the polar tangent slope formula?', a: '$$\\frac{dy}{dx} = \\frac{r\\cos\\theta + r\\'\\sin\\theta}{r\\cos\\theta - r\\'\\sin\\theta}$$<br>Derived from $x = r\\cos\\theta$ and $y = r\\sin\\theta$.' },
+    { q: 'When should you be careful about the limits of integration in polar?', a: 'When the curve passes through the origin, which happens when $r = 0$. Always find where $r = 0$ to identify petal boundaries!' },
+    { q: 'What does negative $r$ mean in polar coordinates?', a: 'The point is in the opposite direction from the angle $\\theta$. If $r < 0$ and angle is $\\theta$, the point is actually at $(|r|, \\theta + \\pi)$. This causes curves to loop back and retrace.' },
+    { q: 'How many petals does $r = \\sin(4\\theta)$ have?', a: '<strong>Since $n = 4$ is even:</strong> The curve has $2n = 8$ petals (not 4!)<br><strong>General rule:</strong> $r = a\\sin(n\\theta)$ has $n$ petals if $n$ odd, $2n$ petals if $n$ even.' },
+    { q: 'What is the relationship between parametric and polar curves?', a: 'A polar curve $r = f(\\theta)$ can be written parametrically as:<br>$$x = f(\\theta)\\cos\\theta, \\quad y = f(\\theta)\\sin\\theta$$<br>This is useful for computing arc lengths and derivatives in polar form.' },
+    { q: 'How do you find intersection points of two polar curves?', a: 'Set the curves equal: $f(\\theta) = g(\\theta)$ and solve for $\\theta$. But watch out: both curves pass through the origin even if $\\theta$ values differ. Plot to verify intersections!' },
+    { q: 'What is the circumference of a circle of radius $a$ in polar?', a: '$$L = \\int_0^{2\\pi} \\sqrt{a^2 + 0^2}\\,d\\theta = \\int_0^{2\\pi} a\\,d\\theta = 2\\pi a$$<br>This confirms the familiar formula $C = 2\\pi r$.' }
+  ];
+
+  let cardIdx = 0;
+  let cardRatings = new Array(cards.length).fill(null);
+
+  function renderCard() {
+    const card = cards[cardIdx];
+    document.getElementById('card-question').innerHTML = card.q;
+    document.getElementById('card-answer').innerHTML = card.a;
+    document.getElementById('card-counter').textContent = (cardIdx + 1) + ' / ' + cards.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('confidence-btns').style.display = 'none';
+
+    renderMathInElement(document.getElementById('card-question'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    renderMathInElement(document.getElementById('card-answer'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function flipCard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+    if (document.getElementById('flashcard').classList.contains('flipped')) {
+      document.getElementById('confidence-btns').style.display = 'flex';
+    }
+  }
+
+  function nextCard() { cardIdx = (cardIdx + 1) % cards.length; renderCard(); }
+  function prevCard() { cardIdx = (cardIdx - 1 + cards.length) % cards.length; renderCard(); }
+
+  function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+      [cardRatings[i], cardRatings[j]] = [cardRatings[j], cardRatings[i]];
+    }
+    cardIdx = 0;
+    renderCard();
+  }
+
+  function rateCard(level) {
+    cardRatings[cardIdx] = level;
+    updateProgressBar();
+    nextCard();
+  }
+
+  function updateProgressBar() {
+    const h = cardRatings.filter(r => r === 'hard').length;
+    const m = cardRatings.filter(r => r === 'medium').length;
+    const e = cardRatings.filter(r => r === 'easy').length;
+    const total = cards.length;
+    document.getElementById('hard-count').textContent = 'Hard: ' + h;
+    document.getElementById('medium-count').textContent = 'Medium: ' + m;
+    document.getElementById('easy-count').textContent = 'Easy: ' + e;
+    document.getElementById('bar-hard').style.width = (h / total * 100) + '%';
+    document.getElementById('bar-medium').style.width = (m / total * 100) + '%';
+    document.getElementById('bar-easy').style.width = (e / total * 100) + '%';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 6: Parametric & Polar Curves — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    const printArea = document.getElementById('print-worksheet');
+    printArea.innerHTML = html;
+
+    renderMathInElement(printArea, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+
+    setTimeout(() => window.print(), 300);
+  }
+</script>
+
+</body>
+</html>

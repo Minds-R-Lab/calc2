@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 2 Study Tools — Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Tab System ── */
+    .tab-bar {
+      display: flex; gap: 0; background: #fff; border-radius: 14px 14px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      overflow-x: auto; margin-top: 1.5rem;
+    }
+    .tab-btn {
+      flex: 1; min-width: 140px; padding: 1rem 0.75rem; border: none; background: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .tab-btn:hover { background: var(--primary-light); color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+      background: linear-gradient(to bottom, var(--primary-light), #fff);
+    }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-panel {
+      display: none; background: #fff; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      padding: 2rem; min-height: 400px;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ── Formula Sheet ── */
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+    .formula-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+      background: linear-gradient(135deg, #f8fafc, #fff);
+      border-left: 4px solid var(--primary); transition: box-shadow 0.2s;
+    }
+    .formula-card:hover { box-shadow: var(--shadow-lg); }
+    .formula-card h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .formula-card .formula-main { font-size: 1.05rem; margin: 0.75rem 0; text-align: center; }
+    .formula-card .formula-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Step-by-Step Solver ── */
+    .solver-problem {
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border: 2px solid var(--primary); border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .solver-problem h4 { color: var(--primary); margin-bottom: 0.5rem; }
+    .step-list { list-style: none; padding: 0; }
+    .step-item {
+      display: flex; gap: 1rem; padding: 1rem; margin: 0.5rem 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; opacity: 0.3; transition: all 0.4s;
+      position: relative;
+    }
+    .step-item.revealed { opacity: 1; background: #f0fdf4; border-color: var(--success); }
+    .step-item.current { opacity: 1; background: #eff6ff; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.85rem; flex-shrink: 0;
+      background: var(--primary-light); color: var(--primary);
+    }
+    .step-item.revealed .step-num { background: var(--success-light); color: var(--success); }
+    .step-content { flex: 1; }
+    .step-math { margin: 0.5rem 0; }
+    .step-why {
+      display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 8px;
+      background: #fefce8; border: 1px solid var(--warning); font-size: 0.85rem;
+    }
+    .step-why.show { display: block; }
+    .why-btn {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid var(--warning); background: var(--warning-light);
+      color: var(--warning); cursor: pointer; font-weight: 600; margin-top: 0.4rem;
+    }
+    .why-btn:hover { background: var(--warning); color: #fff; }
+    .solver-controls { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .solver-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next { background: var(--primary); color: #fff; }
+    .btn-next:hover { background: var(--primary-dark); }
+    .btn-reset { background: var(--border); color: var(--text); }
+    .btn-reset:hover { background: #cbd5e1; }
+    .btn-reveal { background: var(--success); color: #fff; }
+    .btn-reveal:hover { background: #047857; }
+
+    /* ── Flashcards ── */
+    .flashcard-area { display: flex; flex-direction: column; align-items: center; }
+    .flashcard-container { perspective: 1000px; width: 100%; max-width: 550px; height: 320px; margin: 1.5rem 0; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s;
+      cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .flashcard-front {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: #fff; font-size: 1.15rem;
+    }
+    .flashcard-front .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-front .card-prompt { font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
+    .flashcard-back {
+      background: #fff; border: 2px solid var(--primary);
+      transform: rotateY(180deg); color: var(--text); font-size: 1rem;
+    }
+    .flashcard-back .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-nav {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .flashcard-nav button {
+      padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .flashcard-nav button:hover { background: var(--primary-light); color: var(--primary); }
+    .card-counter { font-weight: 600; color: var(--text-muted); min-width: 80px; text-align: center; }
+    .confidence-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .confidence-btns button {
+      padding: 0.4rem 1rem; border-radius: 8px; border: none;
+      font-weight: 600; cursor: pointer; font-size: 0.8rem;
+    }
+    .conf-hard { background: #fee2e2; color: var(--danger); }
+    .conf-medium { background: #fef3c7; color: var(--warning); }
+    .conf-easy { background: #d1fae5; color: var(--success); }
+
+    /* ── Common Mistakes ── */
+    .mistake-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 1.5rem; background: #fff;
+    }
+    .mistake-header {
+      padding: 1rem 1.25rem; font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fff); border-bottom: 1px solid var(--border);
+      color: var(--danger);
+    }
+    .mistake-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .mistake-wrong, .mistake-right {
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .mistake-wrong {
+      border-color: var(--danger); background: #fef2f2;
+    }
+    .mistake-right {
+      border-color: var(--success); background: #f0fdf4;
+    }
+    .mistake-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mistake-wrong .mistake-label { color: var(--danger); }
+    .mistake-right .mistake-label { color: var(--success); }
+    .mistake-explain {
+      padding: 1rem 1.25rem; background: #fffbeb; border-top: 1px solid var(--border);
+      font-size: 0.9rem; color: #92400e;
+    }
+
+    /* ── ELI5 ── */
+    .eli5-section { margin-bottom: 2rem; }
+    .eli5-formal {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .eli5-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid var(--accent);
+      background: var(--accent-light); color: var(--accent);
+      cursor: pointer; font-weight: 600; font-size: 0.82rem; margin-top: 0.75rem;
+      transition: all 0.2s;
+    }
+    .eli5-toggle-btn:hover { background: var(--accent); color: #fff; }
+    .eli5-simple {
+      display: none; margin-top: 0.75rem; padding: 1.25rem; border-radius: 12px;
+      background: linear-gradient(135deg, #fdf4ff, #faf5ff);
+      border: 2px solid var(--accent); font-size: 0.95rem; line-height: 1.7;
+    }
+    .eli5-simple.show { display: block; }
+    .eli5-simple .eli5-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .eli5-analogy {
+      margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+      background: rgba(124,58,237,0.08); font-style: italic;
+    }
+
+    /* ── Decision Table ── */
+    .test-table {
+      width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem;
+    }
+    .test-table th {
+      background: var(--primary); color: #fff; padding: 0.75rem; text-align: left;
+    }
+    .test-table td {
+      padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .test-table tr:nth-child(even) { background: #f8fafc; }
+    .test-table tr:hover { background: var(--primary-light); }
+
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: var(--primary); color: #fff; }
+    .ws-print-btn:hover { background: var(--primary-dark); }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: var(--primary); margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid var(--primary-light); padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: var(--primary); background: var(--primary-light); }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: var(--primary);
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+    #print-worksheet { display: none; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num { font-weight: bold; font-size: 1rem; }
+      .ws-print-problem .ws-prob-text { font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem; }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
+    @media (max-width: 700px) {
+      .mistake-body { grid-template-columns: 1fr; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .tab-btn { min-width: 80px; font-size: 0.75rem; padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch2-area.html">2.1 Area</a>
+    <a href="ch2-disk-washer.html">2.2 Disk/Washer</a>
+    <a href="ch2-shell.html">2.3 Shell</a>
+    <a href="ch2-arc-length.html">2.4 Arc Length</a>
+    <a href="ch2-study-tools.html" class="active">2.5 Study</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 2: Study Tools</h1>
+  <p>Five powerful tools to master Applications of Integration. Use the tabs below to switch between tools.</p>
+
+  <!-- ════════════════ TAB BAR ════════════════ -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('formulas')" role="tab">
+      <span class="tab-icon">📋</span> Formula Sheet
+    </button>
+    <button class="tab-btn" onclick="switchTab('solver')" role="tab">
+      <span class="tab-icon">🧩</span> Step-by-Step
+    </button>
+    <button class="tab-btn" onclick="switchTab('flashcards')" role="tab">
+      <span class="tab-icon">🃏</span> Flashcards
+    </button>
+    <button class="tab-btn" onclick="switchTab('mistakes')" role="tab">
+      <span class="tab-icon">🚫</span> Common Mistakes
+    </button>
+    <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
+      <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
+    </button>
+  </div>
+
+  <!-- ════════════════ TAB 1: FORMULA SHEET ════════════════ -->
+  <div id="tab-formulas" class="tab-panel active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;">Quick Reference: All Chapter 2 Formulas</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Everything you need on one page. Print-friendly — use Ctrl+P to save as PDF.</p>
+
+    <h3 style="color:var(--primary);margin-bottom:1rem;">2.1 Area Between Curves</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Area with respect to x</h4>
+        <div class="formula-main">$$A = \int_a^b [f(x) - g(x)]\,dx$$</div>
+        <div class="formula-note">where $f(x) \ge g(x)$ on $[a,b]$. Find intersection points first!</div>
+      </div>
+      <div class="formula-card">
+        <h4>Area with absolute value</h4>
+        <div class="formula-main">$$A = \int_a^b |f(x) - g(x)|\,dx$$</div>
+        <div class="formula-note">Use when you're unsure which function is on top. Split at intersection points.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Area with respect to y</h4>
+        <div class="formula-main">$$A = \int_c^d [f(y) - g(y)]\,dy$$</div>
+        <div class="formula-note">Integrate with respect to $y$ when functions are easier to solve for $x$, or region is tall and narrow.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">2.2 Volumes: Disk & Washer Method</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Disk Method (around x-axis)</h4>
+        <div class="formula-main">$$V = \pi\int_a^b [R(x)]^2\,dx$$</div>
+        <div class="formula-note">$R(x)$ is the distance from the axis to the curve. Don't forget to square the radius!</div>
+      </div>
+      <div class="formula-card">
+        <h4>Disk Method (around y-axis)</h4>
+        <div class="formula-main">$$V = \pi\int_c^d [R(y)]^2\,dy$$</div>
+        <div class="formula-note">Same idea but integrate with respect to $y$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Washer Method (around x-axis)</h4>
+        <div class="formula-main">$$V = \pi\int_a^b \left([R(x)]^2 - [r(x)]^2\right)\,dx$$</div>
+        <div class="formula-note">$R(x)$ = outer radius, $r(x)$ = inner radius. Use when there's a hole in the middle.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Washer Method (around y-axis)</h4>
+        <div class="formula-main">$$V = \pi\int_c^d \left([R(y)]^2 - [r(y)]^2\right)\,dy$$</div>
+        <div class="formula-note">Same idea with $dy$ instead of $dx$.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">2.3 Volumes: Shell Method</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Shell Method (around y-axis)</h4>
+        <div class="formula-main">$$V = 2\pi\int_a^b x \cdot f(x)\,dx$$</div>
+        <div class="formula-note">$x$ = radius of shell, $f(x)$ = height. Use $dx$ and integrate with respect to $x$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Shell Method (general)</h4>
+        <div class="formula-main">$$V = 2\pi\int (\text{radius})(\text{height})\,d(\text{thickness})$$</div>
+        <div class="formula-note">Useful when washer method leads to complicated integrals.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">2.4 Arc Length & Surface Area</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Arc Length</h4>
+        <div class="formula-main">$$L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx$$</div>
+        <div class="formula-note">Total length of the curve from $x=a$ to $x=b$. The $f'(x)$ term accounts for slope changes.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Arc Length (with respect to y)</h4>
+        <div class="formula-main">$$L = \int_c^d \sqrt{1 + [g'(y)]^2}\,dy$$</div>
+        <div class="formula-note">Use when $x$ is a function of $y$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Surface Area of Revolution (around x-axis)</h4>
+        <div class="formula-main">$$S = 2\pi\int_a^b f(x)\sqrt{1+[f'(x)]^2}\,dx$$</div>
+        <div class="formula-note">$f(x)$ = distance from axis. Area of cylindrical band = $2\pi r \cdot ds$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Surface Area of Revolution (around y-axis)</h4>
+        <div class="formula-main">$$S = 2\pi\int_c^d g(y)\sqrt{1+[g'(y)]^2}\,dy$$</div>
+        <div class="formula-note">Integrate with respect to $y$.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 2: STEP-BY-STEP SOLVER ════════════════ -->
+  <div id="tab-solver" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Worked Examples</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Three complete problems solved step-by-step. Click "Next" to reveal each step, or "Reveal All" to see the full solution.</p>
+
+    <div id="solver-container"></div>
+  </div>
+
+  <!-- ════════════════ TAB 3: FLASHCARDS ════════════════ -->
+  <div id="tab-flashcards" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Interactive Flashcards</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Click any card to flip it. Rate how well you knew the answer to track progress.</p>
+
+    <div class="flashcard-area">
+      <div class="flashcard-container">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front">
+            <span class="card-label">Question</span>
+            <div id="card-question"></div>
+            <span class="card-prompt">Click to reveal answer</span>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <span class="card-label">Answer</span>
+            <div id="card-answer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confidence-btns" id="confidence-btns" style="display:none;">
+        <span style="font-size:0.8rem;color:var(--text-muted);margin-right:0.5rem;">How well did you know this?</span>
+        <button class="conf-hard" onclick="rateCard('hard')">Hard</button>
+        <button class="conf-medium" onclick="rateCard('medium')">Medium</button>
+        <button class="conf-easy" onclick="rateCard('easy')">Easy</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:550px;margin-top:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem;">
+          <span id="hard-count">Hard: 0</span>
+          <span id="medium-count">Medium: 0</span>
+          <span id="easy-count">Easy: 0</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex;">
+          <div id="bar-hard" style="background:var(--danger);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-medium" style="background:var(--warning);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-easy" style="background:var(--success);width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard-nav" style="margin-top:2rem;">
+      <button onclick="prevCard()">← Previous</button>
+      <button onclick="flipCard()">Flip Card</button>
+      <button onclick="nextCard()">Next →</button>
+      <span class="card-counter" id="card-counter">1 / 1</span>
+      <button onclick="shuffleCards()" style="background:var(--accent-light);color:var(--accent);">🔀 Shuffle</button>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: COMMON MISTAKES ════════════════ -->
+  <div id="tab-mistakes" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Common Mistakes Gallery</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Learn from the errors students make most often. Red = wrong, Green = correct.</p>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #1: Forgetting to find intersection points before setting up the integral</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>$y = x^2$ and $y = x$. Area: $\int_0^1 (x - x^2)\,dx$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Assumed bounds were 0 and 1 without checking!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>Set $x^2 = x$, solve: $x(x-1) = 0$</p>
+          <p>Intersection points: $x = 0$ and $x = 1$</p>
+          <p>Then compute $\int_0^1 (x - x^2)\,dx$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Without finding intersections, you don't know the bounds and might integrate the wrong region. Always solve $f(x) = g(x)$ first!</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #2: Confusing which function is on top vs bottom</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>Area between $y = \sqrt{x}$ and $y = x^2$ from 0 to 1:</p>
+          <p>$A = \int_0^1 (x^2 - \sqrt{x})\,dx$ (negative!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>Check: at $x = 0.25$, $\sqrt{0.25} = 0.5$ and $(0.25)^2 = 0.0625$</p>
+          <p>So $\sqrt{x} > x^2$ on $(0,1)$</p>
+          <p>$A = \int_0^1 (\sqrt{x} - x^2)\,dx$ (positive!)</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Area is always positive. Use $A = \int |f(x) - g(x)|\,dx$ to be safe, or test a point to see which is larger.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #3: Confusing disk and shell method setup — mixing up radius and height</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>For $y = x^2$, rotating around the y-axis using shells:</p>
+          <p>$V = 2\pi \int_0^2 x^2 \cdot x\,dx$ (wrong formula!)</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>Shell method: $V = 2\pi \int_0^2 (\text{radius}) \cdot (\text{height})\,dx$</p>
+          <p>Radius = $x$, Height = $x^2$ (function value)</p>
+          <p>$V = 2\pi \int_0^2 x \cdot x^2\,dx = 2\pi \int_0^2 x^3\,dx$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> In shell method, radius is the distance from the axis of rotation, and height is the function value. Don't confuse them!</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #4: Forgetting the $2\pi$ factor in shell method</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>$V = \int_0^2 x \cdot x^2\,dx$ (missing $2\pi$!)</p>
+          <p style="color:var(--danger);font-size:0.85rem;">This gives arc length, not volume.</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>$V = 2\pi \int_0^2 x \cdot x^2\,dx$</p>
+          <p>The $2\pi$ comes from the circumference of each cylindrical shell.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Each shell wraps around the axis with circumference $2\pi r$. The $2\pi$ is essential for computing volume!</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #5: Not squaring the radius in the disk/washer method</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>For $y = \sqrt{x}$ rotated around the x-axis:</p>
+          <p>$V = \pi \int_0^4 \sqrt{x}\,dx$ (missing square!)</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>Area of disk = $\pi R^2$, so:</p>
+          <p>$V = \pi \int_0^4 (\sqrt{x})^2\,dx = \pi \int_0^4 x\,dx$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The cross-sectional area of a disk is $\pi r^2$, not $\pi r$. Always square the radius!</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #6: Using the wrong variable of integration</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">✗ Wrong</div>
+          <p>Area between $x = y^2$ and $x = 4$ (bounded region is horizontal):</p>
+          <p>$A = \int_0^4 (4 - y^2)\,dy$ (using $dy$ but function is in $x$!)</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">✓ Correct</div>
+          <p>Solve for $y$: $y = \pm\sqrt{x}$. It's easier to use $dy$:</p>
+          <p>$A = \int_{-2}^2 (4 - y^2)\,dy$ (correct variable and bounds)</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The choice of $dx$ vs $dy$ affects the setup. Pick the variable that makes the region easy to describe.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ELI5 ════════════════ -->
+  <div id="tab-eli5" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Explain Like I'm 5</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Simple, intuitive explanations next to the formal definitions. Click the blue button to toggle.</p>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">2.1 Area Between Curves</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> The area between two curves $f(x)$ and $g(x)$ from $x=a$ to $x=b$ (where $f(x) \ge g(x)$) is given by $A = \int_a^b [f(x) - g(x)]\,dx$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎯</span>
+        <strong>The simple version:</strong> Imagine two roads on a map, one above the other. The area between them is like painting the ground between the roads. We add up infinitely many thin vertical strips, each with width $dx$ and height (top road minus bottom road). That's what the integral does!
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> You're filling in a region between two curves like coloring between two lines in a coloring book. The integral measures how much ink you need.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">2.2 Disk & Washer Method</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> When rotating a region around an axis, the volume is $V = \pi\int_a^b [R(x)]^2\,dx$ (disk) or $V = \pi\int_a^b \{[R(x)]^2 - [r(x)]^2\}\,dx$ (washer).
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">💿</span>
+        <strong>The simple version:</strong> Imagine stacking coins or washers (coins with holes). Each thin slice has a circular cross-section. The volume is the sum of all these circular slices. The disk method is like stacking pancakes, while the washer method is like stacking donuts (with a hole in the middle).
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> To measure the volume of a vase by rotating a profile around an axis: stack very thin circular slices and add them up. The radius changes as you go up, so each slice has a different area.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">2.3 Shell Method</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> When rotating a region around an axis, an alternative is the shell method: $V = 2\pi\int_a^b x \cdot f(x)\,dx$, which uses cylindrical shells instead of disks.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎪</span>
+        <strong>The simple version:</strong> Imagine wrapping up concentric cylindrical shells (like tin cans nested inside each other). Each shell is thin, with circumference $2\pi r$ and height $f(x)$. Instead of stacking disks, we're stacking hollow cylinders. This often leads to easier integrals!
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Instead of slicing a layer cake horizontally (disks), imagine wrapping it in concentric paper shells. The circumference and height of each shell tells you the volume.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">2.4 Arc Length & Surface Area</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> Arc length: $L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx$. Surface area of revolution: $S = 2\pi\int_a^b f(x)\sqrt{1+[f'(x)]^2}\,dx$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">📏</span>
+        <strong>The simple version:</strong> Arc length is like measuring the distance along a curve. If the curve were a string, how long would it be? The term $\sqrt{1 + [f'(x)]^2}$ is the "speed" at which the curve moves — it accounts for both horizontal and vertical changes. For surface area, we wrap that curve around an axis like wallpaper on a cylinder, and the factor $2\pi f(x)$ is the circumference.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Arc length: measuring the length of a hiking trail that goes up and down hills. Surface area: taking that trail and wrapping it around a pole to create a surface (like wallpaper on a cylinder).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:var(--primary);">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>2.1 Area Between Curves</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.1 Area Between Curves" data-problem="Find the area between $y = x^2$ and $y = x$ from $x = 0$ to $x = 1$." onchange="updateWsCount()"><label>$y = x^2$ and $y = x$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.1 Area Between Curves" data-problem="Find the area between $y = \sqrt{x}$ and $y = x^2$." onchange="updateWsCount()"><label>$y = \sqrt{x}$ and $y = x^2$ (find intersections)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.1 Area Between Curves" data-problem="Find the area between $x = y^2$ and $x = 4$ using integration with respect to $y$." onchange="updateWsCount()"><label>$x = y^2$ and $x = 4$ (integrate w.r.t. y)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.1 Area Between Curves" data-problem="Find the area enclosed by $y = \sin x$ and $y = \cos x$ on $[0, 2\pi]$." onchange="updateWsCount()"><label>$y = \sin x$ and $y = \cos x$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.1 Area Between Curves" data-problem="Find the area between $y = e^x$ and $y = 1$ from $x = 0$ to $x = 2$." onchange="updateWsCount()"><label>$y = e^x$ and $y = 1$</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>2.2 Volumes: Disk & Washer Method</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.2 Volumes: Disk & Washer" data-problem="Find the volume when $y = \sqrt{x}$ from $x=0$ to $x=4$ is rotated around the x-axis." onchange="updateWsCount()"><label>$y = \sqrt{x}$ rotated around x-axis (disk method)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.2 Volumes: Disk & Washer" data-problem="Find the volume when $y = x$ from $x=0$ to $x=2$ is rotated around the y-axis." onchange="updateWsCount()"><label>$y = x$ rotated around y-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.2 Volumes: Disk & Washer" data-problem="Find the volume of the region between $y = \sqrt{x}$ and $y = x$ rotated around the x-axis." onchange="updateWsCount()"><label>Between $y = \sqrt{x}$ and $y = x$ (washer method)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.2 Volumes: Disk & Washer" data-problem="Find the volume when $y = 1/x$ from $x=1$ to $x=3$ is rotated around the x-axis." onchange="updateWsCount()"><label>$y = 1/x$ rotated around x-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.2 Volumes: Disk & Washer" data-problem="Find the volume when the region bounded by $y = x^2$, $x = 1$, and the x-axis is rotated around the y-axis." onchange="updateWsCount()"><label>$y = x^2$ rotated around y-axis (disk/washer)</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>2.3 Volumes: Shell Method</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.3 Volumes: Shell Method" data-problem="Use the shell method to find the volume when $y = x^2$ from $x=0$ to $x=2$ is rotated around the y-axis." onchange="updateWsCount()"><label>$y = x^2$ rotated around y-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.3 Volumes: Shell Method" data-problem="Use the shell method to find the volume when $y = e^x$ from $x=0$ to $x=1$ is rotated around the y-axis." onchange="updateWsCount()"><label>$y = e^x$ rotated around y-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.3 Volumes: Shell Method" data-problem="Use the shell method to find the volume when $y = \sqrt{x}$ from $x=0$ to $x=4$ is rotated around the y-axis." onchange="updateWsCount()"><label>$y = \sqrt{x}$ rotated around y-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.3 Volumes: Shell Method" data-problem="Use the shell method for the region between $y = \sqrt{x}$ and $y = x$ rotated around the y-axis." onchange="updateWsCount()"><label>Between curves, shell method</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.3 Volumes: Shell Method" data-problem="Use the shell method to find the volume when $y = \sin x$ from $x=0$ to $x=\pi$ is rotated around the y-axis." onchange="updateWsCount()"><label>$y = \sin x$ rotated around y-axis</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>2.4 Arc Length & Surface Area</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.4 Arc Length & Surface Area" data-problem="Find the arc length of $y = x^{3/2}$ from $x = 0$ to $x = 4$." onchange="updateWsCount()"><label>Arc length: $y = x^{3/2}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.4 Arc Length & Surface Area" data-problem="Find the arc length of $y = \frac{1}{3}(x^2 + 2)^{3/2}$ from $x = 0$ to $x = 1$." onchange="updateWsCount()"><label>Arc length: $y = \frac{1}{3}(x^2 + 2)^{3/2}$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.4 Arc Length & Surface Area" data-problem="Find the surface area when $y = \sqrt{x}$ from $x=0$ to $x=4$ is rotated around the x-axis." onchange="updateWsCount()"><label>Surface area: $y = \sqrt{x}$ around x-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.4 Arc Length & Surface Area" data-problem="Find the surface area when $y = x$ from $x=0$ to $x=2$ is rotated around the y-axis." onchange="updateWsCount()"><label>Surface area: $y = x$ around y-axis</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="2.4 Arc Length & Surface Area" data-problem="Find the surface area when $y = e^x$ from $x=0$ to $x=1$ is rotated around the x-axis." onchange="updateWsCount()"><label>Surface area: $y = e^x$ around x-axis</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
+</main>
+
+<footer id="main-footer"></footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  // Footer
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // KaTeX
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  });
+
+  // ══════════════════════════════════════════════
+  // TAB SWITCHING
+  // ══════════════════════════════════════════════
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    renderMathInElement(document.getElementById('tab-' + name), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  // ── ELI5 Toggle ──
+  function toggleEli5(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('show');
+    btn.textContent = panel.classList.contains('show') ? '💡 Hide simple explanation' : '💡 Explain simply';
+  }
+
+  // ══════════════════════════════════════════════
+  // STEP-BY-STEP SOLVER
+  // ══════════════════════════════════════════════
+
+  const problems = [
+    {
+      title: 'Area between $y = x^2$ and $y = x$',
+      steps: [
+        { math: '\\text{Find intersection points: set } x^2 = x',
+          explain: 'To find where the curves meet, set them equal and solve for x.' },
+        { math: 'x^2 - x = 0 \\quad \\Rightarrow \\quad x(x-1) = 0 \\quad \\Rightarrow \\quad x = 0 \\text{ or } x = 1',
+          explain: 'Factor out x. The curves intersect at x = 0 and x = 1.' },
+        { math: '\\text{Check which is on top: at } x = 0.5, \\quad y = 0.5 \\text{ vs } y = 0.25',
+          explain: 'Test a point between the intersections. Here, $x = 0.5$ gives us $y = 0.5$ (from $y=x$) and $y = 0.25$ (from $y=x^2$), so $y = x$ is above.' },
+        { math: 'A = \\int_0^1 (x - x^2)\\,dx',
+          explain: 'Set up the integral with the larger function on top.' },
+        { math: 'A = \\left[\\frac{x^2}{2} - \\frac{x^3}{3}\\right]_0^1 = \\left(\\frac{1}{2} - \\frac{1}{3}\\right) - 0',
+          explain: 'Evaluate the antiderivative at the bounds.' },
+        { math: 'A = \\frac{3 - 2}{6} = \\frac{1}{6}',
+          explain: 'Simplify: $\\frac{1}{2} - \\frac{1}{3} = \\frac{3}{6} - \\frac{2}{6} = \\frac{1}{6}$.' }
+      ]
+    },
+    {
+      title: 'Volume by disk/washer: $y = \\sqrt{x}$ from $x=0$ to $x=4$ around x-axis',
+      steps: [
+        { math: '\\text{Identify the method: rotating around the x-axis}',
+          explain: 'The region is bounded by a single curve, so we use the disk method.' },
+        { math: 'V = \\pi\\int_a^b [R(x)]^2\\,dx',
+          explain: 'Disk method formula. Here $R(x) = \\sqrt{x}$ is the distance from the x-axis to the curve.' },
+        { math: 'V = \\pi\\int_0^4 (\\sqrt{x})^2\\,dx',
+          explain: 'Substitute $R(x) = \\sqrt{x}$ and the bounds $[0,4]$.' },
+        { math: 'V = \\pi\\int_0^4 x\\,dx',
+          explain: 'Simplify: $(\\sqrt{x})^2 = x$.' },
+        { math: 'V = \\pi\\left[\\frac{x^2}{2}\\right]_0^4 = \\pi\\left(\\frac{16}{2} - 0\\right)',
+          explain: 'Evaluate the antiderivative.' },
+        { math: 'V = 8\\pi',
+          explain: 'Simplify: $\\frac{16}{2} = 8$.' }
+      ]
+    },
+    {
+      title: 'Volume by shell method: $y = x^2$ from $x=0$ to $x=2$ around y-axis',
+      steps: [
+        { math: '\\text{Identify the method: rotating around the y-axis, use shell method}',
+          explain: 'With the y-axis as the axis of rotation, the shell method is natural.' },
+        { math: 'V = 2\\pi\\int_a^b (\\text{radius})(\\text{height})\\,dx',
+          explain: 'Shell method formula. Radius is distance from the axis, height is the function value.' },
+        { math: '\\text{Radius} = x, \\quad \\text{Height} = x^2',
+          explain: 'For a vertical strip at position x, it\\'s x units from the y-axis and reaches up to height $x^2$.' },
+        { math: 'V = 2\\pi\\int_0^2 x \\cdot x^2\\,dx = 2\\pi\\int_0^2 x^3\\,dx',
+          explain: 'Set up the integral.' },
+        { math: 'V = 2\\pi\\left[\\frac{x^4}{4}\\right]_0^2 = 2\\pi\\left(\\frac{16}{4} - 0\\right)',
+          explain: 'Integrate and evaluate at the bounds.' },
+        { math: 'V = 2\\pi \\cdot 4 = 8\\pi',
+          explain: 'Simplify: $\\frac{16}{4} = 4$, then $2\\pi \\cdot 4 = 8\\pi$.' }
+      ]
+    }
+  ];
+
+  let currentProblem = 0;
+  let currentStep = 0;
+
+  function loadProblem(idx) {
+    currentProblem = idx;
+    currentStep = 0;
+    const html = `
+      <div class="solver-problem">
+        <h4>${problems[idx].title}</h4>
+        <ul class="step-list" id="step-list"></ul>
+        <div class="solver-controls">
+          <button class="btn-next" onclick="nextStep()">Next Step →</button>
+          <button class="btn-reset" onclick="resetProblem()">Reset</button>
+          <button class="btn-reveal" onclick="revealAll()">Reveal All</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('solver-container').innerHTML = html;
+    problems[idx].steps.forEach((step, i) => {
+      const li = document.createElement('li');
+      li.className = 'step-item';
+      li.innerHTML = `
+        <div class="step-num">${i+1}</div>
+        <div class="step-content">
+          <div class="step-math">$$${step.math}$$</div>
+          <button class="why-btn" onclick="toggleWhy(${i})">Why?</button>
+          <div class="step-why" id="why-${i}">${step.explain}</div>
+        </div>
+      `;
+      document.getElementById('step-list').appendChild(li);
+    });
+    renderMathInElement(document.getElementById('solver-container'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    revealStep(0);
+  }
+
+  function revealStep(idx) {
+    const items = document.querySelectorAll('.step-item');
+    items.forEach((item, i) => {
+      item.classList.remove('current', 'revealed');
+      if (i < idx) item.classList.add('revealed');
+      if (i === idx) item.classList.add('current');
+    });
+  }
+
+  function nextStep() {
+    if (currentStep < problems[currentProblem].steps.length - 1) {
+      currentStep++;
+      revealStep(currentStep);
+    }
+  }
+
+  function resetProblem() {
+    currentStep = 0;
+    revealStep(0);
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.step-item').forEach(s => {
+      s.classList.remove('current');
+      s.classList.add('revealed');
+    });
+    currentStep = problems[currentProblem].steps.length;
+  }
+
+  function toggleWhy(i) {
+    document.getElementById('why-' + i).classList.toggle('show');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => loadProblem(0));
+
+  // ══════════════════════════════════════════════
+  // FLASHCARDS
+  // ══════════════════════════════════════════════
+
+  const cards = [
+    { q: 'When should I use area with respect to x vs y?', a: 'Use $dx$ when functions are easy to solve for $y$ (e.g., $y = f(x)$).<br>Use $dy$ when functions are easy to solve for $x$ (e.g., $x = g(y)$).<br>Or when the region is tall/narrow (use $dy$) vs wide/short (use $dx$).' },
+    { q: 'What is the area formula between two curves?', a: '$$A = \\int_a^b |f(x) - g(x)|\\,dx$$<br>Always: (top function) minus (bottom function), or use absolute value to be safe.' },
+    { q: 'Why do I need to find intersection points?', a: 'Intersection points are the bounds of integration! Without them, you don\\'t know where the region starts and stops.<br>Set $f(x) = g(x)$ and solve.' },
+    { q: 'What is the disk method formula?', a: '$$V = \\pi\\int_a^b [R(x)]^2\\,dx$$<br>$R(x)$ = distance from axis of rotation to curve. Don\\'t forget to square the radius!' },
+    { q: 'What is the washer method formula?', a: '$$V = \\pi\\int_a^b \\{[R(x)]^2 - [r(x)]^2\\}\\,dx$$<br>$R$ = outer radius, $r$ = inner radius. Use when there\\'s a hole in the middle.' },
+    { q: 'What is the shell method formula?', a: '$$V = 2\\pi\\int_a^b (\\text{radius}) \\times (\\text{height})\\,dx$$<br>For shells around the y-axis: $V = 2\\pi\\int_a^b x \\cdot f(x)\\,dx$' },
+    { q: 'When should I use the shell method instead of disk/washer?', a: 'Use shells when:<br>- The washer method leads to complicated or hard-to-integrate functions<br>- You\\'re rotating around the y-axis and expressing x as a function of y is messy' },
+    { q: 'What is the arc length formula?', a: '$$L = \\int_a^b \\sqrt{1 + [f\\'(x)]^2}\\,dx$$<br>The term $\\sqrt{1 + [f\\'(x)]^2}$ accounts for both horizontal and vertical changes in the curve.' },
+    { q: 'What does the term $\\sqrt{1 + [f\\'(x)]^2}$ represent?', a: 'It\\'s the <strong>differential arc length</strong> $ds$.<br>For a small change $dx$, the curve moves $dx$ horizontally and $f\\'(x)dx$ vertically, so $ds = \\sqrt{(dx)^2 + (f\\'(x)dx)^2} = \\sqrt{1 + [f\\'(x)]^2}\\,dx$' },
+    { q: 'What is the surface area of revolution formula?', a: '$$S = 2\\pi\\int_a^b f(x)\\sqrt{1+[f\\'(x)]^2}\\,dx$$<br>$f(x)$ = distance from axis. The $2\\pi f(x)$ is the circumference of the circular band.' },
+    { q: 'How do I choose between $dx$ and $dy$ for volumes?', a: 'If rotating around the x-axis, use $dx$ (slices perpendicular to x-axis).<br>If rotating around the y-axis, consider: use $dx$ if x is the natural variable, $dy$ if y is easier.' },
+    { q: 'What is the difference between disk and washer methods?', a: '<strong>Disk:</strong> Solid disk, no hole. One function bounds the region.<br><strong>Washer:</strong> Disk with a hole. Two functions bound the region (outer and inner radius).' },
+    { q: 'Can arc length ever be infinite?', a: 'Yes! For example, the arc length of $y = 1/x$ from 1 to infinity is infinite.<br>Some curves have finite arc length over finite intervals, others don\\'t.' },
+    { q: 'What does the factor $2\\pi$ mean in the shell method?', a: 'The $2\\pi r$ is the <strong>circumference</strong> of a cylindrical shell.<br>Each thin shell wraps around the axis, and $2\\pi r$ tells you how far around it goes.' },
+    { q: 'What does the factor $2\\pi$ mean in surface area of revolution?', a: 'The $2\\pi f(x)$ is the <strong>circumference</strong> of the circle traced out by the curve.<br>When you spin the curve around an axis, it sweeps out a surface, and this circumference is the width of that surface.' },
+  ];
+
+  let cardIdx = 0;
+  let cardRatings = new Array(cards.length).fill(null);
+
+  function renderCard() {
+    const card = cards[cardIdx];
+    document.getElementById('card-question').innerHTML = card.q;
+    document.getElementById('card-answer').innerHTML = card.a;
+    document.getElementById('card-counter').textContent = (cardIdx + 1) + ' / ' + cards.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('confidence-btns').style.display = 'none';
+
+    renderMathInElement(document.getElementById('card-question'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    renderMathInElement(document.getElementById('card-answer'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function flipCard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+    if (document.getElementById('flashcard').classList.contains('flipped')) {
+      document.getElementById('confidence-btns').style.display = 'flex';
+    }
+  }
+
+  function nextCard() { cardIdx = (cardIdx + 1) % cards.length; renderCard(); }
+  function prevCard() { cardIdx = (cardIdx - 1 + cards.length) % cards.length; renderCard(); }
+
+  function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+      [cardRatings[i], cardRatings[j]] = [cardRatings[j], cardRatings[i]];
+    }
+    cardIdx = 0;
+    renderCard();
+  }
+
+  function rateCard(level) {
+    cardRatings[cardIdx] = level;
+    updateProgressBar();
+    nextCard();
+  }
+
+  function updateProgressBar() {
+    const h = cardRatings.filter(r => r === 'hard').length;
+    const m = cardRatings.filter(r => r === 'medium').length;
+    const e = cardRatings.filter(r => r === 'easy').length;
+    const total = cards.length;
+    document.getElementById('hard-count').textContent = 'Hard: ' + h;
+    document.getElementById('medium-count').textContent = 'Medium: ' + m;
+    document.getElementById('easy-count').textContent = 'Easy: ' + e;
+    document.getElementById('bar-hard').style.width = (h / total * 100) + '%';
+    document.getElementById('bar-medium').style.width = (m / total * 100) + '%';
+    document.getElementById('bar-easy').style.width = (e / total * 100) + '%';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 2: Applications of Integration — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    document.getElementById('print-worksheet').innerHTML = html;
+    renderMathInElement(document.getElementById('print-worksheet'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    setTimeout(() => window.print(), 100);
+  }
+</script>
+
+</body>
+</html>

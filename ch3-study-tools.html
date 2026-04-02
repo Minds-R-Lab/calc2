@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 3 Study Tools — Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Tab System ── */
+    .tab-bar {
+      display: flex; gap: 0; background: #fff; border-radius: 14px 14px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      overflow-x: auto; margin-top: 1.5rem;
+    }
+    .tab-btn {
+      flex: 1; min-width: 140px; padding: 1rem 0.75rem; border: none; background: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .tab-btn:hover { background: var(--primary-light); color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+      background: linear-gradient(to bottom, var(--primary-light), #fff);
+    }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-panel {
+      display: none; background: #fff; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      padding: 2rem; min-height: 400px;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ── Formula Sheet ── */
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+    .formula-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+      background: linear-gradient(135deg, #f8fafc, #fff);
+      border-left: 4px solid #7c3aed; transition: box-shadow 0.2s;
+    }
+    .formula-card:hover { box-shadow: var(--shadow-lg); }
+    .formula-card h4 { color: #7c3aed; margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .formula-card .formula-main { font-size: 1.05rem; margin: 0.75rem 0; text-align: center; }
+    .formula-card .formula-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Step-by-Step Solver ── */
+    .solver-problem {
+      background: linear-gradient(135deg, #f3e8ff, #faf5ff);
+      border: 2px solid #7c3aed; border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .solver-problem h4 { color: #7c3aed; margin-bottom: 0.5rem; }
+    .step-list { list-style: none; padding: 0; }
+    .step-item {
+      display: flex; gap: 1rem; padding: 1rem; margin: 0.5rem 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; opacity: 0.3; transition: all 0.4s;
+      position: relative;
+    }
+    .step-item.revealed { opacity: 1; background: #f0fdf4; border-color: var(--success); }
+    .step-item.current { opacity: 1; background: #f3e8ff; border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.85rem; flex-shrink: 0;
+      background: #ede9fe; color: #7c3aed;
+    }
+    .step-item.revealed .step-num { background: var(--success-light); color: var(--success); }
+    .step-content { flex: 1; }
+    .step-math { margin: 0.5rem 0; }
+    .step-why {
+      display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 8px;
+      background: #fefce8; border: 1px solid var(--warning); font-size: 0.85rem;
+    }
+    .step-why.show { display: block; }
+    .why-btn {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid var(--warning); background: var(--warning-light);
+      color: var(--warning); cursor: pointer; font-weight: 600; margin-top: 0.4rem;
+    }
+    .why-btn:hover { background: var(--warning); color: #fff; }
+    .solver-controls { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .solver-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next { background: #7c3aed; color: #fff; }
+    .btn-next:hover { background: #6d28d9; }
+    .btn-reset { background: var(--border); color: var(--text); }
+    .btn-reset:hover { background: #cbd5e1; }
+    .btn-reveal { background: var(--success); color: #fff; }
+    .btn-reveal:hover { background: #047857; }
+
+    /* ── Flashcards ── */
+    .flashcard-area { display: flex; flex-direction: column; align-items: center; }
+    .flashcard-container { perspective: 1000px; width: 100%; max-width: 550px; height: 320px; margin: 1.5rem 0; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s;
+      cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .flashcard-front {
+      background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+      color: #fff; font-size: 1.15rem;
+    }
+    .flashcard-front .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-front .card-prompt { font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
+    .flashcard-back {
+      background: #fff; border: 2px solid var(--warning);
+      transform: rotateY(180deg); color: var(--text); font-size: 1rem;
+    }
+    .flashcard-back .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-nav {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .flashcard-nav button {
+      padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .flashcard-nav button:hover { background: #f3e8ff; color: #7c3aed; }
+    .card-counter { font-weight: 600; color: var(--text-muted); min-width: 80px; text-align: center; }
+    .confidence-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .confidence-btns button {
+      padding: 0.4rem 1rem; border-radius: 8px; border: none;
+      font-weight: 600; cursor: pointer; font-size: 0.8rem;
+    }
+    .conf-hard { background: #fee2e2; color: var(--danger); }
+    .conf-medium { background: #fef3c7; color: var(--warning); }
+    .conf-easy { background: #d1fae5; color: var(--success); }
+
+    /* ── Common Mistakes ── */
+    .mistake-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 1.5rem; background: #fff;
+    }
+    .mistake-header {
+      padding: 1rem 1.25rem; font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fff); border-bottom: 1px solid var(--border);
+      color: var(--danger);
+    }
+    .mistake-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .mistake-wrong, .mistake-right {
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .mistake-wrong {
+      border-color: var(--danger); background: #fef2f2;
+    }
+    .mistake-right {
+      border-color: var(--success); background: #f0fdf4;
+    }
+    .mistake-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mistake-wrong .mistake-label { color: var(--danger); }
+    .mistake-right .mistake-label { color: var(--success); }
+    .mistake-explain {
+      padding: 1rem 1.25rem; background: #fffbeb; border-top: 1px solid var(--border);
+      font-size: 0.9rem; color: #92400e;
+    }
+
+    /* ── ELI5 ── */
+    .eli5-section { margin-bottom: 2rem; }
+    .eli5-formal {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .eli5-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid #7c3aed;
+      background: #f3e8ff; color: #7c3aed;
+      cursor: pointer; font-weight: 600; font-size: 0.82rem; margin-top: 0.75rem;
+      transition: all 0.2s;
+    }
+    .eli5-toggle-btn:hover { background: #7c3aed; color: #fff; }
+    .eli5-simple {
+      display: none; margin-top: 0.75rem; padding: 1.25rem; border-radius: 12px;
+      background: linear-gradient(135deg, #fdf4ff, #faf5ff);
+      border: 2px solid #7c3aed; font-size: 0.95rem; line-height: 1.7;
+    }
+    .eli5-simple.show { display: block; }
+    .eli5-simple .eli5-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .eli5-analogy {
+      margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+      background: rgba(124,58,237,0.08); font-style: italic;
+    }
+
+    /* ── Decision Table ── */
+    .test-table {
+      width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem;
+    }
+    .test-table th {
+      background: #7c3aed; color: #fff; padding: 0.75rem; text-align: left;
+    }
+    .test-table td {
+      padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .test-table tr:nth-child(even) { background: #f8fafc; }
+    .test-table tr:hover { background: #f3e8ff; }
+
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: #7c3aed; color: #fff; }
+    .ws-print-btn:hover { background: #6d28d9; }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: #7c3aed; margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid #f3e8ff; padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: #7c3aed; background: #f3e8ff; }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: #7c3aed;
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+    #print-worksheet { display: none; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num { font-weight: bold; font-size: 1rem; }
+      .ws-print-problem .ws-prob-text { font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem; }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
+    @media (max-width: 700px) {
+      .mistake-body { grid-template-columns: 1fr; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .tab-btn { min-width: 80px; font-size: 0.75rem; padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch3-type1.html">3.1 Type I</a>
+    <a href="ch3-type2.html">3.2 Type II</a>
+    <a href="ch3-comparison.html">3.3 Comparison</a>
+    <a href="ch3-study-tools.html" class="active">3.4 Study</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 3: Study Tools</h1>
+  <p>Five powerful tools to master Improper Integrals. Use the tabs below to switch between tools.</p>
+
+  <!-- ════════════════ TAB BAR ════════════════ -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('formulas')" role="tab">
+      <span class="tab-icon">📋</span> Formula Sheet
+    </button>
+    <button class="tab-btn" onclick="switchTab('solver')" role="tab">
+      <span class="tab-icon">🧩</span> Step-by-Step
+    </button>
+    <button class="tab-btn" onclick="switchTab('flashcards')" role="tab">
+      <span class="tab-icon">🃏</span> Flashcards
+    </button>
+    <button class="tab-btn" onclick="switchTab('mistakes')" role="tab">
+      <span class="tab-icon">🚫</span> Common Mistakes
+    </button>
+    <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
+      <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
+    </button>
+  </div>
+
+  <!-- ════════════════ TAB 1: FORMULA SHEET ════════════════ -->
+  <div id="tab-formulas" class="tab-panel active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;">Quick Reference: All Chapter 3 Formulas</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Everything you need on one page. Print-friendly — use Ctrl+P to save as PDF.</p>
+
+    <h3 style="color:#7c3aed;margin-bottom:1rem;">3.1 Type I: Infinite Intervals</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Type I (Single Infinite Limit)</h4>
+        <div class="formula-main">$$\int_a^{\infty} f(x)\,dx = \lim_{t\to\infty}\int_a^t f(x)\,dx$$</div>
+        <div class="formula-note">Also: $\int_{-\infty}^b f(x)\,dx = \lim_{t\to-\infty}\int_t^b f(x)\,dx$</div>
+      </div>
+      <div class="formula-card">
+        <h4>Type I (Both Infinite Limits)</h4>
+        <div class="formula-main">$$\int_{-\infty}^{\infty} f(x)\,dx = \int_{-\infty}^c f(x)\,dx + \int_c^{\infty} f(x)\,dx$$</div>
+        <div class="formula-note">For any constant $c$. Both improper integrals must converge separately for the total to converge.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Convergence: $\int_a^{\infty} f(x)\,dx$ converges when...</h4>
+        <div class="formula-main">$$\lim_{t\to\infty}\int_a^t f(x)\,dx \text{ exists and is finite}$$</div>
+        <div class="formula-note">If the limit is $\infty$ or does not exist, the integral diverges.</div>
+      </div>
+    </div>
+
+    <h3 style="color:#7c3aed;margin:1.5rem 0 1rem;">3.2 Type II: Discontinuities</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Type II (Discontinuity at Left Endpoint)</h4>
+        <div class="formula-main">$$\int_a^b f(x)\,dx = \lim_{t\to a^+}\int_t^b f(x)\,dx$$</div>
+        <div class="formula-note">When $f$ has a discontinuity or is undefined at $x = a$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Type II (Discontinuity at Right Endpoint)</h4>
+        <div class="formula-main">$$\int_a^b f(x)\,dx = \lim_{t\to b^-}\int_a^t f(x)\,dx$$</div>
+        <div class="formula-note">When $f$ has a discontinuity or is undefined at $x = b$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Type II (Discontinuity in the Interior)</h4>
+        <div class="formula-main">$$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$$</div>
+        <div class="formula-note">When $f$ has a discontinuity at $c$ where $a < c < b$. Both parts must converge.</div>
+      </div>
+    </div>
+
+    <h3 style="color:#7c3aed;margin:1.5rem 0 1rem;">3.3 The $p$-Integral and Comparison Tests</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>$p$-Integral at Infinity</h4>
+        <div class="formula-main">$$\int_1^{\infty} \frac{1}{x^p}\,dx \begin{cases} \text{converges} & p > 1 \\ \text{diverges} & p \le 1 \end{cases}$$</div>
+        <div class="formula-note">The Riemann integral with $p = 1$ (log divergence) is the critical cutoff.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$p$-Integral Near Zero</h4>
+        <div class="formula-main">$$\int_0^1 \frac{1}{x^p}\,dx \begin{cases} \text{converges} & p < 1 \\ \text{diverges} & p \ge 1 \end{cases}$$</div>
+        <div class="formula-note">Near zero, the behavior is reversed! Small $p$ makes it converge.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Comparison Test for Improper Integrals</h4>
+        <div class="formula-main">$$0 \le f(x) \le g(x): \quad \int g(x)\,dx \text{ conv.} \Rightarrow \int f(x)\,dx \text{ conv.}$$</div>
+        <div class="formula-note">"Smaller than convergent = convergent." "Bigger than divergent = divergent."</div>
+      </div>
+      <div class="formula-card">
+        <h4>Limit Comparison Test for Improper Integrals</h4>
+        <div class="formula-main">$$\lim_{x\to\infty} \frac{f(x)}{g(x)} = L, \quad 0 < L < \infty$$</div>
+        <div class="formula-note">If $L$ is finite and positive, both integrals converge or both diverge together.</div>
+      </div>
+    </div>
+
+    <!-- Quick Decision Table -->
+    <h3 style="color:#7c3aed;margin:1.5rem 0 1rem;">Quick Decision Table</h3>
+    <table class="test-table">
+      <thead>
+        <tr>
+          <th>If the integral looks like...</th>
+          <th>Try this approach</th>
+          <th>Key check</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>$\int_a^{\infty} f(x)\,dx$</td><td>Type I — set up limit</td><td>$\lim_{t\to\infty}\int_a^t f(x)\,dx$ finite?</td></tr>
+        <tr><td>$\int_a^b \frac{1}{(x-c)^p}\,dx$ ($c$ inside)</td><td>Type II — split at $c$</td><td>Both parts converge?</td></tr>
+        <tr><td>$\int_1^{\infty} \frac{1}{x^p}\,dx$</td><td>$p$-integral</td><td>$p > 1$?</td></tr>
+        <tr><td>$\int_0^1 \frac{1}{x^p}\,dx$</td><td>$p$-integral (reverse!)</td><td>$p < 1$?</td></tr>
+        <tr><td>Looks like $p$-integral or familiar form</td><td>Comparison or Limit Comparison</td><td>Find comparison integral</td></tr>
+        <tr><td>Asymptotic behavior needed</td><td>Limit Comparison Test</td><td>$0 < L < \infty$?</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════ TAB 2: STEP-BY-STEP SOLVER ════════════════ -->
+  <div id="tab-solver" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Step-by-Step Problem Solver</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Click <strong>Next Step</strong> to reveal each step. Click <strong>Why?</strong> to understand the reasoning.</p>
+
+    <!-- Problem selector -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <button class="btn-next" onclick="loadProblem(0)" id="prob-btn-0" style="opacity:1">Type I: $\int_1^{\infty} \frac{1}{x^2}\,dx$</button>
+      <button class="btn-reset" onclick="loadProblem(1)" id="prob-btn-1">Type II: $\int_0^1 \frac{1}{\sqrt{x}}\,dx$</button>
+      <button class="btn-reset" onclick="loadProblem(2)" id="prob-btn-2">Comparison: $\int_1^{\infty} \frac{1}{x^2+x}\,dx$</button>
+    </div>
+
+    <div id="solver-area"></div>
+  </div>
+
+  <!-- ════════════════ TAB 3: FLASHCARDS ════════════════ -->
+  <div id="tab-flashcards" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Flashcard Review</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Click the card to flip it. Rate your confidence to focus on weak areas.</p>
+
+    <div class="flashcard-area">
+      <div class="flashcard-nav">
+        <button onclick="prevCard()">&#9664; Prev</button>
+        <span class="card-counter" id="card-counter">1 / 18</span>
+        <button onclick="nextCard()">Next &#9654;</button>
+        <button onclick="shuffleCards()" style="background:#f3e8ff;color:#7c3aed;">Shuffle</button>
+      </div>
+
+      <div class="flashcard-container" onclick="flipCard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front" id="card-front">
+            <span class="card-label">Question</span>
+            <div id="card-question"></div>
+            <div class="card-prompt">Click to reveal answer</div>
+          </div>
+          <div class="flashcard-face flashcard-back" id="card-back">
+            <span class="card-label">Answer</span>
+            <div id="card-answer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confidence-btns" id="confidence-btns" style="display:none;">
+        <span style="font-size:0.8rem;color:var(--text-muted);margin-right:0.5rem;">How well did you know this?</span>
+        <button class="conf-hard" onclick="rateCard('hard')">Hard</button>
+        <button class="conf-medium" onclick="rateCard('medium')">Medium</button>
+        <button class="conf-easy" onclick="rateCard('easy')">Easy</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:550px;margin-top:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem;">
+          <span id="hard-count">Hard: 0</span>
+          <span id="medium-count">Medium: 0</span>
+          <span id="easy-count">Easy: 0</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex;">
+          <div id="bar-hard" style="background:var(--danger);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-medium" style="background:var(--warning);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-easy" style="background:var(--success);width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: COMMON MISTAKES ════════════════ -->
+  <div id="tab-mistakes" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Common Mistakes Gallery</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Learn from the errors students make most often. Red = wrong, Green = correct.</p>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #1: Evaluating improper integrals without using limits</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int_1^{\infty} \frac{1}{x^2}\,dx = \left[-\frac{1}{x}\right]_1^{\infty}$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">$= -\frac{1}{\infty} - (-1) = 0 + 1 = 1$</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$\int_1^{\infty} \frac{1}{x^2}\,dx = \lim_{t\to\infty}\int_1^t \frac{1}{x^2}\,dx$</p>
+          <p>$= \lim_{t\to\infty}\left[-\frac{1}{x}\right]_1^t = \lim_{t\to\infty}\left(-\frac{1}{t} + 1\right) = 1$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Infinity is not a number you can plug in directly. You must set up the limit before evaluating. The limit process is essential.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #2: Forgetting to split at interior discontinuities</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int_0^2 \frac{1}{(x-1)^2}\,dx$ has a discontinuity at $x=1$.</p>
+          <p style="color:var(--danger);font-size:0.85rem;">"Just apply the antiderivative from 0 to 2"</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Split: $\int_0^2 = \int_0^1 + \int_1^2$</p>
+          <p>Each part is improper and must be handled with limits separately.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> When a discontinuity lies inside the integration bounds, the integral becomes improper at that point. You must split into two Type II improper integrals and check if both converge.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #3: Confusing $p > 1$ (infinity) vs $p < 1$ (zero)</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int_0^1 \frac{1}{x^{0.5}}\,dx$: "Since $p = 0.5$, use $p > 1$, so it diverges."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Applied the wrong rule!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Near zero: $\int_0^1 \frac{1}{x^p}\,dx$ converges iff $p < 1$.</p>
+          <p>Since $p = 0.5 < 1$, this integral <strong>converges</strong>.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The $p$-integral rule reverses at zero! At infinity, you need $p > 1$. At zero, you need $p < 1$. This is one of the trickiest ideas in this chapter.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #4: Wrong direction in the Comparison Test</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int_1^{\infty} \frac{1}{x^2+x}\,dx$: Since $\frac{1}{x^2+x} < \frac{1}{x}$</p>
+          <p>and $\int \frac{1}{x}\,dx$ diverges,</p>
+          <p style="color:var(--danger);font-size:0.85rem;">"smaller than divergent" proves nothing!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Compare upward: $\frac{1}{x^2+x} < \frac{1}{x^2}$</p>
+          <p>$\int_1^{\infty} \frac{1}{x^2}\,dx$ converges ($p=2>1$).</p>
+          <p>"Smaller than convergent" $\Rightarrow$ converges.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The Comparison Test has only two valid directions: (1) Smaller than convergent = converges, (2) Bigger than divergent = diverges. "Smaller than divergent" tells you nothing about your integral.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #5: Assuming $\lim f(x) = 0$ means the integral converges</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\int_1^{\infty} \frac{1}{x}\,dx$: "$\lim_{x\to\infty} \frac{1}{x} = 0$,</p>
+          <p style="color:var(--danger);font-size:0.85rem;">so the integral converges."</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$\lim f(x) = 0$ is <em>necessary</em> but not <em>sufficient</em>.</p>
+          <p>$\int_1^{\infty} \frac{1}{x}\,dx = \infty$ (harmonic series integral diverges).</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The terms going to zero is not enough — you need them to go to zero <em>fast enough</em>. The harmonic integral diverges because $1/x$ decreases too slowly. Use the $p$-integral test or comparison to be sure.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ELI5 ════════════════ -->
+  <div id="tab-eli5" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Explain Like I'm 5</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Simple, intuitive explanations next to the formal definitions. Click the purple button to toggle.</p>
+
+    <div class="eli5-section">
+      <h3 style="color:#7c3aed;margin-bottom:0.75rem;">3.1 Type I: Infinite Intervals</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> An improper integral of Type I has an infinite limit: $\int_a^{\infty} f(x)\,dx = \lim_{t\to\infty}\int_a^t f(x)\,dx$. It converges if this limit is finite.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🌌</span>
+        <strong>The simple version:</strong> Imagine you're adding up infinitely many tiny slices under a curve that stretches to the horizon. Will you eventually reach a finite total, or does it grow forever? That's the question Type I asks.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Think of a water tank that drains: each second, the water level drops by half of what's left. After 1 second: half full. After 2 seconds: three-quarters full. After infinity seconds, it's completely full but never overflows — the integral converges to a finite answer.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:#7c3aed;margin-bottom:0.75rem;">3.2 Type II: Discontinuities</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> An improper integral of Type II has a discontinuity or singularity inside or at the boundary of the integration region. If $f$ has a discontinuity at $x = c$ in $[a,b]$, split: $\int_a^b = \int_a^c + \int_c^b$, each handled with limits.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🏔️</span>
+        <strong>The simple version:</strong> Sometimes a function has a cliff or a spike inside your integration interval. Maybe it shoots to infinity at one endpoint, or maybe it blows up in the middle. Type II asks: if we approach this cliff carefully using limits, can we still calculate the total area?
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine measuring the area under a hill, but the ground near one edge gets steeper and steeper (like a cliff). You can't just march all the way to the cliff — you have to approach it carefully from a distance and see if the area remains finite.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:#7c3aed;margin-bottom:0.75rem;">3.3 The $p$-Integral and Comparison Tests</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> The $p$-integral $\int_1^{\infty} \frac{1}{x^p}\,dx$ converges when $p > 1$ and diverges when $p \le 1$. Near zero, $\int_0^1 \frac{1}{x^p}\,dx$ reverses: converges when $p < 1$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">⚖️</span>
+        <strong>The simple version:</strong> There's a "magic threshold" for how fast a function must shrink to converge. At infinity, shrinking like $1/x^2$ (fast) converges, but $1/x$ (slow) diverges. Near zero, the opposite happens: $1/\sqrt{x}$ (not too fast) converges, but $1/x$ blows up.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Think of sand falling into a bucket. At the far end of an infinite beach, sand falls slower and slower. If it falls as fast as $1/x^2$, the bucket eventually fills. If it falls as fast as $1/x$, sand just keeps coming forever. Near a cliff, the rules flip.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:#7c3aed;">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>3.1 Type I: Infinite Intervals</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.1 Type I: Infinite Intervals" data-problem="Evaluate $\int_1^{\infty} \frac{1}{x^2}\,dx$ and determine if it converges." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{1}{x^2}\,dx$ — basic Type I</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.1 Type I: Infinite Intervals" data-problem="Evaluate $\int_0^{\infty} e^{-2x}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_0^{\infty} e^{-2x}\,dx$ — exponential decay</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.1 Type I: Infinite Intervals" data-problem="Evaluate $\int_{-\infty}^{\infty} \frac{1}{1+x^2}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_{-\infty}^{\infty} \frac{1}{1+x^2}\,dx$ — both limits</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.1 Type I: Infinite Intervals" data-problem="Determine if $\int_1^{\infty} \frac{1}{x}\,dx$ converges or diverges." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{1}{x}\,dx$ — the harmonic integral</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.1 Type I: Infinite Intervals" data-problem="Evaluate $\int_2^{\infty} \frac{1}{x(\ln x)^2}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_2^{\infty} \frac{1}{x(\ln x)^2}\,dx$ — logarithmic</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>3.2 Type II: Discontinuities</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.2 Type II: Discontinuities" data-problem="Evaluate $\int_0^1 \frac{1}{\sqrt{x}}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_0^1 \frac{1}{\sqrt{x}}\,dx$ — discontinuity at 0</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.2 Type II: Discontinuities" data-problem="Evaluate $\int_0^1 \frac{1}{x^{1/3}}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_0^1 \frac{1}{x^{1/3}}\,dx$ — fractional power</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.2 Type II: Discontinuities" data-problem="Evaluate $\int_0^{\pi/2} \sec x\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_0^{\pi/2} \sec x\,dx$ — vertical asymptote</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.2 Type II: Discontinuities" data-problem="Evaluate $\int_0^2 \frac{1}{(x-1)^2}\,dx$ and determine convergence. (Discontinuity in interior)" onchange="updateWsCount()"><label>$\int_0^2 \frac{1}{(x-1)^2}\,dx$ — interior discontinuity</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.2 Type II: Discontinuities" data-problem="Evaluate $\int_0^1 \frac{1}{1-x}\,dx$ and determine convergence." onchange="updateWsCount()"><label>$\int_0^1 \frac{1}{1-x}\,dx$ — right endpoint discontinuity</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>3.3 Comparison Tests for Improper Integrals</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.3 Comparison Tests" data-problem="Use the Comparison Test to determine if $\int_1^{\infty} \frac{1}{x^2 + x}\,dx$ converges." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{1}{x^2+x}\,dx$ — direct comparison</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.3 Comparison Tests" data-problem="Use the Limit Comparison Test to determine if $\int_1^{\infty} \frac{x^2}{x^3+1}\,dx$ converges." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{x^2}{x^3+1}\,dx$ — limit comparison</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.3 Comparison Tests" data-problem="Determine convergence of $\int_1^{\infty} \frac{\sin x}{x^2}\,dx$ using comparison." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{\sin x}{x^2}\,dx$ — bounded oscillating</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.3 Comparison Tests" data-problem="Determine convergence of $\int_0^1 \frac{x^2}{\\sqrt{1-x^2}}\,dx$ near the singularity." onchange="updateWsCount()"><label>$\int_0^1 \frac{x^2}{\sqrt{1-x^2}}\,dx$ — Type II comparison</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="3.3 Comparison Tests" data-problem="Determine if $\int_2^{\infty} \frac{1}{x \ln x}\,dx$ converges or diverges." onchange="updateWsCount()"><label>$\int_2^{\infty} \frac{1}{x\ln x}\,dx$ — Cauchy condensation</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>Mixed & Challenge Problems</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed & Challenge" data-problem="Determine convergence and classify as Type I or Type II: $\int_1^{\infty} \frac{1}{x^{3/2}}\,dx$" onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{1}{x^{3/2}}\,dx$ — identify and solve</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed & Challenge" data-problem="Determine convergence and classify as Type I or Type II: $\int_0^1 \frac{\ln x}{\sqrt{x}}\,dx$" onchange="updateWsCount()"><label>$\int_0^1 \frac{\ln x}{\sqrt{x}}\,dx$ — logarithm × power</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed & Challenge" data-problem="Determine convergence of $\int_1^{\infty} \frac{1 + \sin x}{x^2}\,dx$ using comparison." onchange="updateWsCount()"><label>$\int_1^{\infty} \frac{1+\sin x}{x^2}\,dx$ — with oscillation</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
+</main>
+
+<footer id="main-footer"></footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  // Footer
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // KaTeX
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  });
+
+  // ── Tab System ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    renderMathInElement(document.getElementById('tab-' + name), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  // ── ELI5 Toggle ──
+  function toggleEli5(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('show');
+    btn.textContent = panel.classList.contains('show') ? '💡 Hide simple explanation' : '💡 Explain simply';
+  }
+
+  // ══════════════════════════════════════════════
+  // STEP-BY-STEP SOLVER
+  // ══════════════════════════════════════════════
+
+  const problems = [
+    {
+      title: 'Type I: $\\int_1^{\\infty} \\frac{1}{x^2}\\,dx$',
+      steps: [
+        { math: '\\text{Identify: } \\int_1^{\\infty} \\text{ is Type I (infinite upper limit)}',
+          explain: 'This is a Type I improper integral. We must replace the infinite limit with a variable and take a limit.' },
+        { math: '\\int_1^{\\infty} \\frac{1}{x^2}\\,dx = \\lim_{t\\to\\infty} \\int_1^t \\frac{1}{x^2}\\,dx',
+          explain: 'The first step in any Type I problem is to write it as a limit of a finite integral. We replace $\\infty$ with a variable $t$ and then take $t \\to \\infty$.' },
+        { math: '\\lim_{t\\to\\infty} \\int_1^t x^{-2}\\,dx = \\lim_{t\\to\\infty} \\left[-\\frac{1}{x}\\right]_1^t',
+          explain: 'Find the antiderivative of $x^{-2}$: it is $-x^{-1} = -1/x$. Apply the Fundamental Theorem.' },
+        { math: '= \\lim_{t\\to\\infty} \\left(-\\frac{1}{t} - \\left(-\\frac{1}{1}\\right)\\right) = \\lim_{t\\to\\infty} \\left(-\\frac{1}{t} + 1\\right)',
+          explain: 'Evaluate the antiderivative at the bounds: $t$ and $1$. Plug in both values.' },
+        { math: '= -0 + 1 = 1',
+          explain: 'As $t \\to \\infty$, we have $1/t \\to 0$. So the limit is $0 + 1 = 1$.' },
+        { math: '\\boxed{\\int_1^{\\infty} \\frac{1}{x^2}\\,dx = 1 \\quad (\\text{CONVERGES})}',
+          explain: 'Since the limit is finite (equal to 1), the improper integral converges to 1. This is an example of $p$-integral with $p = 2 > 1$ at infinity.' }
+      ]
+    },
+    {
+      title: 'Type II: $\\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx$',
+      steps: [
+        { math: '\\text{Identify: } f(x) = \\frac{1}{\\sqrt{x}} = x^{-1/2} \\text{ is undefined at } x = 0',
+          explain: 'This is a Type II improper integral. The function has a singularity (discontinuity) at the left endpoint $x = 0$.' },
+        { math: '\\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx = \\lim_{t\\to 0^+} \\int_t^1 \\frac{1}{\\sqrt{x}}\\,dx',
+          explain: 'We replace the problematic endpoint $0$ with a variable $t$ and approach from the right (from $t \\to 0^+$). This is the standard Type II approach.' },
+        { math: '\\lim_{t\\to 0^+} \\int_t^1 x^{-1/2}\\,dx = \\lim_{t\\to 0^+} \\left[2\\sqrt{x}\\right]_t^1',
+          explain: 'The antiderivative of $x^{-1/2}$ is $\\frac{x^{1/2}}{1/2} = 2x^{1/2} = 2\\sqrt{x}$.' },
+        { math: '= \\lim_{t\\to 0^+} \\left(2\\sqrt{1} - 2\\sqrt{t}\\right) = \\lim_{t\\to 0^+} (2 - 2\\sqrt{t})',
+          explain: 'Evaluate at the bounds: at $x=1$ we get $2\\sqrt{1}=2$, and at $x=t$ we get $2\\sqrt{t}$.' },
+        { math: '= 2 - 2(0) = 2',
+          explain: 'As $t \\to 0^+$, we have $\\sqrt{t} \\to 0$. So the limit is $2 - 0 = 2$.' },
+        { math: '\\boxed{\\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx = 2 \\quad (\\text{CONVERGES})}',
+          explain: 'Since the limit equals 2 (finite), the Type II improper integral converges. This is a $p$-integral with $p = 1/2 < 1$ near zero, so it converges.' }
+      ]
+    },
+    {
+      title: 'Comparison: $\\int_1^{\\infty} \\frac{1}{x^2 + x}\\,dx$',
+      steps: [
+        { math: '\\text{Identify the dominant term: for large } x, \\quad x^2 + x \\approx x^2',
+          explain: 'When $x$ is very large, the $x^2$ term dominates over the $x$ term. So $\\frac{1}{x^2+x}$ behaves like $\\frac{1}{x^2}$ for large $x$.' },
+        { math: '\\text{We know } \\int_1^{\\infty} \\frac{1}{x^2}\\,dx \\text{ converges } (p = 2 > 1)',
+          explain: 'The $p$-integral rule tells us that $\\int_1^{\\infty} x^{-p}\\,dx$ converges when $p > 1$. Here $p = 2$, so it converges.' },
+        { math: '\\text{For } x \\ge 1: \\quad \\frac{1}{x^2+x} < \\frac{1}{x^2}',
+          explain: 'Directly compare: since $x^2 + x > x^2$ (adding a positive number makes it bigger), dividing by it makes the fraction smaller. So $\\frac{1}{x^2+x} < \\frac{1}{x^2}$.' },
+        { math: '\\text{By the Comparison Test: if } 0 \\le f(x) \\le g(x) \\text{ and } \\int g(x)\\,dx \\text{ converges, then } \\int f(x)\\,dx \\text{ converges.}',
+          explain: 'This is the key theorem. We have a smaller integrand than one we know converges, so our integral must also converge.' },
+        { math: '\\boxed{\\int_1^{\\infty} \\frac{1}{x^2+x}\\,dx \\text{ CONVERGES}}',
+          explain: 'Since $\\frac{1}{x^2+x} \\le \\frac{1}{x^2}$ and $\\int_1^{\\infty} \\frac{1}{x^2}\\,dx$ converges, the Comparison Test gives convergence.' }
+      ]
+    }
+  ];
+
+  let currentStep = -1;
+  let currentProblem = 0;
+
+  function loadProblem(idx) {
+    currentProblem = idx;
+    currentStep = -1;
+    document.querySelectorAll('[id^="prob-btn"]').forEach((b, i) => {
+      b.className = i === idx ? 'btn-next' : 'btn-reset';
+      b.style.opacity = i === idx ? '1' : '';
+    });
+
+    const p = problems[idx];
+    let html = '<div class="solver-problem"><h4>' + p.title + '</h4></div>';
+    html += '<ol class="step-list">';
+    p.steps.forEach((s, i) => {
+      html += '<li class="step-item" id="step-' + i + '">';
+      html += '<div class="step-num">' + (i + 1) + '</div>';
+      html += '<div class="step-content">';
+      html += '<div class="step-math">$$' + s.math + '$$</div>';
+      html += '<button class="why-btn" onclick="toggleWhy(' + i + ')">Why?</button>';
+      html += '<div class="step-why" id="why-' + i + '">' + s.explain + '</div>';
+      html += '</div></li>';
+    });
+    html += '</ol>';
+    html += '<div class="solver-controls">';
+    html += '<button class="btn-next" onclick="revealNext()">Next Step &#9654;</button>';
+    html += '<button class="btn-reveal" onclick="revealAll()">Reveal All</button>';
+    html += '<button class="btn-reset" onclick="loadProblem(' + idx + ')">Reset</button>';
+    html += '</div>';
+
+    document.getElementById('solver-area').innerHTML = html;
+    renderMathInElement(document.getElementById('solver-area'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function revealNext() {
+    const steps = document.querySelectorAll('.step-item');
+    if (currentStep >= 0 && currentStep < steps.length) {
+      steps[currentStep].classList.remove('current');
+      steps[currentStep].classList.add('revealed');
+    }
+    currentStep++;
+    if (currentStep < steps.length) {
+      steps[currentStep].classList.add('current');
+      steps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.step-item').forEach(s => {
+      s.classList.remove('current');
+      s.classList.add('revealed');
+    });
+    currentStep = problems[currentProblem].steps.length;
+  }
+
+  function toggleWhy(i) {
+    document.getElementById('why-' + i).classList.toggle('show');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => loadProblem(0));
+
+  // ══════════════════════════════════════════════
+  // FLASHCARDS
+  // ══════════════════════════════════════════════
+
+  const cards = [
+    { q: 'What is a Type I improper integral?', a: '$$\\int_a^{\\infty} f(x)\\,dx = \\lim_{t\\to\\infty}\\int_a^t f(x)\\,dx$$<br>An integral with an infinite limit (or both limits infinite). The key: replace infinity with a variable $t$ and take the limit.' },
+    { q: 'What is a Type II improper integral?', a: 'An integral where the integrand has a discontinuity or singularity inside or at the boundary of the integration region.<br><br>Example: $\\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx$ (singularity at $x=0$)' },
+    { q: 'When does $\\int_1^{\\infty} \\frac{1}{x^p}\\,dx$ converge?', a: '$$\\text{Converges when } p > 1, \\quad \\text{Diverges when } p \\le 1$$<br>This is the $p$-integral at infinity. Key example: $p=1$ (harmonic integral) diverges.' },
+    { q: 'When does $\\int_0^1 \\frac{1}{x^p}\\,dx$ converge?', a: '$$\\text{Converges when } p < 1, \\quad \\text{Diverges when } p \\ge 1$$<br><strong>REVERSED!</strong> Near zero, small $p$ converges; large $p$ diverges.' },
+    { q: 'How do you handle a discontinuity in the interior of $[a,b]$?', a: 'If $f$ has a discontinuity at $c$ where $a < c < b$, split:<br><br>$$\\int_a^b = \\int_a^c + \\int_c^b$$<br><br>Each part becomes improper and must converge separately.' },
+    { q: 'State the Comparison Test for improper integrals.', a: 'If $0 \\le f(x) \\le g(x)$:<br><br>- $\\int g(x)\\,dx$ converges $\\Rightarrow$ $\\int f(x)\\,dx$ converges<br>- $\\int f(x)\\,dx$ diverges $\\Rightarrow$ $\\int g(x)\\,dx$ diverges<br><br>"Smaller than convergent = convergent"' },
+    { q: 'State the Limit Comparison Test for improper integrals.', a: '$$\\lim_{x\\to\\infty} \\frac{f(x)}{g(x)} = L, \\quad 0 < L < \\infty$$<br>Then $\\int f(x)\\,dx$ and $\\int g(x)\\,dx$ both converge or both diverge.' },
+    { q: 'Why is it crucial to use limits in improper integrals?', a: 'Infinity is not a number. You cannot simply plug $\\infty$ into the Fundamental Theorem of Calculus. Instead, you replace infinity with a variable and take a limit, which allows the mathematical machinery to work properly.' },
+    { q: 'What does it mean for an improper integral to converge?', a: 'The corresponding limit exists and is finite.<br><br>Example: $\\int_1^{\\infty} \\frac{1}{x^2}\\,dx = \\lim_{t\\to\\infty} [-1/x]_1^t = 1$ (finite) so it converges.' },
+    { q: 'What does it mean for an improper integral to diverge?', a: 'The corresponding limit either is infinite or does not exist.<br><br>Example: $\\int_1^{\\infty} \\frac{1}{x}\\,dx = \\lim_{t\\to\\infty} [\\ln x]_1^t = \\infty$ so it diverges.' },
+    { q: 'Can you use the Comparison Test if you have $g(x) < f(x)$ and $\\int g(x)$ diverges?', a: 'No. The Comparison Test only allows "smaller than convergent" or "bigger than divergent." If $g < f$ and $\\int g$ diverges, you cannot conclude anything about $\\int f$ (it could converge or diverge).' },
+    { q: 'What is the relationship between Type I and Type II improper integrals?', a: 'They are two different types:<br><br>- <strong>Type I:</strong> Infinite interval ($\\infty$ as a limit)<br>- <strong>Type II:</strong> Infinite integrand (discontinuity/singularity)<br><br>An integral can be both Type I AND Type II (e.g., $\\int_0^{\\infty} \\frac{1}{x}\\,dx$).' },
+    { q: 'Does $\\lim_{x\\to\\infty} f(x) = 0$ guarantee convergence of $\\int_a^{\\infty} f(x)\\,dx$?', a: '<strong>No!</strong> The terms going to zero is <em>necessary</em> but not <em>sufficient</em>.<br><br>Example: $\\int_1^{\\infty} \\frac{1}{x}\\,dx$ diverges even though $\\lim_{x\\to\\infty} \\frac{1}{x} = 0$.<br><br>Terms must shrink <em>fast enough</em>.' },
+    { q: 'How do you set up $\\int_0^2 \\frac{1}{(x-1)^2}\\,dx$ as an improper integral?', a: 'The integrand has a singularity at $x = 1$ (interior of $[0,2]$).<br><br>Split: $\\int_0^2 = \\int_0^1 + \\int_1^2$<br><br>Each part is Type II:<br>$\\int_0^1 \\frac{1}{(x-1)^2}\\,dx = \\lim_{t\\to 1^-} \\int_0^t \\frac{1}{(x-1)^2}\\,dx$<br><br>$\\int_1^2 \\frac{1}{(x-1)^2}\\,dx = \\lim_{t\\to 1^+} \\int_t^2 \\frac{1}{(x-1)^2}\\,dx$' },
+    { q: 'Explain the key difference in the $p$-integral rule at infinity vs. at zero.', a: '<strong>At infinity ($x \\to \\infty$):</strong> Need $p > 1$ for convergence. Higher power = faster decay = convergent.<br><br><strong>At zero ($x \\to 0^+$):</strong> Need $p < 1$ for convergence. Lower power = less singular = convergent.<br><br>The rules are opposite!' },
+    { q: 'For $\\int_{-\\infty}^{\\infty} f(x)\\,dx$, what condition must hold?', a: 'Both parts must converge separately:<br><br>$$\\int_{-\\infty}^{\\infty} f(x)\\,dx = \\int_{-\\infty}^c f(x)\\,dx + \\int_c^{\\infty} f(x)\\,dx$$<br><br>If either part diverges or oscillates, the total diverges. You cannot cancel infinities!' },
+  ];
+
+  let cardIdx = 0;
+  let cardRatings = new Array(cards.length).fill(null);
+
+  function renderCard() {
+    const card = cards[cardIdx];
+    document.getElementById('card-question').innerHTML = card.q;
+    document.getElementById('card-answer').innerHTML = card.a;
+    document.getElementById('card-counter').textContent = (cardIdx + 1) + ' / ' + cards.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('confidence-btns').style.display = 'none';
+
+    renderMathInElement(document.getElementById('card-question'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    renderMathInElement(document.getElementById('card-answer'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function flipCard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+    if (document.getElementById('flashcard').classList.contains('flipped')) {
+      document.getElementById('confidence-btns').style.display = 'flex';
+    }
+  }
+
+  function nextCard() { cardIdx = (cardIdx + 1) % cards.length; renderCard(); }
+  function prevCard() { cardIdx = (cardIdx - 1 + cards.length) % cards.length; renderCard(); }
+
+  function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+      [cardRatings[i], cardRatings[j]] = [cardRatings[j], cardRatings[i]];
+    }
+    cardIdx = 0;
+    renderCard();
+  }
+
+  function rateCard(level) {
+    cardRatings[cardIdx] = level;
+    updateProgressBar();
+    nextCard();
+  }
+
+  function updateProgressBar() {
+    const h = cardRatings.filter(r => r === 'hard').length;
+    const m = cardRatings.filter(r => r === 'medium').length;
+    const e = cardRatings.filter(r => r === 'easy').length;
+    const total = cards.length;
+    document.getElementById('hard-count').textContent = 'Hard: ' + h;
+    document.getElementById('medium-count').textContent = 'Medium: ' + m;
+    document.getElementById('easy-count').textContent = 'Easy: ' + e;
+    document.getElementById('bar-hard').style.width = (h / total * 100) + '%';
+    document.getElementById('bar-medium').style.width = (m / total * 100) + '%';
+    document.getElementById('bar-easy').style.width = (e / total * 100) + '%';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 3: Improper Integrals — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    const printArea = document.getElementById('print-worksheet');
+    printArea.innerHTML = html;
+
+    renderMathInElement(printArea, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+
+    setTimeout(() => window.print(), 300);
+  }
+</script>
+
+</body>
+</html>

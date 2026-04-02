@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <title>Chapter 5 Study Tools — Calculus II</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Tab System ── */
+    .tab-bar {
+      display: flex; gap: 0; background: #fff; border-radius: 14px 14px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      overflow-x: auto; margin-top: 1.5rem;
+    }
+    .tab-btn {
+      flex: 1; min-width: 140px; padding: 1rem 0.75rem; border: none; background: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .tab-btn:hover { background: var(--primary-light); color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+      background: linear-gradient(to bottom, var(--primary-light), #fff);
+    }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-panel {
+      display: none; background: #fff; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      padding: 2rem; min-height: 400px;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ── Formula Sheet ── */
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+    .formula-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+      background: linear-gradient(135deg, #f8fafc, #fff);
+      border-left: 4px solid var(--primary); transition: box-shadow 0.2s;
+    }
+    .formula-card:hover { box-shadow: var(--shadow-lg); }
+    .formula-card h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .formula-card .formula-main { font-size: 1.05rem; margin: 0.75rem 0; text-align: center; }
+    .formula-card .formula-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Step-by-Step Solver ── */
+    .solver-problem {
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border: 2px solid var(--primary); border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .solver-problem h4 { color: var(--primary); margin-bottom: 0.5rem; }
+    .step-list { list-style: none; padding: 0; }
+    .step-item {
+      display: flex; gap: 1rem; padding: 1rem; margin: 0.5rem 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; opacity: 0.3; transition: all 0.4s;
+      position: relative;
+    }
+    .step-item.revealed { opacity: 1; background: #f0fdf4; border-color: var(--success); }
+    .step-item.current { opacity: 1; background: #eff6ff; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.85rem; flex-shrink: 0;
+      background: var(--primary-light); color: var(--primary);
+    }
+    .step-item.revealed .step-num { background: var(--success-light); color: var(--success); }
+    .step-content { flex: 1; }
+    .step-math { margin: 0.5rem 0; }
+    .step-why {
+      display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 8px;
+      background: #fefce8; border: 1px solid var(--warning); font-size: 0.85rem;
+    }
+    .step-why.show { display: block; }
+    .why-btn {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid var(--warning); background: var(--warning-light);
+      color: var(--warning); cursor: pointer; font-weight: 600; margin-top: 0.4rem;
+    }
+    .why-btn:hover { background: var(--warning); color: #fff; }
+    .solver-controls { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .solver-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next { background: var(--primary); color: #fff; }
+    .btn-next:hover { background: var(--primary-dark); }
+    .btn-reset { background: var(--border); color: var(--text); }
+    .btn-reset:hover { background: #cbd5e1; }
+    .btn-reveal { background: var(--success); color: #fff; }
+    .btn-reveal:hover { background: #047857; }
+
+    /* ── Flashcards ── */
+    .flashcard-area { display: flex; flex-direction: column; align-items: center; }
+    .flashcard-container { perspective: 1000px; width: 100%; max-width: 550px; height: 320px; margin: 1.5rem 0; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s;
+      cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .flashcard-front {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: #fff; font-size: 1.15rem;
+    }
+    .flashcard-front .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-front .card-prompt { font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
+    .flashcard-back {
+      background: #fff; border: 2px solid var(--warning);
+      transform: rotateY(180deg); color: var(--text); font-size: 1rem;
+    }
+    .flashcard-back .card-label {
+      position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flashcard-nav {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .flashcard-nav button {
+      padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .flashcard-nav button:hover { background: var(--primary-light); color: var(--primary); }
+    .card-counter { font-weight: 600; color: var(--text-muted); min-width: 80px; text-align: center; }
+    .confidence-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .confidence-btns button {
+      padding: 0.4rem 1rem; border-radius: 8px; border: none;
+      font-weight: 600; cursor: pointer; font-size: 0.8rem;
+    }
+    .conf-hard { background: #fee2e2; color: var(--danger); }
+    .conf-medium { background: #fef3c7; color: var(--warning); }
+    .conf-easy { background: #d1fae5; color: var(--success); }
+
+    /* ── Common Mistakes ── */
+    .mistake-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 1.5rem; background: #fff;
+    }
+    .mistake-header {
+      padding: 1rem 1.25rem; font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fff); border-bottom: 1px solid var(--border);
+      color: var(--danger);
+    }
+    .mistake-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .mistake-wrong, .mistake-right {
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .mistake-wrong {
+      border-color: var(--danger); background: #fef2f2;
+    }
+    .mistake-right {
+      border-color: var(--success); background: #f0fdf4;
+    }
+    .mistake-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mistake-wrong .mistake-label { color: var(--danger); }
+    .mistake-right .mistake-label { color: var(--success); }
+    .mistake-explain {
+      padding: 1rem 1.25rem; background: #fffbeb; border-top: 1px solid var(--border);
+      font-size: 0.9rem; color: #92400e;
+    }
+
+    /* ── ELI5 ── */
+    .eli5-section { margin-bottom: 2rem; }
+    .eli5-formal {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .eli5-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid var(--accent);
+      background: var(--accent-light); color: var(--accent);
+      cursor: pointer; font-weight: 600; font-size: 0.82rem; margin-top: 0.75rem;
+      transition: all 0.2s;
+    }
+    .eli5-toggle-btn:hover { background: var(--accent); color: #fff; }
+    .eli5-simple {
+      display: none; margin-top: 0.75rem; padding: 1.25rem; border-radius: 12px;
+      background: linear-gradient(135deg, #fdf4ff, #faf5ff);
+      border: 2px solid var(--accent); font-size: 0.95rem; line-height: 1.7;
+    }
+    .eli5-simple.show { display: block; }
+    .eli5-simple .eli5-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+    .eli5-analogy {
+      margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+      background: rgba(124,58,237,0.08); font-style: italic;
+    }
+
+    /* ── Decision Table ── */
+    .test-table {
+      width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem;
+    }
+    .test-table th {
+      background: var(--primary); color: #fff; padding: 0.75rem; text-align: left;
+    }
+    .test-table td {
+      padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .test-table tr:nth-child(even) { background: #f8fafc; }
+    .test-table tr:hover { background: var(--primary-light); }
+
+    /* ── Lecture Notes / Worksheet Generator ── */
+    .worksheet-controls {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .worksheet-controls button {
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600;
+      border: none; cursor: pointer; font-size: 0.9rem;
+    }
+    .ws-print-btn { background: var(--primary); color: #fff; }
+    .ws-print-btn:hover { background: var(--primary-dark); }
+    .ws-select-all { background: var(--border); color: var(--text); }
+    .ws-select-all:hover { background: #cbd5e1; }
+    .ws-topic-group { margin-bottom: 1.5rem; }
+    .ws-topic-group h3 {
+      color: var(--primary); margin-bottom: 0.75rem; font-size: 1.05rem;
+      border-bottom: 2px solid var(--primary-light); padding-bottom: 0.4rem;
+    }
+    .ws-problem {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem; margin: 0.4rem 0; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+    }
+    .ws-problem:hover { border-color: var(--primary); background: var(--primary-light); }
+    .ws-problem input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 3px; cursor: pointer; flex-shrink: 0;
+      accent-color: var(--primary);
+    }
+    .ws-problem label { cursor: pointer; flex: 1; font-size: 0.95rem; }
+    .ws-preview-info {
+      font-size: 0.85rem; color: var(--text-muted); margin-left: auto;
+    }
+    #print-worksheet { display: none; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-worksheet, #print-worksheet * { visibility: visible; }
+      #print-worksheet {
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 100%;
+        font-family: 'Times New Roman', serif;
+      }
+      .ws-print-header {
+        text-align: center; border-bottom: 2px solid #000;
+        padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      }
+      .ws-print-header h1 { font-size: 1.4rem; margin: 0; }
+      .ws-print-header .ws-subtitle { font-size: 0.95rem; color: #555; margin-top: 0.25rem; }
+      .ws-print-header .ws-meta {
+        display: flex; justify-content: space-between; font-size: 0.85rem;
+        margin-top: 0.5rem; color: #333;
+      }
+      .ws-print-problem {
+        page-break-inside: avoid; margin-bottom: 0.5rem;
+      }
+      .ws-print-problem .ws-prob-num { font-weight: bold; font-size: 1rem; }
+      .ws-print-problem .ws-prob-text { font-size: 1.05rem; margin: 0.3rem 0 0.2rem 1.5rem; }
+      .ws-work-space {
+        border: 1px solid #ccc; border-radius: 4px;
+        margin: 0.3rem 0 0.5rem 1.5rem; background: #fff;
+      }
+      .ws-section-title {
+        font-size: 1.1rem; font-weight: bold; margin: 1.2rem 0 0.5rem 0;
+        padding-bottom: 0.3rem; border-bottom: 1px solid #999;
+      }
+      nav, footer, .tab-bar, main > h1, main > p { display: none !important; }
+    }
+
+    @media (max-width: 700px) {
+      .mistake-body { grid-template-columns: 1fr; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .tab-btn { min-width: 80px; font-size: 0.75rem; padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Calc 2</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="ch5-power-series.html">5.1 Power Series</a>
+    <a href="ch5-taylor.html">5.2 Taylor</a>
+    <a href="ch5-applications.html">5.3 Applications</a>
+    <a href="ch5-study-tools.html" class="active">5.4 Study</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Chapter 5: Study Tools</h1>
+  <p>Five powerful tools to master Power Series. Use the tabs below to switch between tools.</p>
+
+  <!-- ════════════════ TAB BAR ════════════════ -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('formulas')" role="tab">
+      <span class="tab-icon">📋</span> Formula Sheet
+    </button>
+    <button class="tab-btn" onclick="switchTab('solver')" role="tab">
+      <span class="tab-icon">🧩</span> Step-by-Step
+    </button>
+    <button class="tab-btn" onclick="switchTab('flashcards')" role="tab">
+      <span class="tab-icon">🃏</span> Flashcards
+    </button>
+    <button class="tab-btn" onclick="switchTab('mistakes')" role="tab">
+      <span class="tab-icon">🚫</span> Common Mistakes
+    </button>
+    <button class="tab-btn" onclick="switchTab('eli5')" role="tab">
+      <span class="tab-icon">💡</span> ELI5
+    </button>
+    <button class="tab-btn" onclick="switchTab('lecture')" role="tab">
+      <span class="tab-icon">🖨️</span> Lecture Notes
+    </button>
+  </div>
+
+  <!-- ════════════════ TAB 1: FORMULA SHEET ════════════════ -->
+  <div id="tab-formulas" class="tab-panel active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;">Quick Reference: All Chapter 5 Formulas</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Everything you need on one page. Print-friendly — use Ctrl+P to save as PDF.</p>
+
+    <h3 style="color:var(--primary);margin-bottom:1rem;">5.1 Power Series</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Power Series (General Form)</h4>
+        <div class="formula-main">$$\sum_{n=0}^{\infty} c_n(x-a)^n$$</div>
+        <div class="formula-note">Center: $a$. Coefficients: $c_n$. Variable: $x$. The series is a function of $x$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Radius of Convergence (Ratio Test)</h4>
+        <div class="formula-main">$$L = \lim_{n\to\infty} \left|\frac{c_{n+1}}{c_n}\right|, \quad R = \frac{1}{L}$$</div>
+        <div class="formula-note">The series converges for $|x - a| < R$ and diverges for $|x - a| > R$. Always check endpoints separately!</div>
+      </div>
+      <div class="formula-card">
+        <h4>Interval of Convergence</h4>
+        <div class="formula-main">$$|x - a| < R \quad \text{or} \quad (a - R, a + R)$$</div>
+        <div class="formula-note">May include one or both endpoints after checking. Need $x$ values, not just the radius $R$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Geometric Series (Special Case)</h4>
+        <div class="formula-main">$$\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}, \quad |r| < 1$$</div>
+        <div class="formula-note">Converges when $|r| < 1$, diverges when $|r| \ge 1$. Use this to derive many Maclaurin series.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">5.2 Taylor & Maclaurin Series</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Taylor Series (General)</h4>
+        <div class="formula-main">$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$$</div>
+        <div class="formula-note">Centered at $a$. Requires all derivatives at $a$. Converges in some interval around $a$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Maclaurin Series (Special Case)</h4>
+        <div class="formula-main">$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}x^n$$</div>
+        <div class="formula-note">Centered at $a = 0$. The most common Taylor series — memorize key Maclaurin expansions!</div>
+      </div>
+      <div class="formula-card">
+        <h4>$e^x$ (Must Memorize!)</h4>
+        <div class="formula-main">$$e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}, \quad \text{all } x$$</div>
+        <div class="formula-note">Converges for all real $x$. Use substitution to get $e^{-x}$, $e^{x^2}$, etc.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\sin x$ (Must Memorize!)</h4>
+        <div class="formula-main">$$\sin x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!}, \quad \text{all } x$$</div>
+        <div class="formula-note">Only odd powers. Alternates in sign. Converges everywhere.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\cos x$ (Must Memorize!)</h4>
+        <div class="formula-main">$$\cos x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!}, \quad \text{all } x$$</div>
+        <div class="formula-note">Only even powers. Starts at 1. Alternates in sign. Converges everywhere.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\frac{1}{1-x}$ (Must Memorize!)</h4>
+        <div class="formula-main">$$\frac{1}{1-x} = \sum_{n=0}^{\infty} x^n, \quad |x| < 1$$</div>
+        <div class="formula-note">This is the geometric series. Use substitution for variations like $\frac{1}{1+x^2}$, $\frac{1}{2-x}$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$\ln(1+x)$ (Must Memorize!)</h4>
+        <div class="formula-main">$$\ln(1+x) = \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}x^n, \quad -1 < x \le 1$$</div>
+        <div class="formula-note">Starts at $n=1$, not $n=0$. Converges on $(-1, 1]$, including the right endpoint.</div>
+      </div>
+      <div class="formula-card">
+        <h4>$(1+x)^k$ (Binomial Series)</h4>
+        <div class="formula-main">$$(1+x)^k = \sum_{n=0}^{\infty} \binom{k}{n} x^n, \quad |x| < 1$$</div>
+        <div class="formula-note">$\binom{k}{n} = \frac{k(k-1)\cdots(k-n+1)}{n!}$. Works for any real $k$, not just integers.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">5.3 Taylor Remainder & Error Bounds</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Taylor Remainder (Lagrange Form)</h4>
+        <div class="formula-main">$$R_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}$$</div>
+        <div class="formula-note">$c$ is some point between $a$ and $x$. We don't know $c$, but we can bound the remainder.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Error Bound (if $|f^{(n+1)}(c)| \le M$)</h4>
+        <div class="formula-main">$$|R_n(x)| \le \frac{M|x-a|^{n+1}}{(n+1)!}$$</div>
+        <div class="formula-note">Find an upper bound $M$ for the $(n+1)$th derivative. Use this to guarantee approximation accuracy.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Approximation Quality</h4>
+        <div class="formula-main">$$f(x) \approx \sum_{n=0}^{N} \frac{f^{(n)}(a)}{n!}(x-a)^n, \quad |R_N(x)| < \text{error tolerance}$$</div>
+        <div class="formula-note">Use the error bound to find how many terms $N$ you need for a desired accuracy.</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--primary);margin:1.5rem 0 1rem;">5.4 Operations on Power Series</h3>
+    <div class="formula-grid">
+      <div class="formula-card">
+        <h4>Term-by-Term Differentiation</h4>
+        <div class="formula-main">$$\frac{d}{dx}\sum_{n=0}^{\infty} c_n(x-a)^n = \sum_{n=1}^{\infty} nc_n(x-a)^{n-1}$$</div>
+        <div class="formula-note">Can differentiate inside the series (within the interval of convergence).</div>
+      </div>
+      <div class="formula-card">
+        <h4>Term-by-Term Integration</h4>
+        <div class="formula-main">$$\int \sum_{n=0}^{\infty} c_n(x-a)^n\,dx = C + \sum_{n=0}^{\infty} c_n\frac{(x-a)^{n+1}}{n+1}$$</div>
+        <div class="formula-note">Can integrate inside the series. Adds a constant $C$.</div>
+      </div>
+      <div class="formula-card">
+        <h4>Multiplication/Substitution of Series</h4>
+        <div class="formula-main">$$\text{If } f(x) = \sum c_n x^n, \text{ then } f(u(x)) = \sum c_n [u(x)]^n$$</div>
+        <div class="formula-note">Substitute into a known series to get new series (e.g., $e^{-x^2}$ from $e^x$).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 2: STEP-BY-STEP SOLVER ════════════════ -->
+  <div id="tab-solver" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Step-by-Step Problem Solver</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Click <strong>Next Step</strong> to reveal each step. Click <strong>Why?</strong> to understand the reasoning.</p>
+
+    <!-- Problem selector -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <button class="btn-next" onclick="loadProblem(0)" id="prob-btn-0" style="opacity:1">Radius of Convergence</button>
+      <button class="btn-reset" onclick="loadProblem(1)" id="prob-btn-1">Maclaurin Series</button>
+      <button class="btn-reset" onclick="loadProblem(2)" id="prob-btn-2">Taylor Approximation</button>
+    </div>
+
+    <div id="solver-area"></div>
+  </div>
+
+  <!-- ════════════════ TAB 3: FLASHCARDS ════════════════ -->
+  <div id="tab-flashcards" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Flashcard Review</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Click the card to flip it. Rate your confidence to focus on weak areas.</p>
+
+    <div class="flashcard-area">
+      <div class="flashcard-nav">
+        <button onclick="prevCard()">&#9664; Prev</button>
+        <span class="card-counter" id="card-counter">1 / 16</span>
+        <button onclick="nextCard()">Next &#9654;</button>
+        <button onclick="shuffleCards()" style="background:var(--accent-light);color:var(--accent);">Shuffle</button>
+      </div>
+
+      <div class="flashcard-container" onclick="flipCard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front" id="card-front">
+            <span class="card-label">Question</span>
+            <div id="card-question"></div>
+            <div class="card-prompt">Click to reveal answer</div>
+          </div>
+          <div class="flashcard-face flashcard-back" id="card-back">
+            <span class="card-label">Answer</span>
+            <div id="card-answer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confidence-btns" id="confidence-btns" style="display:none;">
+        <span style="font-size:0.8rem;color:var(--text-muted);margin-right:0.5rem;">How well did you know this?</span>
+        <button class="conf-hard" onclick="rateCard('hard')">Hard</button>
+        <button class="conf-medium" onclick="rateCard('medium')">Medium</button>
+        <button class="conf-easy" onclick="rateCard('easy')">Easy</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:550px;margin-top:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem;">
+          <span id="hard-count">Hard: 0</span>
+          <span id="medium-count">Medium: 0</span>
+          <span id="easy-count">Easy: 0</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex;">
+          <div id="bar-hard" style="background:var(--danger);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-medium" style="background:var(--warning);width:0%;transition:width 0.3s;"></div>
+          <div id="bar-easy" style="background:var(--success);width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: COMMON MISTAKES ════════════════ -->
+  <div id="tab-mistakes" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Common Mistakes Gallery</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Learn from the errors students make most often. Red = wrong, Green = correct.</p>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #1: Forgetting to check endpoints of the interval of convergence</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\sum \frac{(-1)^n x^n}{n}$: Ratio Test gives $R = 1$.</p>
+          <p>"So the interval is $(-1, 1)$."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Didn't check if the series converges at $x = \pm 1$!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Ratio Test gives $R = 1$, so we have convergence for $|x| < 1$.</p>
+          <p>At $x = 1$: $\sum \frac{(-1)^n}{n}$ converges (Alternating Series Test).</p>
+          <p>At $x = -1$: $\sum \frac{1}{n}$ diverges (harmonic series).</p>
+          <p>Interval: $(-1, 1]$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The Ratio Test is inconclusive at the endpoints. You <em>must</em> plug in $x = a + R$ and $x = a - R$ separately and use other convergence tests. The interval can be open, half-open, or closed depending on what you find.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #2: Confusing radius of convergence with interval of convergence</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\sum c_n(x-2)^n$ with $R = 3$:</p>
+          <p>"The interval of convergence is $3$."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">$R$ is a number, not an interval!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Radius of convergence: $R = 3$ (just a number).</p>
+          <p>Interval of convergence: $|x - 2| < 3$, i.e., $-1 < x < 5$ (plus check endpoints).</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The radius $R$ is a single positive number. The interval is the set of $x$ values: $(a - R, a + R)$ and possibly including endpoints. Always state the interval as an interval, not just a number.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #3: Wrong factorial in the Taylor/Maclaurin formula</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>Maclaurin series: $f(x) = \sum \frac{f^{(n)}(0)}{n} x^n$</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Should be $n!$ in the denominator, not $n$!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n$$</p>
+          <p>The denominator is $n!$ (factorial), not $n$.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> The factorial $n!$ comes from the formula for the Taylor coefficients. It's not optional — forgetting it will give you wrong series. For example, $e^x = \sum x^n/n!$, not $\sum x^n/n$.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #4: Computing derivatives instead of using substitution</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>Find Maclaurin series for $e^{-x^2}$:</p>
+          <p>"Take the derivative... then the second derivative... then..."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">This is tedious and error-prone!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>Use the known Maclaurin series for $e^u$:</p>
+          <p>$$e^u = \sum_{n=0}^{\infty} \frac{u^n}{n!}$$</p>
+          <p>Substitute $u = -x^2$:</p>
+          <p>$$e^{-x^2} = \sum_{n=0}^{\infty} \frac{(-x^2)^n}{n!} = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{n!}$$</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> Substituting into a known series is much faster and less error-prone than computing derivatives. Always ask: "Do I know a related series I can substitute into?" Examples: $e^{2x}$, $\sin(x^3)$, $\cos(\pi x)$, $\frac{1}{1+x^2}$.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #5: Applying the Ratio Test incorrectly to power series</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>$\sum \frac{x^n}{2^n}$: "Apply Ratio Test to the series directly: $L = |x|$."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">Should apply Ratio Test to coefficients, not the series itself!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>$a_n = \frac{1}{2^n}$</p>
+          <p>$$\lim \left|\frac{a_{n+1}}{a_n}\right| = \lim \frac{1/2^{n+1}}{1/2^n} = \frac{1}{2}$$</p>
+          <p>So $R = 2$, and convergence when $|x| < 2$.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> For power series, the Ratio Test should be applied to the coefficients $c_n$ (or $a_n$ in the form $\sum a_n$), not to the full terms with $x$ included. You're finding the radius $R = 1/L$, then checking when $|x - a| < R$.</div>
+    </div>
+
+    <div class="mistake-card">
+      <div class="mistake-header">Mistake #6: Not verifying that the series actually converges to $f(x)$</div>
+      <div class="mistake-body">
+        <div class="mistake-wrong">
+          <div class="mistake-label">&#10007; Wrong</div>
+          <p>"I found the Taylor series for $f(x)$, so it must equal $f(x)$ everywhere in the interval."</p>
+          <p style="color:var(--danger);font-size:0.85rem;">A Taylor series can converge without equaling the original function!</p>
+        </div>
+        <div class="mistake-right">
+          <div class="mistake-label">&#10003; Correct</div>
+          <p>A Taylor series $\sum \frac{f^{(n)}(a)}{n!}(x-a)^n$ converges in some interval, but may NOT equal $f(x)$.</p>
+          <p>The error bound $|R_n(x)| \to 0$ confirms that the series equals $f(x)$.</p>
+          <p>For most "nice" functions (polynomials, trig, exponentials, logs), the series does converge to $f(x)$ in its interval of convergence.</p>
+        </div>
+      </div>
+      <div class="mistake-explain"><strong>Why?</strong> In practice, for functions you'll encounter, if the Taylor series converges, it converges to $f(x)$. But technically, you should verify using the Lagrange remainder formula: show $|R_n(x)| \to 0$ as $n \to \infty$.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ELI5 ════════════════ -->
+  <div id="tab-eli5" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Explain Like I'm 5</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Simple, intuitive explanations next to the formal definitions. Click the purple button to toggle.</p>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">5.1 Power Series</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> A power series centered at $a$ is $\sum_{n=0}^{\infty} c_n(x-a)^n$. It converges for $x$ in an interval $(a-R, a+R)$ where $R$ is the radius of convergence.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">🎯</span>
+        <strong>The simple version:</strong> A power series is like a <strong>polynomial with infinitely many terms</strong>. Instead of $a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n$ (finite), you have infinitely many terms. But it only "works" (converges) for certain values of $x$ — those inside a "zone" of width $2R$ centered at $a$.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine a radio signal centered at a location. It broadcasts clearly within a certain radius $R$. Outside that radius, the signal fades to nothing. The power series is the same — it converges nicely for $|x-a| < R$ and diverges outside.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">5.2 Taylor & Maclaurin Series</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> The Taylor series for $f(x)$ at $x = a$ is $\sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$. When $a = 0$, it's called a Maclaurin series.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">📐</span>
+        <strong>The simple version:</strong> A Taylor series is a way to write any smooth function as an <strong>infinite polynomial</strong>. The coefficients come from the derivatives of the function at one point ($a$). It's like saying: "If I know everything about a function at one spot, I can build an infinite polynomial approximation around that spot."
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine you're zoomed in very close to a curve on a graph. The closer you zoom in, the more the curve looks like a straight line (the tangent line). Zoom in more, and you can see it curves — so add a quadratic term. Keep zooming and adding terms, and you can describe the entire curve as a polynomial near that point. That's the Taylor series.
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">5.3 Key Maclaurin Series (Must Memorize!)</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> Common functions have well-known Maclaurin series: $e^x = \sum x^n/n!$, $\sin x = \sum (-1)^n x^{2n+1}/(2n+1)!$, $\cos x = \sum (-1)^n x^{2n}/(2n)!$, $\frac{1}{1-x} = \sum x^n$.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">💾</span>
+        <strong>The simple version:</strong> Rather than computing Taylor series from scratch every time using derivatives, mathematicians have already done the work for common functions. <strong>Memorize these four series</strong>, and you can use substitution to get dozens more. It's like learning multiplication tables instead of counting on your fingers every time.
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Instead of deriving $e^{-x^2}$ from scratch (tedious!), you use the fact that $e^u = 1 + u + u^2/2! + \cdots$, then plug in $u = -x^2$. Much faster!
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">5.4 Radius vs Interval of Convergence</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> The radius of convergence $R$ is a number such that the series converges for $|x-a| < R$ and diverges for $|x-a| > R$. The interval of convergence is the set of all $x$ values where the series converges (including endpoints if they converge).
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">📏</span>
+        <strong>The simple version:</strong> The <strong>radius</strong> is just a number: "The series converges within distance $R$ from the center." The <strong>interval</strong> is the actual set of $x$ values: "It works for $x$ between here and here" (including possible endpoints). Don't confuse them!
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Radius = "I can see 10 meters away" (just a distance). Interval = "I can see from the tree 10 meters to my left to the fence 10 meters to my right, but not into the locked barn at -10" (actual places, including boundary conditions).
+        </div>
+      </div>
+    </div>
+
+    <div class="eli5-section">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem;">5.5 Taylor Remainder & Approximation</h3>
+      <div class="eli5-formal">
+        <strong>Formal Definition:</strong> The error $R_n(x)$ between $f(x)$ and its $n$th-degree Taylor polynomial satisfies $|R_n(x)| \le \frac{M|x-a|^{n+1}}{(n+1)!}$ where $M$ bounds the $(n+1)$th derivative.
+      </div>
+      <button class="eli5-toggle-btn" onclick="toggleEli5(this)">💡 Explain simply</button>
+      <div class="eli5-simple">
+        <span class="eli5-icon">📊</span>
+        <strong>The simple version:</strong> When you use only the first few terms of a Taylor series to approximate a function, you're off by some error. The formula tells you: <strong>"If you use $n$ terms, your error is at most this small."</strong> Use more terms (larger $n$) and the error shrinks rapidly (because of the factorial!).
+        <div class="eli5-analogy">
+          <strong>Analogy:</strong> Imagine approximating a curve with a line (1 term), then a parabola (2 terms), then a cubic (3 terms). Each time you add a term, your approximation gets better. The formula guarantees how good each approximation is.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 6: LECTURE NOTES ════════════════ -->
+  <div id="tab-lecture" class="tab-panel" role="tabpanel">
+    <h2 style="margin-bottom:0.5rem;">Lecture Notes Generator</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;">Select problems to include in your printable classroom worksheet. Each problem will have blank space below for students to write solutions by hand.</p>
+
+    <div class="worksheet-controls">
+      <button class="ws-select-all" onclick="toggleAllProblems()">Select / Deselect All</button>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        Space per problem:
+        <select id="ws-space-size" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="120">Small (3 lines)</option>
+          <option value="200" selected>Medium (5 lines)</option>
+          <option value="320">Large (8 lines)</option>
+          <option value="450">Extra Large (12 lines)</option>
+        </select>
+      </label>
+      <label style="font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">
+        <input type="checkbox" id="ws-show-topic-headers" checked style="accent-color:var(--primary);">
+        Show section headers
+      </label>
+      <span class="ws-preview-info" id="ws-count">0 problems selected</span>
+      <button class="ws-print-btn" onclick="generateWorksheet()">🖨️ Generate &amp; Print PDF</button>
+    </div>
+
+    <!-- Problem Checkboxes -->
+    <div class="ws-topic-group">
+      <h3>5.1 Power Series</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.1 Power Series" data-problem="Find the radius of convergence: $\sum_{n=0}^{\infty} \frac{x^n}{n!}$" onchange="updateWsCount()"><label>$\sum \frac{x^n}{n!}$ — radius of convergence</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.1 Power Series" data-problem="Find the radius and interval of convergence: $\sum_{n=1}^{\infty} \frac{n x^n}{2^n}$" onchange="updateWsCount()"><label>$\sum \frac{n x^n}{2^n}$ — radius and interval</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.1 Power Series" data-problem="Determine the interval of convergence: $\sum_{n=1}^{\infty} \frac{(-1)^n x^n}{n}$ (check endpoints!)" onchange="updateWsCount()"><label>$\sum \frac{(-1)^n x^n}{n}$ — check endpoints</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.1 Power Series" data-problem="Find the radius of convergence: $\sum_{n=0}^{\infty} \frac{(x-3)^n}{5^n}$" onchange="updateWsCount()"><label>$\sum \frac{(x-3)^n}{5^n}$ — shifted center</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.1 Power Series" data-problem="Use the Ratio Test to find where $\sum_{n=1}^{\infty} \frac{n! x^n}{3^n}$ converges." onchange="updateWsCount()"><label>$\sum \frac{n! x^n}{3^n}$ — factorial in numerator</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>5.2 Taylor & Maclaurin Series</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Maclaurin series for $f(x) = e^{2x}$ using the known series for $e^u$." onchange="updateWsCount()"><label>$e^{2x}$ — substitution into $e^u$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Maclaurin series for $f(x) = e^{-x^2}$ and state its radius of convergence." onchange="updateWsCount()"><label>$e^{-x^2}$ — Maclaurin expansion</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Maclaurin series for $f(x) = \sin(2x)$ using the known series for $\sin(u)$." onchange="updateWsCount()"><label>$\sin(2x)$ — substitution</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Maclaurin series for $f(x) = \cos(x^2)$." onchange="updateWsCount()"><label>$\cos(x^2)$ — even powers</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Maclaurin series for $f(x) = \frac{1}{1+x}$ and find its interval of convergence." onchange="updateWsCount()"><label>$\frac{1}{1+x}$ — geometric variation</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.2 Taylor & Maclaurin Series" data-problem="Find the Taylor series for $f(x) = \ln(x)$ centered at $a = 1$." onchange="updateWsCount()"><label>$\ln(x)$ centered at $a=1$ — compute derivatives</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>5.3 Applications & Approximations</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.3 Applications & Approximations" data-problem="Use the first 4 terms of the Maclaurin series to approximate $e^{0.1}$." onchange="updateWsCount()"><label>Approximate $e^{0.1}$ using Maclaurin series</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.3 Applications & Approximations" data-problem="Approximate $\int_0^{0.5} e^{-x^2} dx$ using the Maclaurin series for $e^{-x^2}$ and show error $< 0.001$." onchange="updateWsCount()"><label>Integrate $e^{-x^2}$ using series (with error bound)</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.3 Applications & Approximations" data-problem="Approximate $\sin(0.3)$ using the first 3 terms of the Maclaurin series for $\sin(x)$." onchange="updateWsCount()"><label>Approximate $\sin(0.3)$ using Maclaurin</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.3 Applications & Approximations" data-problem="Find the Taylor polynomial $P_3(x)$ for $f(x) = \sqrt{x}$ at $a = 4$." onchange="updateWsCount()"><label>Taylor polynomial for $\sqrt{x}$ at $a=4$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.3 Applications & Approximations" data-problem="Use the error bound to determine how many terms of the Maclaurin series for $\cos(x)$ are needed to approximate $\cos(0.5)$ with error $< 10^{-6}$." onchange="updateWsCount()"><label>Error bounds for $\cos$ approximation</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>5.4 Differentiation & Integration of Series</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.4 Differentiation & Integration" data-problem="Differentiate the series $\sum_{n=0}^{\infty} x^n$ term-by-term and identify the resulting function." onchange="updateWsCount()"><label>Differentiate $\sum x^n$ term-by-term</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.4 Differentiation & Integration" data-problem="Integrate the series $\sum_{n=0}^{\infty} x^n$ term-by-term and identify the resulting function." onchange="updateWsCount()"><label>Integrate $\sum x^n$ term-by-term</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.4 Differentiation & Integration" data-problem="Find a series for $\frac{1}{(1-x)^2}$ by differentiating the series for $\frac{1}{1-x}$." onchange="updateWsCount()"><label>Derive $\frac{1}{(1-x)^2}$ via differentiation</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="5.4 Differentiation & Integration" data-problem="Find a series for $\ln(1-x)$ by integrating the series for $\frac{1}{1-x}$." onchange="updateWsCount()"><label>Derive $\ln(1-x)$ via integration</label></div>
+    </div>
+
+    <div class="ws-topic-group">
+      <h3>Mixed Problems</h3>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed Problems" data-problem="Find the Maclaurin series for $\tan^{-1}(x)$ by integrating $\sum \frac{(-1)^n x^{2n}}{1+x^2}$." onchange="updateWsCount()"><label>Maclaurin series for $\tan^{-1}(x)$</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed Problems" data-problem="Use a power series to find $\lim_{x \to 0} \frac{e^x - 1 - x}{x^2}$." onchange="updateWsCount()"><label>Evaluate limit using series</label></div>
+      <div class="ws-problem"><input type="checkbox" class="ws-check" data-section="Mixed Problems" data-problem="Find the sum $\sum_{n=1}^{\infty} \frac{n x^n}{2^n}$ by using a known Maclaurin series and differentiation." onchange="updateWsCount()"><label>Find sum via differentiation of series</label></div>
+    </div>
+  </div>
+
+  <!-- Hidden print area -->
+  <div id="print-worksheet"></div>
+
+</main>
+
+<footer id="main-footer"></footer>
+
+<script src="course-config.js"></script>
+<script src="course.js"></script>
+
+<script>
+  // Footer
+  if (typeof COURSE !== 'undefined' && COURSE.footer) {
+    var f = COURSE.footer;
+    document.getElementById('main-footer').innerHTML =
+      f.courseName + ' &mdash; ' + f.instructor + '<br>' +
+      f.department + ', ' + f.institution + ' &copy; ' + f.year;
+  }
+
+  // KaTeX
+  document.addEventListener('DOMContentLoaded', function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  });
+
+  // ── Tab System ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    renderMathInElement(document.getElementById('tab-' + name), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  // ── ELI5 Toggle ──
+  function toggleEli5(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('show');
+    btn.textContent = panel.classList.contains('show') ? '💡 Hide simple explanation' : '💡 Explain simply';
+  }
+
+  // ══════════════════════════════════════════════
+  // STEP-BY-STEP SOLVER
+  // ══════════════════════════════════════════════
+
+  const problems = [
+    {
+      title: 'Radius & Interval of Convergence: $\\sum_{n=1}^{\\infty} \\frac{x^n}{n \\cdot 2^n}$',
+      steps: [
+        { math: '\\text{Identify: Power series with coefficients } c_n = \\frac{1}{n \\cdot 2^n}',
+          explain: 'We need to find where this series converges as a function of $x$. The Ratio Test for power series applies to the coefficients.' },
+        { math: 'c_n = \\frac{1}{n \\cdot 2^n}, \\quad c_{n+1} = \\frac{1}{(n+1) \\cdot 2^{n+1}}',
+          explain: 'Write out the $n$-th and $(n+1)$-th coefficients.' },
+        { math: '\\frac{c_{n+1}}{c_n} = \\frac{1/(n+1) \\cdot 2^{n+1}}{1/(n \\cdot 2^n)} = \\frac{n \\cdot 2^n}{(n+1) \\cdot 2^{n+1}} = \\frac{n}{2(n+1)}',
+          explain: 'Compute the ratio. This simplifies nicely.' },
+        { math: 'L = \\lim_{n \\to \\infty} \\left|\\frac{c_{n+1}}{c_n}\\right| = \\lim_{n \\to \\infty} \\frac{n}{2(n+1)} = \\frac{1}{2}',
+          explain: 'Divide numerator and denominator by $n$ to see the limit is $1/2$.' },
+        { math: 'R = \\frac{1}{L} = 2',
+          explain: 'The radius of convergence is the reciprocal of $L$.' },
+        { math: '\\text{Series converges for } |x| < 2, \\text{ i.e., } -2 < x < 2. \\text{ Check endpoints:}',
+          explain: 'The Ratio Test tells us convergence for $|x| < 2$. But we must separately check $x = 2$ and $x = -2$.' },
+        { math: 'x = 2: \\sum \\frac{1}{n}; \\quad \\text{Harmonic series } \\Rightarrow \\text{ DIVERGES}',
+          explain: 'At $x = 2$, we get the harmonic series, which diverges (though $1/n \\to 0$, the sum is infinite).' },
+        { math: 'x = -2: \\sum \\frac{(-1)^n}{n}; \\quad \\text{Alternating Series Test } \\Rightarrow \\text{ CONVERGES}',
+          explain: 'At $x = -2$, we get the alternating harmonic series. The AST applies: $1/n$ is decreasing and $\\lim 1/n = 0$, so it converges.' },
+        { math: '\\boxed{\\text{Radius: } R = 2; \\quad \\text{Interval: } (-2, 2]}',
+          explain: 'The interval is half-open because it includes $x = -2$ (where it converges) but excludes $x = 2$ (where it diverges).' }
+      ]
+    },
+    {
+      title: 'Maclaurin Series: Find the series for $f(x) = e^{-x^2}$ using known series',
+      steps: [
+        { math: '\\text{Recall: } e^u = \\sum_{n=0}^{\\infty} \\frac{u^n}{n!}, \\quad \\text{converges for all } u',
+          explain: 'This is one of the four must-memorize Maclaurin series.' },
+        { math: '\\text{Substitute } u = -x^2 \\text{ into the series:}',
+          explain: 'Instead of computing derivatives (tedious!), we use substitution. This is much faster.' },
+        { math: 'e^{-x^2} = \\sum_{n=0}^{\\infty} \\frac{(-x^2)^n}{n!}',
+          explain: 'Plug in $u = -x^2$ everywhere in the series.' },
+        { math: '= \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{n!}',
+          explain: 'Simplify: $(-x^2)^n = (-1)^n (x^2)^n = (-1)^n x^{2n}$.' },
+        { math: '= 1 - x^2 + \\frac{x^4}{2!} - \\frac{x^6}{3!} + \\cdots',
+          explain: 'Write out the first few terms to see the pattern: starting with 1, alternating signs, even powers only, denominators are factorials.' },
+        { math: '\\boxed{e^{-x^2} = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{n!}, \\quad \\text{converges for all } x}',
+          explain: 'Since $e^u$ converges for all $u$, this series converges for all $x$. Radius of convergence is infinite!' }
+      ]
+    },
+    {
+      title: 'Taylor Approximation: Use series to approximate $\\int_0^1 e^{-x^2} dx$ with error $< 0.001$',
+      steps: [
+        { math: '\\text{From above: } e^{-x^2} = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{n!}',
+          explain: 'We have the series for $e^{-x^2}$.' },
+        { math: '\\int_0^1 e^{-x^2} dx = \\int_0^1 \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{n!} dx = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{n!} \\int_0^1 x^{2n} dx',
+          explain: 'Integrate term-by-term. This is allowed because the series converges uniformly.' },
+        { math: '= \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{n!} \\cdot \\frac{x^{2n+1}}{2n+1} \\Big|_0^1 = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{n!} \\cdot \\frac{1}{2n+1}',
+          explain: 'Compute the antiderivative and evaluate from 0 to 1.' },
+        { math: '= 1 - \\frac{1}{1!\\cdot 3} + \\frac{1}{2!\\cdot 5} - \\frac{1}{3!\\cdot 7} + \\frac{1}{4!\\cdot 9} - \\cdots',
+          explain: 'Write out the first few terms.' },
+        { math: 'n=0: \\frac{1}{1} = 1.000000',
+          explain: 'Term 1 (from $n=0$).' },
+        { math: 'n=1: -\\frac{1}{3} \\approx -0.333333',
+          explain: 'Term 2 (from $n=1$): subtract about $1/3$.' },
+        { math: 'n=2: \\frac{1}{2 \\cdot 5} = \\frac{1}{10} = 0.100000',
+          explain: 'Term 3 (from $n=2$): add $1/10$.' },
+        { math: 'n=3: -\\frac{1}{6 \\cdot 7} = -\\frac{1}{42} \\approx -0.023810',
+          explain: 'Term 4 (from $n=3$): subtract $1/42 \\approx 0.024$. This term is already small.' },
+        { math: 'n=4: \\frac{1}{24 \\cdot 9} = \\frac{1}{216} \\approx 0.004630',
+          explain: 'Term 5 (from $n=4$): add $1/216 \\approx 0.005$. Still less than 0.001 in magnitude.' },
+        { math: 'n=5: -\\frac{1}{120 \\cdot 11} = -\\frac{1}{1320} \\approx -0.000758',
+          explain: 'Term 6: subtract $1/1320 \\approx 0.0008$. This is less than $0.001$ in magnitude.' },
+        { math: '\\text{Partial sum (first 6 terms): } S_5 = 1 - 0.333333 + 0.1 - 0.023810 + 0.004630 - 0.000758 \\approx 0.746729',
+          explain: 'Sum the first 6 terms.' },
+        { math: '\\text{Error } |R_5| \\le |a_6| = \\frac{1}{6!\\cdot 13} = \\frac{1}{720 \\cdot 13} \\approx 0.000107 < 0.001',
+          explain: 'For an alternating series, the error is at most the absolute value of the next term. Since the 6th term (from $n=6$) is about 0.0001, which is less than 0.001, we have the desired accuracy.' },
+        { math: '\\boxed{\\int_0^1 e^{-x^2} dx \\approx 0.7467 \\text{ with error } < 0.001}',
+          explain: 'We can be confident that the integral is approximately 0.7467, and our error is well within 0.001.' }
+      ]
+    }
+  ];
+
+  let currentStep = -1;
+  let currentProblem = 0;
+
+  function loadProblem(idx) {
+    currentProblem = idx;
+    currentStep = -1;
+    document.querySelectorAll('[id^="prob-btn"]').forEach((b, i) => {
+      b.className = i === idx ? 'btn-next' : 'btn-reset';
+      b.style.opacity = i === idx ? '1' : '';
+    });
+
+    const p = problems[idx];
+    let html = '<div class="solver-problem"><h4>' + p.title + '</h4></div>';
+    html += '<ol class="step-list">';
+    p.steps.forEach((s, i) => {
+      html += '<li class="step-item" id="step-' + i + '">';
+      html += '<div class="step-num">' + (i + 1) + '</div>';
+      html += '<div class="step-content">';
+      html += '<div class="step-math">$$' + s.math + '$$</div>';
+      html += '<button class="why-btn" onclick="toggleWhy(' + i + ')">Why?</button>';
+      html += '<div class="step-why" id="why-' + i + '">' + s.explain + '</div>';
+      html += '</div></li>';
+    });
+    html += '</ol>';
+    html += '<div class="solver-controls">';
+    html += '<button class="btn-next" onclick="revealNext()">Next Step &#9654;</button>';
+    html += '<button class="btn-reveal" onclick="revealAll()">Reveal All</button>';
+    html += '<button class="btn-reset" onclick="loadProblem(' + idx + ')">Reset</button>';
+    html += '</div>';
+
+    document.getElementById('solver-area').innerHTML = html;
+    renderMathInElement(document.getElementById('solver-area'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function revealNext() {
+    const steps = document.querySelectorAll('.step-item');
+    if (currentStep >= 0 && currentStep < steps.length) {
+      steps[currentStep].classList.remove('current');
+      steps[currentStep].classList.add('revealed');
+    }
+    currentStep++;
+    if (currentStep < steps.length) {
+      steps[currentStep].classList.add('current');
+      steps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.step-item').forEach(s => {
+      s.classList.remove('current');
+      s.classList.add('revealed');
+    });
+    currentStep = problems[currentProblem].steps.length;
+  }
+
+  function toggleWhy(i) {
+    document.getElementById('why-' + i).classList.toggle('show');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => loadProblem(0));
+
+  // ══════════════════════════════════════════════
+  // FLASHCARDS
+  // ══════════════════════════════════════════════
+
+  const cards = [
+    { q: 'What is a power series?', a: '$$\\sum_{n=0}^{\\infty} c_n(x-a)^n$$<br>A polynomial with infinitely many terms, centered at $a$ with coefficients $c_n$. Only converges for certain $x$ values.' },
+    { q: 'State the formula for a Maclaurin series.', a: '$$f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(0)}{n!}x^n$$<br>Centered at $a = 0$. Coefficients depend on derivatives of $f$.' },
+    { q: 'State the formula for a Taylor series.', a: '$$f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n$$<br>Centered at any point $a$. Most general form.' },
+    { q: 'What is the radius of convergence?', a: 'The number $R$ such that the power series converges for $|x-a| < R$ and diverges for $|x-a| > R$. Found using Ratio Test: $R = 1/L$ where $L = \\lim |c_{n+1}/c_n|$.' },
+    { q: 'How do you find the interval of convergence?', a: '1. Find $R$ using Ratio Test on coefficients<br>2. Series converges for $|x-a| < R$<br>3. <strong>Check endpoints separately</strong> by substituting $x = a \\pm R$ into the series<br>4. Final interval depends on endpoint behavior' },
+    { q: 'Maclaurin series for $e^x$ (memorize!)', a: '$$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}, \\quad \\text{all } x$$<br>Converges everywhere. Use substitution for $e^{2x}$, $e^{-x^2}$, etc.' },
+    { q: 'Maclaurin series for $\\sin x$ (memorize!)', a: '$$\\sin x = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}, \\quad \\text{all } x$$<br>Only odd powers. Alternating signs. Starts with $x$.' },
+    { q: 'Maclaurin series for $\\cos x$ (memorize!)', a: '$$\\cos x = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!}, \\quad \\text{all } x$$<br>Only even powers. Alternating signs. Starts with 1.' },
+    { q: 'Maclaurin series for $\\frac{1}{1-x}$ (memorize!)', a: '$$\\frac{1}{1-x} = \\sum_{n=0}^{\\infty} x^n, \\quad |x| < 1$$<br>Geometric series! Use substitution for variants.' },
+    { q: 'Maclaurin series for $\\ln(1+x)$ (memorize!)', a: '$$\\ln(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n}x^n, \\quad -1 < x \\le 1$$<br>Starts at $n=1$, not $n=0$. Includes right endpoint.' },
+    { q: 'What is the Taylor remainder?', a: '$$R_n(x) = f(x) - P_n(x)$$<br>The error when approximating $f(x)$ with the $n$th-degree Taylor polynomial $P_n(x)$.' },
+    { q: 'State the Lagrange remainder formula.', a: '$$|R_n(x)| \\le \\frac{M|x-a|^{n+1}}{(n+1)!}$$<br>where $M$ bounds the $(n+1)$th derivative. Use this to guarantee approximation accuracy.' },
+    { q: 'Can you differentiate a power series term-by-term?', a: '<strong>Yes!</strong> If $f(x) = \\sum c_n(x-a)^n$ converges for $|x-a| < R$, then<br>$$f\\'(x) = \\sum nc_n(x-a)^{n-1}$$<br>The derivative series has the same radius of convergence.' },
+    { q: 'Can you integrate a power series term-by-term?', a: '<strong>Yes!</strong> If $f(x) = \\sum c_n(x-a)^n$ converges for $|x-a| < R$, then<br>$$\\int f(x)dx = C + \\sum c_n\\frac{(x-a)^{n+1}}{n+1}$$<br>The integral series has the same radius of convergence.' },
+    { q: 'How do you find the Maclaurin series for $e^{-x^2}$?', a: '<strong>Don\\'t compute derivatives!</strong> Use substitution:<br>$e^u = \\sum x^n/n!$, so plug in $u = -x^2$:<br>$$e^{-x^2} = \\sum \\frac{(-x^2)^n}{n!} = \\sum \\frac{(-1)^n x^{2n}}{n!}$$' },
+    { q: 'What is the binomial series $(1+x)^k$?', a: '$$(1+x)^k = \\sum_{n=0}^{\\infty} \\binom{k}{n} x^n, \\quad |x| < 1$$<br>$\\binom{k}{n} = \\frac{k(k-1)\\cdots(k-n+1)}{n!}$<br>Works for any real $k$ (not just integers).' },
+  ];
+
+  let cardIdx = 0;
+  let cardRatings = new Array(cards.length).fill(null);
+
+  function renderCard() {
+    const card = cards[cardIdx];
+    document.getElementById('card-question').innerHTML = card.q;
+    document.getElementById('card-answer').innerHTML = card.a;
+    document.getElementById('card-counter').textContent = (cardIdx + 1) + ' / ' + cards.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('confidence-btns').style.display = 'none';
+
+    renderMathInElement(document.getElementById('card-question'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+    renderMathInElement(document.getElementById('card-answer'), {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+  }
+
+  function flipCard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+    if (document.getElementById('flashcard').classList.contains('flipped')) {
+      document.getElementById('confidence-btns').style.display = 'flex';
+    }
+  }
+
+  function nextCard() { cardIdx = (cardIdx + 1) % cards.length; renderCard(); }
+  function prevCard() { cardIdx = (cardIdx - 1 + cards.length) % cards.length; renderCard(); }
+
+  function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+      [cardRatings[i], cardRatings[j]] = [cardRatings[j], cardRatings[i]];
+    }
+    cardIdx = 0;
+    renderCard();
+  }
+
+  function rateCard(level) {
+    cardRatings[cardIdx] = level;
+    updateProgressBar();
+    nextCard();
+  }
+
+  function updateProgressBar() {
+    const h = cardRatings.filter(r => r === 'hard').length;
+    const m = cardRatings.filter(r => r === 'medium').length;
+    const e = cardRatings.filter(r => r === 'easy').length;
+    const total = cards.length;
+    document.getElementById('hard-count').textContent = 'Hard: ' + h;
+    document.getElementById('medium-count').textContent = 'Medium: ' + m;
+    document.getElementById('easy-count').textContent = 'Easy: ' + e;
+    document.getElementById('bar-hard').style.width = (h / total * 100) + '%';
+    document.getElementById('bar-medium').style.width = (m / total * 100) + '%';
+    document.getElementById('bar-easy').style.width = (e / total * 100) + '%';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCard);
+
+  // ══════════════════════════════════════════════
+  // LECTURE NOTES GENERATOR
+  // ══════════════════════════════════════════════
+
+  function updateWsCount() {
+    const n = document.querySelectorAll('.ws-check:checked').length;
+    document.getElementById('ws-count').textContent = n + ' problem' + (n !== 1 ? 's' : '') + ' selected';
+  }
+
+  function toggleAllProblems() {
+    const boxes = document.querySelectorAll('.ws-check');
+    const allChecked = Array.from(boxes).every(b => b.checked);
+    boxes.forEach(b => b.checked = !allChecked);
+    updateWsCount();
+  }
+
+  function generateWorksheet() {
+    const checked = document.querySelectorAll('.ws-check:checked');
+    if (checked.length === 0) { alert('Please select at least one problem.'); return; }
+
+    const spaceH = document.getElementById('ws-space-size').value;
+    const showHeaders = document.getElementById('ws-show-topic-headers').checked;
+
+    const sections = {};
+    checked.forEach(cb => {
+      const sec = cb.dataset.section;
+      if (!sections[sec]) sections[sec] = [];
+      sections[sec].push(cb.dataset.problem);
+    });
+
+    let html = '<div class="ws-print-header">';
+    html += '<h1>MATH 102 — Calculus II</h1>';
+    html += '<div class="ws-subtitle">Chapter 5: Power Series — Lecture Worksheet</div>';
+    html += '<div class="ws-meta"><span>Instructor: ____________________</span>';
+    html += '<span>Date: ____________________</span>';
+    html += '<span>Name: ____________________</span></div>';
+    html += '</div>';
+
+    let probNum = 1;
+    for (const [section, probs] of Object.entries(sections)) {
+      if (showHeaders) {
+        html += '<div class="ws-section-title">' + section + '</div>';
+      }
+      probs.forEach(prob => {
+        html += '<div class="ws-print-problem">';
+        html += '<div class="ws-prob-num">Problem ' + probNum + '.</div>';
+        html += '<div class="ws-prob-text">' + prob + '</div>';
+        html += '<div class="ws-work-space" style="min-height:' + spaceH + 'px;"></div>';
+        html += '</div>';
+        probNum++;
+      });
+    }
+
+    const printArea = document.getElementById('print-worksheet');
+    printArea.innerHTML = html;
+
+    renderMathInElement(printArea, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
+    });
+
+    setTimeout(() => window.print(), 300);
+  }
+</script>
+
+</body>
+</html>
