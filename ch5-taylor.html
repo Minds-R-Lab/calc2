@@ -388,7 +388,7 @@ function toggleCollapsible(elem) {
 // Plot Taylor polynomials for sin(x)
 function plotTaylorSin() {
   var x = [];
-  for (var i = -2 * Math.PI; i <= 2 * Math.PI; i += 0.1) {
+  for (var i = -4 * Math.PI; i <= 4 * Math.PI; i += 0.05) {
     x.push(i);
   }
 
@@ -433,8 +433,13 @@ function plotTaylorSin() {
 
   var layout = {
     title: 'Taylor Polynomials for sin(x) centered at a = 0',
-    xaxis: { title: 'x' },
-    yaxis: { title: 'y' },
+    xaxis: {
+      title: 'x',
+      dtick: Math.PI,
+      tickvals: [-4*Math.PI, -3*Math.PI, -2*Math.PI, -Math.PI, 0, Math.PI, 2*Math.PI, 3*Math.PI, 4*Math.PI],
+      ticktext: ['-4\u03C0', '-3\u03C0', '-2\u03C0', '-\u03C0', '0', '\u03C0', '2\u03C0', '3\u03C0', '4\u03C0']
+    },
+    yaxis: { title: 'y', range: [-5, 5] },
     hovermode: 'closest'
   };
 
