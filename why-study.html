@@ -432,7 +432,7 @@
   <script>
     // Generate sin(x) and Taylor series approximations
     var x = [];
-    for (var i = -2*Math.PI; i <= 2*Math.PI; i += 0.05) {
+    for (var i = -4*Math.PI; i <= 4*Math.PI; i += 0.05) {
       x.push(i);
     }
 
@@ -440,21 +440,6 @@
     var trueY = x.map(function(t) { return Math.sin(t); });
 
     // Taylor series approximations centered at 0
-    function taylorSin(x, n) {
-      var result = 0;
-      for (var k = 0; k <= n; k++) {
-        var sign = k % 2 === 0 ? 1 : -1;
-        result += sign * Math.pow(x, 2*k + 1) / this.factorial(2*k + 1);
-      }
-      return result;
-    }
-
-    var factorial = function(n) {
-      var result = 1;
-      for (var i = 2; i <= n; i++) result *= i;
-      return result;
-    };
-
     var tay1 = x.map(function(t) { return t; });
     var tay3 = x.map(function(t) { return t - Math.pow(t, 3)/6; });
     var tay5 = x.map(function(t) { return t - Math.pow(t, 3)/6 + Math.pow(t, 5)/120; });
@@ -507,8 +492,13 @@
 
     var layout = {
       title: 'Taylor Series Approximations of sin(x)',
-      xaxis: { title: 'x', zeroline: true },
-      yaxis: { title: 'y', zeroline: true },
+      xaxis: {
+        title: 'x',
+        zeroline: true,
+        tickvals: [-4*Math.PI, -3*Math.PI, -2*Math.PI, -Math.PI, 0, Math.PI, 2*Math.PI, 3*Math.PI, 4*Math.PI],
+        ticktext: ['-4\u03C0', '-3\u03C0', '-2\u03C0', '-\u03C0', '0', '\u03C0', '2\u03C0', '3\u03C0', '4\u03C0']
+      },
+      yaxis: { title: 'y', zeroline: true, range: [-5, 5] },
       plot_bgcolor: '#f8fafc',
       paper_bgcolor: '#ffffff',
       hovermode: 'closest',
