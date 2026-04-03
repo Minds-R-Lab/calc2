@@ -137,27 +137,27 @@
         <h3>Example 1: $\int \sin^3 x \cos^2 x \, dx$</h3>
         <p>The exponent of $\sin x$ is odd (3), so we use the odd power strategy.</p>
 
-        <p><strong>Step 1:</strong> Factor out $\sin x$ and use $\sin^2 x = 1 - \cos^2 x$</p>
-        <div class="math-display">$$\int \sin^3 x \cos^2 x \, dx = \int \sin^2 x \cos^2 x \sin x \, dx$$</div>
-        <div class="math-display">$$= \int (1 - \cos^2 x) \cos^2 x \sin x \, dx$$</div>
-
-        <p><strong>Step 2:</strong> Let $u = \cos x$, so $du = -\sin x \, dx$</p>
-        <div class="math-display">$$= \int (1 - u^2) u^2 (-du) = -\int (u^2 - u^4) \, du$$</div>
-
-        <p><strong>Step 3:</strong> Integrate</p>
-        <div class="math-display">$$= -\left(\frac{u^3}{3} - \frac{u^5}{5}\right) + C = -\frac{u^3}{3} + \frac{u^5}{5} + C$$</div>
-
-        <p><strong>Step 4:</strong> Substitute back $u = \cos x$</p>
-        <div class="math-display">$$= -\frac{\cos^3 x}{3} + \frac{\cos^5 x}{5} + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{\cos^5 x}{5} - \frac{\cos^3 x}{3} + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Solution Details</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This example shows the power of the odd exponent strategy. By factoring out a single sine and converting the remaining even power to cosine, we create a substitution that converts the entire trigonometric integral into an algebraic polynomial integral.</p>
+          <p><strong>Step 1:</strong> Factor out $\sin x$ and use $\sin^2 x = 1 - \cos^2 x$</p>
+          <div class="math-display">$$\int \sin^3 x \cos^2 x \, dx = \int \sin^2 x \cos^2 x \sin x \, dx$$</div>
+          <div class="math-display">$$= \int (1 - \cos^2 x) \cos^2 x \sin x \, dx$$</div>
+
+          <p><strong>Step 2:</strong> Let $u = \cos x$, so $du = -\sin x \, dx$</p>
+          <div class="math-display">$$= \int (1 - u^2) u^2 (-du) = -\int (u^2 - u^4) \, du$$</div>
+
+          <p><strong>Step 3:</strong> Integrate</p>
+          <div class="math-display">$$= -\left(\frac{u^3}{3} - \frac{u^5}{5}\right) + C = -\frac{u^3}{3} + \frac{u^5}{5} + C$$</div>
+
+          <p><strong>Step 4:</strong> Substitute back $u = \cos x$</p>
+          <div class="math-display">$$= -\frac{\cos^3 x}{3} + \frac{\cos^5 x}{5} + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{\cos^5 x}{5} - \frac{\cos^3 x}{3} + C}$</p>
+
+          <p class="solution-note">This example shows the power of the odd exponent strategy. By factoring out a single sine and converting the remaining even power to cosine, we create a substitution that converts the entire trigonometric integral into an algebraic polynomial integral.</p>
         </div>
       </div>
 
@@ -165,28 +165,28 @@
         <h3>Example 2: $\int \sin^2 x \cos^2 x \, dx$</h3>
         <p>Both exponents are even, so we use the half-angle formulas.</p>
 
-        <p><strong>Step 1:</strong> Apply half-angle formulas</p>
-        <div class="math-display">$$\sin^2 x \cos^2 x = \frac{1 - \cos 2x}{2} \cdot \frac{1 + \cos 2x}{2}$$</div>
-
-        <p><strong>Step 2:</strong> Multiply</p>
-        <div class="math-display">$$= \frac{(1 - \cos 2x)(1 + \cos 2x)}{4} = \frac{1 - \cos^2 2x}{4}$$</div>
-
-        <p><strong>Step 3:</strong> Apply half-angle formula again</p>
-        <div class="math-display">$$= \frac{1}{4} \left(1 - \frac{1 + \cos 4x}{2}\right) = \frac{1}{4} \left(\frac{1 - \cos 4x}{2}\right)$$</div>
-        <div class="math-display">$$= \frac{1 - \cos 4x}{8}$$</div>
-
-        <p><strong>Step 4:</strong> Integrate</p>
-        <div class="math-display">$$\int \sin^2 x \cos^2 x \, dx = \int \frac{1 - \cos 4x}{8} \, dx$$</div>
-        <div class="math-display">$$= \frac{1}{8}\left(x - \frac{\sin 4x}{4}\right) + C = \frac{x}{8} - \frac{\sin 4x}{32} + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{x}{8} - \frac{\sin 4x}{32} + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Understanding the Pattern</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>Notice how we use the half-angle formulas twice. The first application reduces $\sin^2 x \cos^2 x$ to $\frac{1 - \cos^2 2x}{4}$, but we still have $\cos^2 2x$ (an even power). The second application of the formula finally reduces it to something we can integrate directly.</p>
+          <p><strong>Step 1:</strong> Apply half-angle formulas</p>
+          <div class="math-display">$$\sin^2 x \cos^2 x = \frac{1 - \cos 2x}{2} \cdot \frac{1 + \cos 2x}{2}$$</div>
+
+          <p><strong>Step 2:</strong> Multiply</p>
+          <div class="math-display">$$= \frac{(1 - \cos 2x)(1 + \cos 2x)}{4} = \frac{1 - \cos^2 2x}{4}$$</div>
+
+          <p><strong>Step 3:</strong> Apply half-angle formula again</p>
+          <div class="math-display">$$= \frac{1}{4} \left(1 - \frac{1 + \cos 4x}{2}\right) = \frac{1}{4} \left(\frac{1 - \cos 4x}{2}\right)$$</div>
+          <div class="math-display">$$= \frac{1 - \cos 4x}{8}$$</div>
+
+          <p><strong>Step 4:</strong> Integrate</p>
+          <div class="math-display">$$\int \sin^2 x \cos^2 x \, dx = \int \frac{1 - \cos 4x}{8} \, dx$$</div>
+          <div class="math-display">$$= \frac{1}{8}\left(x - \frac{\sin 4x}{4}\right) + C = \frac{x}{8} - \frac{\sin 4x}{32} + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{x}{8} - \frac{\sin 4x}{32} + C}$</p>
+
+          <p class="solution-note">Notice how we use the half-angle formulas twice. The first application reduces $\sin^2 x \cos^2 x$ to $\frac{1 - \cos^2 2x}{4}$, but we still have $\cos^2 2x$ (an even power). The second application of the formula finally reduces it to something we can integrate directly.</p>
         </div>
       </div>
 
@@ -194,27 +194,27 @@
         <h3>Example 3: $\int \tan^3 x \sec x \, dx$</h3>
         <p>The exponent of $\tan x$ is odd, so we factor out $\sec x \tan x$.</p>
 
-        <p><strong>Step 1:</strong> Rewrite and use $\tan^2 x = \sec^2 x - 1$</p>
-        <div class="math-display">$$\int \tan^3 x \sec x \, dx = \int \tan^2 x \sec x \tan x \, dx$$</div>
-        <div class="math-display">$$= \int (\sec^2 x - 1) \sec x \tan x \, dx$$</div>
-
-        <p><strong>Step 2:</strong> Let $u = \sec x$, so $du = \sec x \tan x \, dx$</p>
-        <div class="math-display">$$= \int (u^2 - 1) \, du$$</div>
-
-        <p><strong>Step 3:</strong> Integrate</p>
-        <div class="math-display">$$= \frac{u^3}{3} - u + C$$</div>
-
-        <p><strong>Step 4:</strong> Substitute back $u = \sec x$</p>
-        <div class="math-display">$$= \frac{\sec^3 x}{3} - \sec x + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{\sec^3 x}{3} - \sec x + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Tangent-Secant Strategy</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>For $\tan^m x \sec^n x$ integrals, recognizing the odd power of tangent allows us to factor out $\sec x \tan x$ (whose derivative, in the form $\frac{d}{dx}[\sec x]$, appears naturally). This creates the perfect substitution $u = \sec x$.</p>
+          <p><strong>Step 1:</strong> Rewrite and use $\tan^2 x = \sec^2 x - 1$</p>
+          <div class="math-display">$$\int \tan^3 x \sec x \, dx = \int \tan^2 x \sec x \tan x \, dx$$</div>
+          <div class="math-display">$$= \int (\sec^2 x - 1) \sec x \tan x \, dx$$</div>
+
+          <p><strong>Step 2:</strong> Let $u = \sec x$, so $du = \sec x \tan x \, dx$</p>
+          <div class="math-display">$$= \int (u^2 - 1) \, du$$</div>
+
+          <p><strong>Step 3:</strong> Integrate</p>
+          <div class="math-display">$$= \frac{u^3}{3} - u + C$$</div>
+
+          <p><strong>Step 4:</strong> Substitute back $u = \sec x$</p>
+          <div class="math-display">$$= \frac{\sec^3 x}{3} - \sec x + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{\sec^3 x}{3} - \sec x + C}$</p>
+
+          <p class="solution-note">For $\tan^m x \sec^n x$ integrals, recognizing the odd power of tangent allows us to factor out $\sec x \tan x$ (whose derivative, in the form $\frac{d}{dx}[\sec x]$, appears naturally). This creates the perfect substitution $u = \sec x$.</p>
         </div>
       </div>
     </section>

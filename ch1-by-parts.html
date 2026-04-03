@@ -115,29 +115,27 @@
 
       <div class="example-box">
         <h3>Example 1: $\int x e^x \, dx$</h3>
-        <p><strong>Step 1:</strong> Choose $u$ and $dv$</p>
-        <p>By LIATE, algebraic functions come before exponential, so:</p>
-        <div class="math-display">$$u = x, \quad dv = e^x \, dx$$</div>
-
-        <p><strong>Step 2:</strong> Compute $du$ and $v$</p>
-        <div class="math-display">$$du = dx, \quad v = e^x$$</div>
-
-        <p><strong>Step 3:</strong> Apply the formula</p>
-        <div class="math-display">$$\int x e^x \, dx = x e^x - \int e^x \, dx$$</div>
-
-        <p><strong>Step 4:</strong> Evaluate the remaining integral</p>
-        <div class="math-display">$$\int x e^x \, dx = x e^x - e^x + C = e^x(x - 1) + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{xe^x - e^x + C}$ or $\boxed{e^x(x-1) + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Full Solution Walkthrough</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This is a straightforward application of integration by parts with just one application of the formula.</p>
-          <p>Since $du = dx$ is simpler than $u = x$, and integrating $dv = e^x \, dx$ to get $v = e^x$ is elementary, we reduce the problem to computing $\int e^x \, dx = e^x$.</p>
-          <p>The final answer can be written as a product $e^x(x-1) + C$ by factoring out the common exponential term.</p>
+          <p><strong>Step 1:</strong> Choose $u$ and $dv$</p>
+          <p>By LIATE, algebraic functions come before exponential, so:</p>
+          <div class="math-display">$$u = x, \quad dv = e^x \, dx$$</div>
+
+          <p><strong>Step 2:</strong> Compute $du$ and $v$</p>
+          <div class="math-display">$$du = dx, \quad v = e^x$$</div>
+
+          <p><strong>Step 3:</strong> Apply the formula</p>
+          <div class="math-display">$$\int x e^x \, dx = x e^x - \int e^x \, dx$$</div>
+
+          <p><strong>Step 4:</strong> Evaluate the remaining integral</p>
+          <div class="math-display">$$\int x e^x \, dx = x e^x - e^x + C = e^x(x - 1) + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{xe^x - e^x + C}$ or $\boxed{e^x(x-1) + C}$</p>
+
+          <p class="solution-note">This is a straightforward application of integration by parts with just one application of the formula. Since $du = dx$ is simpler than $u = x$, and integrating $dv = e^x \, dx$ to get $v = e^x$ is elementary, we reduce the problem to computing $\int e^x \, dx = e^x$. The final answer can be written as a product $e^x(x-1) + C$ by factoring out the common exponential term.</p>
         </div>
       </div>
 
@@ -145,31 +143,29 @@
         <h3>Example 2: $\int x^2 \sin x \, dx$ (Repeated Integration by Parts)</h3>
         <p>This requires integration by parts <strong>twice</strong>.</p>
 
-        <p><strong>First Application:</strong></p>
-        <div class="math-display">$$u = x^2, \quad dv = \sin x \, dx$$</div>
-        <div class="math-display">$$du = 2x \, dx, \quad v = -\cos x$$</div>
-        <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x - \int -\cos x \cdot 2x \, dx$$</div>
-        <div class="math-display">$$= -x^2 \cos x + 2 \int x \cos x \, dx$$</div>
-
-        <p><strong>Second Application (on $\int x \cos x \, dx$):</strong></p>
-        <div class="math-display">$$u = x, \quad dv = \cos x \, dx$$</div>
-        <div class="math-display">$$du = dx, \quad v = \sin x$$</div>
-        <div class="math-display">$$\int x \cos x \, dx = x \sin x - \int \sin x \, dx = x \sin x + \cos x$$</div>
-
-        <p><strong>Combining Results:</strong></p>
-        <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x + 2(x \sin x + \cos x) + C$$</div>
-        <div class="math-display">$$= -x^2 \cos x + 2x \sin x + 2\cos x + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{-x^2 \cos x + 2x \sin x + 2\cos x + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Solution Explanation</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This example demonstrates how repeated applications of integration by parts are necessary when the original integrand contains higher powers of algebraic functions.</p>
-          <p>The first application reduces the power of $x$ from 2 to 1. The second application reduces it further to 0, yielding a simple trigonometric integral we can evaluate directly.</p>
-          <p>This systematic reduction is why the LIATE rule is so effective: it always prioritizes the term that decreases in complexity under differentiation.</p>
+          <p><strong>First Application:</strong></p>
+          <div class="math-display">$$u = x^2, \quad dv = \sin x \, dx$$</div>
+          <div class="math-display">$$du = 2x \, dx, \quad v = -\cos x$$</div>
+          <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x - \int -\cos x \cdot 2x \, dx$$</div>
+          <div class="math-display">$$= -x^2 \cos x + 2 \int x \cos x \, dx$$</div>
+
+          <p><strong>Second Application (on $\int x \cos x \, dx$):</strong></p>
+          <div class="math-display">$$u = x, \quad dv = \cos x \, dx$$</div>
+          <div class="math-display">$$du = dx, \quad v = \sin x$$</div>
+          <div class="math-display">$$\int x \cos x \, dx = x \sin x - \int \sin x \, dx = x \sin x + \cos x$$</div>
+
+          <p><strong>Combining Results:</strong></p>
+          <div class="math-display">$$\int x^2 \sin x \, dx = -x^2 \cos x + 2(x \sin x + \cos x) + C$$</div>
+          <div class="math-display">$$= -x^2 \cos x + 2x \sin x + 2\cos x + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{-x^2 \cos x + 2x \sin x + 2\cos x + C}$</p>
+
+          <p class="solution-note">This example demonstrates how repeated applications of integration by parts are necessary when the original integrand contains higher powers of algebraic functions. The first application reduces the power of $x$ from 2 to 1. The second application reduces it further to 0, yielding a simple trigonometric integral we can evaluate directly. This systematic reduction is why the LIATE rule is so effective: it always prioritizes the term that decreases in complexity under differentiation.</p>
         </div>
       </div>
 
@@ -177,32 +173,30 @@
         <h3>Example 3: $\int e^x \cos x \, dx$ (Cyclic Integration by Parts)</h3>
         <p>This integral returns to itself, creating a system we can solve.</p>
 
-        <p><strong>First Application:</strong></p>
-        <div class="math-display">$$u = \cos x, \quad dv = e^x \, dx$$</div>
-        <div class="math-display">$$du = -\sin x \, dx, \quad v = e^x$$</div>
-        <div class="math-display">$$\int e^x \cos x \, dx = e^x \cos x - \int e^x (-\sin x) \, dx$$</div>
-        <div class="math-display">$$= e^x \cos x + \int e^x \sin x \, dx$$</div>
-
-        <p><strong>Second Application (on $\int e^x \sin x \, dx$):</strong></p>
-        <div class="math-display">$$u = \sin x, \quad dv = e^x \, dx$$</div>
-        <div class="math-display">$$du = \cos x \, dx, \quad v = e^x$$</div>
-        <div class="math-display">$$\int e^x \sin x \, dx = e^x \sin x - \int e^x \cos x \, dx$$</div>
-
-        <p><strong>Solving the System:</strong> Let $I = \int e^x \cos x \, dx$</p>
-        <div class="math-display">$$I = e^x \cos x + e^x \sin x - I$$</div>
-        <div class="math-display">$$2I = e^x(\cos x + \sin x)$$</div>
-        <div class="math-display">$$I = \frac{e^x(\cos x + \sin x)}{2} + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{e^x(\cos x + \sin x)}{2} + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Understanding Cyclic Integration</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>When integrating products of exponential and trigonometric functions, the integral often returns to a form proportional to itself after two applications of integration by parts.</p>
-          <p>Rather than continuing indefinitely, we solve algebraically: if $I$ represents our original integral and we derive an equation like $I = (\text{expression}) - I$, we can collect terms to get $2I = (\text{expression})$, then solve for $I$.</p>
-          <p>This technique is elegant and efficient for integrals that would otherwise seem circular.</p>
+          <p><strong>First Application:</strong></p>
+          <div class="math-display">$$u = \cos x, \quad dv = e^x \, dx$$</div>
+          <div class="math-display">$$du = -\sin x \, dx, \quad v = e^x$$</div>
+          <div class="math-display">$$\int e^x \cos x \, dx = e^x \cos x - \int e^x (-\sin x) \, dx$$</div>
+          <div class="math-display">$$= e^x \cos x + \int e^x \sin x \, dx$$</div>
+
+          <p><strong>Second Application (on $\int e^x \sin x \, dx$):</strong></p>
+          <div class="math-display">$$u = \sin x, \quad dv = e^x \, dx$$</div>
+          <div class="math-display">$$du = \cos x \, dx, \quad v = e^x$$</div>
+          <div class="math-display">$$\int e^x \sin x \, dx = e^x \sin x - \int e^x \cos x \, dx$$</div>
+
+          <p><strong>Solving the System:</strong> Let $I = \int e^x \cos x \, dx$</p>
+          <div class="math-display">$$I = e^x \cos x + e^x \sin x - I$$</div>
+          <div class="math-display">$$2I = e^x(\cos x + \sin x)$$</div>
+          <div class="math-display">$$I = \frac{e^x(\cos x + \sin x)}{2} + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{e^x(\cos x + \sin x)}{2} + C}$</p>
+
+          <p class="solution-note">When integrating products of exponential and trigonometric functions, the integral often returns to a form proportional to itself after two applications of integration by parts. Rather than continuing indefinitely, we solve algebraically: if $I$ represents our original integral and we derive an equation like $I = (\text{expression}) - I$, we can collect terms to get $2I = (\text{expression})$, then solve for $I$. This technique is elegant and efficient for integrals that would otherwise seem circular.</p>
         </div>
       </div>
     </section>

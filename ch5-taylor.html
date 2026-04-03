@@ -164,13 +164,12 @@
 
   <div class="example-box">
     <strong>Example 1: Maclaurin Series for $e^x$</strong>
-    <p><strong>Derive the Maclaurin series for $e^x$.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Derive the Maclaurin series for $e^x$.</strong></p>
       <p>
         Let $f(x) = e^x$. All derivatives are:
         $$f^{(n)}(x) = e^x \quad \text{for all } n$$
@@ -183,7 +182,7 @@
         Therefore:
         $$e^x = \sum_{n=0}^{\infty} \frac{1 \cdot x^n}{n!} = \sum_{n=0}^{\infty} \frac{x^n}{n!}$$
       </p>
-      <p>
+      <p class="solution-note">
         This series converges for all $x \in \mathbb{R}$.
       </p>
     </div>
@@ -191,13 +190,12 @@
 
   <div class="example-box">
     <strong>Example 2: Maclaurin Series for $\sin x$</strong>
-    <p><strong>Derive the Maclaurin series for $\sin x$.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Derive the Maclaurin series for $\sin x$.</strong></p>
       <p>
         Let $f(x) = \sin x$. The derivatives cycle:
         $$f(x) = \sin x, \quad f'(x) = \cos x, \quad f''(x) = -\sin x, \quad f'''(x) = -\cos x, \quad f^{(4)}(x) = \sin x, \ldots$$
@@ -210,7 +208,7 @@
         The pattern shows that derivatives at 0 are 0 for even $n$, and alternate $\pm 1$ for odd $n$.
         $$f^{(2n+1)}(0) = (-1)^n$$
       </p>
-      <p>
+      <p class="solution-note">
         Therefore:
         $$\sin x = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n+1)!} x^{2n+1} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots$$
       </p>
@@ -219,13 +217,12 @@
 
   <div class="example-box">
     <strong>Example 3: Taylor Series for $\ln x$ centered at $a = 1$</strong>
-    <p><strong>Derive the Taylor series for $\ln x$ centered at $a = 1$.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Derive the Taylor series for $\ln x$ centered at $a = 1$.</strong></p>
       <p>
         Let $f(x) = \ln x$. Compute derivatives:
         $$f(x) = \ln x$$
@@ -249,7 +246,7 @@
         Therefore:
         $$\ln x = \sum_{n=1}^{\infty} \frac{(-1)^{n-1}}{n}(x-1)^n = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \cdots$$
       </p>
-      <p>
+      <p class="solution-note">
         This series converges for $0 < x \leq 2$.
       </p>
     </div>
@@ -275,14 +272,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 1</strong>
-    <p>
-      Find the Maclaurin series for $\cos x$ and identify its radius of convergence.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the Maclaurin series for $\cos x$ and identify its radius of convergence.
+      </p>
       <p>
         Let $f(x) = \cos x$. The derivatives are:
         $$f(x) = \cos x, \quad f'(x) = -\sin x, \quad f''(x) = -\cos x, \quad f'''(x) = \sin x, \quad f^{(4)}(x) = \cos x, \ldots$$
@@ -298,7 +295,7 @@
         Therefore:
         $$\cos x = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n)!} x^{2n} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots$$
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Radius of convergence:</strong> $R = \infty$ (converges for all $x$)
       </p>
     </div>
@@ -306,14 +303,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 2</strong>
-    <p>
-      Find the Maclaurin series for $\frac{1}{1+x^2}$ using the geometric series formula.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the Maclaurin series for $\frac{1}{1+x^2}$ using the geometric series formula.
+      </p>
       <p>
         We know that $\frac{1}{1-u} = \sum_{n=0}^{\infty} u^n$ for $|u| < 1$.
       </p>
@@ -327,7 +324,7 @@
       <p>
         This converges for $|x^2| < 1$, i.e., $|x| < 1$.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Radius of convergence:</strong> $R = 1$
       </p>
     </div>
@@ -335,14 +332,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 3</strong>
-    <p>
-      Find the first four nonzero terms of the Taylor series for $e^x$ centered at $a = 1$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the first four nonzero terms of the Taylor series for $e^x$ centered at $a = 1$.
+      </p>
       <p>
         Let $f(x) = e^x$. All derivatives are $f^{(n)}(x) = e^x$, so $f^{(n)}(1) = e$ for all $n$.
       </p>
@@ -354,7 +351,7 @@
         The first four terms are:
         $$e^x = e + e(x-1) + \frac{e}{2!}(x-1)^2 + \frac{e}{3!}(x-1)^3 + \cdots$$
       </p>
-      <p>
+      <p class="solution-note">
         $$= e \left[1 + (x-1) + \frac{(x-1)^2}{2} + \frac{(x-1)^3}{6} + \cdots\right]$$
       </p>
     </div>

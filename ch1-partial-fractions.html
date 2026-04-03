@@ -144,33 +144,33 @@
         <h3>Example 1: $\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx$</h3>
         <p>The denominator has distinct linear factors and the numerator has lower degree.</p>
 
-        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
-        <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{A}{x - 1} + \frac{B}{x + 2}$$</div>
-
-        <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)(x + 2)$</p>
-        <div class="math-display">$$3x + 5 = A(x + 2) + B(x - 1)$$</div>
-
-        <p><strong>Step 3:</strong> Find $A$ and $B$ using substitution</p>
-        <p>Let $x = 1$:</p>
-        <div class="math-display">$$3(1) + 5 = A(1 + 2) + B(0) \Rightarrow 8 = 3A \Rightarrow A = \frac{8}{3}$$</div>
-        <p>Let $x = -2$:</p>
-        <div class="math-display">$$3(-2) + 5 = A(0) + B(-2 - 1) \Rightarrow -1 = -3B \Rightarrow B = \frac{1}{3}$$</div>
-
-        <p><strong>Step 4:</strong> Write the decomposition</p>
-        <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{8/3}{x - 1} + \frac{1/3}{x + 2}$$</div>
-
-        <p><strong>Step 5:</strong> Integrate</p>
-        <div class="math-display">$$\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx = \frac{8}{3}\int \frac{dx}{x - 1} + \frac{1}{3}\int \frac{dx}{x + 2}$$</div>
-        <div class="math-display">$$= \frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C}$ or $\displaystyle \ln\left|(x-1)^{8/3}(x+2)^{1/3}\right| + C$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Solution Explanation</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This is the simplest case—distinct linear factors. The substitution method works perfectly because plugging in the roots eliminates one term at a time, leaving us with simple equations for each constant.</p>
+          <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+          <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{A}{x - 1} + \frac{B}{x + 2}$$</div>
+
+          <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)(x + 2)$</p>
+          <div class="math-display">$$3x + 5 = A(x + 2) + B(x - 1)$$</div>
+
+          <p><strong>Step 3:</strong> Find $A$ and $B$ using substitution</p>
+          <p>Let $x = 1$:</p>
+          <div class="math-display">$$3(1) + 5 = A(1 + 2) + B(0) \Rightarrow 8 = 3A \Rightarrow A = \frac{8}{3}$$</div>
+          <p>Let $x = -2$:</p>
+          <div class="math-display">$$3(-2) + 5 = A(0) + B(-2 - 1) \Rightarrow -1 = -3B \Rightarrow B = \frac{1}{3}$$</div>
+
+          <p><strong>Step 4:</strong> Write the decomposition</p>
+          <div class="math-display">$$\frac{3x + 5}{(x - 1)(x + 2)} = \frac{8/3}{x - 1} + \frac{1/3}{x + 2}$$</div>
+
+          <p><strong>Step 5:</strong> Integrate</p>
+          <div class="math-display">$$\int \frac{3x + 5}{(x - 1)(x + 2)} \, dx = \frac{8}{3}\int \frac{dx}{x - 1} + \frac{1}{3}\int \frac{dx}{x + 2}$$</div>
+          <div class="math-display">$$= \frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{8}{3}\ln|x - 1| + \frac{1}{3}\ln|x + 2| + C}$ or $\displaystyle \ln\left|(x-1)^{8/3}(x+2)^{1/3}\right| + C$</p>
+
+          <p class="solution-note">This is the simplest case—distinct linear factors. The substitution method works perfectly because plugging in the roots eliminates one term at a time, leaving us with simple equations for each constant.</p>
         </div>
       </div>
 
@@ -178,34 +178,34 @@
         <h3>Example 2: $\int \frac{2x}{(x - 1)^2} \, dx$</h3>
         <p>The denominator has a repeated linear factor ($(x-1)^2$).</p>
 
-        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
-        <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2}$$</div>
-
-        <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)^2$</p>
-        <div class="math-display">$$2x = A(x - 1) + B$$</div>
-
-        <p><strong>Step 3:</strong> Find $A$ and $B$</p>
-        <p>Let $x = 1$:</p>
-        <div class="math-display">$$2(1) = 0 + B \Rightarrow B = 2$$</div>
-        <p>Expand and match coefficients: $2x = Ax - A + B$</p>
-        <p>Coefficient of $x$: $2 = A$</p>
-
-        <p><strong>Step 4:</strong> Write the decomposition</p>
-        <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{2}{x - 1} + \frac{2}{(x - 1)^2}$$</div>
-
-        <p><strong>Step 5:</strong> Integrate</p>
-        <div class="math-display">$$\int \frac{2x}{(x - 1)^2} \, dx = 2\int \frac{dx}{x - 1} + 2\int \frac{dx}{(x - 1)^2}$$</div>
-        <div class="math-display">$$= 2\ln|x - 1| + 2 \cdot \frac{(x-1)^{-1}}{-1} + C$$</div>
-        <div class="math-display">$$= 2\ln|x - 1| - \frac{2}{x - 1} + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{2\ln|x - 1| - \frac{2}{x - 1} + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Handling Repeated Factors</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>For repeated factors, we include a partial fraction term for each power of the factor. Notice how the integration of $\frac{2}{(x-1)^2}$ uses the power rule: $\int (x-1)^{-2} dx = -1 \cdot (x-1)^{-1} = -\frac{1}{x-1}$.</p>
+          <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+          <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2}$$</div>
+
+          <p><strong>Step 2:</strong> Multiply both sides by $(x - 1)^2$</p>
+          <div class="math-display">$$2x = A(x - 1) + B$$</div>
+
+          <p><strong>Step 3:</strong> Find $A$ and $B$</p>
+          <p>Let $x = 1$:</p>
+          <div class="math-display">$$2(1) = 0 + B \Rightarrow B = 2$$</div>
+          <p>Expand and match coefficients: $2x = Ax - A + B$</p>
+          <p>Coefficient of $x$: $2 = A$</p>
+
+          <p><strong>Step 4:</strong> Write the decomposition</p>
+          <div class="math-display">$$\frac{2x}{(x - 1)^2} = \frac{2}{x - 1} + \frac{2}{(x - 1)^2}$$</div>
+
+          <p><strong>Step 5:</strong> Integrate</p>
+          <div class="math-display">$$\int \frac{2x}{(x - 1)^2} \, dx = 2\int \frac{dx}{x - 1} + 2\int \frac{dx}{(x - 1)^2}$$</div>
+          <div class="math-display">$$= 2\ln|x - 1| + 2 \cdot \frac{(x-1)^{-1}}{-1} + C$$</div>
+          <div class="math-display">$$= 2\ln|x - 1| - \frac{2}{x - 1} + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{2\ln|x - 1| - \frac{2}{x - 1} + C}$</p>
+
+          <p class="solution-note">For repeated factors, we include a partial fraction term for each power of the factor. Notice how the integration of $\frac{2}{(x-1)^2}$ uses the power rule: $\int (x-1)^{-2} dx = -1 \cdot (x-1)^{-1} = -\frac{1}{x-1}$.</p>
         </div>
       </div>
 
@@ -213,36 +213,36 @@
         <h3>Example 3: $\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx$</h3>
         <p>The denominator has a linear factor $x$ and an irreducible quadratic factor $x^2 + 4$.</p>
 
-        <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
-        <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{A}{x} + \frac{Bx + C}{x^2 + 4}$$</div>
-
-        <p><strong>Step 2:</strong> Multiply both sides by $x(x^2 + 4)$</p>
-        <div class="math-display">$$x^2 + 1 = A(x^2 + 4) + (Bx + C)x$$</div>
-
-        <p><strong>Step 3:</strong> Find $A$, $B$, and $C$</p>
-        <p>Let $x = 0$:</p>
-        <div class="math-display">$$0 + 1 = A(4) + 0 \Rightarrow A = \frac{1}{4}$$</div>
-        <p>Expand: $x^2 + 1 = Ax^2 + 4A + Bx^2 + Cx = (A + B)x^2 + Cx + 4A$</p>
-        <p>Coefficient of $x^2$: $1 = A + B \Rightarrow B = 1 - \frac{1}{4} = \frac{3}{4}$</p>
-        <p>Coefficient of $x$: $0 = C$</p>
-
-        <p><strong>Step 4:</strong> Write the decomposition</p>
-        <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{1/4}{x} + \frac{(3/4)x}{x^2 + 4}$$</div>
-
-        <p><strong>Step 5:</strong> Integrate</p>
-        <div class="math-display">$$\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx = \frac{1}{4}\int \frac{dx}{x} + \frac{3}{4}\int \frac{x \, dx}{x^2 + 4}$$</div>
-        <p>For the second integral, let $u = x^2 + 4$, $du = 2x \, dx$:</p>
-        <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{4} \cdot \frac{1}{2}\ln|x^2 + 4| + C$$</div>
-        <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C}$ or $\displaystyle \ln\left|x^{1/4}(x^2+4)^{3/8}\right| + C$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Working with Quadratic Factors</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>When an irreducible quadratic factor appears, the numerator of its partial fraction must be linear ($Bx + C$). The integral $\int \frac{x}{x^2+4} dx$ evaluates to $\frac{1}{2}\ln(x^2+4)$ using substitution. If the numerator had been constant, we'd need arctangent, but the linear numerator makes it a logarithm.</p>
+          <p><strong>Step 1:</strong> Set up the partial fraction decomposition</p>
+          <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{A}{x} + \frac{Bx + C}{x^2 + 4}$$</div>
+
+          <p><strong>Step 2:</strong> Multiply both sides by $x(x^2 + 4)$</p>
+          <div class="math-display">$$x^2 + 1 = A(x^2 + 4) + (Bx + C)x$$</div>
+
+          <p><strong>Step 3:</strong> Find $A$, $B$, and $C$</p>
+          <p>Let $x = 0$:</p>
+          <div class="math-display">$$0 + 1 = A(4) + 0 \Rightarrow A = \frac{1}{4}$$</div>
+          <p>Expand: $x^2 + 1 = Ax^2 + 4A + Bx^2 + Cx = (A + B)x^2 + Cx + 4A$</p>
+          <p>Coefficient of $x^2$: $1 = A + B \Rightarrow B = 1 - \frac{1}{4} = \frac{3}{4}$</p>
+          <p>Coefficient of $x$: $0 = C$</p>
+
+          <p><strong>Step 4:</strong> Write the decomposition</p>
+          <div class="math-display">$$\frac{x^2 + 1}{x(x^2 + 4)} = \frac{1/4}{x} + \frac{(3/4)x}{x^2 + 4}$$</div>
+
+          <p><strong>Step 5:</strong> Integrate</p>
+          <div class="math-display">$$\int \frac{x^2 + 1}{x(x^2 + 4)} \, dx = \frac{1}{4}\int \frac{dx}{x} + \frac{3}{4}\int \frac{x \, dx}{x^2 + 4}$$</div>
+          <p>For the second integral, let $u = x^2 + 4$, $du = 2x \, dx$:</p>
+          <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{4} \cdot \frac{1}{2}\ln|x^2 + 4| + C$$</div>
+          <div class="math-display">$$= \frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{1}{4}\ln|x| + \frac{3}{8}\ln(x^2 + 4) + C}$ or $\displaystyle \ln\left|x^{1/4}(x^2+4)^{3/8}\right| + C$</p>
+
+          <p class="solution-note">When an irreducible quadratic factor appears, the numerator of its partial fraction must be linear ($Bx + C$). The integral $\int \frac{x}{x^2+4} dx$ evaluates to $\frac{1}{2}\ln(x^2+4)$ using substitution. If the numerator had been constant, we'd need arctangent, but the linear numerator makes it a logarithm.</p>
         </div>
       </div>
     </section>

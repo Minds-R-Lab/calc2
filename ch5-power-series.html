@@ -155,13 +155,12 @@
 
   <div class="example-box">
     <strong>Example 1: $\sum_{n=1}^{\infty} \frac{x^n}{n}$</strong>
-    <p><strong>Find the radius and interval of convergence.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the radius and interval of convergence.</strong></p>
       <p>
         Here $a = 0$, $c_n = \frac{1}{n}$.
       </p>
@@ -178,7 +177,7 @@
       <p>
         <strong>At $x = -1$:</strong> $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ is the alternating harmonic series, which <em>converges</em>.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Interval of convergence:</strong> $[-1, 1)$
       </p>
     </div>
@@ -186,13 +185,12 @@
 
   <div class="example-box">
     <strong>Example 2: $\sum_{n=0}^{\infty} n! \, x^n$</strong>
-    <p><strong>Find the radius and interval of convergence.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the radius and interval of convergence.</strong></p>
       <p>
         Here $c_n = n!$.
       </p>
@@ -200,7 +198,7 @@
         Apply the ratio test:
         $$\lim_{n \to \infty} \left|\frac{(n+1)!}{n!}\right| = \lim_{n \to \infty} (n+1) = \infty$$
       </p>
-      <p>
+      <p class="solution-note">
         Therefore $R = \frac{1}{\infty} = 0$. The series converges <strong>only at $x = 0$</strong>.
       </p>
     </div>
@@ -208,13 +206,12 @@
 
   <div class="example-box">
     <strong>Example 3: $\sum_{n=0}^{\infty} \frac{x^n}{n!}$</strong>
-    <p><strong>Find the radius and interval of convergence.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the radius and interval of convergence.</strong></p>
       <p>
         Here $c_n = \frac{1}{n!}$.
       </p>
@@ -225,7 +222,7 @@
       <p>
         Therefore $R = \frac{1}{0} = \infty$. The series converges for <strong>all $x \in \mathbb{R}$</strong>.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Interval of convergence:</strong> $(-\infty, \infty)$
       </p>
     </div>
@@ -251,14 +248,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 1</strong>
-    <p>
-      Find the radius and interval of convergence for $\sum_{n=1}^{\infty} \frac{(x-2)^n}{n \cdot 2^n}$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the radius and interval of convergence for $\sum_{n=1}^{\infty} \frac{(x-2)^n}{n \cdot 2^n}$.
+      </p>
       <p>
         Here $a = 2$ and $c_n = \frac{1}{n \cdot 2^n}$.
       </p>
@@ -275,7 +272,7 @@
       <p>
         Check $x = 2 - 2 = 0$: $\sum_{n=1}^{\infty} \frac{(-2)^n}{n \cdot 2^n} = \sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ converges.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Interval of convergence:</strong> $[0, 4)$
       </p>
     </div>
@@ -283,14 +280,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 2</strong>
-    <p>
-      Find the radius of convergence for $\sum_{n=0}^{\infty} \frac{n^2 x^n}{5^n}$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the radius of convergence for $\sum_{n=0}^{\infty} \frac{n^2 x^n}{5^n}$.
+      </p>
       <p>
         Here $c_n = \frac{n^2}{5^n}$.
       </p>
@@ -298,10 +295,10 @@
         Apply the ratio test:
         $$\lim_{n \to \infty} \left|\frac{(n+1)^2 / 5^{n+1}}{n^2 / 5^n}\right| = \lim_{n \to \infty} \frac{(n+1)^2}{5n^2} = \frac{1}{5} \lim_{n \to \infty} \left(\frac{n+1}{n}\right)^2 = \frac{1}{5}$$
       </p>
-      <p>
+      <p class="solution-note">
         Therefore $R = \frac{1}{1/5} = 5$.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Radius of convergence:</strong> $R = 5$
       </p>
     </div>
@@ -309,14 +306,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 3</strong>
-    <p>
-      Determine the interval of convergence for $\sum_{n=1}^{\infty} \frac{(-1)^n x^n}{n^2}$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Determine the interval of convergence for $\sum_{n=1}^{\infty} \frac{(-1)^n x^n}{n^2}$.
+      </p>
       <p>
         Here $c_n = \frac{(-1)^n}{n^2}$.
       </p>
@@ -333,7 +330,7 @@
       <p>
         Check $x = -1$: $\sum_{n=1}^{\infty} \frac{(-1)^n(-1)^n}{n^2} = \sum_{n=1}^{\infty} \frac{1}{n^2}$ converges absolutely.
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Interval of convergence:</strong> $[-1, 1]$
       </p>
     </div>

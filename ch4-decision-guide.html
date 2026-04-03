@@ -386,90 +386,90 @@
       <p>For each series below, identify the convergence test you'd use <em>before</em> revealing the answer.</p>
 
       <div class="example-box">
-        <strong>1. $\displaystyle\sum_{n=1}^{\infty} \frac{n^2}{3^n}$</strong>
+        <h3>1. $\displaystyle\sum_{n=1}^{\infty} \frac{n^2}{3^n}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-ratio">Ratio Test</span> — The $3^n$ (exponential) in the denominator is the clue. Compute $\lim \frac{a_{n+1}}{a_n} = \frac{(n+1)^2}{3n^2} \cdot 1 = \frac{1}{3} &lt; 1$. Converges.</p>
+          <p class="solution-note"><span class="tag tag-ratio">Ratio Test</span> — The $3^n$ (exponential) in the denominator is the clue. Compute $\lim \frac{a_{n+1}}{a_n} = \frac{(n+1)^2}{3n^2} \cdot 1 = \frac{1}{3} &lt; 1$. Converges.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>2. $\displaystyle\sum_{n=1}^{\infty} \frac{3n^2+1}{2n^4-n+7}$</strong>
+        <h3>2. $\displaystyle\sum_{n=1}^{\infty} \frac{3n^2+1}{2n^4-n+7}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-lct">Limit Comparison Test</span> — Rational function of $n$. Dominant terms give $\frac{3n^2}{2n^4} = \frac{3}{2n^2}$. Compare with $\sum 1/n^2$ (converges, $p=2&gt;1$). The limit of the ratio is $3/2 &gt; 0$ and finite, so our series also converges.</p>
+          <p class="solution-note"><span class="tag tag-lct">Limit Comparison Test</span> — Rational function of $n$. Dominant terms give $\frac{3n^2}{2n^4} = \frac{3}{2n^2}$. Compare with $\sum 1/n^2$ (converges, $p=2&gt;1$). The limit of the ratio is $3/2 &gt; 0$ and finite, so our series also converges.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>3. $\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^{3/4}}$</strong>
+        <h3>3. $\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^{3/4}}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-alternating">Alternating Series Test</span> — The $(-1)^{n+1}$ is the giveaway. Check: $b_n = 1/n^{3/4}$ is decreasing and $b_n \to 0$. Converges conditionally (since $\sum 1/n^{3/4}$ diverges because $p = 3/4 &lt; 1$).</p>
+          <p class="solution-note"><span class="tag tag-alternating">Alternating Series Test</span> — The $(-1)^{n+1}$ is the giveaway. Check: $b_n = 1/n^{3/4}$ is decreasing and $b_n \to 0$. Converges conditionally (since $\sum 1/n^{3/4}$ diverges because $p = 3/4 &lt; 1$).</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>4. $\displaystyle\sum_{n=2}^{\infty} \frac{1}{n\,\ln n}$</strong>
+        <h3>4. $\displaystyle\sum_{n=2}^{\infty} \frac{1}{n\,\ln n}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-integral">Integral Test</span> — The $\ln n$ factor is the hint. $\int_2^{\infty} \frac{dx}{x\ln x} = \ln(\ln x)\Big|_2^{\infty} = \infty$. Diverges.</p>
+          <p class="solution-note"><span class="tag tag-integral">Integral Test</span> — The $\ln n$ factor is the hint. $\int_2^{\infty} \frac{dx}{x\ln x} = \ln(\ln x)\Big|_2^{\infty} = \infty$. Diverges.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>5. $\displaystyle\sum_{n=0}^{\infty} \frac{n!}{5^n}$</strong>
+        <h3>5. $\displaystyle\sum_{n=0}^{\infty} \frac{n!}{5^n}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-ratio">Ratio Test</span> — Factorial! That's always Ratio Test territory. $\lim \frac{a_{n+1}}{a_n} = \lim \frac{(n+1)!}{5^{n+1}} \cdot \frac{5^n}{n!} = \lim \frac{n+1}{5} = \infty &gt; 1$. Diverges.</p>
+          <p class="solution-note"><span class="tag tag-ratio">Ratio Test</span> — Factorial! That's always Ratio Test territory. $\lim \frac{a_{n+1}}{a_n} = \lim \frac{(n+1)!}{5^{n+1}} \cdot \frac{5^n}{n!} = \lim \frac{n+1}{5} = \infty &gt; 1$. Diverges.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>6. $\displaystyle\sum_{n=1}^{\infty} \left(\frac{2n+1}{3n+4}\right)^n$</strong>
+        <h3>6. $\displaystyle\sum_{n=1}^{\infty} \left(\frac{2n+1}{3n+4}\right)^n$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-root">Root Test</span> — The entire term is raised to the $n$th power — perfect for Root Test. $\lim \sqrt[n]{a_n} = \lim \frac{2n+1}{3n+4} = \frac{2}{3} &lt; 1$. Converges.</p>
+          <p class="solution-note"><span class="tag tag-root">Root Test</span> — The entire term is raised to the $n$th power — perfect for Root Test. $\lim \sqrt[n]{a_n} = \lim \frac{2n+1}{3n+4} = \frac{2}{3} &lt; 1$. Converges.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>7. $\displaystyle\sum_{n=1}^{\infty} \frac{1}{n(n+2)}$</strong>
+        <h3>7. $\displaystyle\sum_{n=1}^{\infty} \frac{1}{n(n+2)}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-tele">Telescoping</span> — Use partial fractions: $\frac{1}{n(n+2)} = \frac{1}{2}\left(\frac{1}{n} - \frac{1}{n+2}\right)$. Write out partial sums and watch terms cancel. Converges to $\frac{3}{4}$.</p>
+          <p class="solution-note"><span class="tag tag-tele">Telescoping</span> — Use partial fractions: $\frac{1}{n(n+2)} = \frac{1}{2}\left(\frac{1}{n} - \frac{1}{n+2}\right)$. Write out partial sums and watch terms cancel. Converges to $\frac{3}{4}$.</p>
         </div>
       </div>
 
       <div class="example-box">
-        <strong>8. $\displaystyle\sum_{n=1}^{\infty} \frac{\cos(n\pi)}{n}$</strong>
+        <h3>8. $\displaystyle\sum_{n=1}^{\infty} \frac{\cos(n\pi)}{n}$</h3>
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
           <strong>Show Answer</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p><span class="tag tag-alternating">Alternating Series Test</span> — Recognize that $\cos(n\pi) = (-1)^n$. So this is $\sum \frac{(-1)^n}{n}$, the alternating harmonic series. $b_n = 1/n$ is decreasing and $\to 0$. Converges conditionally.</p>
+          <p class="solution-note"><span class="tag tag-alternating">Alternating Series Test</span> — Recognize that $\cos(n\pi) = (-1)^n$. So this is $\sum \frac{(-1)^n}{n}$, the alternating harmonic series. $b_n = 1/n$ is decreasing and $\to 0$. Converges conditionally.</p>
         </div>
       </div>
     </section>

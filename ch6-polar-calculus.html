@@ -136,13 +136,12 @@
 
   <div class="example-box">
     <strong>Example 1: Area Inside the Cardioid $r = 1 + \cos\theta$</strong>
-    <p><strong>Find the total area enclosed by the cardioid.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the total area enclosed by the cardioid.</strong></p>
       <p>
         The cardioid is traced once as $\theta$ goes from $0$ to $2\pi$.
       </p>
@@ -163,7 +162,7 @@
       <p>
         $$= \frac{1}{2}\left[\frac{3\theta}{2} + 2\sin\theta + \frac{\sin(2\theta)}{4}\right]_0^{2\pi}$$
       </p>
-      <p>
+      <p class="solution-note">
         $$= \frac{1}{2}\left[\frac{3 \cdot 2\pi}{2} + 0 + 0\right] = \frac{1}{2} \cdot 3\pi = \frac{3\pi}{2}$$
       </p>
     </div>
@@ -171,13 +170,12 @@
 
   <div class="example-box">
     <strong>Example 2: Area Inside $r = 3\cos\theta$ and Outside $r = 1 + \cos\theta$</strong>
-    <p><strong>Find the area of the region inside the first curve but outside the second.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the area of the region inside the first curve but outside the second.</strong></p>
       <p>
         First, find intersection points by setting $3\cos\theta = 1 + \cos\theta$:
         $$2\cos\theta = 1 \implies \cos\theta = \frac{1}{2} \implies \theta = \frac{\pi}{3}, \frac{5\pi}{3}$$
@@ -208,7 +206,7 @@
       <p>
         $$= 3 \cdot \frac{\pi}{3} + 2\sin\frac{2\pi}{3} - 2\sin\frac{\pi}{3} - 0$$
       </p>
-      <p>
+      <p class="solution-note">
         $$= \pi + 2 \cdot \frac{\sqrt{3}}{2} - 2 \cdot \frac{\sqrt{3}}{2} = \pi$$
       </p>
     </div>
@@ -216,13 +214,12 @@
 
   <div class="example-box">
     <strong>Example 3: Arc Length of the Spiral $r = e^{\theta}$ from $\theta = 0$ to $\theta = 2\pi$</strong>
-    <p><strong>Find the arc length of the logarithmic spiral.</strong></p>
-
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-      <strong>Solution</strong>
+      <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p><strong>Find the arc length of the logarithmic spiral.</strong></p>
       <p>
         We have $r = e^{\theta}$ and $\frac{dr}{d\theta} = e^{\theta}$.
       </p>
@@ -235,7 +232,7 @@
       <p>
         $$= \sqrt{2}(e^{2\pi} - 1)$$
       </p>
-      <p>
+      <p class="solution-note">
         Numerically, $e^{2\pi} \approx 535.5$, so $L \approx \sqrt{2}(535.5 - 1) \approx 756.3$.
       </p>
     </div>
@@ -259,14 +256,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 1</strong>
-    <p>
-      Find the area inside the circle $r = 2\sin\theta$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the area inside the circle $r = 2\sin\theta$.
+      </p>
       <p>
         The circle $r = 2\sin\theta$ is traced once as $\theta$ goes from $0$ to $\pi$.
       </p>
@@ -282,7 +279,7 @@
       <p>
         $$= \pi - 0 - 0 + 0 = \pi$$
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Area = $\pi$</strong> (This matches a circle of radius 1, as $r = 2\sin\theta$ is equivalent to $(x - 0)^2 + (y - 1)^2 = 1$.)
       </p>
     </div>
@@ -290,14 +287,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 2</strong>
-    <p>
-      Find the area inside one petal of the rose curve $r = \sin(3\theta)$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the area inside one petal of the rose curve $r = \sin(3\theta)$.
+      </p>
       <p>
         The rose $r = \sin(3\theta)$ has 3 petals. One petal is traced as $\theta$ goes from $0$ to $\frac{\pi}{3}$
         (where $r$ goes from 0 to 1 back to 0).
@@ -315,7 +312,7 @@
       <p>
         $$= \frac{1}{4}\left[\frac{\pi}{3} - \frac{\sin(2\pi)}{6} - 0 + 0\right] = \frac{1}{4} \cdot \frac{\pi}{3} = \frac{\pi}{12}$$
       </p>
-      <p>
+      <p class="solution-note">
         <strong>Area of one petal = $\frac{\pi}{12}$</strong>
       </p>
     </div>
@@ -323,14 +320,14 @@
 
   <div class="example-box">
     <strong>Practice Problem 3</strong>
-    <p>
-      Find the arc length of $r = \theta$ (Archimedean spiral) from $\theta = 0$ to $\theta = \pi$.
-    </p>
     <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
       <strong>Show Solution</strong>
       <span class="toggle-icon">▼</span>
     </div>
     <div class="collapsible-content">
+      <p>
+        Find the arc length of $r = \theta$ (Archimedean spiral) from $\theta = 0$ to $\theta = \pi$.
+      </p>
       <p>
         We have $r = \theta$ and $\frac{dr}{d\theta} = 1$.
       </p>
@@ -351,7 +348,7 @@
       <p>
         Numerically: $\pi^2 + 1 \approx 10.87$, so $\sqrt{\pi^2 + 1} \approx 3.297$, and $\sinh^{-1}(\pi) \approx 1.86$.
       </p>
-      <p>
+      <p class="solution-note">
         $$L \approx \frac{3.14159 \cdot 3.297}{2} + \frac{1.86}{2} \approx 5.18 + 0.93 \approx 6.11$$
       </p>
     </div>

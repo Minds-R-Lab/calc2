@@ -129,24 +129,24 @@
         <h3>Example 1: $\int \frac{dx}{\sqrt{4 - x^2}}$</h3>
         <p>This contains $\sqrt{4 - x^2} = \sqrt{2^2 - x^2}$, so use Case 1.</p>
 
-        <p><strong>Step 1:</strong> Identify $a = 2$</p>
-        <p><strong>Step 2:</strong> Substitute $x = 2\sin \theta$, $dx = 2\cos \theta \, d\theta$</p>
-        <div class="math-display">$$\sqrt{4 - x^2} = \sqrt{4 - 4\sin^2 \theta} = 2\cos \theta$$</div>
-
-        <p><strong>Step 3:</strong> Substitute into the integral</p>
-        <div class="math-display">$$\int \frac{dx}{\sqrt{4 - x^2}} = \int \frac{2\cos \theta \, d\theta}{2\cos \theta} = \int d\theta = \theta + C$$</div>
-
-        <p><strong>Step 4:</strong> Back-substitute. Since $x = 2\sin \theta$, we have $\theta = \arcsin(x/2)$</p>
-        <div class="math-display">$$\int \frac{dx}{\sqrt{4 - x^2}} = \arcsin\left(\frac{x}{2}\right) + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\arcsin\left(\frac{x}{2}\right) + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Solution Details</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This is the simplest trigonometric substitution example. The key insight is that $\sqrt{4 - 4\sin^2 \theta} = 2|\cos \theta| = 2\cos \theta$ (since $-\pi/2 \leq \theta \leq \pi/2$ ensures $\cos \theta \geq 0$). The substitution transforms the entire integral into a trivial form.</p>
+          <p><strong>Step 1:</strong> Identify $a = 2$</p>
+          <p><strong>Step 2:</strong> Substitute $x = 2\sin \theta$, $dx = 2\cos \theta \, d\theta$</p>
+          <div class="math-display">$$\sqrt{4 - x^2} = \sqrt{4 - 4\sin^2 \theta} = 2\cos \theta$$</div>
+
+          <p><strong>Step 3:</strong> Substitute into the integral</p>
+          <div class="math-display">$$\int \frac{dx}{\sqrt{4 - x^2}} = \int \frac{2\cos \theta \, d\theta}{2\cos \theta} = \int d\theta = \theta + C$$</div>
+
+          <p><strong>Step 4:</strong> Back-substitute. Since $x = 2\sin \theta$, we have $\theta = \arcsin(x/2)$</p>
+          <div class="math-display">$$\int \frac{dx}{\sqrt{4 - x^2}} = \arcsin\left(\frac{x}{2}\right) + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\arcsin\left(\frac{x}{2}\right) + C}$</p>
+
+          <p class="solution-note">This is the simplest trigonometric substitution example. The key insight is that $\sqrt{4 - 4\sin^2 \theta} = 2|\cos \theta| = 2\cos \theta$ (since $-\pi/2 \leq \theta \leq \pi/2$ ensures $\cos \theta \geq 0$). The substitution transforms the entire integral into a trivial form.</p>
         </div>
       </div>
 
@@ -154,45 +154,40 @@
         <h3>Example 2: $\int \frac{x^2}{\sqrt{x^2 + 9}} \, dx$</h3>
         <p>This contains $\sqrt{x^2 + 9} = \sqrt{x^2 + 3^2}$, so use Case 2.</p>
 
-        <p><strong>Step 1:</strong> Identify $a = 3$</p>
-        <p><strong>Step 2:</strong> Substitute $x = 3\tan \theta$, $dx = 3\sec^2 \theta \, d\theta$</p>
-        <div class="math-display">$$\sqrt{x^2 + 9} = \sqrt{9\tan^2 \theta + 9} = 3\sec \theta$$</div>
-
-        <p><strong>Step 3:</strong> Substitute into the integral</p>
-        <div class="math-display">$$\int \frac{x^2}{\sqrt{x^2 + 9}} \, dx = \int \frac{9\tan^2 \theta}{3\sec \theta} \cdot 3\sec^2 \theta \, d\theta$$</div>
-        <div class="math-display">$$= \int 9\tan^2 \theta \sec \theta \, d\theta$$</div>
-
-        <p><strong>Step 4:</strong> Use $\tan^2 \theta = \sec^2 \theta - 1$</p>
-        <div class="math-display">$$= 9\int (\sec^2 \theta - 1)\sec \theta \, d\theta = 9\int (\sec^3 \theta - \sec \theta) \, d\theta$$</div>
-        <p>These are standard integrals:</p>
-        <div class="math-display">$$\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta| + C$$</div>
-        <div class="math-display">$$\int \sec^3 \theta \, d\theta = \frac{1}{2}(\sec \theta \tan \theta + \ln|\sec \theta + \tan \theta|) + C$$</div>
-
-        <p><strong>Step 5:</strong> Combine (taking the antiderivative)</p>
-        <div class="math-display">$$= 9\left[\frac{1}{2}(\sec \theta \tan \theta + \ln|\sec \theta + \tan \theta|) - \ln|\sec \theta + \tan \theta|\right] + C$$</div>
-        <div class="math-display">$$= \frac{9}{2}\sec \theta \tan \theta - \frac{9}{2}\ln|\sec \theta + \tan \theta| + C$$</div>
-
-        <p><strong>Step 6:</strong> Back-substitute using the reference triangle. From $x = 3\tan \theta$:</p>
-        <ul>
-          <li>$\tan \theta = \frac{x}{3}$</li>
-          <li>$\sec \theta = \frac{\sqrt{x^2 + 9}}{3}$</li>
-        </ul>
-        <div class="math-display">$$= \frac{9}{2} \cdot \frac{\sqrt{x^2 + 9}}{3} \cdot \frac{x}{3} - \frac{9}{2}\ln\left|\frac{\sqrt{x^2 + 9}}{3} + \frac{x}{3}\right| + C$$</div>
-        <div class="math-display">$$= \frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Understanding This Complex Example</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>This example demonstrates several important techniques:</p>
+          <p><strong>Step 1:</strong> Identify $a = 3$</p>
+          <p><strong>Step 2:</strong> Substitute $x = 3\tan \theta$, $dx = 3\sec^2 \theta \, d\theta$</p>
+          <div class="math-display">$$\sqrt{x^2 + 9} = \sqrt{9\tan^2 \theta + 9} = 3\sec \theta$$</div>
+
+          <p><strong>Step 3:</strong> Substitute into the integral</p>
+          <div class="math-display">$$\int \frac{x^2}{\sqrt{x^2 + 9}} \, dx = \int \frac{9\tan^2 \theta}{3\sec \theta} \cdot 3\sec^2 \theta \, d\theta$$</div>
+          <div class="math-display">$$= \int 9\tan^2 \theta \sec \theta \, d\theta$$</div>
+
+          <p><strong>Step 4:</strong> Use $\tan^2 \theta = \sec^2 \theta - 1$</p>
+          <div class="math-display">$$= 9\int (\sec^2 \theta - 1)\sec \theta \, d\theta = 9\int (\sec^3 \theta - \sec \theta) \, d\theta$$</div>
+          <p>These are standard integrals:</p>
+          <div class="math-display">$$\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta| + C$$</div>
+          <div class="math-display">$$\int \sec^3 \theta \, d\theta = \frac{1}{2}(\sec \theta \tan \theta + \ln|\sec \theta + \tan \theta|) + C$$</div>
+
+          <p><strong>Step 5:</strong> Combine (taking the antiderivative)</p>
+          <div class="math-display">$$= 9\left[\frac{1}{2}(\sec \theta \tan \theta + \ln|\sec \theta + \tan \theta|) - \ln|\sec \theta + \tan \theta|\right] + C$$</div>
+          <div class="math-display">$$= \frac{9}{2}\sec \theta \tan \theta - \frac{9}{2}\ln|\sec \theta + \tan \theta| + C$$</div>
+
+          <p><strong>Step 6:</strong> Back-substitute using the reference triangle. From $x = 3\tan \theta$:</p>
           <ul>
-            <li>The reference triangle is crucial: from $x = 3\tan \theta$, we draw a right triangle with opposite side $x$ and adjacent side 3, giving hypotenuse $\sqrt{x^2 + 9}$.</li>
-            <li>The integral of $\sec^3 \theta$ is a standard form that appears frequently in trigonometric substitution problems.</li>
-            <li>The logarithmic term in the final answer arises from the $\int \sec \theta \, d\theta$ component.</li>
+            <li>$\tan \theta = \frac{x}{3}$</li>
+            <li>$\sec \theta = \frac{\sqrt{x^2 + 9}}{3}$</li>
           </ul>
+          <div class="math-display">$$= \frac{9}{2} \cdot \frac{\sqrt{x^2 + 9}}{3} \cdot \frac{x}{3} - \frac{9}{2}\ln\left|\frac{\sqrt{x^2 + 9}}{3} + \frac{x}{3}\right| + C$$</div>
+          <div class="math-display">$$= \frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\frac{x\sqrt{x^2 + 9}}{2} - \frac{9}{2}\ln\left|\frac{x + \sqrt{x^2 + 9}}{3}\right| + C}$</p>
+
+          <p class="solution-note">This example demonstrates several important techniques: the reference triangle is crucial—from $x = 3\tan \theta$, we draw a right triangle with opposite side $x$ and adjacent side 3, giving hypotenuse $\sqrt{x^2 + 9}$. The integral of $\sec^3 \theta$ is a standard form that appears frequently in trigonometric substitution problems. The logarithmic term in the final answer arises from the $\int \sec \theta \, d\theta$ component.</p>
         </div>
       </div>
 
@@ -200,32 +195,32 @@
         <h3>Example 3: $\int \frac{\sqrt{x^2 - 1}}{x} \, dx$</h3>
         <p>This contains $\sqrt{x^2 - 1} = \sqrt{x^2 - 1^2}$, so use Case 3.</p>
 
-        <p><strong>Step 1:</strong> Identify $a = 1$</p>
-        <p><strong>Step 2:</strong> Substitute $x = \sec \theta$, $dx = \sec \theta \tan \theta \, d\theta$</p>
-        <div class="math-display">$$\sqrt{x^2 - 1} = \sqrt{\sec^2 \theta - 1} = \tan \theta$$</div>
-
-        <p><strong>Step 3:</strong> Substitute into the integral</p>
-        <div class="math-display">$$\int \frac{\sqrt{x^2 - 1}}{x} \, dx = \int \frac{\tan \theta}{\sec \theta} \sec \theta \tan \theta \, d\theta$$</div>
-        <div class="math-display">$$= \int \tan^2 \theta \, d\theta$$</div>
-
-        <p><strong>Step 4:</strong> Use $\tan^2 \theta = \sec^2 \theta - 1$</p>
-        <div class="math-display">$$= \int (\sec^2 \theta - 1) \, d\theta = \tan \theta - \theta + C$$</div>
-
-        <p><strong>Step 5:</strong> Back-substitute. From $x = \sec \theta$:</p>
-        <ul>
-          <li>$\theta = \text{arcsec}(x)$</li>
-          <li>$\tan \theta = \sqrt{x^2 - 1}$</li>
-        </ul>
-        <div class="math-display">$$= \sqrt{x^2 - 1} - \text{arcsec}(x) + C$$</div>
-
-        <p><strong>Answer:</strong> $\boxed{\sqrt{x^2 - 1} - \text{arcsec}(x) + C}$ or equivalently $\boxed{\sqrt{x^2 - 1} - \arccos\left(\frac{1}{x}\right) + C}$</p>
-
         <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-          <strong>Case 3 Details</strong>
+          <strong>Show Solution</strong>
           <span class="toggle-icon">▼</span>
         </div>
         <div class="collapsible-content">
-          <p>Case 3 is less common than Cases 1 and 2, but it's essential for integrals involving $\sqrt{x^2 - a^2}$. The key is recognizing that $x = \sec \theta$ naturally satisfies the restriction $|x| \geq 1$, and the resulting reference triangle has opposite side $\sqrt{x^2-1}$ and hypotenuse $x$.</p>
+          <p><strong>Step 1:</strong> Identify $a = 1$</p>
+          <p><strong>Step 2:</strong> Substitute $x = \sec \theta$, $dx = \sec \theta \tan \theta \, d\theta$</p>
+          <div class="math-display">$$\sqrt{x^2 - 1} = \sqrt{\sec^2 \theta - 1} = \tan \theta$$</div>
+
+          <p><strong>Step 3:</strong> Substitute into the integral</p>
+          <div class="math-display">$$\int \frac{\sqrt{x^2 - 1}}{x} \, dx = \int \frac{\tan \theta}{\sec \theta} \sec \theta \tan \theta \, d\theta$$</div>
+          <div class="math-display">$$= \int \tan^2 \theta \, d\theta$$</div>
+
+          <p><strong>Step 4:</strong> Use $\tan^2 \theta = \sec^2 \theta - 1$</p>
+          <div class="math-display">$$= \int (\sec^2 \theta - 1) \, d\theta = \tan \theta - \theta + C$$</div>
+
+          <p><strong>Step 5:</strong> Back-substitute. From $x = \sec \theta$:</p>
+          <ul>
+            <li>$\theta = \text{arcsec}(x)$</li>
+            <li>$\tan \theta = \sqrt{x^2 - 1}$</li>
+          </ul>
+          <div class="math-display">$$= \sqrt{x^2 - 1} - \text{arcsec}(x) + C$$</div>
+
+          <p><strong>Answer:</strong> $\boxed{\sqrt{x^2 - 1} - \text{arcsec}(x) + C}$ or equivalently $\boxed{\sqrt{x^2 - 1} - \arccos\left(\frac{1}{x}\right) + C}$</p>
+
+          <p class="solution-note">Case 3 is less common than Cases 1 and 2, but it's essential for integrals involving $\sqrt{x^2 - a^2}$. The key is recognizing that $x = \sec \theta$ naturally satisfies the restriction $|x| \geq 1$, and the resulting reference triangle has opposite side $\sqrt{x^2-1}$ and hypotenuse $x$.</p>
         </div>
       </div>
     </section>

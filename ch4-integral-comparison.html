@@ -209,12 +209,12 @@
             <h2>Examples</h2>
 
             <div class="example-box">
-                <strong>Example 1: p-Series $\sum_{n=1}^{\infty} \frac{1}{n^2}$</strong>
+                <h3>Example 1: p-Series $\sum_{n=1}^{\infty} \frac{1}{n^2}$</h3>
                 <p>
                     Determine if $\sum_{n=1}^{\infty} \frac{1}{n^2}$ converges.
                 </p>
                 <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-                    <strong>Solution</strong>
+                    <strong>Show Solution</strong>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
@@ -230,19 +230,19 @@
                     <p style="text-align: center; font-size: 1.05em;">
                         $$\int_1^{\infty} \frac{1}{x^2} \, dx = \lim_{t \to \infty} \left[-\frac{1}{x}\right]_1^{t} = \lim_{t \to \infty} \left(1 - \frac{1}{t}\right) = 1$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         The integral converges, so the series converges.
                     </p>
                 </div>
             </div>
 
             <div class="example-box">
-                <strong>Example 2: Direct Comparison $\sum_{n=1}^{\infty} \frac{1}{n^2 + 1}$</strong>
+                <h3>Example 2: Direct Comparison $\sum_{n=1}^{\infty} \frac{1}{n^2 + 1}$</h3>
                 <p>
                     Determine if $\sum_{n=1}^{\infty} \frac{1}{n^2 + 1}$ converges.
                 </p>
                 <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-                    <strong>Solution</strong>
+                    <strong>Show Solution</strong>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
@@ -252,7 +252,7 @@
                     <p style="text-align: center; font-size: 1.05em;">
                         $$\frac{1}{n^2 + 1} < \frac{1}{n^2}$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         Since $\sum \frac{1}{n^2}$ converges (p-series with $p = 2 > 1$), by the Direct Comparison Test,
                         $\sum \frac{1}{n^2 + 1}$ <strong>converges</strong>.
                     </p>
@@ -260,12 +260,12 @@
             </div>
 
             <div class="example-box">
-                <strong>Example 3: Limit Comparison $\sum_{n=1}^{\infty} \frac{\ln n}{n^2}$</strong>
+                <h3>Example 3: Limit Comparison $\sum_{n=1}^{\infty} \frac{\ln n}{n^2}$</h3>
                 <p>
                     Determine if $\sum_{n=1}^{\infty} \frac{\ln n}{n^2}$ converges.
                 </p>
                 <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
-                    <strong>Solution</strong>
+                    <strong>Show Solution</strong>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
@@ -280,7 +280,7 @@
                     <p style="text-align: center; font-size: 1.05em;">
                         $$\lim_{n \to \infty} \frac{\ln n / n^2}{1/n^2} = \lim_{n \to \infty} \ln n = \infty$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         The limit is infinite, so this comparison doesn't work directly. However, by the direct comparison argument above,
                         the series converges.
                     </p>
@@ -307,7 +307,7 @@
             <h2>Practice Problems</h2>
 
             <div class="example-box">
-                <strong>Practice Problem 1</strong>
+                <h3>Practice Problem 1</h3>
                 <p>
                     Determine the convergence or divergence of $\sum_{n=2}^{\infty} \frac{1}{n \ln n}$.
                     <em>Hint: Use the integral test.</em>
@@ -332,14 +332,14 @@
                     <p style="text-align: center;">
                         $$= \lim_{t \to \infty} \left[\ln(\ln x)\right]_2^{t} = \lim_{t \to \infty} (\ln(\ln t) - \ln(\ln 2)) = \infty$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         The integral diverges, so the series <strong>diverges</strong>.
                     </p>
                 </div>
             </div>
 
             <div class="example-box">
-                <strong>Practice Problem 2</strong>
+                <h3>Practice Problem 2</h3>
                 <p>
                     Use the direct comparison test to determine convergence of $\sum_{n=1}^{\infty} \frac{3}{n^2 + 2n}$.
                 </p>
@@ -354,7 +354,7 @@
                     <p style="text-align: center;">
                         $$\frac{3}{n^2 + 2n} \le \frac{3}{n^2}$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         Since $\sum \frac{3}{n^2} = 3 \sum \frac{1}{n^2}$ converges (p-series with $p = 2$),
                         by the direct comparison test, $\sum \frac{3}{n^2 + 2n}$ <strong>converges</strong>.
                     </p>
@@ -362,7 +362,7 @@
             </div>
 
             <div class="example-box">
-                <strong>Practice Problem 3</strong>
+                <h3>Practice Problem 3</h3>
                 <p>
                     Use the limit comparison test to determine convergence of $\sum_{n=1}^{\infty} \frac{2n + 3}{n^3 - n + 1}$.
                 </p>
@@ -380,7 +380,7 @@
                     <p style="text-align: center;">
                         $$= \lim_{n \to \infty} \frac{2n^3 + 3n^2}{n^3 - n + 1} = \lim_{n \to \infty} \frac{2 + \frac{3}{n}}{1 - \frac{1}{n^2} + \frac{1}{n^3}} = 2$$
                     </p>
-                    <p>
+                    <p class="solution-note">
                         Since the limit is a positive constant (2) and $\sum \frac{1}{n^2}$ converges,
                         by the limit comparison test, $\sum \frac{2n+3}{n^3-n+1}$ <strong>converges</strong>.
                     </p>
